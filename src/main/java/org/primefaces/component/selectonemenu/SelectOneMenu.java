@@ -96,11 +96,7 @@ public class SelectOneMenu extends SelectOneMenuBase {
     public List<Column> getColumns() {
         List<Column> columns = new ArrayList<>();
 
-        for (UIComponent kid : getChildren()) {
-            if (kid instanceof Column) {
-                columns.add((Column) kid);
-            }
-        }
+        getChildren().stream().filter(kid -> kid instanceof Column).forEach(kid -> columns.add((Column) kid));
 
         return columns;
     }
@@ -177,9 +173,7 @@ public class SelectOneMenu extends SelectOneMenuBase {
                             if (null != messages) {
                                 message = null;
                                 String cid = getClientId(context);
-                                for (FacesMessage m : messages) {
-                                    context.addMessage(cid, m);
-                                }
+                                messages.forEach(m -> context.addMessage(cid, m));
                             }
                             else {
                                 message = ve.getFacesMessage();

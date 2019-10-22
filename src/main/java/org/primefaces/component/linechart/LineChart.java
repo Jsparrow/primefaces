@@ -71,15 +71,14 @@ public class LineChart extends LineChartBase {
 
     @Override
     public void queueEvent(FacesEvent event) {
-        if (event instanceof AjaxBehaviorEvent) {
-            BehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
-            Map<String, String> map = getFacesContext().getExternalContext().getRequestParameterMap();
-            int itemIndex = Integer.parseInt(map.get("itemIndex"));
-            int dataSetIndex = Integer.parseInt(map.get("dataSetIndex"));
-
-            ItemSelectEvent itemSelectEvent = new ItemSelectEvent(this, behaviorEvent.getBehavior(), itemIndex, dataSetIndex);
-
-            super.queueEvent(itemSelectEvent);
-        }
+        if (!(event instanceof AjaxBehaviorEvent)) {
+			return;
+		}
+		BehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
+		Map<String, String> map = getFacesContext().getExternalContext().getRequestParameterMap();
+		int itemIndex = Integer.parseInt(map.get("itemIndex"));
+		int dataSetIndex = Integer.parseInt(map.get("dataSetIndex"));
+		ItemSelectEvent itemSelectEvent = new ItemSelectEvent(this, behaviorEvent.getBehavior(), itemIndex, dataSetIndex);
+		super.queueEvent(itemSelectEvent);
     }
 }

@@ -104,7 +104,7 @@ public class SearchExpressionResolverFactory {
         }
 
         if (resolver == null) {
-            throw new FacesException("No SearchExpressionResolver available for expression \"" + expression + "\"");
+            throw new FacesException(new StringBuilder().append("No SearchExpressionResolver available for expression \"").append(expression).append("\"").toString());
         }
 
         return resolver;

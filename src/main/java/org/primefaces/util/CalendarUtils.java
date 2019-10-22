@@ -44,13 +44,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Utility class for calendar component
  */
 public class CalendarUtils {
 
-    private static final String[] TIME_CHARS = {"H", "K", "h", "k", "m", "s"};
+    private static final Logger logger = LoggerFactory.getLogger(CalendarUtils.class);
+
+	private static final String[] TIME_CHARS = {"H", "K", "h", "k", "m", "s"};
 
     private static final PatternConverter[] PATTERN_CONVERTERS =
             new PatternConverter[]{new TimePatternConverter(), new DatePatternConverter()};
@@ -94,6 +98,7 @@ public class CalendarUtils {
                     return dateFormat.parse(value.toString());
                 }
                 catch (ParseException ex) {
+					logger.error(ex.getMessage(), ex);
                     // NO-OP
                 }
             }
@@ -107,6 +112,7 @@ public class CalendarUtils {
                 }
             }
             catch (ConverterException ex) {
+				logger.error(ex.getMessage(), ex);
                 // NO-OP
             }
         }
@@ -156,6 +162,7 @@ public class CalendarUtils {
                     return LocalDate.parse(value.toString(), formatter);
                 }
                 catch (DateTimeParseException ex) {
+					logger.error(ex.getMessage(), ex);
                     // NO-OP
                 }
             }
@@ -169,6 +176,7 @@ public class CalendarUtils {
                 }
             }
             catch (ConverterException ex) {
+				logger.error(ex.getMessage(), ex);
                 // NO-OP
             }
         }
@@ -209,24 +217,20 @@ public class CalendarUtils {
             return null;
         }
 
-        if (value instanceof List) {
-            StringBuilder valuesAsString = new StringBuilder();
-            String separator = "multiple".equals(calendar.getSelectionMode()) ? "," : " " + calendar.getRangeSeparator() + " ";
-            List values = ((List) value);
+        if (!(value instanceof List)) {
+			return getValue(context, calendar, value, pattern);
+		}
+		StringBuilder valuesAsString = new StringBuilder();
+		String separator = "multiple".equals(calendar.getSelectionMode()) ? "," : new StringBuilder().append(" ").append(calendar.getRangeSeparator()).append(" ").toString();
+		List values = ((List) value);
+		for (int i = 0; i < values.size(); i++) {
+		    if (i != 0) {
+		        valuesAsString.append(separator);
+		    }
 
-            for (int i = 0; i < values.size(); i++) {
-                if (i != 0) {
-                    valuesAsString.append(separator);
-                }
-
-                valuesAsString.append(getValue(context, calendar, values.get(i), pattern));
-            }
-
-            return valuesAsString.toString();
-        }
-        else {
-            return getValue(context, calendar, value, pattern);
-        }
+		    valuesAsString.append(getValue(context, calendar, values.get(i), pattern));
+		}
+		return valuesAsString.toString();
     }
 
     public static final String getValue(FacesContext context, UICalendar calendar, Object value, String pattern) {
@@ -316,19 +320,19 @@ public class CalendarUtils {
 
         ResponseWriter writer = context.getResponseWriter();
 
-        writer.write("," + optionName + ":[");
+        writer.write(new StringBuilder().append(",").append(optionName).append(":[").toString());
         for (int i = 0; i < values.size(); i++) {
             Object item = values.get(i);
             Object preText = (i == 0) ? "" : ",";
 
             if (item instanceof Date) {
-                writer.write(preText + "\"" + EscapeUtils.forJavaScript(getValueAsString(context, uicalendar, item)) + "\"");
+                writer.write(new StringBuilder().append(preText).append("\"").append(EscapeUtils.forJavaScript(getValueAsString(context, uicalendar, item))).append("\"").toString());
             }
             else if (item instanceof LocalDate || item instanceof LocalDateTime || item instanceof LocalTime) {
-                writer.write(preText + "\"" + EscapeUtils.forJavaScript(getValueAsString(context, uicalendar, item)) + "\"");
+                writer.write(new StringBuilder().append(preText).append("\"").append(EscapeUtils.forJavaScript(getValueAsString(context, uicalendar, item))).append("\"").toString());
             }
             else {
-                writer.write(preText + "" + item);
+                writer.write(new StringBuilder().append(preText).append("").append(item).toString());
             }
         }
 

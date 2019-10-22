@@ -54,7 +54,7 @@ public class TabMenuRenderer extends BaseMenuRenderer {
         TabMenu menu = (TabMenu) component;
         String clientId = menu.getClientId(context);
         String styleClass = menu.getStyleClass();
-        styleClass = styleClass == null ? TabMenu.CONTAINER_CLASS : TabMenu.CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? TabMenu.CONTAINER_CLASS : new StringBuilder().append(TabMenu.CONTAINER_CLASS).append(" ").append(styleClass).toString();
         int activeIndex = menu.getActiveIndex();
         List<?> elements = menu.getElements();
 
@@ -72,12 +72,11 @@ public class TabMenuRenderer extends BaseMenuRenderer {
         int i = 0;
         if (elements != null && !elements.isEmpty()) {
             for (Object element : elements) {
-                if (element instanceof MenuElement) {
-                    if (((MenuElement) element).isRendered() && (element instanceof MenuItem)) {
-                        encodeItem(context, menu, (MenuItem) element, (i == activeIndex));
-                        i++;
-                    }
-                }
+                boolean condition = element instanceof MenuElement && ((MenuElement) element).isRendered() && (element instanceof MenuItem);
+				if (condition) {
+				    encodeItem(context, menu, (MenuItem) element, (i == activeIndex));
+				    i++;
+				}
             }
         }
 
@@ -96,7 +95,7 @@ public class TabMenuRenderer extends BaseMenuRenderer {
         }
 
         if (containerStyleClass != null) {
-            containerClass = containerClass + " " + containerStyleClass;
+            containerClass = new StringBuilder().append(containerClass).append(" ").append(containerStyleClass).toString();
         }
 
         //header container

@@ -30,7 +30,7 @@ import org.primefaces.expression.SearchExpressionResolver;
 /**
  * {@link SearchExpressionResolver} for the "@form" keyword.
  */
-public class FormExpressionResolver extends AbstractClosestExpressionResolver implements SearchExpressionResolver {
+public class FormExpressionResolver extends AbstractClosestExpressionResolver {
 
     @Override
     public Class<?> getType() {

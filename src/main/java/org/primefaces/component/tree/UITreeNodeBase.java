@@ -30,7 +30,64 @@ public abstract class UITreeNodeBase extends UIColumn {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-    public enum PropertyKeys {
+    public UITreeNodeBase() {
+        setRendererType(null);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getType() {
+        return (String) getStateHelper().eval(PropertyKeys.type, "default");
+    }
+
+	public void setType(String type) {
+        getStateHelper().put(PropertyKeys.type, type);
+    }
+
+	public String getStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
+    }
+
+	public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+	public String getIcon() {
+        return (String) getStateHelper().eval(PropertyKeys.icon, null);
+    }
+
+	public void setIcon(String icon) {
+        getStateHelper().put(PropertyKeys.icon, icon);
+    }
+
+	public String getExpandedIcon() {
+        return (String) getStateHelper().eval(PropertyKeys.expandedIcon, null);
+    }
+
+	public void setExpandedIcon(String expandedIcon) {
+        getStateHelper().put(PropertyKeys.expandedIcon, expandedIcon);
+    }
+
+	public String getCollapsedIcon() {
+        return (String) getStateHelper().eval(PropertyKeys.collapsedIcon, null);
+    }
+
+	public void setCollapsedIcon(String collapsedIcon) {
+        getStateHelper().put(PropertyKeys.collapsedIcon, collapsedIcon);
+    }
+
+	public String getAriaLabel() {
+        return (String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
+    }
+
+	public void setAriaLabel(String ariaLabel) {
+        getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
+    }
+
+	public enum PropertyKeys {
 
         type,
         styleClass,
@@ -38,63 +95,6 @@ public abstract class UITreeNodeBase extends UIColumn {
         expandedIcon,
         collapsedIcon,
         ariaLabel
-    }
-
-    public UITreeNodeBase() {
-        setRendererType(null);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getType() {
-        return (String) getStateHelper().eval(PropertyKeys.type, "default");
-    }
-
-    public void setType(String type) {
-        getStateHelper().put(PropertyKeys.type, type);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public String getIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.icon, null);
-    }
-
-    public void setIcon(String icon) {
-        getStateHelper().put(PropertyKeys.icon, icon);
-    }
-
-    public String getExpandedIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.expandedIcon, null);
-    }
-
-    public void setExpandedIcon(String expandedIcon) {
-        getStateHelper().put(PropertyKeys.expandedIcon, expandedIcon);
-    }
-
-    public String getCollapsedIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.collapsedIcon, null);
-    }
-
-    public void setCollapsedIcon(String collapsedIcon) {
-        getStateHelper().put(PropertyKeys.collapsedIcon, collapsedIcon);
-    }
-
-    public String getAriaLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
-    }
-
-    public void setAriaLabel(String ariaLabel) {
-        getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
     }
 
 }

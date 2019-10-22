@@ -39,14 +39,7 @@ public class Column extends ColumnBase {
     @Override
     public CellEditor getCellEditor() {
 
-        CellEditor cellEditor = null;
-
-        for (UIComponent child : getChildren()) {
-            if (child instanceof CellEditor && ((CellEditor) child).isRendered()) {
-                cellEditor = (CellEditor) child;
-                break;
-            }
-        }
+        CellEditor cellEditor = getChildren().stream().filter(child -> child instanceof CellEditor && ((CellEditor) child).isRendered()).findFirst().map(child -> (CellEditor) child).orElse(null);
 
         return cellEditor;
     }

@@ -222,6 +222,7 @@ public class DefaultScheduleEvent implements ScheduleEvent, Serializable {
 
     @Override
     public String toString() {
-        return "DefaultScheduleEvent{title=" + title + ",startDate=" + startDate + ",endDate=" + endDate + "}";
+        return new StringBuilder().append("DefaultScheduleEvent{title=").append(title).append(",startDate=").append(startDate).append(",endDate=").append(endDate).append("}")
+				.toString();
     }
 }

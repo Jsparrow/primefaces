@@ -34,7 +34,80 @@ public abstract class SelectManyMenuBase extends HtmlSelectManyMenu implements W
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.SelectManyMenuRenderer";
 
-    public enum PropertyKeys {
+    public SelectManyMenuBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getWidgetVar() {
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
+
+	public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
+
+	public String getVar() {
+        return (String) getStateHelper().eval(PropertyKeys.var, null);
+    }
+
+	public void setVar(String var) {
+        getStateHelper().put(PropertyKeys.var, var);
+    }
+
+	public boolean isShowCheckbox() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showCheckbox, false);
+    }
+
+	public void setShowCheckbox(boolean showCheckbox) {
+        getStateHelper().put(PropertyKeys.showCheckbox, showCheckbox);
+    }
+
+	public boolean isFilter() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.filter, false);
+    }
+
+	public void setFilter(boolean filter) {
+        getStateHelper().put(PropertyKeys.filter, filter);
+    }
+
+	public String getFilterMatchMode() {
+        return (String) getStateHelper().eval(PropertyKeys.filterMatchMode, null);
+    }
+
+	public void setFilterMatchMode(String filterMatchMode) {
+        getStateHelper().put(PropertyKeys.filterMatchMode, filterMatchMode);
+    }
+
+	public String getFilterFunction() {
+        return (String) getStateHelper().eval(PropertyKeys.filterFunction, null);
+    }
+
+	public void setFilterFunction(String filterFunction) {
+        getStateHelper().put(PropertyKeys.filterFunction, filterFunction);
+    }
+
+	public boolean isCaseSensitive() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.caseSensitive, false);
+    }
+
+	public void setCaseSensitive(boolean caseSensitive) {
+        getStateHelper().put(PropertyKeys.caseSensitive, caseSensitive);
+    }
+
+	public int getScrollHeight() {
+        return (Integer) getStateHelper().eval(PropertyKeys.scrollHeight, Integer.MAX_VALUE);
+    }
+
+	public void setScrollHeight(int scrollHeight) {
+        getStateHelper().put(PropertyKeys.scrollHeight, scrollHeight);
+    }
+
+	public enum PropertyKeys {
 
         widgetVar,
         var,
@@ -44,78 +117,5 @@ public abstract class SelectManyMenuBase extends HtmlSelectManyMenu implements W
         filterFunction,
         caseSensitive,
         scrollHeight;
-    }
-
-    public SelectManyMenuBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public String getVar() {
-        return (String) getStateHelper().eval(PropertyKeys.var, null);
-    }
-
-    public void setVar(String var) {
-        getStateHelper().put(PropertyKeys.var, var);
-    }
-
-    public boolean isShowCheckbox() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showCheckbox, false);
-    }
-
-    public void setShowCheckbox(boolean showCheckbox) {
-        getStateHelper().put(PropertyKeys.showCheckbox, showCheckbox);
-    }
-
-    public boolean isFilter() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.filter, false);
-    }
-
-    public void setFilter(boolean filter) {
-        getStateHelper().put(PropertyKeys.filter, filter);
-    }
-
-    public String getFilterMatchMode() {
-        return (String) getStateHelper().eval(PropertyKeys.filterMatchMode, null);
-    }
-
-    public void setFilterMatchMode(String filterMatchMode) {
-        getStateHelper().put(PropertyKeys.filterMatchMode, filterMatchMode);
-    }
-
-    public String getFilterFunction() {
-        return (String) getStateHelper().eval(PropertyKeys.filterFunction, null);
-    }
-
-    public void setFilterFunction(String filterFunction) {
-        getStateHelper().put(PropertyKeys.filterFunction, filterFunction);
-    }
-
-    public boolean isCaseSensitive() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.caseSensitive, false);
-    }
-
-    public void setCaseSensitive(boolean caseSensitive) {
-        getStateHelper().put(PropertyKeys.caseSensitive, caseSensitive);
-    }
-
-    public int getScrollHeight() {
-        return (Integer) getStateHelper().eval(PropertyKeys.scrollHeight, Integer.MAX_VALUE);
-    }
-
-    public void setScrollHeight(int scrollHeight) {
-        getStateHelper().put(PropertyKeys.scrollHeight, scrollHeight);
     }
 }

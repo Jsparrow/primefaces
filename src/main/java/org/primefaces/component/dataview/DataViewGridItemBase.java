@@ -30,26 +30,26 @@ public abstract class DataViewGridItemBase extends UIComponentBase {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-    public enum PropertyKeys {
-
-        columns
-    }
-
     public DataViewGridItemBase() {
         setRendererType(null);
     }
 
-    @Override
+	@Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
-    public int getColumns() {
+	public int getColumns() {
         return (Integer) getStateHelper().eval(PropertyKeys.columns, 3);
     }
 
-    public void setColumns(int columns) {
+	public void setColumns(int columns) {
         getStateHelper().put(PropertyKeys.columns, columns);
+    }
+
+	public enum PropertyKeys {
+
+        columns
     }
 
 }

@@ -75,7 +75,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
     }
 
     @Override
-    public void handle() throws FacesException {
+    public void handle() {
         FacesContext context = FacesContext.getCurrentInstance();
 
         if (context == null || context.getResponseComplete()) {
@@ -83,45 +83,44 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         }
 
         Iterable<ExceptionQueuedEvent> exceptionQueuedEvents = getUnhandledExceptionQueuedEvents();
-        if (exceptionQueuedEvents != null && exceptionQueuedEvents.iterator() != null) {
-            Iterator<ExceptionQueuedEvent> unhandledExceptionQueuedEvents = getUnhandledExceptionQueuedEvents().iterator();
+        if (!(exceptionQueuedEvents != null && exceptionQueuedEvents.iterator() != null)) {
+			return;
+		}
+		Iterator<ExceptionQueuedEvent> unhandledExceptionQueuedEvents = getUnhandledExceptionQueuedEvents().iterator();
+		if (unhandledExceptionQueuedEvents.hasNext()) {
+		    try {
+		        Throwable throwable = unhandledExceptionQueuedEvents.next().getContext().getException();
 
-            if (unhandledExceptionQueuedEvents.hasNext()) {
-                try {
-                    Throwable throwable = unhandledExceptionQueuedEvents.next().getContext().getException();
+		        unhandledExceptionQueuedEvents.remove();
 
-                    unhandledExceptionQueuedEvents.remove();
+		        Throwable rootCause = getRootCause(throwable);
+		        ExceptionInfo info = createExceptionInfo(rootCause);
 
-                    Throwable rootCause = getRootCause(throwable);
-                    ExceptionInfo info = createExceptionInfo(rootCause);
+		        // print exception in development stage
+		        if (context.getApplication().getProjectStage() == ProjectStage.Development) {
+		            rootCause.printStackTrace();
+		        }
 
-                    // print exception in development stage
-                    if (context.getApplication().getProjectStage() == ProjectStage.Development) {
-                        rootCause.printStackTrace();
-                    }
+		        if (isLogException(context, rootCause)) {
+		            logException(rootCause);
+		        }
 
-                    if (isLogException(context, rootCause)) {
-                        logException(rootCause);
-                    }
-
-                    if (context.getPartialViewContext().isAjaxRequest()) {
-                        handleAjaxException(context, rootCause, info);
-                    }
-                    else {
-                        handleRedirect(context, rootCause, info, false);
-                    }
-                }
-                catch (Exception ex) {
-                    LOGGER.log(Level.SEVERE, "Could not handle exception!", ex);
-                }
-            }
-
-            while (unhandledExceptionQueuedEvents.hasNext()) {
-                // Any remaining unhandled exceptions are not interesting. First fix the first.
-                unhandledExceptionQueuedEvents.next();
-                unhandledExceptionQueuedEvents.remove();
-            }
-        }
+		        if (context.getPartialViewContext().isAjaxRequest()) {
+		            handleAjaxException(context, rootCause, info);
+		        }
+		        else {
+		            handleRedirect(context, rootCause, info, false);
+		        }
+		    }
+		    catch (Exception ex) {
+		        LOGGER.log(Level.SEVERE, "Could not handle exception!", ex);
+		    }
+		}
+		while (unhandledExceptionQueuedEvents.hasNext()) {
+		    // Any remaining unhandled exceptions are not interesting. First fix the first.
+		    unhandledExceptionQueuedEvents.next();
+		    unhandledExceptionQueuedEvents.remove();
+		}
     }
 
     protected void logException(Throwable rootCause) {
@@ -130,11 +129,9 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
     protected boolean isLogException(FacesContext context, Throwable rootCause) {
 
-        if (context.isProjectStage(ProjectStage.Production)) {
-            if (rootCause instanceof ViewExpiredException) {
-                return false;
-            }
-        }
+        if (context.isProjectStage(ProjectStage.Production) && rootCause instanceof ViewExpiredException) {
+		    return false;
+		}
 
         return true;
     }
@@ -154,32 +151,31 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
         boolean responseResetted = false;
 
-        if (context.getCurrentPhaseId().equals(PhaseId.RENDER_RESPONSE)) {
-            if (!externalContext.isResponseCommitted()) {
-                //mojarra workaround to avoid invalid partial output due to open tags
-                if (writer != null) {
-                    // this doesn't flush, just clears the internal state in mojarra
-                    writer.flush();
+        boolean condition = context.getCurrentPhaseId().equals(PhaseId.RENDER_RESPONSE) && !externalContext.isResponseCommitted();
+		if (condition) {
+		    //mojarra workaround to avoid invalid partial output due to open tags
+		    if (writer != null) {
+		        // this doesn't flush, just clears the internal state in mojarra
+		        writer.flush();
 
-                    writer.endCDATA();
+		        writer.endCDATA();
 
-                    writer.endInsert();
-                    writer.endUpdate();
+		        writer.endInsert();
+		        writer.endUpdate();
 
-                    writer.startError("");
-                    writer.endError();
+		        writer.startError("");
+		        writer.endError();
 
-                    writer.getWrapped().endElement("changes");
-                    writer.getWrapped().endElement("partial-response");
-                }
+		        writer.getWrapped().endElement("changes");
+		        writer.getWrapped().endElement("partial-response");
+		    }
 
-                String characterEncoding = externalContext.getResponseCharacterEncoding();
-                externalContext.responseReset();
-                externalContext.setResponseCharacterEncoding(characterEncoding);
+		    String characterEncoding = externalContext.getResponseCharacterEncoding();
+		    externalContext.responseReset();
+		    externalContext.setResponseCharacterEncoding(characterEncoding);
 
-                responseResetted = true;
-            }
-        }
+		    responseResetted = true;
+		}
 
         AjaxExceptionHandler handlerComponent = null;
 
@@ -212,9 +208,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
                 if (updates != null && !updates.isEmpty()) {
                     context.setResponseWriter(writer);
 
-                    for (int i = 0; i < updates.size(); i++) {
-                        UIComponent component = updates.get(i);
-
+                    for (UIComponent component : updates) {
                         writer.startElement("update", null);
                         writer.writeAttribute("id", component.getClientId(context), null);
                         writer.startCDATA();
@@ -233,12 +227,8 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
                 writer.write("var hf=function(type,message,timestampp){");
                 writer.write(handlerComponent.getOnexception());
-                writer.write("};hf.call(this,\""
-                        + info.getType() + "\",\""
-                        + EscapeUtils.forJavaScript(info.getMessage())
-                        + "\",\""
-                        + info.getFormattedTimestamp()
-                        + "\");");
+                writer.write(new StringBuilder().append("};hf.call(this,\"").append(info.getType()).append("\",\"").append(EscapeUtils.forJavaScript(info.getMessage())).append("\",\"")
+						.append(info.getFormattedTimestamp()).append("\");").toString());
 
                 writer.endCDATA();
                 writer.endElement("eval");
@@ -259,11 +249,10 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
         info.setTimestamp(new Date());
         info.setType(rootCause.getClass().getName());
 
-        try (StringWriter sw = new StringWriter()) {
-            PrintWriter pw = new PrintWriter(sw);
+        try (StringWriter sw = new StringWriter();
+				PrintWriter pw = new PrintWriter(sw)) {
             rootCause.printStackTrace(pw);
             info.setFormattedStackTrace(EscapeUtils.forXml(sw.toString()).replaceAll("(\r\n|\n)", "<br/>"));
-            pw.close();
         }
 
         SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT_PATTERN);
@@ -364,7 +353,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
             if (externalContext.isResponseCommitted() && !context.getPartialViewContext().isAjaxRequest()) {
                 PartialResponseWriter writer = context.getPartialViewContext().getPartialResponseWriter();
                 writer.startElement("script", null);
-                writer.write("window.location.href = '" + url + "';");
+                writer.write(new StringBuilder().append("window.location.href = '").append(url).append("';").toString());
                 writer.endElement("script");
                 writer.getWrapped().endDocument();
             }
@@ -397,7 +386,7 @@ public class PrimeExceptionHandler extends ExceptionHandlerWrapper {
 
         if (errorPage == null) {
             throw new IllegalArgumentException(
-                    "No default error page (Status 500 or java.lang.Throwable) and no error page for type \"" + rootCause.getClass() + "\" defined!");
+                    new StringBuilder().append("No default error page (Status 500 or java.lang.Throwable) and no error page for type \"").append(rootCause.getClass()).append("\" defined!").toString());
         }
 
         return errorPage;

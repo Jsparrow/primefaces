@@ -52,7 +52,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
         MenuButton button = (MenuButton) abstractMenu;
         String clientId = button.getClientId(context);
         String styleClass = button.getStyleClass();
-        styleClass = styleClass == null ? MenuButton.CONTAINER_CLASS : MenuButton.CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? MenuButton.CONTAINER_CLASS : new StringBuilder().append(MenuButton.CONTAINER_CLASS).append(" ").append(styleClass).toString();
         boolean disabled = button.isDisabled();
 
         writer.startElement("span", button);
@@ -75,7 +75,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
 
     protected void encodeButton(FacesContext context, MenuButton button, String buttonId, boolean disabled) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        boolean isIconLeft = button.getIconPos().equals("left");
+        boolean isIconLeft = "left".equals(button.getIconPos());
         String value = button.getValue();
         String buttonTextClass = isIconLeft ? HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS : HTML.BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS;
         if (isValueBlank(value)) {
@@ -98,7 +98,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
 
         //button icon pos
         String iconPosClass = isIconLeft ? HTML.BUTTON_LEFT_ICON_CLASS : HTML.BUTTON_RIGHT_ICON_CLASS;
-        iconClass = iconPosClass + " " + iconClass;
+        iconClass = new StringBuilder().append(iconPosClass).append(" ").append(iconClass).toString();
 
         writer.startElement("span", null);
         writer.writeAttribute("class", iconClass, null);
@@ -123,11 +123,11 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
     protected void encodeMenu(FacesContext context, MenuButton button, String menuId) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String menuStyleClass = button.getMenuStyleClass();
-        menuStyleClass = (menuStyleClass == null) ? Menu.DYNAMIC_CONTAINER_CLASS : Menu.DYNAMIC_CONTAINER_CLASS + " " + menuStyleClass;
+        menuStyleClass = (menuStyleClass == null) ? Menu.DYNAMIC_CONTAINER_CLASS : new StringBuilder().append(Menu.DYNAMIC_CONTAINER_CLASS).append(" ").append(menuStyleClass).toString();
 
         writer.startElement("div", null);
         if (!LangUtils.isValueEmpty(button.getMaxHeight())) {
-            menuStyleClass = menuStyleClass + " " + Menu.CONTAINER_MAXHEIGHT_CLASS;
+            menuStyleClass = new StringBuilder().append(menuStyleClass).append(" ").append(Menu.CONTAINER_MAXHEIGHT_CLASS).toString();
             // If maxHeight is a number, add the unit "px", otherwise use it as is
             char lastChar = button.getMaxHeight().charAt(button.getMaxHeight().length() - 1);
             String style = Character.isDigit(lastChar) ? button.getMaxHeight() + "px" : button.getMaxHeight();
@@ -171,7 +171,7 @@ public class MenuButtonRenderer extends BaseMenuRenderer {
 
         UIForm form = ComponentTraversalUtils.closestForm(context, button);
         if (form == null) {
-            throw new FacesException("MenuButton : \"" + clientId + "\" must be inside a form element");
+            throw new FacesException(new StringBuilder().append("MenuButton : \"").append(clientId).append("\" must be inside a form element").toString());
         }
 
         WidgetBuilder wb = getWidgetBuilder(context);

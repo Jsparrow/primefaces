@@ -181,8 +181,8 @@ public class SearchExpressionFacade {
 
             StringBuilder expressionsBuffer = SharedStringBuilder.get(context, SHARED_EXPRESSION_BUFFER_KEY);
 
-            for (int i = 0; i < splittedExpressions.length; i++) {
-                String expression = splittedExpressions[i].trim();
+            for (String splittedExpression : splittedExpressions) {
+                String expression = splittedExpression.trim();
 
                 if (LangUtils.isValueBlank(expression)) {
                     continue;
@@ -224,14 +224,13 @@ public class SearchExpressionFacade {
                             else if (resolver instanceof MultiSearchExpressionResolver) {
                                 ArrayList<UIComponent> result = new ArrayList<>(5);
                                 ((MultiSearchExpressionResolver) resolver).resolveComponents(context, source, source, expression, result, hints);
-                                for (int j = 0; j < result.size(); j++) {
-                                    UIComponent component = result.get(j);
+                                result.forEach(component -> {
                                     validateRenderer(context, source, component, expression, hints);
                                     if (expressionsBuffer.length() > 0) {
                                         expressionsBuffer.append(" ");
                                     }
                                     expressionsBuffer.append(component.getClientId());
-                                }
+                                });
                             }
                             else {
                                 UIComponent component = resolver.resolveComponent(context, source, source, expression, hints);
@@ -280,14 +279,11 @@ public class SearchExpressionFacade {
     }
 
     protected static void validateRenderer(FacesContext context, UIComponent source, UIComponent component, String expression, int hints) {
-        if (SearchExpressionUtils.isHintSet(hints, SearchExpressionHint.VALIDATE_RENDERER) && context.isProjectStage(ProjectStage.Development)) {
-            if (LangUtils.isValueBlank(component.getRendererType())) {
-                LOGGER.warning("Can not update component \"" + component.getClass().getName()
-                        + "\" with id \"" + component.getClientId(context)
-                        + "\" without an attached renderer. Expression \"" + expression
-                        + "\" referenced from \"" + source.getClientId(context) + "\"");
-            }
-        }
+        boolean condition = SearchExpressionUtils.isHintSet(hints, SearchExpressionHint.VALIDATE_RENDERER) && context.isProjectStage(ProjectStage.Development) && LangUtils.isValueBlank(component.getRendererType());
+		if (condition) {
+		    LOGGER.warning(new StringBuilder().append("Can not update component \"").append(component.getClass().getName()).append("\" with id \"").append(component.getClientId(context)).append("\" without an attached renderer. Expression \"").append(expression)
+					.append("\" referenced from \"").append(source.getClientId(context)).append("\"").toString());
+		}
     }
 
     /**
@@ -370,45 +366,6 @@ public class SearchExpressionFacade {
         return component.getClientId(context);
     }
 
-    static class ResolveClientIdCallback implements ContextCallback {
-
-        private final UIComponent source;
-        private final int hints;
-        private final String expression;
-
-        private String clientId;
-
-        ResolveClientIdCallback(UIComponent source, int hints, String expression) {
-            this.source = source;
-            this.hints = hints;
-            this.expression = expression;
-        }
-
-        @Override
-        public void invokeContextCallback(FacesContext context, UIComponent target) {
-            clientId = target.getClientId(context);
-            validateRenderer(context, source, target, expression, hints);
-        }
-
-        public String getClientId() {
-            return clientId;
-        }
-    }
-
-    static class ResolveComponentCallback implements ContextCallback {
-
-        private UIComponent component;
-
-        @Override
-        public void invokeContextCallback(FacesContext context, UIComponent target) {
-            component = target;
-        }
-
-        public UIComponent getComponent() {
-            return component;
-        }
-    }
-
     /**
      * Resolves a {@link UIComponent} for the given expression.
      *
@@ -422,7 +379,7 @@ public class SearchExpressionFacade {
         return resolveComponent(context, source, expression, SearchExpressionHint.NONE);
     }
 
-    /**
+	/**
      * Resolves a {@link UIComponent} for the given expression.
      *
      * @param context The {@link FacesContext}.
@@ -480,7 +437,7 @@ public class SearchExpressionFacade {
         return component;
     }
 
-    private static UIComponent resolveComponentByExpressionChain(FacesContext context, UIComponent source, String expression,
+	private static UIComponent resolveComponentByExpressionChain(FacesContext context, UIComponent source, String expression,
             char separatorChar, int hints) {
 
         boolean startsWithSeperator = expression.charAt(0) == separatorChar;
@@ -517,10 +474,8 @@ public class SearchExpressionFacade {
 
                 if (temp == null) {
                     if (!SearchExpressionUtils.isHintSet(hints, SearchExpressionHint.IGNORE_NO_RESULT)) {
-                        throw new FacesException("Cannot find component for subexpression \"" + subExpression
-                                + "\" from component with id \"" + last.getClientId(context)
-                                + "\" in full expression \"" + expression
-                                + "\" referenced from \"" + source.getClientId(context) + "\".");
+                        throw new FacesException(new StringBuilder().append("Cannot find component for subexpression \"").append(subExpression).append("\" from component with id \"").append(last.getClientId(context)).append("\" in full expression \"")
+								.append(expression).append("\" referenced from \"").append(source.getClientId(context)).append("\".").toString());
                     }
 
                     return null;
@@ -533,13 +488,13 @@ public class SearchExpressionFacade {
         return last;
     }
 
-    private static void resolveComponentById(UIComponent source, String expression, char seperatorChar, FacesContext context,
+	private static void resolveComponentById(UIComponent source, String expression, char seperatorChar, FacesContext context,
             ContextCallback callback) {
 
         ComponentTraversalUtils.firstById(expression, source, seperatorChar, context, callback);
     }
 
-    private static ArrayList<UIComponent> resolveComponentsByExpressionChain(FacesContext context, UIComponent source, String expression, char separatorChar,
+	private static ArrayList<UIComponent> resolveComponentsByExpressionChain(FacesContext context, UIComponent source, String expression, char separatorChar,
             int hints) {
 
         boolean startsWithSeperator = expression.charAt(0) == separatorChar;
@@ -579,9 +534,7 @@ public class SearchExpressionFacade {
 
                 tempComponents.clear();
 
-                for (int j = 0; j < lastComponents.size(); j++) {
-                    UIComponent last = lastComponents.get(j);
-
+                for (UIComponent last : lastComponents) {
                     if (resolver instanceof MultiSearchExpressionResolver) {
                         ((MultiSearchExpressionResolver) resolver).resolveComponents(context, source, last, subExpression, tempComponents, hints);
                     }
@@ -590,10 +543,8 @@ public class SearchExpressionFacade {
 
                         if (temp == null) {
                             if (!SearchExpressionUtils.isHintSet(hints, SearchExpressionHint.IGNORE_NO_RESULT)) {
-                                throw new FacesException("Cannot find component for subexpression \"" + subExpression
-                                        + "\" from component with id \"" + last.getClientId(context)
-                                        + "\" in full expression \"" + expression
-                                        + "\" referenced from \"" + source.getClientId(context) + "\".");
+                                throw new FacesException(new StringBuilder().append("Cannot find component for subexpression \"").append(subExpression).append("\" from component with id \"").append(last.getClientId(context)).append("\" in full expression \"")
+										.append(expression).append("\" referenced from \"").append(source.getClientId(context)).append("\".").toString());
                             }
                         }
                         else {
@@ -611,7 +562,7 @@ public class SearchExpressionFacade {
         return lastComponents;
     }
 
-    private static String resolveClientIdsByExpressionChain(FacesContext context, UIComponent source, String expression, char separatorChar,
+	private static String resolveClientIdsByExpressionChain(FacesContext context, UIComponent source, String expression, char separatorChar,
             int hints) {
 
         boolean startsWithSeperator = expression.charAt(0) == separatorChar;
@@ -653,9 +604,7 @@ public class SearchExpressionFacade {
 
                 tempComponents.clear();
 
-                for (int j = 0; j < lastComponents.size(); j++) {
-                    UIComponent last = lastComponents.get(j);
-
+                for (UIComponent last : lastComponents) {
                     // if it's the last expression and the resolver is a ClientIdSearchExpressionResolver, we can call it
                     if (i == subExpressions.length - 1 && resolver instanceof ClientIdSearchExpressionResolver) {
                         String result = ((ClientIdSearchExpressionResolver) resolver).resolveClientIds(context, source, last, subExpression, hints);
@@ -680,10 +629,8 @@ public class SearchExpressionFacade {
 
                         if (temp == null) {
                             if (!SearchExpressionUtils.isHintSet(hints, SearchExpressionHint.IGNORE_NO_RESULT)) {
-                                throw new FacesException("Cannot find component for subexpression \"" + subExpression
-                                        + "\" from component with id \"" + last.getClientId(context)
-                                        + "\" in full expression \"" + expression
-                                        + "\" referenced from \"" + source.getClientId(context) + "\".");
+                                throw new FacesException(new StringBuilder().append("Cannot find component for subexpression \"").append(subExpression).append("\" from component with id \"").append(last.getClientId(context)).append("\" in full expression \"")
+										.append(expression).append("\" referenced from \"").append(source.getClientId(context)).append("\".").toString());
                             }
                         }
                         else {
@@ -702,8 +649,7 @@ public class SearchExpressionFacade {
         if (clientIdsBuilder == null) {
             clientIdsBuilder = SharedStringBuilder.get(SHARED_CLIENT_ID_EXPRESSION_BUFFER_KEY);
 
-            for (int i = 0; i < lastComponents.size(); i++) {
-                UIComponent result = lastComponents.get(i);
+            for (UIComponent result : lastComponents) {
                 if (clientIdsBuilder.length() > 0) {
                     clientIdsBuilder.append(" ");
                 }
@@ -715,13 +661,11 @@ public class SearchExpressionFacade {
         return clientIdsBuilder.toString();
     }
 
-    protected static void cannotFindComponent(FacesContext context, UIComponent source, String expression) {
-        throw new ComponentNotFoundException("Cannot find component for expression \""
-                + expression + "\" referenced from \""
-                + source.getClientId(context) + "\".");
+	protected static void cannotFindComponent(FacesContext context, UIComponent source, String expression) {
+        throw new ComponentNotFoundException(new StringBuilder().append("Cannot find component for expression \"").append(expression).append("\" referenced from \"").append(source.getClientId(context)).append("\".").toString());
     }
 
-    protected static String[] splitExpressions(FacesContext context, UIComponent source, String expressions) {
+	protected static String[] splitExpressions(FacesContext context, UIComponent source, String expressions) {
 
         // split expressions by blank or comma (and ignore blank and commas inside brackets)
         String[] splittedExpressions = split(context, expressions, EXPRESSION_SEPARATORS);
@@ -734,7 +678,7 @@ public class SearchExpressionFacade {
         return splittedExpressions;
     }
 
-    /**
+	/**
      * Validates the given search expression. We only validate it, for performance reasons, if the current {@link ProjectStage} is
      * {@link ProjectStage#Development}.
      *
@@ -746,36 +690,31 @@ public class SearchExpressionFacade {
     protected static void validateExpression(FacesContext context, UIComponent source,
             String expression, char separatorChar) {
 
-        if (context.isProjectStage(ProjectStage.Development)) {
+        if (!context.isProjectStage(ProjectStage.Development)) {
+			return;
+		}
+		// checks the whole expression doesn't start with ":@"
+		// keywords are always related to the current component, not absolute or relative
+		if (expression.startsWith(separatorChar + SearchExpressionConstants.KEYWORD_PREFIX)) {
+		    throw new FacesException(new StringBuilder().append("A expression should not start with the separater char and a keyword. ").append("Expression: \"").append(expression).append("\" referenced from \"").append(source.getClientId(context)).append("\"").toString());
+		}
+		// Pattern to split expressions by the separator but not inside parenthesis
+		String[] subExpressions = split(context, expression, separatorChar);
+		boolean condition = subExpressions != null && subExpressions.length > 1;
+		// checks for unnestable subexpressions (like @all or @none)
+		if (condition) {
+		    for (String subExpression : subExpressions) {
+		        subExpression = subExpression.trim();
 
-            // checks the whole expression doesn't start with ":@"
-            // keywords are always related to the current component, not absolute or relative
-            if (expression.startsWith(separatorChar + SearchExpressionConstants.KEYWORD_PREFIX)) {
-                throw new FacesException("A expression should not start with the separater char and a keyword. "
-                        + "Expression: \"" + expression + "\" referenced from \"" + source.getClientId(context) + "\"");
-            }
-
-            // Pattern to split expressions by the separator but not inside parenthesis
-            String[] subExpressions = split(context, expression, separatorChar);
-
-            if (subExpressions != null) {
-                // checks for unnestable subexpressions (like @all or @none)
-                if (subExpressions.length > 1) {
-                    for (String subExpression : subExpressions) {
-                        subExpression = subExpression.trim();
-
-                        if (!isNestable(subExpression)) {
-                            throw new FacesException("Subexpression \"" + subExpression
-                                    + "\" in full expression \"" + expression
-                                    + "\" from \"" + source.getClientId(context) + "\" can not be nested.");
-                        }
-                    }
-                }
-            }
-        }
+		        if (!isNestable(subExpression)) {
+		            throw new FacesException(new StringBuilder().append("Subexpression \"").append(subExpression).append("\" in full expression \"").append(expression).append("\" from \"")
+							.append(source.getClientId(context)).append("\" can not be nested.").toString());
+		        }
+		    }
+		}
     }
 
-    /**
+	/**
      * Validates the given search expressions. We only validate it, for performance reasons, if the current {@link ProjectStage} is
      * {@link ProjectStage#Development}.
      *
@@ -786,20 +725,15 @@ public class SearchExpressionFacade {
      */
     protected static void validateExpressions(FacesContext context, UIComponent source, String expressions, String[] splittedExpressions) {
 
-        if (context.isProjectStage(ProjectStage.Development)) {
-            if (splittedExpressions.length > 1) {
-                if (expressions.contains(SearchExpressionConstants.NONE_KEYWORD)
-                        || expressions.contains(SearchExpressionConstants.ALL_KEYWORD)) {
+        boolean condition = context.isProjectStage(ProjectStage.Development) && splittedExpressions.length > 1 && (expressions.contains(SearchExpressionConstants.NONE_KEYWORD)
+		        || expressions.contains(SearchExpressionConstants.ALL_KEYWORD));
+		if (condition) {
 
-                    throw new FacesException("It's not possible to use @none or @all combined with other expressions."
-                            + " Expressions: \"" + expressions
-                            + "\" referenced from \"" + source.getClientId(context) + "\"");
-                }
+               throw new FacesException(new StringBuilder().append("It's not possible to use @none or @all combined with other expressions.").append(" Expressions: \"").append(expressions).append("\" referenced from \"").append(source.getClientId(context)).append("\"").toString());
             }
-        }
     }
 
-    /**
+	/**
      * Splits the given string by the given separator, but ignoring separators inside parentheses.
      *
      * @param context The current {@link FacesContext}.
@@ -834,6 +768,7 @@ public class SearchExpressionFacade {
                 for (char separator : separators) {
                     if (c == separator) {
                         isSeparator = true;
+						break;
                     }
                 }
 
@@ -858,7 +793,7 @@ public class SearchExpressionFacade {
         return tokens.toArray(new String[tokens.size()]);
     }
 
-    /**
+	/**
      * Checks if the given expression must not be resolved by a {@link SearchExpressionResolver}, before rendering it to the client. e.g. @all or
      * @none.
      *
@@ -869,7 +804,7 @@ public class SearchExpressionFacade {
         return expression.contains(SearchExpressionConstants.PFS_PREFIX);
     }
 
-    /**
+	/**
      * Checks if the given expression can be nested. e.g. @form:@parent This should not be possible e.g. with @none or @all.
      *
      * @param expression The search expression.
@@ -879,6 +814,45 @@ public class SearchExpressionFacade {
         return !(expression.contains(SearchExpressionConstants.ALL_KEYWORD)
                 || expression.contains(SearchExpressionConstants.NONE_KEYWORD)
                 || expression.contains(SearchExpressionConstants.PFS_PREFIX));
+    }
+
+	static class ResolveClientIdCallback implements ContextCallback {
+
+        private final UIComponent source;
+        private final int hints;
+        private final String expression;
+
+        private String clientId;
+
+        ResolveClientIdCallback(UIComponent source, int hints, String expression) {
+            this.source = source;
+            this.hints = hints;
+            this.expression = expression;
+        }
+
+        @Override
+        public void invokeContextCallback(FacesContext context, UIComponent target) {
+            clientId = target.getClientId(context);
+            validateRenderer(context, source, target, expression, hints);
+        }
+
+        public String getClientId() {
+            return clientId;
+        }
+    }
+
+    static class ResolveComponentCallback implements ContextCallback {
+
+        private UIComponent component;
+
+        @Override
+        public void invokeContextCallback(FacesContext context, UIComponent target) {
+            component = target;
+        }
+
+        public UIComponent getComponent() {
+            return component;
+        }
     }
 
 }

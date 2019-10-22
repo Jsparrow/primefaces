@@ -148,8 +148,7 @@ public class DataExporter implements ActionListener, StateHolder {
             return (Exporter) customExporterInstance;
         }
         else {
-            throw new FacesException("Component " + this.getClass().getName() + " customExporterInstance="
-                   + customExporterInstance.getClass().getName() + " does not implement Exporter!");
+            throw new FacesException(new StringBuilder().append("Component ").append(this.getClass().getName()).append(" customExporterInstance=").append(customExporterInstance.getClass().getName()).append(" does not implement Exporter!").toString());
         }
 
     }

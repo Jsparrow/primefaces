@@ -35,7 +35,104 @@ public abstract class DroppableBase extends UIComponentBase implements Widget, C
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.DroppableRenderer";
 
-    public enum PropertyKeys {
+    public DroppableBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getWidgetVar() {
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
+
+	public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
+
+	public String getFor() {
+        return (String) getStateHelper().eval(PropertyKeys.forValue, null);
+    }
+
+	public void setFor(String _for) {
+        getStateHelper().put(PropertyKeys.forValue, _for);
+    }
+
+	public boolean isDisabled() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+    }
+
+	public void setDisabled(boolean disabled) {
+        getStateHelper().put(PropertyKeys.disabled, disabled);
+    }
+
+	public String getHoverStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.hoverStyleClass, null);
+    }
+
+	public void setHoverStyleClass(String hoverStyleClass) {
+        getStateHelper().put(PropertyKeys.hoverStyleClass, hoverStyleClass);
+    }
+
+	public String getActiveStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.activeStyleClass, null);
+    }
+
+	public void setActiveStyleClass(String activeStyleClass) {
+        getStateHelper().put(PropertyKeys.activeStyleClass, activeStyleClass);
+    }
+
+	public String getOnDrop() {
+        return (String) getStateHelper().eval(PropertyKeys.onDrop, null);
+    }
+
+	public void setOnDrop(String onDrop) {
+        getStateHelper().put(PropertyKeys.onDrop, onDrop);
+    }
+
+	public String getAccept() {
+        return (String) getStateHelper().eval(PropertyKeys.accept, null);
+    }
+
+	public void setAccept(String accept) {
+        getStateHelper().put(PropertyKeys.accept, accept);
+    }
+
+	public String getScope() {
+        return (String) getStateHelper().eval(PropertyKeys.scope, null);
+    }
+
+	public void setScope(String scope) {
+        getStateHelper().put(PropertyKeys.scope, scope);
+    }
+
+	public String getTolerance() {
+        return (String) getStateHelper().eval(PropertyKeys.tolerance, null);
+    }
+
+	public void setTolerance(String tolerance) {
+        getStateHelper().put(PropertyKeys.tolerance, tolerance);
+    }
+
+	public String getDatasource() {
+        return (String) getStateHelper().eval(PropertyKeys.datasource, null);
+    }
+
+	public void setDatasource(String datasource) {
+        getStateHelper().put(PropertyKeys.datasource, datasource);
+    }
+
+	public boolean isGreedy() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.greedy, false);
+    }
+
+	public void setGreedy(boolean greedy) {
+        getStateHelper().put(PropertyKeys.greedy, greedy);
+    }
+
+	public enum PropertyKeys {
 
         widgetVar,
         forValue("for"),
@@ -62,102 +159,5 @@ public abstract class DroppableBase extends UIComponentBase implements Widget, C
         public String toString() {
             return ((toString != null) ? toString : super.toString());
         }
-    }
-
-    public DroppableBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public String getFor() {
-        return (String) getStateHelper().eval(PropertyKeys.forValue, null);
-    }
-
-    public void setFor(String _for) {
-        getStateHelper().put(PropertyKeys.forValue, _for);
-    }
-
-    public boolean isDisabled() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
-    }
-
-    public void setDisabled(boolean disabled) {
-        getStateHelper().put(PropertyKeys.disabled, disabled);
-    }
-
-    public String getHoverStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.hoverStyleClass, null);
-    }
-
-    public void setHoverStyleClass(String hoverStyleClass) {
-        getStateHelper().put(PropertyKeys.hoverStyleClass, hoverStyleClass);
-    }
-
-    public String getActiveStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.activeStyleClass, null);
-    }
-
-    public void setActiveStyleClass(String activeStyleClass) {
-        getStateHelper().put(PropertyKeys.activeStyleClass, activeStyleClass);
-    }
-
-    public String getOnDrop() {
-        return (String) getStateHelper().eval(PropertyKeys.onDrop, null);
-    }
-
-    public void setOnDrop(String onDrop) {
-        getStateHelper().put(PropertyKeys.onDrop, onDrop);
-    }
-
-    public String getAccept() {
-        return (String) getStateHelper().eval(PropertyKeys.accept, null);
-    }
-
-    public void setAccept(String accept) {
-        getStateHelper().put(PropertyKeys.accept, accept);
-    }
-
-    public String getScope() {
-        return (String) getStateHelper().eval(PropertyKeys.scope, null);
-    }
-
-    public void setScope(String scope) {
-        getStateHelper().put(PropertyKeys.scope, scope);
-    }
-
-    public String getTolerance() {
-        return (String) getStateHelper().eval(PropertyKeys.tolerance, null);
-    }
-
-    public void setTolerance(String tolerance) {
-        getStateHelper().put(PropertyKeys.tolerance, tolerance);
-    }
-
-    public String getDatasource() {
-        return (String) getStateHelper().eval(PropertyKeys.datasource, null);
-    }
-
-    public void setDatasource(String datasource) {
-        getStateHelper().put(PropertyKeys.datasource, datasource);
-    }
-
-    public boolean isGreedy() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.greedy, false);
-    }
-
-    public void setGreedy(boolean greedy) {
-        getStateHelper().put(PropertyKeys.greedy, greedy);
     }
 }

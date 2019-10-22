@@ -98,7 +98,7 @@ public class PrimeResourceHandler extends ResourceHandlerWrapper {
         else {
             DynamicContentHandler handler = handlers.get(handlerType);
             if (handler == null) {
-                LOGGER.warning("No dynamic resource handler registered for: " + handlerType + ". Do you miss a dependency?");
+                LOGGER.warning(new StringBuilder().append("No dynamic resource handler registered for: ").append(handlerType).append(". Do you miss a dependency?").toString());
                 super.handleResourceRequest(context);
             }
             else {

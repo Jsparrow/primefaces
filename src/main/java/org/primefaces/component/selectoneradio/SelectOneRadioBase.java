@@ -33,52 +33,52 @@ public abstract class SelectOneRadioBase extends HtmlSelectOneRadio implements W
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.SelectOneRadioRenderer";
 
-    public enum PropertyKeys {
+    public SelectOneRadioBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getWidgetVar() {
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
+
+	public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
+
+	public int getColumns() {
+        return (Integer) getStateHelper().eval(PropertyKeys.columns, 0);
+    }
+
+	public void setColumns(int columns) {
+        getStateHelper().put(PropertyKeys.columns, columns);
+    }
+
+	public boolean isPlain() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.plain, false);
+    }
+
+	public void setPlain(boolean plain) {
+        getStateHelper().put(PropertyKeys.plain, plain);
+    }
+
+	public boolean isUnselectable() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.unselectable, false);
+    }
+
+	public void setUnselectable(boolean unselectable) {
+        getStateHelper().put(PropertyKeys.unselectable, unselectable);
+    }
+
+	public enum PropertyKeys {
 
         widgetVar,
         columns,
         plain,
         unselectable
-    }
-
-    public SelectOneRadioBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public int getColumns() {
-        return (Integer) getStateHelper().eval(PropertyKeys.columns, 0);
-    }
-
-    public void setColumns(int columns) {
-        getStateHelper().put(PropertyKeys.columns, columns);
-    }
-
-    public boolean isPlain() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.plain, false);
-    }
-
-    public void setPlain(boolean plain) {
-        getStateHelper().put(PropertyKeys.plain, plain);
-    }
-
-    public boolean isUnselectable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.unselectable, false);
-    }
-
-    public void setUnselectable(boolean unselectable) {
-        getStateHelper().put(PropertyKeys.unselectable, unselectable);
     }
 }

@@ -32,16 +32,16 @@ public abstract class HeaderRowBase extends UIComponentBase {
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.HeaderRowRenderer";
 
-    public enum PropertyKeys {
-    }
-
     public HeaderRowBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
-    @Override
+	@Override
     public String getFamily() {
         return COMPONENT_FAMILY;
+    }
+
+	public enum PropertyKeys {
     }
 
 }

@@ -60,12 +60,12 @@ public class IdExpressionResolver implements SearchExpressionResolver, MultiSear
 
             }
             else {
-                throw new FacesException("Expression does not match following pattern @id(id). Expression: \"" + expression + "\"");
+                throw new FacesException(new StringBuilder().append("Expression does not match following pattern @id(id). Expression: \"").append(expression).append("\"").toString());
             }
 
         }
         catch (Exception e) {
-            throw new FacesException("Expression does not match following pattern @id(id). Expression: \"" + expression + "\"", e);
+            throw new FacesException(new StringBuilder().append("Expression does not match following pattern @id(id). Expression: \"").append(expression).append("\"").toString(), e);
         }
     }
 }

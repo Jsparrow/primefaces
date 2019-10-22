@@ -41,7 +41,7 @@ public class Poll extends PollBase {
     public static final String COMPONENT_TYPE = "org.primefaces.component.Poll";
 
     @Override
-    public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
+    public void broadcast(javax.faces.event.FacesEvent event) {
         super.broadcast(event); //backward compatibility
 
         FacesContext facesContext = getFacesContext();
@@ -52,14 +52,14 @@ public class Poll extends PollBase {
         }
 
         ValueExpression expr = getValueExpression(PropertyKeys.stop.toString());
-        if (expr != null) {
-            Boolean stop = (Boolean) expr.getValue(facesContext.getELContext());
-
-            if (Boolean.TRUE.equals(stop)) {
-                String widgetVar = resolveWidgetVar();
-                PrimeFaces.current().executeScript("PF('" + widgetVar + "').stop();");
-            }
-        }
+        if (expr == null) {
+			return;
+		}
+		Boolean stop = (Boolean) expr.getValue(facesContext.getELContext());
+		if (Boolean.TRUE.equals(stop)) {
+		    String widgetVar = resolveWidgetVar();
+		    PrimeFaces.current().executeScript(new StringBuilder().append("PF('").append(widgetVar).append("').stop();").toString());
+		}
     }
 
     @Override

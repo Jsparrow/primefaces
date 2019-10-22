@@ -89,7 +89,7 @@ public class GMap extends GMapBase {
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
             FacesEvent wrapperEvent = null;
 
-            if (eventName.equals("overlaySelect")) {
+            if ("overlaySelect".equals(eventName)) {
                 wrapperEvent = new OverlaySelectEvent(this, behaviorEvent.getBehavior(), getModel().findOverlay(params.get(clientId + "_overlayId")));
 
                 //if there is info window, update and show it
@@ -98,7 +98,7 @@ public class GMap extends GMapBase {
                     PrimeFaces.current().ajax().update(infoWindow.getClientId(context));
                 }
             }
-            else if (eventName.equals("stateChange")) {
+            else if ("stateChange".equals(eventName)) {
                 String[] centerLoc = params.get(clientId + "_center").split(",");
                 String[] northeastLoc = params.get(clientId + "_northeast").split(",");
                 String[] southwestLoc = params.get(clientId + "_southwest").split(",");
@@ -110,13 +110,13 @@ public class GMap extends GMapBase {
 
                 wrapperEvent = new StateChangeEvent(this, behaviorEvent.getBehavior(), new LatLngBounds(northeast, southwest), zoomLevel, center);
             }
-            else if (eventName.equals("pointSelect")) {
+            else if ("pointSelect".equals(eventName)) {
                 String[] latlng = params.get(clientId + "_pointLatLng").split(",");
                 LatLng position = new LatLng(Double.valueOf(latlng[0]), Double.valueOf(latlng[1]));
 
                 wrapperEvent = new PointSelectEvent(this, behaviorEvent.getBehavior(), position);
             }
-            else if (eventName.equals("markerDrag")) {
+            else if ("markerDrag".equals(eventName)) {
                 Marker marker = (Marker) getModel().findOverlay(params.get(clientId + "_markerId"));
                 double lat = Double.parseDouble(params.get(clientId + "_lat"));
                 double lng = Double.parseDouble(params.get(clientId + "_lng"));
@@ -124,7 +124,7 @@ public class GMap extends GMapBase {
 
                 wrapperEvent = new MarkerDragEvent(this, behaviorEvent.getBehavior(), marker);
             }
-            else if (eventName.equals("geocode")) {
+            else if ("geocode".equals(eventName)) {
                 List<GeocodeResult> results = new ArrayList<>();
                 String query = params.get(clientId + "_query");
                 String[] addresses = params.get(clientId + "_addresses").split("_primefaces_");
@@ -137,11 +137,11 @@ public class GMap extends GMapBase {
 
                 wrapperEvent = new GeocodeEvent(this, behaviorEvent.getBehavior(), query, results);
             }
-            else if (eventName.equals("reverseGeocode")) {
+            else if ("reverseGeocode".equals(eventName)) {
                 List<String> addresses = new ArrayList<>();
                 String[] results = params.get(clientId + "_address").split("_primefaces_");
-                for (int i = 0; i < results.length; i++) {
-                    addresses.add(results[i]);
+                for (String result : results) {
+                    addresses.add(result);
                 }
 
                 double lat = Double.parseDouble(params.get(clientId + "_lat"));
@@ -152,7 +152,7 @@ public class GMap extends GMapBase {
             }
 
             if (wrapperEvent == null) {
-                throw new FacesException("Component " + this.getClass().getName() + " does not support event " + eventName + "!");
+                throw new FacesException(new StringBuilder().append("Component ").append(this.getClass().getName()).append(" does not support event ").append(eventName).append("!").toString());
             }
 
             wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
@@ -165,13 +165,8 @@ public class GMap extends GMapBase {
     }
 
     public GMapInfoWindow getInfoWindow() {
-        for (UIComponent kid : getChildren()) {
-            if (kid instanceof GMapInfoWindow) {
-                return (GMapInfoWindow) kid;
-            }
-        }
-
-        return null;
+        return getChildren().stream().filter(kid -> kid instanceof GMapInfoWindow).findFirst().map(kid -> (GMapInfoWindow) kid)
+				.orElse(null);
     }
 
     private boolean isSelfRequest(FacesContext context) {

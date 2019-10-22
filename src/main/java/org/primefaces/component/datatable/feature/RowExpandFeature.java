@@ -61,28 +61,24 @@ public class RowExpandFeature implements DataTableFeature {
 
         String styleClass = DataTable.EXPANDED_ROW_CONTENT_CLASS + " ui-widget-content";
         if (rowExpansion.getStyleClass() != null) {
-            styleClass = styleClass + " " + rowExpansion.getStyleClass();
+            styleClass = new StringBuilder().append(styleClass).append(" ").append(rowExpansion.getStyleClass()).toString();
         }
 
         table.setRowIndex(rowIndex);
 
-        if (rowExpansion.isRendered()) {
-            if (rowIndexVar != null) {
-                context.getExternalContext().getRequestMap().put(rowIndexVar, rowIndex);
-            }
-
-            writer.startElement("tr", null);
-            writer.writeAttribute("class", styleClass, null);
-
-            writer.startElement("td", null);
-            writer.writeAttribute("colspan", table.getColumnsCount(), null);
-
-            table.getRowExpansion().encodeAll(context);
-
-            writer.endElement("td");
-
-            writer.endElement("tr");
-        }
+        if (!rowExpansion.isRendered()) {
+			return;
+		}
+		if (rowIndexVar != null) {
+		    context.getExternalContext().getRequestMap().put(rowIndexVar, rowIndex);
+		}
+		writer.startElement("tr", null);
+		writer.writeAttribute("class", styleClass, null);
+		writer.startElement("td", null);
+		writer.writeAttribute("colspan", table.getColumnsCount(), null);
+		table.getRowExpansion().encodeAll(context);
+		writer.endElement("td");
+		writer.endElement("tr");
     }
 
     @Override

@@ -34,7 +34,76 @@ public abstract class LinkButtonBase extends HtmlOutcomeTargetLink implements UI
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.LinkButtonRenderer";
 
-    public enum PropertyKeys {
+    public LinkButtonBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getWidgetVar() {
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
+
+	public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
+
+	@Override
+    public String getFragment() {
+        return (String) getStateHelper().eval(PropertyKeys.fragment, null);
+    }
+
+	public void setFragment(String fragment) {
+        getStateHelper().put(PropertyKeys.fragment, fragment);
+    }
+
+	@Override
+    public boolean isDisableClientWindow() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.disableClientWindow, false);
+    }
+
+	@Override
+    public void setDisableClientWindow(boolean disableClientWindow) {
+        getStateHelper().put(PropertyKeys.disableClientWindow, disableClientWindow);
+    }
+
+	@Override
+    public String getHref() {
+        return (String) getStateHelper().eval(PropertyKeys.href, null);
+    }
+
+	public void setHref(String href) {
+        getStateHelper().put(PropertyKeys.href, href);
+    }
+
+	public boolean isEscape() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.escape, true);
+    }
+
+	public void setEscape(boolean escape) {
+        getStateHelper().put(PropertyKeys.escape, escape);
+    }
+
+	public String getIcon() {
+        return (String) getStateHelper().eval(PropertyKeys.icon, null);
+    }
+
+	public void setIcon(String icon) {
+        getStateHelper().put(PropertyKeys.icon, icon);
+    }
+
+	public String getIconPos() {
+        return (String) getStateHelper().eval(PropertyKeys.iconPos, "left");
+    }
+
+	public void setIconPos(String iconPos) {
+        getStateHelper().put(PropertyKeys.iconPos, iconPos);
+    }
+
+	public enum PropertyKeys {
 
         widgetVar,
         fragment,
@@ -43,74 +112,5 @@ public abstract class LinkButtonBase extends HtmlOutcomeTargetLink implements UI
         escape,
         icon,
         iconPos
-    }
-
-    public LinkButtonBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    @Override
-    public String getFragment() {
-        return (String) getStateHelper().eval(PropertyKeys.fragment, null);
-    }
-
-    public void setFragment(String fragment) {
-        getStateHelper().put(PropertyKeys.fragment, fragment);
-    }
-
-    @Override
-    public boolean isDisableClientWindow() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disableClientWindow, false);
-    }
-
-    @Override
-    public void setDisableClientWindow(boolean disableClientWindow) {
-        getStateHelper().put(PropertyKeys.disableClientWindow, disableClientWindow);
-    }
-
-    @Override
-    public String getHref() {
-        return (String) getStateHelper().eval(PropertyKeys.href, null);
-    }
-
-    public void setHref(String href) {
-        getStateHelper().put(PropertyKeys.href, href);
-    }
-
-    public boolean isEscape() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.escape, true);
-    }
-
-    public void setEscape(boolean escape) {
-        getStateHelper().put(PropertyKeys.escape, escape);
-    }
-
-    public String getIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.icon, null);
-    }
-
-    public void setIcon(String icon) {
-        getStateHelper().put(PropertyKeys.icon, icon);
-    }
-
-    public String getIconPos() {
-        return (String) getStateHelper().eval(PropertyKeys.iconPos, "left");
-    }
-
-    public void setIconPos(String iconPos) {
-        getStateHelper().put(PropertyKeys.iconPos, iconPos);
     }
 }

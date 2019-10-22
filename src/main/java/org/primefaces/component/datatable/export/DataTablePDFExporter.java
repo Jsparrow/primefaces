@@ -174,30 +174,28 @@ public class DataTablePDFExporter extends DataTableExporter {
             }
         }
 
-        if (facetText != null) {
-            int colspan = 0;
-
-            for (UIColumn col : table.getColumns()) {
-                if (col.isRendered() && col.isExportable()) {
-                    colspan++;
-                }
-            }
-
-            PdfPCell cell = new PdfPCell(new Paragraph(facetText, facetFont));
-            if (facetBgColor != null) {
-                cell.setBackgroundColor(facetBgColor);
-            }
-
-            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-            cell.setColspan(colspan);
-            pdfTable.addCell(cell);
-        }
+        if (facetText == null) {
+			return;
+		}
+		int colspan = 0;
+		for (UIColumn col : table.getColumns()) {
+		    if (col.isRendered() && col.isExportable()) {
+		        colspan++;
+		    }
+		}
+		PdfPCell cell = new PdfPCell(new Paragraph(facetText, facetFont));
+		if (facetBgColor != null) {
+		    cell.setBackgroundColor(facetBgColor);
+		}
+		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		cell.setColspan(colspan);
+		pdfTable.addCell(cell);
     }
 
     @Override
     protected void exportCells(DataTable table, Object document) {
         PdfPTable pdfTable = (PdfPTable) document;
-        for (UIColumn col : table.getColumns()) {
+        table.getColumns().forEach(col -> {
             if (col instanceof DynamicColumn) {
                 ((DynamicColumn) col).applyStatelessModel();
             }
@@ -205,7 +203,7 @@ public class DataTablePDFExporter extends DataTableExporter {
             if (col.isRendered() && col.isExportable()) {
                 addColumnValue(pdfTable, col.getChildren(), cellFont, col);
             }
-        }
+        });
     }
 
     protected void addColumnFacets(DataTable table, PdfPTable pdfTable, ColumnType columnType) {
@@ -266,15 +264,11 @@ public class DataTablePDFExporter extends DataTableExporter {
         }
         else {
             StringBuilder builder = new StringBuilder();
-            for (UIComponent component : components) {
-                if (component.isRendered()) {
-                    String value = exportValue(context, component);
-
-                    if (value != null) {
-                        builder.append(value);
-                    }
-                }
-            }
+            components.stream().filter(UIComponent::isRendered).map(component -> exportValue(context, component)).forEach(value -> {
+				if (value != null) {
+			        builder.append(value);
+			    }
+			});
 
             pdfTable.addCell(new Paragraph(builder.toString(), font));
         }
@@ -357,19 +351,19 @@ public class DataTablePDFExporter extends DataTableExporter {
     }
 
     protected void setFontStyle(Font cellFont, String cellFontStyle) {
-        if (cellFontStyle != null) {
-            if (cellFontStyle.equalsIgnoreCase("NORMAL")) {
-                cellFontStyle = "" + Font.NORMAL;
-            }
-            if (cellFontStyle.equalsIgnoreCase("BOLD")) {
-                cellFontStyle = "" + Font.BOLD;
-            }
-            if (cellFontStyle.equalsIgnoreCase("ITALIC")) {
-                cellFontStyle = "" + Font.ITALIC;
-            }
-
-            cellFont.setStyle(cellFontStyle);
-        }
+        if (cellFontStyle == null) {
+			return;
+		}
+		if ("NORMAL".equalsIgnoreCase(cellFontStyle)) {
+		    cellFontStyle = Integer.toString(Font.NORMAL);
+		}
+		if ("BOLD".equalsIgnoreCase(cellFontStyle)) {
+		    cellFontStyle = Integer.toString(Font.BOLD);
+		}
+		if ("ITALIC".equalsIgnoreCase(cellFontStyle)) {
+		    cellFontStyle = Integer.toString(Font.ITALIC);
+		}
+		cellFont.setStyle(cellFontStyle);
     }
 
     protected void applyFont(String fontName, String encoding) {

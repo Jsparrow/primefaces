@@ -89,7 +89,7 @@ public class InputTextarea extends InputTextareaBase {
         if (eventName != null && event instanceof AjaxBehaviorEvent) {
             AjaxBehaviorEvent ajaxBehaviorEvent = (AjaxBehaviorEvent) event;
 
-            if (eventName.equals("itemSelect")) {
+            if ("itemSelect".equals(eventName)) {
                 String selectedItemValue = params.get(getClientId(context) + "_itemSelect");
                 SelectEvent selectEvent = new SelectEvent(this, ajaxBehaviorEvent.getBehavior(), selectedItemValue);
                 selectEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
@@ -107,21 +107,20 @@ public class InputTextarea extends InputTextareaBase {
     }
 
     @Override
-    public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
+    public void broadcast(javax.faces.event.FacesEvent event) {
         super.broadcast(event);
 
         FacesContext facesContext = getFacesContext();
         MethodExpression me = getCompleteMethod();
 
-        if (me != null && event instanceof org.primefaces.event.AutoCompleteEvent) {
-            suggestions = (List) me.invoke(facesContext.getELContext(), new Object[]{((org.primefaces.event.AutoCompleteEvent) event).getQuery()});
-
-            if (suggestions == null) {
-                suggestions = new ArrayList();
-            }
-
-            facesContext.renderResponse();
-        }
+        if (!(me != null && event instanceof org.primefaces.event.AutoCompleteEvent)) {
+			return;
+		}
+		suggestions = (List) me.invoke(facesContext.getELContext(), new Object[]{((org.primefaces.event.AutoCompleteEvent) event).getQuery()});
+		if (suggestions == null) {
+		    suggestions = new ArrayList();
+		}
+		facesContext.renderResponse();
     }
 
     public List getSuggestions() {

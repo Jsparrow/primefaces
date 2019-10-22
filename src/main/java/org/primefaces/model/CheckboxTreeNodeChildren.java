@@ -39,10 +39,11 @@ public class CheckboxTreeNodeChildren extends TreeNodeList {
 
     private void eraseParent(TreeNode node) {
         TreeNode parentNode = node.getParent();
-        if (parentNode != null) {
-            parentNode.getChildren().remove(node);
-            node.setParent(null);
-        }
+        if (parentNode == null) {
+			return;
+		}
+		parentNode.getChildren().remove(node);
+		node.setParent(null);
     }
 
     @Override
@@ -200,14 +201,12 @@ public class CheckboxTreeNodeChildren extends TreeNodeList {
             node.clearParent();
         }
 
-        if (super.remove(node)) {
-            updateRowKeys(parent);
-            updateSelectionState(parent);
-            return true;
-        }
-        else {
-            return false;
-        }
+        if (!(super.remove(node))) {
+			return false;
+		}
+		updateRowKeys(parent);
+		updateSelectionState(parent);
+		return true;
     }
 
     private void updateRowKeys(TreeNode node) {
@@ -216,7 +215,7 @@ public class CheckboxTreeNodeChildren extends TreeNodeList {
             for (int i = 0; i < childCount; i++) {
                 TreeNode childNode = node.getChildren().get(i);
 
-                String childRowKey = (node.getParent() == null) ? String.valueOf(i) : node.getRowKey() + "_" + i;
+                String childRowKey = (node.getParent() == null) ? String.valueOf(i) : new StringBuilder().append(node.getRowKey()).append("_").append(i).toString();
                 childNode.setRowKey(childRowKey);
                 updateRowKeys(childNode);
             }

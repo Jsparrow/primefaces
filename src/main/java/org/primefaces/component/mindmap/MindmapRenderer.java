@@ -80,7 +80,7 @@ public class MindmapRenderer extends CoreRenderer {
         String clientId = map.getClientId(context);
         String style = map.getStyle();
         String styleClass = map.getStyleClass();
-        styleClass = (styleClass == null) ? Mindmap.STYLE_CLASS : Mindmap.STYLE_CLASS + " " + styleClass;
+        styleClass = (styleClass == null) ? Mindmap.STYLE_CLASS : new StringBuilder().append(Mindmap.STYLE_CLASS).append(" ").append(styleClass).toString();
 
         writer.startElement("div", map);
         writer.writeAttribute("id", clientId, "id");
@@ -115,7 +115,7 @@ public class MindmapRenderer extends CoreRenderer {
             writer.write(",\"children\":[");
 
             for (int i = 0; i < size; i++) {
-                String childKey = (nodeKey.equals("root")) ? String.valueOf(i) : nodeKey + "_" + i;
+                String childKey = ("root".equals(nodeKey)) ? String.valueOf(i) : new StringBuilder().append(nodeKey).append("_").append(i).toString();
 
                 MindmapNode child = children.get(i);
                 encodeNode(context, map, child, childKey);
@@ -134,13 +134,13 @@ public class MindmapRenderer extends CoreRenderer {
     protected void encodeNodeConfig(FacesContext context, Mindmap map, MindmapNode node, String nodeKey) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        writer.write("\"label\":\"" + node.getLabel() + "\"");
+        writer.write(new StringBuilder().append("\"label\":\"").append(node.getLabel()).append("\"").toString());
 
         if (nodeKey != null) {
-            writer.write(",\"key\":\"" + nodeKey + "\"");
+            writer.write(new StringBuilder().append(",\"key\":\"").append(nodeKey).append("\"").toString());
         }
         if (node.getFill() != null) {
-            writer.write(",\"fill\":\"" + node.getFill() + "\"");
+            writer.write(new StringBuilder().append(",\"fill\":\"").append(node.getFill()).append("\"").toString());
         }
         if (node.isSelectable()) {
             writer.write(",\"selectable\":true");

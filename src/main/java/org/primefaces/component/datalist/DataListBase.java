@@ -36,7 +36,88 @@ public abstract class DataListBase extends UIData implements Widget, ClientBehav
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.DataListRenderer";
 
-    public enum PropertyKeys {
+    public DataListBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getWidgetVar() {
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
+
+	public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
+
+	public String getType() {
+        return (String) getStateHelper().eval(PropertyKeys.type, "unordered");
+    }
+
+	public void setType(String type) {
+        getStateHelper().put(PropertyKeys.type, type);
+    }
+
+	public String getItemType() {
+        return (String) getStateHelper().eval(PropertyKeys.itemType, null);
+    }
+
+	public void setItemType(String itemType) {
+        getStateHelper().put(PropertyKeys.itemType, itemType);
+    }
+
+	public String getStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
+    }
+
+	public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
+    }
+
+	public String getStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
+    }
+
+	public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+	public String getVarStatus() {
+        return (String) getStateHelper().eval(PropertyKeys.varStatus, null);
+    }
+
+	public void setVarStatus(String varStatus) {
+        getStateHelper().put(PropertyKeys.varStatus, varStatus);
+    }
+
+	public String getEmptyMessage() {
+        return (String) getStateHelper().eval(PropertyKeys.emptyMessage, "No records found.");
+    }
+
+	public void setEmptyMessage(String emptyMessage) {
+        getStateHelper().put(PropertyKeys.emptyMessage, emptyMessage);
+    }
+
+	public String getItemStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.itemStyleClass, null);
+    }
+
+	public void setItemStyleClass(String itemStyleClass) {
+        getStateHelper().put(PropertyKeys.itemStyleClass, itemStyleClass);
+    }
+
+	public boolean isMultiViewState() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.multiViewState, false);
+    }
+
+	public void setMultiViewState(boolean multiViewState) {
+        getStateHelper().put(PropertyKeys.multiViewState, multiViewState);
+    }
+
+	public enum PropertyKeys {
 
         widgetVar,
         type,
@@ -47,86 +128,5 @@ public abstract class DataListBase extends UIData implements Widget, ClientBehav
         emptyMessage,
         itemStyleClass,
         multiViewState
-    }
-
-    public DataListBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public String getType() {
-        return (String) getStateHelper().eval(PropertyKeys.type, "unordered");
-    }
-
-    public void setType(String type) {
-        getStateHelper().put(PropertyKeys.type, type);
-    }
-
-    public String getItemType() {
-        return (String) getStateHelper().eval(PropertyKeys.itemType, null);
-    }
-
-    public void setItemType(String itemType) {
-        getStateHelper().put(PropertyKeys.itemType, itemType);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public String getVarStatus() {
-        return (String) getStateHelper().eval(PropertyKeys.varStatus, null);
-    }
-
-    public void setVarStatus(String varStatus) {
-        getStateHelper().put(PropertyKeys.varStatus, varStatus);
-    }
-
-    public String getEmptyMessage() {
-        return (String) getStateHelper().eval(PropertyKeys.emptyMessage, "No records found.");
-    }
-
-    public void setEmptyMessage(String emptyMessage) {
-        getStateHelper().put(PropertyKeys.emptyMessage, emptyMessage);
-    }
-
-    public String getItemStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.itemStyleClass, null);
-    }
-
-    public void setItemStyleClass(String itemStyleClass) {
-        getStateHelper().put(PropertyKeys.itemStyleClass, itemStyleClass);
-    }
-
-    public boolean isMultiViewState() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.multiViewState, false);
-    }
-
-    public void setMultiViewState(boolean multiViewState) {
-        getStateHelper().put(PropertyKeys.multiViewState, multiViewState);
     }
 }

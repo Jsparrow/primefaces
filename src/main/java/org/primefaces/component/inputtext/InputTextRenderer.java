@@ -115,7 +115,7 @@ public class InputTextRenderer extends InputRenderer {
         defaultClass = !inputText.isDisabled() ? defaultClass : defaultClass + " ui-state-disabled";
 
         String styleClass = inputText.getStyleClass();
-        styleClass = styleClass == null ? defaultClass : defaultClass + " " + styleClass;
+        styleClass = styleClass == null ? defaultClass : new StringBuilder().append(defaultClass).append(" ").append(styleClass).toString();
 
         return styleClass;
     }

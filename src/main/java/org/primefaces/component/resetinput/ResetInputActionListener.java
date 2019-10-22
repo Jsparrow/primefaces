@@ -59,7 +59,7 @@ public class ResetInputActionListener implements ActionListener, Serializable {
     }
 
     @Override
-    public void processAction(ActionEvent event) throws AbortProcessingException {
+    public void processAction(ActionEvent event) {
         FacesContext context = FacesContext.getCurrentInstance();
         ELContext elContext = context.getELContext();
         VisitContext visitContext = VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
@@ -77,9 +77,6 @@ public class ResetInputActionListener implements ActionListener, Serializable {
                                                 : ResetInputVisitCallback.INSTANCE;
 
         List<UIComponent> components = SearchExpressionFacade.resolveComponents(context, event.getComponent(), expressions);
-        for (int i = 0; i < components.size(); i++) {
-            UIComponent component = components.get(i);
-            component.visitTree(visitContext, visitCallback);
-        }
+        components.forEach(component -> component.visitTree(visitContext, visitCallback));
     }
 }

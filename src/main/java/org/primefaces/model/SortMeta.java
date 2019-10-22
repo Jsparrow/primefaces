@@ -83,7 +83,7 @@ public class SortMeta implements Serializable {
 
     @Override
     public String toString() {
-        return "SortMeta [column=" + column + ", sortField=" + sortField + ", sortOrder=" + sortOrder + ", sortFunction="
-                + sortFunction + "]";
+        return new StringBuilder().append("SortMeta [column=").append(column).append(", sortField=").append(sortField).append(", sortOrder=").append(sortOrder).append(", sortFunction=")
+				.append(sortFunction).append("]").toString();
     }
 }

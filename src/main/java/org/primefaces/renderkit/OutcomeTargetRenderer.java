@@ -46,15 +46,13 @@ public class OutcomeTargetRenderer extends CoreRenderer {
             outcome = context.getViewRoot().getViewId();
         }
 
-        if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf22()) {
-            if (outcomeTarget instanceof UIComponent) {
-                String toFlowDocumentId = (String) ((UIComponent) outcomeTarget).getAttributes().get(ActionListener.TO_FLOW_DOCUMENT_ID_ATTR_NAME);
+        if (PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isAtLeastJsf22() && outcomeTarget instanceof UIComponent) {
+		    String toFlowDocumentId = (String) ((UIComponent) outcomeTarget).getAttributes().get(ActionListener.TO_FLOW_DOCUMENT_ID_ATTR_NAME);
 
-                if (toFlowDocumentId != null) {
-                    return navigationHandler.getNavigationCase(context, null, outcome, toFlowDocumentId);
-                }
-            }
-        }
+		    if (toFlowDocumentId != null) {
+		        return navigationHandler.getNavigationCase(context, null, outcome, toFlowDocumentId);
+		    }
+		}
 
         return navigationHandler.getNavigationCase(context, null, outcome);
     }
@@ -66,8 +64,8 @@ public class OutcomeTargetRenderer extends CoreRenderer {
     protected boolean containsEL(List<String> values) {
         if (!values.isEmpty()) {
             // Both MyFaces and Mojarra use ArrayLists. Therefore, index loop can be used.
-            for (int i = 0; i < values.size(); i++) {
-                if (isExpression(values.get(i))) {
+			for (String value : values) {
+                if (isExpression(value)) {
                     return true;
                 }
             }

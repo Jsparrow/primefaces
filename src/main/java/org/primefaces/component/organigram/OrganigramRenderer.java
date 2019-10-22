@@ -61,20 +61,20 @@ public class OrganigramRenderer extends CoreRenderer {
      */
     protected void decodeSelection(FacesContext context, Organigram organigram) {
 
-        if (ComponentUtils.isRequestSource(organigram, context)) {
-            boolean selectionEnabled = organigram.getValueExpression("selection") != null;
+        if (!ComponentUtils.isRequestSource(organigram, context)) {
+			return;
+		}
+		boolean selectionEnabled = organigram.getValueExpression("selection") != null;
+		if (selectionEnabled) {
+		    Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
-            if (selectionEnabled) {
-                Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+		    String rowKey = params.get(organigram.getClientId(context) + "_selectNode");
 
-                String rowKey = params.get(organigram.getClientId(context) + "_selectNode");
-
-                if (!isValueBlank(rowKey)) {
-                    OrganigramNode node = organigram.findTreeNode(organigram.getValue(), rowKey);
-                    assignSelection(context, organigram, node);
-                }
-            }
-        }
+		    if (!isValueBlank(rowKey)) {
+		        OrganigramNode node = organigram.findTreeNode(organigram.getValue(), rowKey);
+		        assignSelection(context, organigram, node);
+		    }
+		}
     }
 
     protected void assignSelection(FacesContext context, Organigram organigram, OrganigramNode node) {
@@ -238,10 +238,7 @@ public class OrganigramRenderer extends CoreRenderer {
 
     protected Map<String, UIOrganigramNode> lookupNodeMapping(Organigram organigram) {
         Map<String, UIOrganigramNode> nodes = new HashMap<>();
-        for (UIComponent child : organigram.getChildren()) {
-            UIOrganigramNode node = (UIOrganigramNode) child;
-            nodes.put(node.getType(), node);
-        }
+        organigram.getChildren().stream().map(child -> (UIOrganigramNode) child).forEach(node -> nodes.put(node.getType(), node));
 
         return nodes;
     }

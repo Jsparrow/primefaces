@@ -42,10 +42,14 @@ import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.LangUtils;
 import org.primefaces.util.WidgetBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AutoCompleteRenderer extends InputRenderer {
 
-    @Override
+    private static final Logger logger = LoggerFactory.getLogger(AutoCompleteRenderer.class);
+
+	@Override
     public void decode(FacesContext context, UIComponent component) {
         AutoComplete ac = (AutoComplete) component;
         String clientId = ac.getClientId(context);
@@ -66,11 +70,12 @@ public class AutoCompleteRenderer extends InputRenderer {
 
         // AutoComplete event
         String query = params.get(clientId + "_query");
-        if (query != null) {
-            AutoCompleteEvent autoCompleteEvent = new AutoCompleteEvent(ac, query);
-            autoCompleteEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
-            ac.queueEvent(autoCompleteEvent);
-        }
+        if (query == null) {
+			return;
+		}
+		AutoCompleteEvent autoCompleteEvent = new AutoCompleteEvent(ac, query);
+		autoCompleteEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
+		ac.queueEvent(autoCompleteEvent);
     }
 
     protected void decodeSingle(FacesContext context, AutoComplete ac) {
@@ -150,7 +155,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = ac.getClientId(context);
         String styleClass = ac.getStyleClass();
-        styleClass = styleClass == null ? AutoComplete.STYLE_CLASS : AutoComplete.STYLE_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? AutoComplete.STYLE_CLASS : new StringBuilder().append(AutoComplete.STYLE_CLASS).append(" ").append(styleClass).toString();
 
         writer.startElement("span", null);
         writer.writeAttribute("id", clientId, null);
@@ -187,7 +192,7 @@ public class AutoCompleteRenderer extends InputRenderer {
         styleClass = ac.isValid() ? styleClass : styleClass + " ui-state-error";
         String inputStyle = ac.getInputStyle();
         String inputStyleClass = ac.getInputStyleClass();
-        inputStyleClass = (inputStyleClass == null) ? styleClass : styleClass + " " + inputStyleClass;
+        inputStyleClass = (inputStyleClass == null) ? styleClass : new StringBuilder().append(styleClass).append(" ").append(inputStyleClass).toString();
         String autocompleteProp = (ac.getAutocomplete() != null) ? ac.getAutocomplete() : "off";
 
         writer.startElement("input", null);
@@ -236,7 +241,8 @@ public class AutoCompleteRenderer extends InputRenderer {
                         itemLabel = ac.getItemLabel();
                     }
                     catch (ConverterException ce) {
-                        itemLabel = String.valueOf(submittedValue);
+                        logger.error(ce.getMessage(), ce);
+						itemLabel = String.valueOf(submittedValue);
                     }
 
                 }
@@ -291,8 +297,7 @@ public class AutoCompleteRenderer extends InputRenderer {
 
         renderValidationMetadata(context, ac);
 
-        for (int i = 0; i < values.size(); i++) {
-            String value = values.get(i);
+        for (String value : values) {
             writer.startElement("option", null);
             writer.writeAttribute("value", value, null);
             writer.writeAttribute("selected", "selected", null);
@@ -335,7 +340,7 @@ public class AutoCompleteRenderer extends InputRenderer {
     protected void encodePanel(FacesContext context, AutoComplete ac) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = ac.getPanelStyleClass();
-        styleClass = styleClass == null ? AutoComplete.PANEL_CLASS : AutoComplete.PANEL_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? AutoComplete.PANEL_CLASS : new StringBuilder().append(AutoComplete.PANEL_CLASS).append(" ").append(styleClass).toString();
 
         writer.startElement("span", null);
         writer.writeAttribute("id", ac.getClientId(context) + "_panel", null);
@@ -370,7 +375,8 @@ public class AutoCompleteRenderer extends InputRenderer {
                 values = (List) getConvertedValue(context, ac, submittedValue);
             }
             catch (ConverterException ce) {
-                values = Arrays.asList((String[]) submittedValue);
+                logger.error(ce.getMessage(), ce);
+				values = Arrays.asList((String[]) submittedValue);
             }
         }
 
@@ -380,7 +386,7 @@ public class AutoCompleteRenderer extends InputRenderer {
 
         String style = ac.getStyle();
         String styleClass = ac.getStyleClass();
-        styleClass = styleClass == null ? AutoComplete.MULTIPLE_STYLE_CLASS : AutoComplete.MULTIPLE_STYLE_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? AutoComplete.MULTIPLE_STYLE_CLASS : new StringBuilder().append(AutoComplete.MULTIPLE_STYLE_CLASS).append(" ").append(styleClass).toString();
         String listClass = ac.isDropdown() ? AutoComplete.MULTIPLE_CONTAINER_WITH_DROPDOWN_CLASS : AutoComplete.MULTIPLE_CONTAINER_CLASS;
         listClass = disabled ? listClass + " ui-state-disabled" : listClass;
         listClass = ac.isValid() ? listClass : listClass + " ui-state-error";
@@ -708,7 +714,7 @@ public class AutoCompleteRenderer extends InputRenderer {
     }
 
     @Override
-    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) {
         AutoComplete ac = (AutoComplete) component;
         boolean isMultiple = ac.isMultiple();
 

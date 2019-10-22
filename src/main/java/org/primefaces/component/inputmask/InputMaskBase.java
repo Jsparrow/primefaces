@@ -33,7 +33,72 @@ public abstract class InputMaskBase extends HtmlInputText implements Widget {
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.InputMaskRenderer";
 
-    public enum PropertyKeys {
+    public InputMaskBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getPlaceholder() {
+        return (String) getStateHelper().eval(PropertyKeys.placeholder, null);
+    }
+
+	public void setPlaceholder(String placeholder) {
+        getStateHelper().put(PropertyKeys.placeholder, placeholder);
+    }
+
+	public String getWidgetVar() {
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
+
+	public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
+
+	public String getMask() {
+        return (String) getStateHelper().eval(PropertyKeys.mask, null);
+    }
+
+	public void setMask(String mask) {
+        getStateHelper().put(PropertyKeys.mask, mask);
+    }
+
+	public String getSlotChar() {
+        return (String) getStateHelper().eval(PropertyKeys.slotChar, null);
+    }
+
+	public void setSlotChar(String slotChar) {
+        getStateHelper().put(PropertyKeys.slotChar, slotChar);
+    }
+
+	public boolean isAutoClear() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.autoClear, true);
+    }
+
+	public void setAutoClear(boolean autoClear) {
+        getStateHelper().put(PropertyKeys.autoClear, autoClear);
+    }
+
+	public String getType() {
+        return (String) getStateHelper().eval(PropertyKeys.type, "text");
+    }
+
+	public void setType(String type) {
+        getStateHelper().put(PropertyKeys.type, type);
+    }
+
+	public boolean isValidateMask() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.validateMask, true);
+    }
+
+	public void setValidateMask(boolean validateMask) {
+        getStateHelper().put(PropertyKeys.validateMask, validateMask);
+    }
+
+	public enum PropertyKeys {
 
         placeholder,
         widgetVar,
@@ -42,70 +107,5 @@ public abstract class InputMaskBase extends HtmlInputText implements Widget {
         autoClear,
         type,
         validateMask
-    }
-
-    public InputMaskBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getPlaceholder() {
-        return (String) getStateHelper().eval(PropertyKeys.placeholder, null);
-    }
-
-    public void setPlaceholder(String placeholder) {
-        getStateHelper().put(PropertyKeys.placeholder, placeholder);
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public String getMask() {
-        return (String) getStateHelper().eval(PropertyKeys.mask, null);
-    }
-
-    public void setMask(String mask) {
-        getStateHelper().put(PropertyKeys.mask, mask);
-    }
-
-    public String getSlotChar() {
-        return (String) getStateHelper().eval(PropertyKeys.slotChar, null);
-    }
-
-    public void setSlotChar(String slotChar) {
-        getStateHelper().put(PropertyKeys.slotChar, slotChar);
-    }
-
-    public boolean isAutoClear() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.autoClear, true);
-    }
-
-    public void setAutoClear(boolean autoClear) {
-        getStateHelper().put(PropertyKeys.autoClear, autoClear);
-    }
-
-    public String getType() {
-        return (String) getStateHelper().eval(PropertyKeys.type, "text");
-    }
-
-    public void setType(String type) {
-        getStateHelper().put(PropertyKeys.type, type);
-    }
-
-    public boolean isValidateMask() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.validateMask, true);
-    }
-
-    public void setValidateMask(boolean validateMask) {
-        getStateHelper().put(PropertyKeys.validateMask, validateMask);
     }
 }

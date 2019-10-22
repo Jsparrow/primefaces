@@ -69,7 +69,7 @@ public class ContextMenuRenderer extends TieredMenuRenderer {
         ContextMenu menu = (ContextMenu) abstractMenu;
         String style = menu.getStyle();
         String styleClass = menu.getStyleClass();
-        styleClass = styleClass == null ? ContextMenu.CONTAINER_CLASS : ContextMenu.CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? ContextMenu.CONTAINER_CLASS : new StringBuilder().append(ContextMenu.CONTAINER_CLASS).append(" ").append(styleClass).toString();
 
         encodeMenu(context, menu, style, styleClass, "menu");
     }

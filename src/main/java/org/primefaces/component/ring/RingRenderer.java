@@ -46,7 +46,7 @@ public class RingRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String style = ring.getStyle();
         String styleClass = ring.getStyleClass();
-        styleClass = styleClass == null ? Ring.STYLE_CLASS : Ring.STYLE_CLASS + " " + ring.getStyleClass();
+        styleClass = styleClass == null ? Ring.STYLE_CLASS : new StringBuilder().append(Ring.STYLE_CLASS).append(" ").append(ring.getStyleClass()).toString();
 
         writer.startElement("ul", ring);
         writer.writeAttribute("id", ring.getClientId(context), null);

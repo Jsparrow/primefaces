@@ -73,56 +73,56 @@ public class DiagramRenderer extends CoreRenderer {
         }
 
         DiagramModel model = (DiagramModel) diagram.getValue();
-        if (model != null) {
-            Connection connection = decodeConnection(context, diagram, true);
-            if (connection != null) {
-                model.connect(connection);
-            }
-        }
+        if (model == null) {
+			return;
+		}
+		Connection connection = decodeConnection(context, diagram, true);
+		if (connection != null) {
+		    model.connect(connection);
+		}
     }
 
     private void decodeDisconnection(FacesContext context, Diagram diagram) {
         DiagramModel model = (DiagramModel) diagram.getValue();
-        if (model != null) {
-            Connection connection = decodeConnection(context, diagram, false);
-            if (connection != null) {
-                model.disconnect(connection);
-            }
-        }
+        if (model == null) {
+			return;
+		}
+		Connection connection = decodeConnection(context, diagram, false);
+		if (connection != null) {
+		    model.disconnect(connection);
+		}
     }
 
     private void decodeConnectionChange(FacesContext context, Diagram diagram) {
         DiagramModel model = (DiagramModel) diagram.getValue();
-        if (model != null) {
-            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-            String clientId = diagram.getClientId(context);
-
-            Element originalSourceElement = model.findElement(params.get(clientId + "_originalSourceId"));
-            Element newSourceElement = model.findElement(params.get(clientId + "_newSourceId"));
-            Element originalTargetElement = model.findElement(params.get(clientId + "_originalTargetId"));
-            Element newTargetElement = model.findElement(params.get(clientId + "_newTargetId"));
-            EndPoint originalSourceEndPoint = model.findEndPoint(originalSourceElement, params.get(clientId + "_originalSourceEndPointId"));
-            EndPoint newSourceEndPoint = model.findEndPoint(newSourceElement, params.get(clientId + "_newSourceEndPointId"));
-            EndPoint originalTargetEndPoint = model.findEndPoint(originalTargetElement, params.get(clientId + "_originalTargetEndPointId"));
-            EndPoint newTargetEndPoint = model.findEndPoint(newTargetElement, params.get(clientId + "_newTargetEndPointId"));
-
-            model.disconnect(findConnection(model, originalSourceEndPoint, originalTargetEndPoint));
-            model.connect(new Connection(newSourceEndPoint, newTargetEndPoint));
-        }
+        if (model == null) {
+			return;
+		}
+		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+		String clientId = diagram.getClientId(context);
+		Element originalSourceElement = model.findElement(params.get(clientId + "_originalSourceId"));
+		Element newSourceElement = model.findElement(params.get(clientId + "_newSourceId"));
+		Element originalTargetElement = model.findElement(params.get(clientId + "_originalTargetId"));
+		Element newTargetElement = model.findElement(params.get(clientId + "_newTargetId"));
+		EndPoint originalSourceEndPoint = model.findEndPoint(originalSourceElement, params.get(clientId + "_originalSourceEndPointId"));
+		EndPoint newSourceEndPoint = model.findEndPoint(newSourceElement, params.get(clientId + "_newSourceEndPointId"));
+		EndPoint originalTargetEndPoint = model.findEndPoint(originalTargetElement, params.get(clientId + "_originalTargetEndPointId"));
+		EndPoint newTargetEndPoint = model.findEndPoint(newTargetElement, params.get(clientId + "_newTargetEndPointId"));
+		model.disconnect(findConnection(model, originalSourceEndPoint, originalTargetEndPoint));
+		model.connect(new Connection(newSourceEndPoint, newTargetEndPoint));
     }
 
     private void decodePositionChange(FacesContext context, Diagram diagram) {
         DiagramModel model = (DiagramModel) diagram.getValue();
-        if (model != null) {
-            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-            String clientId = diagram.getClientId(context);
-
-            Element element = model.findElement(params.get(clientId + "_elementId"));
-            String[] position = params.get(clientId + "_position").split(",");
-
-            element.setX(position[0] + "px");
-            element.setY(position[1] + "px");
-        }
+        if (model == null) {
+			return;
+		}
+		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+		String clientId = diagram.getClientId(context);
+		Element element = model.findElement(params.get(clientId + "_elementId"));
+		String[] position = params.get(clientId + "_position").split(",");
+		element.setX(position[0] + "px");
+		element.setY(position[1] + "px");
     }
 
     private Connection decodeConnection(FacesContext context, Diagram diagram, boolean createNew) {
@@ -231,34 +231,34 @@ public class DiagramRenderer extends CoreRenderer {
 
     protected void encodeEndPoints(WidgetBuilder wb, DiagramModel model, String clientId) throws IOException {
         List<Element> elements = model.getElements();
-        if (elements != null && !elements.isEmpty()) {
-            int elementsSize = elements.size();
+        if (!(elements != null && !elements.isEmpty())) {
+			return;
+		}
+		int elementsSize = elements.size();
+		wb.append(",endPoints:[");
+		for (int i = 0; i < elementsSize; i++) {
+		    Element element = elements.get(i);
+		    String elementClientId = new StringBuilder().append(clientId).append("-").append(element.getId()).toString();
+		    List<EndPoint> endPoints = element.getEndPoints();
 
-            wb.append(",endPoints:[");
-            for (int i = 0; i < elementsSize; i++) {
-                Element element = elements.get(i);
-                String elementClientId = clientId + "-" + element.getId();
-                List<EndPoint> endPoints = element.getEndPoints();
+		    if (endPoints != null && !endPoints.isEmpty()) {
+		        int endPointsSize = endPoints.size();
 
-                if (endPoints != null && !endPoints.isEmpty()) {
-                    int endPointsSize = endPoints.size();
+		        for (int j = 0; j < endPointsSize; j++) {
+		            EndPoint endPoint = endPoints.get(j);
+		            encodeEndPoint(wb, endPoint, elementClientId);
 
-                    for (int j = 0; j < endPointsSize; j++) {
-                        EndPoint endPoint = endPoints.get(j);
-                        encodeEndPoint(wb, endPoint, elementClientId);
+		            if (j < (endPointsSize - 1)) {
+		                wb.append(",");
+		            }
+		        }
+		    }
 
-                        if (j < (endPointsSize - 1)) {
-                            wb.append(",");
-                        }
-                    }
-                }
-
-                if (i < (elementsSize - 1)) {
-                    wb.append(",");
-                }
-            }
-            wb.append("]");
-        }
+		    if (i < (elementsSize - 1)) {
+		        wb.append(",");
+		    }
+		}
+		wb.append("]");
     }
 
     protected void encodeEndPoint(WidgetBuilder wb, EndPoint endPoint, String elementClientId) throws IOException {
@@ -311,69 +311,69 @@ public class DiagramRenderer extends CoreRenderer {
 
     protected void encodeConnections(WidgetBuilder wb, DiagramModel model) throws IOException {
         List<Connection> connections = model.getConnections();
-        if (connections != null && !connections.isEmpty()) {
-            int connectionsSize = connections.size();
+        if (!(connections != null && !connections.isEmpty())) {
+			return;
+		}
+		int connectionsSize = connections.size();
+		wb.append(",connections:[");
+		for (int i = 0; i < connectionsSize; i++) {
+		    Connection connection = connections.get(i);
+		    StringBuilder sb = SharedStringBuilder.get(SB_DIAGRAM);
+		    Connector connector = connection.getConnector();
+		    List<Overlay> overlays = connection.getOverlays();
 
-            wb.append(",connections:[");
-            for (int i = 0; i < connectionsSize; i++) {
-                Connection connection = connections.get(i);
-                StringBuilder sb = SharedStringBuilder.get(SB_DIAGRAM);
-                Connector connector = connection.getConnector();
-                List<Overlay> overlays = connection.getOverlays();
+		    wb.append("{uuids:['").append(connection.getSource().getId()).append("'")
+		            .append(",'").append(connection.getTarget().getId()).append("']");
 
-                wb.append("{uuids:['").append(connection.getSource().getId()).append("'")
-                        .append(",'").append(connection.getTarget().getId()).append("']");
+		    if (connector != null && connector.getType() != null) {
+		        wb.append(",connector:").append(connector.toJS(sb));
 
-                if (connector != null && connector.getType() != null) {
-                    wb.append(",connector:").append(connector.toJS(sb));
+		        String paintStyle = connector.getPaintStyle();
+		        String hoverPaintStyle = connector.getHoverPaintStyle();
 
-                    String paintStyle = connector.getPaintStyle();
-                    String hoverPaintStyle = connector.getHoverPaintStyle();
+		        if (paintStyle != null) {
+		            wb.append(",paintStyle:").append(paintStyle);
+		        }
+		        if (hoverPaintStyle != null) {
+		            wb.append(",hoverPaintStyle:").append(hoverPaintStyle);
+		        }
+		    }
 
-                    if (paintStyle != null) {
-                        wb.append(",paintStyle:").append(paintStyle);
-                    }
-                    if (hoverPaintStyle != null) {
-                        wb.append(",hoverPaintStyle:").append(hoverPaintStyle);
-                    }
-                }
+		    if (!connection.isDetachable()) {
+		        wb.append(",detachable:false");
+		    }
 
-                if (!connection.isDetachable()) {
-                    wb.append(",detachable:false");
-                }
+		    encodeOverlays(wb, overlays, "overlays");
 
-                encodeOverlays(wb, overlays, "overlays");
+		    wb.append("}");
 
-                wb.append("}");
+		    if (i < (connectionsSize - 1)) {
+		        wb.append(",");
+		    }
 
-                if (i < (connectionsSize - 1)) {
-                    wb.append(",");
-                }
-
-            }
-            wb.append("]");
-        }
+		}
+		wb.append("]");
     }
 
     protected void encodeOverlays(WidgetBuilder wb, List<Overlay> overlays, String propertyName) throws IOException {
         StringBuilder sb = SharedStringBuilder.get(SB_DIAGRAM);
 
-        if (overlays != null && !overlays.isEmpty()) {
-            int overlaysSize = overlays.size();
+        if (!(overlays != null && !overlays.isEmpty())) {
+			return;
+		}
+		int overlaysSize = overlays.size();
+		wb.append(",").append(propertyName).append(":[");
+		for (int j = 0; j < overlaysSize; j++) {
+		    Overlay overlay = overlays.get(j);
+		    sb.setLength(0);
 
-            wb.append(",").append(propertyName).append(":[");
-            for (int j = 0; j < overlaysSize; j++) {
-                Overlay overlay = overlays.get(j);
-                sb.setLength(0);
+		    wb.append(overlay.toJS(sb));
 
-                wb.append(overlay.toJS(sb));
-
-                if (j < (overlaysSize - 1)) {
-                    wb.append(",");
-                }
-            }
-            wb.append("]");
-        }
+		    if (j < (overlaysSize - 1)) {
+		        wb.append(",");
+		    }
+		}
+		wb.append("]");
     }
 
     protected void encodeMarkup(FacesContext context, Diagram diagram) throws IOException {
@@ -382,7 +382,7 @@ public class DiagramRenderer extends CoreRenderer {
         String clientId = diagram.getClientId(context);
         String style = diagram.getStyle();
         String styleClass = diagram.getStyleClass();
-        styleClass = (styleClass == null) ? Diagram.CONTAINER_CLASS : Diagram.CONTAINER_CLASS + " " + styleClass;
+        styleClass = (styleClass == null) ? Diagram.CONTAINER_CLASS : new StringBuilder().append(Diagram.CONTAINER_CLASS).append(" ").append(styleClass).toString();
         UIComponent elementFacet = diagram.getFacet("element");
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
         String var = diagram.getVar();
@@ -397,21 +397,20 @@ public class DiagramRenderer extends CoreRenderer {
         if (model != null) {
             List<Element> elements = model.getElements();
             if (elements != null && !elements.isEmpty()) {
-                for (int i = 0; i < elements.size(); i++) {
-                    Element element = elements.get(i);
+                for (Element element : elements) {
                     String elementClass = element.getStyleClass();
-                    elementClass = (elementClass == null) ? Diagram.ELEMENT_CLASS : Diagram.ELEMENT_CLASS + " " + elementClass;
+                    elementClass = (elementClass == null) ? Diagram.ELEMENT_CLASS : new StringBuilder().append(Diagram.ELEMENT_CLASS).append(" ").append(elementClass).toString();
                     if (element.isDraggable()) {
-                        elementClass = elementClass + " " + Diagram.DRAGGABLE_ELEMENT_CLASS;
+                        elementClass = new StringBuilder().append(elementClass).append(" ").append(Diagram.DRAGGABLE_ELEMENT_CLASS).toString();
                     }
                     Object data = element.getData();
                     String x = element.getX();
                     String y = element.getY();
-                    String coords = "left:" + x + ";top:" + y;
+                    String coords = new StringBuilder().append("left:").append(x).append(";top:").append(y).toString();
                     String title = element.getTitle();
 
                     writer.startElement("div", null);
-                    writer.writeAttribute("id", clientId + "-" + element.getId(), null);
+                    writer.writeAttribute("id", new StringBuilder().append(clientId).append("-").append(element.getId()).toString(), null);
                     writer.writeAttribute("class", elementClass, null);
                     writer.writeAttribute("style", coords, null);
                     writer.writeAttribute("data-tooltip", title, null);

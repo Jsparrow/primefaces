@@ -35,61 +35,61 @@ public abstract class ColorPickerBase extends UIInput implements Widget, ClientB
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.ColorPickerRenderer";
 
-    public enum PropertyKeys {
+    public ColorPickerBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getWidgetVar() {
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
+
+	public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
+
+	public String getMode() {
+        return (String) getStateHelper().eval(PropertyKeys.mode, "popup");
+    }
+
+	public void setMode(String mode) {
+        getStateHelper().put(PropertyKeys.mode, mode);
+    }
+
+	public String getStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
+    }
+
+	public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
+    }
+
+	public String getStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
+    }
+
+	public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+	public String getOnchange() {
+        return (String) getStateHelper().eval(PropertyKeys.onchange, null);
+    }
+
+	public void setOnchange(String onchange) {
+        getStateHelper().put(PropertyKeys.onchange, onchange);
+    }
+
+	public enum PropertyKeys {
 
         widgetVar,
         mode,
         style,
         styleClass,
         onchange;
-    }
-
-    public ColorPickerBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public String getMode() {
-        return (String) getStateHelper().eval(PropertyKeys.mode, "popup");
-    }
-
-    public void setMode(String mode) {
-        getStateHelper().put(PropertyKeys.mode, mode);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public String getOnchange() {
-        return (String) getStateHelper().eval(PropertyKeys.onchange, null);
-    }
-
-    public void setOnchange(String onchange) {
-        getStateHelper().put(PropertyKeys.onchange, onchange);
     }
 }

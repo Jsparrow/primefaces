@@ -102,7 +102,7 @@ public class Schedule extends ScheduleBase {
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
             FacesEvent wrapperEvent = null;
 
-            if (eventName.equals("dateSelect")) {
+            if ("dateSelect".equals(eventName)) {
                 Long milliseconds = Long.valueOf(params.get(clientId + "_selectedDate"));
                 LocalDateTime selectedDate = LocalDateTime.ofInstant(Instant.ofEpochMilli(milliseconds), zoneId);
                 SelectEvent selectEvent = new SelectEvent(this, behaviorEvent.getBehavior(), selectedDate);
@@ -110,13 +110,13 @@ public class Schedule extends ScheduleBase {
 
                 wrapperEvent = selectEvent;
             }
-            else if (eventName.equals("eventSelect")) {
+            else if ("eventSelect".equals(eventName)) {
                 String selectedEventId = params.get(clientId + "_selectedEventId");
                 ScheduleEvent selectedEvent = getValue().getEvent(selectedEventId);
 
                 wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), selectedEvent);
             }
-            else if (eventName.equals("eventMove")) {
+            else if ("eventMove".equals(eventName)) {
                 String movedEventId = params.get(clientId + "_movedEventId");
                 ScheduleEvent movedEvent = getValue().getEvent(movedEventId);
                 int dayDelta = Double.valueOf(params.get(clientId + "_dayDelta")).intValue();
@@ -131,7 +131,7 @@ public class Schedule extends ScheduleBase {
 
                 wrapperEvent = new ScheduleEntryMoveEvent(this, behaviorEvent.getBehavior(), movedEvent, dayDelta, minuteDelta);
             }
-            else if (eventName.equals("eventResize")) {
+            else if ("eventResize".equals(eventName)) {
                 String resizedEventId = params.get(clientId + "_resizedEventId");
                 ScheduleEvent resizedEvent = getValue().getEvent(resizedEventId);
                 int dayDelta = Double.valueOf(params.get(clientId + "_dayDelta")).intValue();
@@ -143,12 +143,12 @@ public class Schedule extends ScheduleBase {
 
                 wrapperEvent = new ScheduleEntryResizeEvent(this, behaviorEvent.getBehavior(), resizedEvent, dayDelta, minuteDelta);
             }
-            else if (eventName.equals("viewChange")) {
+            else if ("viewChange".equals(eventName)) {
                 wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), getView());
             }
 
             if (wrapperEvent == null) {
-                throw new FacesException("Component " + this.getClass().getName() + " does not support event " + eventName + "!");
+                throw new FacesException(new StringBuilder().append("Component ").append(this.getClass().getName()).append(" does not support event ").append(eventName).append("!").toString());
             }
 
             wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
@@ -173,9 +173,10 @@ public class Schedule extends ScheduleBase {
         super.processUpdates(context);
 
         ValueExpression expr = getValueExpression(PropertyKeys.view.toString());
-        if (expr != null) {
-            expr.setValue(getFacesContext().getELContext(), getView());
-            getStateHelper().remove(PropertyKeys.view);
-        }
+        if (expr == null) {
+			return;
+		}
+		expr.setValue(getFacesContext().getELContext(), getView());
+		getStateHelper().remove(PropertyKeys.view);
     }
 }

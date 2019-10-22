@@ -59,7 +59,7 @@ public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializa
     }
 
     @Override
-    public void processAjaxBehavior(AjaxBehaviorEvent event) throws AbortProcessingException {
+    public void processAjaxBehavior(AjaxBehaviorEvent event) {
         FacesContext context = FacesContext.getCurrentInstance();
         final ELContext elContext = context.getELContext();
 
@@ -75,7 +75,7 @@ public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializa
         }
     }
 
-    private void processArgListener(FacesContext context, ELContext elContext, AjaxBehaviorEvent event) throws AbortProcessingException {
+    private void processArgListener(FacesContext context, ELContext elContext, AjaxBehaviorEvent event) {
         if (LOGGER.isLoggable(Level.FINE)) {
             LOGGER.fine("Try to invoke listenerWithArg: " + listenerWithArg.getExpressionString());
         }
@@ -88,7 +88,7 @@ public class AjaxBehaviorListenerImpl implements AjaxBehaviorListener, Serializa
         }
     }
 
-    private void processCustomArgListener(FacesContext context, ELContext elContext, AjaxBehaviorEvent event) throws AbortProcessingException {
+    private void processCustomArgListener(FacesContext context, ELContext elContext, AjaxBehaviorEvent event) {
 
         if (listenerWithCustomArg == null) {
 

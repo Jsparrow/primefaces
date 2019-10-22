@@ -39,7 +39,7 @@ public class RibbonGroupRenderer extends CoreRenderer {
         RibbonGroup group = (RibbonGroup) component;
         String label = group.getLabel();
         String groupClass = group.getStyleClass();
-        groupClass = (groupClass == null) ? Ribbon.GROUP_CLASS : Ribbon.GROUP_CLASS + " " + groupClass;
+        groupClass = (groupClass == null) ? Ribbon.GROUP_CLASS : new StringBuilder().append(Ribbon.GROUP_CLASS).append(" ").append(groupClass).toString();
         String style = group.getStyle();
 
         writer.startElement("li", null);

@@ -33,43 +33,43 @@ public abstract class DefaultCommandBase extends UIComponentBase implements Widg
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.DefaultCommandRenderer";
 
-    public enum PropertyKeys {
-
-        widgetVar,
-        target,
-        scope;
-    }
-
     public DefaultCommandBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
-    @Override
+	@Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
+	public String getWidgetVar() {
         return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(String widgetVar) {
+	public void setWidgetVar(String widgetVar) {
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public String getTarget() {
+	public String getTarget() {
         return (String) getStateHelper().eval(PropertyKeys.target, null);
     }
 
-    public void setTarget(String target) {
+	public void setTarget(String target) {
         getStateHelper().put(PropertyKeys.target, target);
     }
 
-    public String getScope() {
+	public String getScope() {
         return (String) getStateHelper().eval(PropertyKeys.scope, null);
     }
 
-    public void setScope(String scope) {
+	public void setScope(String scope) {
         getStateHelper().put(PropertyKeys.scope, scope);
+    }
+
+	public enum PropertyKeys {
+
+        widgetVar,
+        target,
+        scope;
     }
 }

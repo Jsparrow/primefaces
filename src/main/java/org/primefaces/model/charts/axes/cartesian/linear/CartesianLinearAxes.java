@@ -90,7 +90,7 @@ public class CartesianLinearAxes extends CartesianAxes {
             fsw.write(super.encode());
 
             if (this.type != null) {
-                fsw.write(",\"type\":\"" + this.type + "\"");
+                fsw.write(new StringBuilder().append(",\"type\":\"").append(this.type).append("\"").toString());
             }
 
             if (this.ticks != null) {

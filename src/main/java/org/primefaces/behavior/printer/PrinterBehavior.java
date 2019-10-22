@@ -40,7 +40,30 @@ import org.primefaces.expression.SearchExpressionFacade;
     })
 public class PrinterBehavior extends AbstractBehavior {
 
-    public enum PropertyKeys implements BehaviorAttribute {
+    @Override
+    public String getScript(ClientBehaviorContext behaviorContext) {
+        FacesContext context = behaviorContext.getFacesContext();
+
+        String components = SearchExpressionFacade.resolveClientId(
+                context, behaviorContext.getComponent(), getTarget());
+
+        return new StringBuilder().append("PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector('").append(components).append("').print();return false;").toString();
+    }
+
+	@Override
+    protected BehaviorAttribute[] getAllAttributes() {
+        return PropertyKeys.values();
+    }
+
+	public String getTarget() {
+        return eval(PropertyKeys.target, null);
+    }
+
+	public void setTarget(String target) {
+        put(PropertyKeys.target, target);
+    }
+
+	public enum PropertyKeys implements BehaviorAttribute {
         target(String.class);
 
         private final Class<?> expectedType;
@@ -53,28 +76,5 @@ public class PrinterBehavior extends AbstractBehavior {
         public Class<?> getExpectedType() {
             return expectedType;
         }
-    }
-
-    @Override
-    public String getScript(ClientBehaviorContext behaviorContext) {
-        FacesContext context = behaviorContext.getFacesContext();
-
-        String components = SearchExpressionFacade.resolveClientId(
-                context, behaviorContext.getComponent(), getTarget());
-
-        return "PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector('" + components + "').print();return false;";
-    }
-
-    @Override
-    protected BehaviorAttribute[] getAllAttributes() {
-        return PropertyKeys.values();
-    }
-
-    public String getTarget() {
-        return eval(PropertyKeys.target, null);
-    }
-
-    public void setTarget(String target) {
-        put(PropertyKeys.target, target);
     }
 }

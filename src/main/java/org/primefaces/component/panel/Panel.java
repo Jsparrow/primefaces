@@ -112,7 +112,7 @@ public class Panel extends PanelBase {
         if (isSelfRequest(context)) {
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if (eventName.equals("toggle")) {
+            if ("toggle".equals(eventName)) {
                 boolean collapsed = Boolean.parseBoolean(params.get(clientId + "_collapsed"));
                 Visibility visibility = collapsed ? Visibility.HIDDEN : Visibility.VISIBLE;
 
@@ -121,7 +121,7 @@ public class Panel extends PanelBase {
                 super.queueEvent(new ToggleEvent(this, behaviorEvent.getBehavior(), visibility));
 
             }
-            else if (eventName.equals("close")) {
+            else if ("close".equals(eventName)) {
                 CloseEvent eventToQueue = new CloseEvent(this, behaviorEvent.getBehavior());
                 eventToQueue.setPhaseId(behaviorEvent.getPhaseId());
                 super.queueEvent(eventToQueue);
@@ -159,10 +159,11 @@ public class Panel extends PanelBase {
         ELContext eLContext = facesContext.getELContext();
 
         ValueExpression collapsedVE = getValueExpression(PropertyKeys.collapsed.toString());
-        if (collapsedVE != null && !collapsedVE.isReadOnly(eLContext)) {
-            collapsedVE.setValue(eLContext, isCollapsed());
-            getStateHelper().put(Panel.PropertyKeys.collapsed, null);
-        }
+        if (!(collapsedVE != null && !collapsedVE.isReadOnly(eLContext))) {
+			return;
+		}
+		collapsedVE.setValue(eLContext, isCollapsed());
+		getStateHelper().put(Panel.PropertyKeys.collapsed, null);
     }
 
     private boolean isSelfRequest(FacesContext context) {

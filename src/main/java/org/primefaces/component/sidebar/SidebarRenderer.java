@@ -48,8 +48,8 @@ public class SidebarRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String style = bar.getStyle();
         String styleClass = bar.getStyleClass();
-        styleClass = styleClass == null ? Sidebar.STYLE_CLASS : Sidebar.STYLE_CLASS + " " + styleClass;
-        styleClass = bar.isFullScreen() ? styleClass + " " + Sidebar.FULL_BAR_CLASS : styleClass;
+        styleClass = styleClass == null ? Sidebar.STYLE_CLASS : new StringBuilder().append(Sidebar.STYLE_CLASS).append(" ").append(styleClass).toString();
+        styleClass = bar.isFullScreen() ? new StringBuilder().append(styleClass).append(" ").append(Sidebar.FULL_BAR_CLASS).toString() : styleClass;
         styleClass += " ui-sidebar-" + bar.getPosition();
 
         writer.startElement("div", bar);

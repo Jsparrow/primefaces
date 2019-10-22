@@ -213,16 +213,11 @@ public class DataTableCSVExporter extends DataTableExporter {
             builder.append(value);
         }
         else {
-            for (UIComponent component : components) {
-                if (component.isRendered()) {
-                    String value = exportValue(context, component);
-
-                    //escape double quotes
-                    value = value == null ? "" : value.replace(csvOptions.getQuoteString(), csvOptions.getDoubleQuoteString());
-
-                    builder.append(value);
-                }
-            }
+            components.stream().filter(UIComponent::isRendered).map(component -> exportValue(context, component)).forEach(value -> {
+				//escape double quotes
+			    value = value == null ? "" : value.replace(csvOptions.getQuoteString(), csvOptions.getDoubleQuoteString());
+				builder.append(value);
+			});
         }
 
         builder.append(csvOptions.getQuoteChar());

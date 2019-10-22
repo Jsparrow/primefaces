@@ -58,7 +58,7 @@ public class ChartUtils {
             fsw.write(",");
         }
 
-        fsw.write("\"" + optionName + "\":");
+        fsw.write(new StringBuilder().append("\"").append(optionName).append("\":").toString());
         if (isList) {
             fsw.write("[");
             for (int i = 0; i < ((List<?>) value).size(); i++) {
@@ -68,16 +68,17 @@ public class ChartUtils {
                 if (item instanceof BubblePoint) {
                     BubblePoint point = (BubblePoint) item;
                     writeText = (i == 0) ? Constants.EMPTY_STRING : ",";
-                    writeText += "{\"x\":" + point.getX() + ",\"y\":" + point.getY() + ",\"r\":" + point.getR() + "}";
+                    writeText += new StringBuilder().append("{\"x\":").append(point.getX()).append(",\"y\":").append(point.getY()).append(",\"r\":")
+							.append(point.getR()).append("}").toString();
                 }
                 else if (item instanceof NumericPoint) {
                     NumericPoint point = (NumericPoint) item;
                     writeText = (i == 0) ? Constants.EMPTY_STRING : ",";
-                    writeText += "{\"x\":" + point.getX() + ",\"y\":" + point.getY() + "}";
+                    writeText += new StringBuilder().append("{\"x\":").append(point.getX()).append(",\"y\":").append(point.getY()).append("}").toString();
                 }
                 else if (item instanceof String) {
                     String escapedText = EscapeUtils.forJavaScript((String) item);
-                    writeText = (i == 0) ? "\"" + escapedText + "\"" : ",\"" + escapedText + "\"";
+                    writeText = (i == 0) ? new StringBuilder().append("\"").append(escapedText).append("\"").toString() : new StringBuilder().append(",\"").append(escapedText).append("\"").toString();
                 }
                 else {
                     writeText = (i == 0) ? item : "," + item;
@@ -89,7 +90,7 @@ public class ChartUtils {
         }
         else {
             if (value instanceof String) {
-                fsw.write("\"" + EscapeUtils.forJavaScript((String) value) + "\"");
+                fsw.write(new StringBuilder().append("\"").append(EscapeUtils.forJavaScript((String) value)).append("\"").toString());
             }
             else {
                 fsw.write(Constants.EMPTY_STRING + value);

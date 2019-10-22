@@ -49,46 +49,40 @@ public class TooltipRenderer extends CoreRenderer {
     protected void encodeMarkup(FacesContext context, Tooltip tooltip, String target) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        if (target != null) {
-            String styleClass = tooltip.getStyleClass();
-            styleClass = styleClass == null ? Tooltip.CONTAINER_CLASS : Tooltip.CONTAINER_CLASS + " " + styleClass;
-            styleClass = styleClass + " ui-tooltip-" + tooltip.getPosition();
-
-            writer.startElement("div", tooltip);
-            writer.writeAttribute("id", tooltip.getClientId(context), null);
-            writer.writeAttribute("class", styleClass, "styleClass");
-            writer.writeAttribute("role", "tooltip", null);
-
-            if (tooltip.getStyle() != null) {
-                writer.writeAttribute("style", tooltip.getStyle(), "style");
-            }
-
-            writer.startElement("div", tooltip);
-            writer.writeAttribute("class", "ui-tooltip-arrow", null);
-            writer.endElement("div");
-
-            writer.startElement("div", tooltip);
-            writer.writeAttribute("class", "ui-tooltip-text ui-shadow ui-corner-all", null);
-
-            if (tooltip.getChildCount() > 0) {
-                renderChildren(context, tooltip);
-            }
-            else {
-                String valueToRender = ComponentUtils.getValueToRender(context, tooltip);
-                if (valueToRender != null) {
-                    if (tooltip.isEscape()) {
-                        writer.writeText(valueToRender, "value");
-                    }
-                    else {
-                        writer.write(valueToRender);
-                    }
-                }
-            }
-
-            writer.endElement("div");
-
-            writer.endElement("div");
-        }
+        if (target == null) {
+			return;
+		}
+		String styleClass = tooltip.getStyleClass();
+		styleClass = styleClass == null ? Tooltip.CONTAINER_CLASS : new StringBuilder().append(Tooltip.CONTAINER_CLASS).append(" ").append(styleClass).toString();
+		styleClass = new StringBuilder().append(styleClass).append(" ui-tooltip-").append(tooltip.getPosition()).toString();
+		writer.startElement("div", tooltip);
+		writer.writeAttribute("id", tooltip.getClientId(context), null);
+		writer.writeAttribute("class", styleClass, "styleClass");
+		writer.writeAttribute("role", "tooltip", null);
+		if (tooltip.getStyle() != null) {
+		    writer.writeAttribute("style", tooltip.getStyle(), "style");
+		}
+		writer.startElement("div", tooltip);
+		writer.writeAttribute("class", "ui-tooltip-arrow", null);
+		writer.endElement("div");
+		writer.startElement("div", tooltip);
+		writer.writeAttribute("class", "ui-tooltip-text ui-shadow ui-corner-all", null);
+		if (tooltip.getChildCount() > 0) {
+		    renderChildren(context, tooltip);
+		}
+		else {
+		    String valueToRender = ComponentUtils.getValueToRender(context, tooltip);
+		    if (valueToRender != null) {
+		        if (tooltip.isEscape()) {
+		            writer.writeText(valueToRender, "value");
+		        }
+		        else {
+		            writer.write(valueToRender);
+		        }
+		    }
+		}
+		writer.endElement("div");
+		writer.endElement("div");
     }
 
     protected void encodeScript(FacesContext context, Tooltip tooltip, String target) throws IOException {

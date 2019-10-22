@@ -80,10 +80,10 @@ public class SearchExpressionUtils {
                 expression);
 
         if (resolvedComponent instanceof Widget) {
-            return "PF('" + ((Widget) resolvedComponent).resolveWidgetVar(context) + "')";
+            return new StringBuilder().append("PF('").append(((Widget) resolvedComponent).resolveWidgetVar(context)).append("')").toString();
         }
         else {
-            throw new FacesException("Component with clientId " + resolvedComponent.getClientId() + " is not a Widget");
+            throw new FacesException(new StringBuilder().append("Component with clientId ").append(resolvedComponent.getClientId()).append(" is not a Widget").toString());
         }
     }
 }

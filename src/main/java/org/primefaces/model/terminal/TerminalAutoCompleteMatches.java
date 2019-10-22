@@ -40,7 +40,6 @@ public class TerminalAutoCompleteMatches extends JSONObject {
     }
 
     public TerminalAutoCompleteMatches(String baseCommand) {
-        super();
         setBaseCommand(baseCommand);
         put(MATCHES, new JSONArray());
     }
@@ -64,7 +63,7 @@ public class TerminalAutoCompleteMatches extends JSONObject {
             baseCommand = argument;
         }
         else {
-            baseCommand = baseCommand + " " + argument;
+            baseCommand = new StringBuilder().append(baseCommand).append(" ").append(argument).toString();
         }
 
         setBaseCommand(baseCommand);
@@ -73,11 +72,9 @@ public class TerminalAutoCompleteMatches extends JSONObject {
     public Collection<String> getMatches() {
         JSONArray arr = (JSONArray) get(MATCHES);
 
-        ArrayList<String> matches = new ArrayList<String>(arr.length());
-        Iterator<Object> i = arr.iterator();
-
-        while (i.hasNext()) {
-            String match = (String) i.next();
+        ArrayList<String> matches = new ArrayList<>(arr.length());
+        for (Object anArr : arr) {
+            String match = (String) anArr;
             matches.add(match);
         }
 
@@ -88,9 +85,7 @@ public class TerminalAutoCompleteMatches extends JSONObject {
         JSONArray arr = (JSONArray) get(MATCHES);
 
         if (matches != null) {
-            for (String match : matches) {
-                arr.put(match);
-            }
+            matches.forEach(arr::put);
         }
 
         put(MATCHES, arr);

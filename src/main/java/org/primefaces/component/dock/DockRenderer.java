@@ -63,11 +63,11 @@ public class DockRenderer extends BaseMenuRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
-        writer.writeAttribute("class", "ui-dock-" + position + " ui-widget", "styleClass");
+        writer.writeAttribute("class", new StringBuilder().append("ui-dock-").append(position).append(" ui-widget").toString(), "styleClass");
         renderPassThruAttributes(context, dock, null);
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", "ui-dock-container-" + position + " ui-widget-header", null);
+        writer.writeAttribute("class", new StringBuilder().append("ui-dock-container-").append(position).append(" ui-widget-header").toString(), null);
 
         encodeMenuItems(context, dock);
 
@@ -77,22 +77,22 @@ public class DockRenderer extends BaseMenuRenderer {
     }
 
     protected void encodeMenuItems(FacesContext context, Dock dock) throws IOException {
-        if (dock.getElementsCount() > 0) {
-            List<MenuElement> menuElements = dock.getElements();
-
-            for (MenuElement element : menuElements) {
-                if (element.isRendered() && element instanceof MenuItem) {
-                    encodeMenuItem(context, dock, (MenuItem) element, "-1");
-                }
-            }
-        }
+        if (dock.getElementsCount() <= 0) {
+			return;
+		}
+		List<MenuElement> menuElements = dock.getElements();
+		for (MenuElement element : menuElements) {
+		    if (element.isRendered() && element instanceof MenuItem) {
+		        encodeMenuItem(context, dock, (MenuItem) element, "-1");
+		    }
+		}
     }
 
     @Override
     protected void encodeMenuItemContent(FacesContext context, AbstractMenu menu, MenuItem menuitem) throws IOException {
         String position = ((Dock) menu).getPosition();
 
-        if (position.equalsIgnoreCase("top")) {
+        if ("top".equalsIgnoreCase(position)) {
             encodeItemIcon(context, menuitem);
             encodeItemLabel(context, menuitem);
         }

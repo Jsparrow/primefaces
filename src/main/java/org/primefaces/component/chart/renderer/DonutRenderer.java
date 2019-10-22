@@ -54,7 +54,7 @@ public class DonutRenderer extends BasePlotRenderer {
                 String key = it.next();
                 Number value = map.get(key);
 
-                writer.write("[" + escapeChartData(key) + "," + value + "]");
+                writer.write(new StringBuilder().append("[").append(escapeChartData(key)).append(",").append(value).append("]").toString());
 
                 if (it.hasNext()) {
                     writer.write(",");
@@ -89,28 +89,26 @@ public class DonutRenderer extends BasePlotRenderer {
             writer.write(",showDataLabels:true");
         }
         if (dataFormat != null) {
-            writer.write(",dataFormat:\"" + dataFormat + "\"");
+            writer.write(new StringBuilder().append(",dataFormat:\"").append(dataFormat).append("\"").toString());
         }
         if (dataLabelFormatString != null) {
-            writer.write(",dataLabelFormatString:\"" + dataLabelFormatString + "\"");
+            writer.write(new StringBuilder().append(",dataLabelFormatString:\"").append(dataLabelFormatString).append("\"").toString());
         }
         if (dataLabelThreshold > 0 && dataLabelThreshold < 100) {
             writer.write(",dataLabelThreshold:" + dataLabelThreshold);
         }
 
-        if (model.isShowDatatip()) {
-            writer.write(",datatip:true");
-
-            String datatipFormat = model.getDatatipFormat();
-            String datatipEditor = model.getDatatipEditor();
-
-            if (datatipFormat != null) {
-                writer.write(",datatipFormat:\"" + model.getDatatipFormat() + "\"");
-            }
-
-            if (datatipEditor != null) {
-                writer.write(",datatipEditor:" + datatipEditor);
-            }
-        }
+        if (!model.isShowDatatip()) {
+			return;
+		}
+		writer.write(",datatip:true");
+		String datatipFormat = model.getDatatipFormat();
+		String datatipEditor = model.getDatatipEditor();
+		if (datatipFormat != null) {
+		    writer.write(new StringBuilder().append(",datatipFormat:\"").append(model.getDatatipFormat()).append("\"").toString());
+		}
+		if (datatipEditor != null) {
+		    writer.write(",datatipEditor:" + datatipEditor);
+		}
     }
 }

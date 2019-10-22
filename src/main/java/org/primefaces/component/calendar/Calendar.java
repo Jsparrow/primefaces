@@ -56,7 +56,7 @@ public class Calendar extends CalendarBase {
     private final Map<String, AjaxBehaviorEvent> customEvents = new HashMap<>();
 
     public boolean isPopup() {
-        return getMode().equalsIgnoreCase("popup");
+        return "popup".equalsIgnoreCase(getMode());
     }
 
     @Override
@@ -80,13 +80,13 @@ public class Calendar extends CalendarBase {
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
             if (eventName != null) {
-                if (eventName.equals("dateSelect")) {
+                if ("dateSelect".equals(eventName)) {
                     customEvents.put("dateSelect", (AjaxBehaviorEvent) event);
                 }
-                else if (eventName.equals("close")) {
+                else if ("close".equals(eventName)) {
                     customEvents.put("close", (AjaxBehaviorEvent) event);
                 }
-                else if (eventName.equals("viewChange")) {
+                else if ("viewChange".equals(eventName)) {
                     int month = Integer.parseInt(params.get(clientId + "_month"));
                     int year = Integer.parseInt(params.get(clientId + "_year"));
                     DateViewChangeEvent dateViewChangeEvent = new DateViewChangeEvent(this, behaviorEvent.getBehavior(), month, year);
@@ -130,51 +130,48 @@ public class Calendar extends CalendarBase {
 
         ValidationResult validationResult = ValidationResult.OK;
 
-        if (isValid() && !isEmpty(value) && (value instanceof LocalDate || value instanceof LocalDateTime || value instanceof Date)) {
-            LocalDate date = null;
+        if (!(isValid() && !isEmpty(value) && (value instanceof LocalDate || value instanceof LocalDateTime || value instanceof Date))) {
+			return;
+		}
+		LocalDate date = null;
+		if (value instanceof LocalDate) {
+		    date = (LocalDate) value;
+		}
+		else if (value instanceof LocalDateTime) {
+		    date = ((LocalDateTime) value).toLocalDate();
+		}
+		else if (value instanceof LocalTime) {
+		    //no check necessary
+		}
+		else if (value instanceof Date) {
+		    date = CalendarUtils.convertDate2LocalDate((Date) value, CalendarUtils.calculateZoneId(getTimeZone()));
+		}
+		if (date != null) {
+		    LocalDate minDate = CalendarUtils.getObjectAsLocalDate(context, this, getMindate());
+		    LocalDate maxDate = CalendarUtils.getObjectAsLocalDate(context, this, getMaxdate());
+		    if (minDate != null && date.isBefore(minDate)) {
+		        setValid(false);
+		        if (maxDate != null) {
+		            validationResult = ValidationResult.INVALID_OUT_OF_RANGE;
+		        }
+		        else {
+		            validationResult = ValidationResult.INVALID_MIN_DATE;
+		        }
+		    }
 
-            if (value instanceof LocalDate) {
-                date = (LocalDate) value;
-            }
-            else if (value instanceof LocalDateTime) {
-                date = ((LocalDateTime) value).toLocalDate();
-            }
-            else if (value instanceof LocalTime) {
-                //no check necessary
-            }
-            else if (value instanceof Date) {
-                date = CalendarUtils.convertDate2LocalDate((Date) value, CalendarUtils.calculateZoneId(getTimeZone()));
-            }
-
-            if (date != null) {
-                LocalDate minDate = CalendarUtils.getObjectAsLocalDate(context, this, getMindate());
-                LocalDate maxDate = CalendarUtils.getObjectAsLocalDate(context, this, getMaxdate());
-                if (minDate != null && date.isBefore(minDate)) {
-                    setValid(false);
-                    if (maxDate != null) {
-                        validationResult = ValidationResult.INVALID_OUT_OF_RANGE;
-                    }
-                    else {
-                        validationResult = ValidationResult.INVALID_MIN_DATE;
-                    }
-                }
-
-                if (isValid()) {
-                    if (maxDate != null && date.isAfter(maxDate)) {
-                        setValid(false);
-                        if (minDate != null) {
-                            validationResult = ValidationResult.INVALID_OUT_OF_RANGE;
-                        }
-                        else {
-                            validationResult = ValidationResult.INVALID_MAX_DATE;
-                        }
-                    }
-                }
-            }
-
-            if (!isValid()) {
-                createFacesMessageFromValidationResult(context, validationResult);
-            }
-        }
+		    boolean condition = isValid() && maxDate != null && date.isAfter(maxDate);
+			if (condition) {
+			    setValid(false);
+			    if (minDate != null) {
+			        validationResult = ValidationResult.INVALID_OUT_OF_RANGE;
+			    }
+			    else {
+			        validationResult = ValidationResult.INVALID_MAX_DATE;
+			    }
+			}
+		}
+		if (!isValid()) {
+		    createFacesMessageFromValidationResult(context, validationResult);
+		}
     }
 }

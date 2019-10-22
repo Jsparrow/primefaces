@@ -36,8 +36,7 @@ public class JQuerySelectorExpressionResolver implements SearchExpressionResolve
 
     @Override
     public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
-        throw new FacesException("jQuery selectors aka PFS are not supported on the server side... expression \"" + expression
-                + "\" referenced from \"" + source.getClientId(context) + "\".");
+        throw new FacesException(new StringBuilder().append("jQuery selectors aka PFS are not supported on the server side... expression \"").append(expression).append("\" referenced from \"").append(source.getClientId(context)).append("\".").toString());
     }
 
     @Override

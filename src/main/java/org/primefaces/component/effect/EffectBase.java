@@ -33,7 +33,72 @@ public abstract class EffectBase extends UIComponentBase implements Widget {
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.EffectRenderer";
 
-    public enum PropertyKeys {
+    public EffectBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getWidgetVar() {
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
+
+	public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
+
+	public String getEvent() {
+        return (String) getStateHelper().eval(PropertyKeys.event, null);
+    }
+
+	public void setEvent(String event) {
+        getStateHelper().put(PropertyKeys.event, event);
+    }
+
+	public String getType() {
+        return (String) getStateHelper().eval(PropertyKeys.type, null);
+    }
+
+	public void setType(String type) {
+        getStateHelper().put(PropertyKeys.type, type);
+    }
+
+	public String getFor() {
+        return (String) getStateHelper().eval(PropertyKeys.forValue, null);
+    }
+
+	public void setFor(String _for) {
+        getStateHelper().put(PropertyKeys.forValue, _for);
+    }
+
+	public int getSpeed() {
+        return (Integer) getStateHelper().eval(PropertyKeys.speed, 1000);
+    }
+
+	public void setSpeed(int speed) {
+        getStateHelper().put(PropertyKeys.speed, speed);
+    }
+
+	public int getDelay() {
+        return (Integer) getStateHelper().eval(PropertyKeys.delay, 0);
+    }
+
+	public void setDelay(int delay) {
+        getStateHelper().put(PropertyKeys.delay, delay);
+    }
+
+	public boolean isQueue() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.queue, true);
+    }
+
+	public void setQueue(boolean queue) {
+        getStateHelper().put(PropertyKeys.queue, queue);
+    }
+
+	public enum PropertyKeys {
 
         widgetVar,
         event,
@@ -56,70 +121,5 @@ public abstract class EffectBase extends UIComponentBase implements Widget {
         public String toString() {
             return ((toString != null) ? toString : super.toString());
         }
-    }
-
-    public EffectBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public String getEvent() {
-        return (String) getStateHelper().eval(PropertyKeys.event, null);
-    }
-
-    public void setEvent(String event) {
-        getStateHelper().put(PropertyKeys.event, event);
-    }
-
-    public String getType() {
-        return (String) getStateHelper().eval(PropertyKeys.type, null);
-    }
-
-    public void setType(String type) {
-        getStateHelper().put(PropertyKeys.type, type);
-    }
-
-    public String getFor() {
-        return (String) getStateHelper().eval(PropertyKeys.forValue, null);
-    }
-
-    public void setFor(String _for) {
-        getStateHelper().put(PropertyKeys.forValue, _for);
-    }
-
-    public int getSpeed() {
-        return (Integer) getStateHelper().eval(PropertyKeys.speed, 1000);
-    }
-
-    public void setSpeed(int speed) {
-        getStateHelper().put(PropertyKeys.speed, speed);
-    }
-
-    public int getDelay() {
-        return (Integer) getStateHelper().eval(PropertyKeys.delay, 0);
-    }
-
-    public void setDelay(int delay) {
-        getStateHelper().put(PropertyKeys.delay, delay);
-    }
-
-    public boolean isQueue() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.queue, true);
-    }
-
-    public void setQueue(boolean queue) {
-        getStateHelper().put(PropertyKeys.queue, queue);
     }
 }

@@ -128,23 +128,24 @@ public class SortFeature implements DataTableFeature {
 
         renderer.encodeTbody(context, table, true);
 
-        if (table.isMultiViewState()) {
-            ValueExpression sortVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
-            List<MultiSortState> multiSortState = table.isMultiSort() ? table.getMultiSortState() : null;
-            if (sortVE != null || multiSortState != null) {
-                TableState ts = table.getTableState(true);
-                ts.setSortBy(sortVE);
-                ts.setMultiSortState(multiSortState);
-                ts.setSortOrder(table.getSortOrder());
-                ts.setSortField(table.getSortField());
-                ts.setSortFunction(table.getSortFunction());
+        if (!table.isMultiViewState()) {
+			return;
+		}
+		ValueExpression sortVE = table.getValueExpression(DataTable.PropertyKeys.sortBy.toString());
+		List<MultiSortState> multiSortState = table.isMultiSort() ? table.getMultiSortState() : null;
+		if (sortVE != null || multiSortState != null) {
+		    TableState ts = table.getTableState(true);
+		    ts.setSortBy(sortVE);
+		    ts.setMultiSortState(multiSortState);
+		    ts.setSortOrder(table.getSortOrder());
+		    ts.setSortField(table.getSortField());
+		    ts.setSortFunction(table.getSortFunction());
 
-                if (table.isPaginator()) {
-                    ts.setFirst(table.getFirst());
-                    ts.setRows(table.getRows());
-                }
-            }
-        }
+		    if (table.isPaginator()) {
+		        ts.setFirst(table.getFirst());
+		        ts.setRows(table.getRows());
+		    }
+		}
     }
 
     public void singleSort(FacesContext context, DataTable table) {
@@ -163,7 +164,7 @@ public class SortFeature implements DataTableFeature {
         }
 
         List list = resolveList(value);
-        Collections.sort(list, new BeanPropertyComparator(
+        list.sort(new BeanPropertyComparator(
                 sortVE, table.getVar(), sortOrder, sortFunction, table.isCaseSensitiveSort(), table.resolveDataLocale(), table.getNullSortOrder()));
 
         context.getApplication().publishEvent(context, PostSortEvent.class, table);
@@ -182,7 +183,7 @@ public class SortFeature implements DataTableFeature {
         int nullSortOrder = table.getNullSortOrder();
 
         ChainedBeanPropertyComparator chainedComparator = new ChainedBeanPropertyComparator();
-        for (SortMeta meta : sortMeta) {
+        sortMeta.forEach(meta -> {
             BeanPropertyComparator comparator;
             UIColumn sortColumn = meta.getColumn();
             ValueExpression sortByVE = sortColumn.getValueExpression(Column.PropertyKeys.sortBy.toString());
@@ -199,9 +200,9 @@ public class SortFeature implements DataTableFeature {
             }
 
             chainedComparator.addComparator(comparator);
-        }
+        });
 
-        Collections.sort(list, chainedComparator);
+        list.sort(chainedComparator);
 
         context.getApplication().publishEvent(context, PostSortEvent.class, table);
     }

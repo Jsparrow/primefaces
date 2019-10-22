@@ -48,7 +48,7 @@ public class LatLng implements Serializable {
 
     @Override
     public String toString() {
-        return "Lat:" + lat + ", Lng:" + lng;
+        return new StringBuilder().append("Lat:").append(lat).append(", Lng:").append(lng).toString();
     }
 
     @Override

@@ -58,12 +58,12 @@ public class Jsf23WidgetVarSearchKeywordResolver extends SearchKeywordResolver {
                 context.invokeContextCallback(visitCallback.getComponent());
             }
             else {
-                throw new FacesException("Expression does not match following pattern @widgetVar(var). Expression: \"" + keyword + "\"");
+                throw new FacesException(new StringBuilder().append("Expression does not match following pattern @widgetVar(var). Expression: \"").append(keyword).append("\"").toString());
             }
 
         }
         catch (Exception e) {
-            throw new FacesException("Expression does not match following pattern @widgetVar(var). Expression: \"" + keyword + "\"", e);
+            throw new FacesException(new StringBuilder().append("Expression does not match following pattern @widgetVar(var). Expression: \"").append(keyword).append("\"").toString(), e);
         }
     }
 }

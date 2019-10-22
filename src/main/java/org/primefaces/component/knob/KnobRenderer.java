@@ -56,7 +56,7 @@ public class KnobRenderer extends CoreRenderer {
             green = "0" + green;
         }
 
-        return "#" + red + green + blue;
+        return new StringBuilder().append("#").append(red).append(green).append(blue).toString();
     }
 
     @Override
@@ -167,7 +167,7 @@ public class KnobRenderer extends CoreRenderer {
     }
 
     @Override
-    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) {
         if (submittedValue == null) {
             submittedValue = 0;
         }

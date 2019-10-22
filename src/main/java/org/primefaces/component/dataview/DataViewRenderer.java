@@ -83,7 +83,7 @@ public class DataViewRenderer extends DataRenderer {
         String paginatorPosition = dataview.getPaginatorPosition();
         String style = dataview.getStyle();
         String styleClass = dataview.getStyleClass();
-        styleClass = (styleClass == null) ? DataView.DATAVIEW_CLASS : DataView.DATAVIEW_CLASS + " " + styleClass;
+        styleClass = (styleClass == null) ? DataView.DATAVIEW_CLASS : new StringBuilder().append(DataView.DATAVIEW_CLASS).append(" ").append(styleClass).toString();
         styleClass += " " + (layout.contains("grid") ? DataView.GRID_LAYOUT_CLASS : DataView.LIST_LAYOUT_CLASS);
 
         if (hasPaginator) {
@@ -99,13 +99,13 @@ public class DataViewRenderer extends DataRenderer {
 
         encodeHeader(context, dataview);
 
-        if (hasPaginator && !paginatorPosition.equalsIgnoreCase("bottom")) {
+        if (hasPaginator && !"bottom".equalsIgnoreCase(paginatorPosition)) {
             encodePaginatorMarkup(context, dataview, "top");
         }
 
         encodeContent(context, dataview);
 
-        if (hasPaginator && !paginatorPosition.equalsIgnoreCase("top")) {
+        if (hasPaginator && !"top".equalsIgnoreCase(paginatorPosition)) {
             encodePaginatorMarkup(context, dataview, "bottom");
         }
 
@@ -181,7 +181,7 @@ public class DataViewRenderer extends DataRenderer {
 
         //input
         writer.startElement("input", null);
-        writer.writeAttribute("id", clientId + "_" + layout, null);
+        writer.writeAttribute("id", new StringBuilder().append(clientId).append("_").append(layout).toString(), null);
         writer.writeAttribute("name", clientId, null);
         writer.writeAttribute("type", "radio", null);
         writer.writeAttribute("value", layout, null);
@@ -196,7 +196,7 @@ public class DataViewRenderer extends DataRenderer {
 
         //icon
         writer.startElement("span", null);
-        writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " " + icon, null);
+        writer.writeAttribute("class", new StringBuilder().append(HTML.BUTTON_LEFT_ICON_CLASS).append(" ").append(icon).toString(), null);
 
         writer.endElement("span");
 
@@ -224,81 +224,75 @@ public class DataViewRenderer extends DataRenderer {
     protected void encodeGridLayout(FacesContext context, DataView dataview) throws IOException {
         DataViewGridItem grid = dataview.getGridItem();
 
-        if (grid != null) {
-            ResponseWriter writer = context.getResponseWriter();
+        if (grid == null) {
+			return;
+		}
+		ResponseWriter writer = context.getResponseWriter();
+		int columns = grid.getColumns();
+		int rowIndex = dataview.getFirst();
+		int rows = dataview.getRows();
+		int itemsToRender = rows != 0 ? rows : dataview.getRowCount();
+		int numberOfRowsToRender = (itemsToRender + columns - 1) / columns;
+		String columnClass = new StringBuilder().append(DataView.GRID_LAYOUT_COLUMN_CLASS).append(" ").append(GridLayoutUtils.getColumnClass(columns)).toString();
+		for (int i = 0; i < numberOfRowsToRender; i++) {
+		    dataview.setRowIndex(rowIndex);
+		    if (!dataview.isRowAvailable()) {
+		        break;
+		    }
 
-            int columns = grid.getColumns();
-            int rowIndex = dataview.getFirst();
-            int rows = dataview.getRows();
-            int itemsToRender = rows != 0 ? rows : dataview.getRowCount();
-            int numberOfRowsToRender = (itemsToRender + columns - 1) / columns;
-            String columnClass = DataView.GRID_LAYOUT_COLUMN_CLASS + " " + GridLayoutUtils.getColumnClass(columns);
+		    writer.startElement("div", null);
+		    writer.writeAttribute("class", DataView.GRID_LAYOUT_ROW_CLASS, null);
 
-            for (int i = 0; i < numberOfRowsToRender; i++) {
-                dataview.setRowIndex(rowIndex);
-                if (!dataview.isRowAvailable()) {
-                    break;
-                }
+		    for (int j = 0; j < columns; j++) {
+		        writer.startElement("div", null);
+		        writer.writeAttribute("class", columnClass, null);
 
-                writer.startElement("div", null);
-                writer.writeAttribute("class", DataView.GRID_LAYOUT_ROW_CLASS, null);
+		        dataview.setRowIndex(rowIndex);
+		        if (dataview.isRowAvailable()) {
+		            renderChildren(context, grid);
+		        }
+		        rowIndex++;
 
-                for (int j = 0; j < columns; j++) {
-                    writer.startElement("div", null);
-                    writer.writeAttribute("class", columnClass, null);
+		        writer.endElement("div");
+		    }
 
-                    dataview.setRowIndex(rowIndex);
-                    if (dataview.isRowAvailable()) {
-                        renderChildren(context, grid);
-                    }
-                    rowIndex++;
-
-                    writer.endElement("div");
-                }
-
-                writer.endElement("div");
-            }
-
-            dataview.setRowIndex(-1); //cleanup
-        }
+		    writer.endElement("div");
+		}
+		dataview.setRowIndex(-1); //cleanup
     }
 
     protected void encodeListLayout(FacesContext context, DataView dataview) throws IOException {
         DataViewListItem list = dataview.getListItem();
 
-        if (list != null) {
-            ResponseWriter writer = context.getResponseWriter();
+        if (list == null) {
+			return;
+		}
+		ResponseWriter writer = context.getResponseWriter();
+		int first = dataview.getFirst();
+		int rows = dataview.getRows() == 0 ? dataview.getRowCount() : dataview.getRows();
+		int pageSize = first + rows;
+		writer.startElement("ul", null);
+		writer.writeAttribute("class", DataView.LIST_LAYOUT_CONTAINER_CLASS, null);
+		for (int i = first; i < pageSize; i++) {
+		    dataview.setRowIndex(i);
 
-            int first = dataview.getFirst();
-            int rows = dataview.getRows() == 0 ? dataview.getRowCount() : dataview.getRows();
-            int pageSize = first + rows;
+		    if (!dataview.isRowAvailable()) {
+		        return;
+		    }
 
-            writer.startElement("ul", null);
-            writer.writeAttribute("class", DataView.LIST_LAYOUT_CONTAINER_CLASS, null);
+		    writer.startElement("li", null);
+		    writer.writeAttribute("class", DataView.ROW_CLASS, null);
 
-            for (int i = first; i < pageSize; i++) {
-                dataview.setRowIndex(i);
+		    dataview.setRowIndex(i);
+		    if (dataview.isRowAvailable()) {
+		        renderChildren(context, list);
+		    }
 
-                if (!dataview.isRowAvailable()) {
-                    return;
-                }
-
-                writer.startElement("li", null);
-                writer.writeAttribute("class", DataView.ROW_CLASS, null);
-
-                dataview.setRowIndex(i);
-                if (dataview.isRowAvailable()) {
-                    renderChildren(context, list);
-                }
-
-                writer.endElement("li");
-            }
-
-            writer.endElement("ul");
-
-            //cleanup
-            dataview.setRowIndex(-1);
-        }
+		    writer.endElement("li");
+		}
+		writer.endElement("ul");
+		//cleanup
+		dataview.setRowIndex(-1);
     }
 
     protected void encodeScript(FacesContext context, DataView dataview) throws IOException {

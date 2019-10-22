@@ -56,7 +56,7 @@ public class DashboardRenderer extends CoreRenderer {
 
         writer.startElement("div", dashboard);
         writer.writeAttribute("id", clientId, "id");
-        String styleClass = dashboard.getStyleClass() != null ? Dashboard.CONTAINER_CLASS + " " + dashboard.getStyleClass() : Dashboard.CONTAINER_CLASS;
+        String styleClass = dashboard.getStyleClass() != null ? new StringBuilder().append(Dashboard.CONTAINER_CLASS).append(" ").append(dashboard.getStyleClass()).toString() : Dashboard.CONTAINER_CLASS;
         writer.writeAttribute("class", styleClass, "styleClass");
         if (dashboard.getStyle() != null) {
             writer.writeAttribute("style", dashboard.getStyle(), "style");
@@ -67,7 +67,7 @@ public class DashboardRenderer extends CoreRenderer {
             for (DashboardColumn column : model.getColumns()) {
                 String columnStyle = column.getStyle();
                 String columnStyleClass = column.getStyleClass();
-                columnStyleClass = (columnStyleClass == null) ? Dashboard.COLUMN_CLASS : Dashboard.COLUMN_CLASS + " " + columnStyleClass;
+                columnStyleClass = (columnStyleClass == null) ? Dashboard.COLUMN_CLASS : new StringBuilder().append(Dashboard.COLUMN_CLASS).append(" ").append(columnStyleClass).toString();
 
                 writer.startElement("div", null);
                 writer.writeAttribute("class", columnStyleClass, null);

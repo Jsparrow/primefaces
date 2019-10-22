@@ -42,33 +42,13 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import java.io.IOException;
 import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.Collections;
 
 public abstract class DataTableExporter implements Exporter<DataTable> {
-
-    protected enum ColumnType {
-        HEADER("header"),
-        FOOTER("footer");
-
-        private final String facet;
-
-        ColumnType(String facet) {
-            this.facet = facet;
-        }
-
-        public String facet() {
-            return facet;
-        }
-
-        @Override
-        public String toString() {
-            return facet;
-        }
-    }
 
     protected List<UIColumn> getColumnsToExport(UIData table) {
         return table.getChildren().stream()
@@ -77,11 +57,11 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
                 .collect(Collectors.toList());
     }
 
-    protected boolean hasColumnFooter(List<UIColumn> columns) {
+	protected boolean hasColumnFooter(List<UIColumn> columns) {
         return columns.stream().anyMatch(c -> c.getFooter() != null);
     }
 
-    protected String exportColumnByFunction(FacesContext context, org.primefaces.component.api.UIColumn column) {
+	protected String exportColumnByFunction(FacesContext context, org.primefaces.component.api.UIColumn column) {
         MethodExpression exportFunction = column.getExportFunction();
 
         if (exportFunction != null) {
@@ -91,7 +71,7 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
         return "";
     }
 
-    public String exportValue(FacesContext context, UIComponent component) {
+	public String exportValue(FacesContext context, UIComponent component) {
 
         if (component instanceof HtmlCommandLink) {  //support for PrimeFaces and standard HtmlCommandLink
             HtmlCommandLink link = (HtmlCommandLink) component;
@@ -102,13 +82,8 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
             }
             else {
                 //export first value holder
-                for (UIComponent child : link.getChildren()) {
-                    if (child instanceof ValueHolder) {
-                        return exportValue(context, child);
-                    }
-                }
-
-                return "";
+				return link.getChildren().stream().filter(child -> child instanceof ValueHolder).findFirst().map(child -> exportValue(context, child))
+						.orElse("");
             }
         }
         else if (component instanceof ValueHolder) {
@@ -140,10 +115,10 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
                         collection = (List) value;
                     }
                     else if (value.getClass().isArray()) {
-                        collection = Arrays.asList(value);
+                        collection = Collections.singletonList(value);
                     }
                     else {
-                        throw new FacesException("Value of " + component.getClientId(context) + " must be a List or an Array.");
+                        throw new FacesException(new StringBuilder().append("Value of ").append(component.getClientId(context)).append(" must be a List or an Array.").toString());
                     }
 
                     int collectionSize = collection.size();
@@ -191,7 +166,7 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
         }
     }
 
-    protected void exportPageOnly(FacesContext context, DataTable table, Object document) {
+	protected void exportPageOnly(FacesContext context, DataTable table, Object document) {
         int first = table.getFirst();
         int rows = table.getRows();
         if (rows == 0) {
@@ -205,7 +180,7 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
         }
     }
 
-    protected void exportAll(FacesContext context, DataTable table, Object document) {
+	protected void exportAll(FacesContext context, DataTable table, Object document) {
         int first = table.getFirst();
         int rowCount = table.getRowCount();
         int rows = table.getRows();
@@ -240,7 +215,7 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
         }
     }
 
-    protected void exportRow(DataTable table, Object document, int rowIndex) {
+	protected void exportRow(DataTable table, Object document, int rowIndex) {
         table.setRowIndex(rowIndex);
         if (!table.isRowAvailable()) {
             return;
@@ -251,59 +226,59 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
         postRowExport(table, document);
     }
 
-    protected void exportRow(DataTable table, Object document) {
+	protected void exportRow(DataTable table, Object document) {
         preRowExport(table, document);
         exportCells(table, document);
         postRowExport(table, document);
     }
 
-    protected void exportSelectionOnly(FacesContext context, DataTable table, Object document) {
+	protected void exportSelectionOnly(FacesContext context, DataTable table, Object document) {
         Object selection = table.getSelection();
         String var = table.getVar();
 
-        if (selection != null) {
-            Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+        if (selection == null) {
+			return;
+		}
+		Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
+		if (selection.getClass().isArray()) {
+		    int size = Array.getLength(selection);
 
-            if (selection.getClass().isArray()) {
-                int size = Array.getLength(selection);
-
-                for (int i = 0; i < size; i++) {
-                    requestMap.put(var, Array.get(selection, i));
-                    exportRow(table, document);
-                }
-            }
-            else if (Collection.class.isAssignableFrom(selection.getClass())) {
-                for (Object obj : (Collection) selection) {
-                    requestMap.put(var, obj);
-                    exportRow(table, document);
-                }
-            }
-            else {
-                requestMap.put(var, selection);
-                exportCells(table, document);
-            }
-        }
+		    for (int i = 0; i < size; i++) {
+		        requestMap.put(var, Array.get(selection, i));
+		        exportRow(table, document);
+		    }
+		}
+		else if (Collection.class.isAssignableFrom(selection.getClass())) {
+		    for (Object obj : (Collection) selection) {
+		        requestMap.put(var, obj);
+		        exportRow(table, document);
+		    }
+		}
+		else {
+		    requestMap.put(var, selection);
+		    exportCells(table, document);
+		}
     }
 
-    protected void preExport(FacesContext context, ExportConfiguration config) throws IOException {
+	protected void preExport(FacesContext context, ExportConfiguration config) throws IOException {
         // NOOP
     }
 
-    protected void postExport(FacesContext context, ExportConfiguration config) throws IOException {
+	protected void postExport(FacesContext context, ExportConfiguration config) throws IOException {
         // NOOP
     }
 
-    protected void preRowExport(DataTable table, Object document) {
+	protected void preRowExport(DataTable table, Object document) {
         // NOOP
     }
 
-    protected void postRowExport(DataTable table, Object document) {
+	protected void postRowExport(DataTable table, Object document) {
         // NOOP
     }
 
-    protected abstract void exportCells(DataTable table, Object document);
+	protected abstract void exportCells(DataTable table, Object document);
 
-    @Override
+	@Override
     public void export(FacesContext context, List<DataTable> tables, ExportConfiguration config) throws IOException {
         preExport(context,  config);
 
@@ -317,7 +292,7 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
         postExport(context, config);
     }
 
-    /**
+	/**
      * Export datatable
      * @param facesContext faces context
      * @param table datatable to export
@@ -327,7 +302,27 @@ public abstract class DataTableExporter implements Exporter<DataTable> {
      */
     protected abstract void doExport(FacesContext facesContext, DataTable table, ExportConfiguration config, int index) throws IOException;
 
-    private class DataTableVisitCallBack implements VisitCallback {
+	protected enum ColumnType {
+        HEADER("header"),
+        FOOTER("footer");
+
+        private final String facet;
+
+        ColumnType(String facet) {
+            this.facet = facet;
+        }
+
+        public String facet() {
+            return facet;
+        }
+
+        @Override
+        public String toString() {
+            return facet;
+        }
+    }
+
+	private class DataTableVisitCallBack implements VisitCallback {
 
         private ExportConfiguration config;
 

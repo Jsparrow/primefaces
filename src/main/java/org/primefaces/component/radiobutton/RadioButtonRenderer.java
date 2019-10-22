@@ -58,7 +58,7 @@ public class RadioButtonRenderer extends InputRenderer {
         String style = radio.getStyle();
         String defaultStyleClass = selectOneRadio.isPlain() ? HTML.RADIOBUTTON_NATIVE_CLASS : HTML.RADIOBUTTON_CLASS;
         String styleClass = radio.getStyleClass();
-        styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
+        styleClass = styleClass == null ? defaultStyleClass : new StringBuilder().append(defaultStyleClass).append(" ").append(styleClass).toString();
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);

@@ -50,15 +50,14 @@ public class MessagesRenderer extends UINotificationRenderer {
         String containerClass = uiMessages.isShowIcon() ? Messages.CONTAINER_CLASS : Messages.ICONLESS_CONTAINER_CLASS;
         String style = uiMessages.getStyle();
         String styleClass = uiMessages.getStyleClass();
-        styleClass = (styleClass == null) ? containerClass : containerClass + " " + styleClass;
+        styleClass = (styleClass == null) ? containerClass : new StringBuilder().append(containerClass).append(" ").append(styleClass).toString();
 
         Map<String, List<FacesMessage>> messagesBySeverity = null;
         List<FacesMessage> messages = collectFacesMessages(uiMessages, context);
         if (messages != null && !messages.isEmpty()) {
             messagesBySeverity = new HashMap<>(4);
 
-            for (int i = 0; i < messages.size(); i++) {
-                FacesMessage message = messages.get(i);
+            for (FacesMessage message : messages) {
                 FacesMessage.Severity severity = message.getSeverity();
 
                 if (severity.equals(FacesMessage.SEVERITY_INFO)) {
@@ -104,16 +103,15 @@ public class MessagesRenderer extends UINotificationRenderer {
     }
 
     protected void addMessage(Messages uiMessages, FacesMessage message, Map<String, List<FacesMessage>> messagesBySeverity, String severity) {
-        if (shouldRender(uiMessages, message, severity)) {
-            List<FacesMessage> severityMessages = messagesBySeverity.get(severity);
-
-            if (severityMessages == null) {
-                severityMessages = new ArrayList<>();
-                messagesBySeverity.put(severity, severityMessages);
-            }
-
-            severityMessages.add(message);
-        }
+        if (!shouldRender(uiMessages, message, severity)) {
+			return;
+		}
+		List<FacesMessage> severityMessages = messagesBySeverity.get(severity);
+		if (severityMessages == null) {
+		    severityMessages = new ArrayList<>();
+		    messagesBySeverity.put(severity, severityMessages);
+		}
+		severityMessages.add(message);
     }
 
     protected void encodeMessages(FacesContext context, Messages uiMessages, String severity, List<FacesMessage> messages) throws IOException {
@@ -136,8 +134,7 @@ public class MessagesRenderer extends UINotificationRenderer {
 
         writer.startElement("ul", null);
 
-        for (int i = 0; i < messages.size(); i++) {
-            FacesMessage message = messages.get(i);
+        for (FacesMessage message : messages) {
             encodeMessage(writer, uiMessages, message, styleClassPrefix, escape);
             message.rendered();
         }
@@ -216,7 +213,7 @@ public class MessagesRenderer extends UINotificationRenderer {
             String forType = uiMessages.getForType();
 
             // key case
-            if (forType == null || forType.equals("key")) {
+            if (forType == null || "key".equals(forType)) {
                 Iterator<FacesMessage> messagesIterator = context.getMessages(_for);
                 while (messagesIterator.hasNext()) {
                     if (messages == null) {
@@ -227,7 +224,7 @@ public class MessagesRenderer extends UINotificationRenderer {
             }
 
             // clientId / SearchExpression case
-            if (forType == null || forType.equals("expression")) {
+            if (forType == null || "expression".equals(forType)) {
                 UIComponent forComponent = SearchExpressionFacade.resolveComponent(context, uiMessages, _for, SearchExpressionHint.IGNORE_NO_RESULT);
                 if (forComponent != null) {
 

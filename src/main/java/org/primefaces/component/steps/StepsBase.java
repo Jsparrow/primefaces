@@ -32,7 +32,65 @@ public abstract class StepsBase extends AbstractMenu implements Widget {
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.StepsRenderer";
 
-    public enum PropertyKeys {
+    public StepsBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getWidgetVar() {
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
+
+	public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
+
+	@Override
+    public org.primefaces.model.menu.MenuModel getModel() {
+        return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
+    }
+
+	public void setModel(org.primefaces.model.menu.MenuModel model) {
+        getStateHelper().put(PropertyKeys.model, model);
+    }
+
+	public String getStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
+    }
+
+	public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
+    }
+
+	public String getStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
+    }
+
+	public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+	public int getActiveIndex() {
+        return (Integer) getStateHelper().eval(PropertyKeys.activeIndex, 0);
+    }
+
+	public void setActiveIndex(int activeIndex) {
+        getStateHelper().put(PropertyKeys.activeIndex, activeIndex);
+    }
+
+	public boolean isReadonly() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.readonly, true);
+    }
+
+	public void setReadonly(boolean readonly) {
+        getStateHelper().put(PropertyKeys.readonly, readonly);
+    }
+
+	public enum PropertyKeys {
 
         widgetVar,
         model,
@@ -40,63 +98,5 @@ public abstract class StepsBase extends AbstractMenu implements Widget {
         styleClass,
         activeIndex,
         readonly
-    }
-
-    public StepsBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    @Override
-    public org.primefaces.model.menu.MenuModel getModel() {
-        return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
-    }
-
-    public void setModel(org.primefaces.model.menu.MenuModel model) {
-        getStateHelper().put(PropertyKeys.model, model);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public int getActiveIndex() {
-        return (Integer) getStateHelper().eval(PropertyKeys.activeIndex, 0);
-    }
-
-    public void setActiveIndex(int activeIndex) {
-        getStateHelper().put(PropertyKeys.activeIndex, activeIndex);
-    }
-
-    public boolean isReadonly() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.readonly, true);
-    }
-
-    public void setReadonly(boolean readonly) {
-        getStateHelper().put(PropertyKeys.readonly, readonly);
     }
 }

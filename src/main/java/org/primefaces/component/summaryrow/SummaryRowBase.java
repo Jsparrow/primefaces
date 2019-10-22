@@ -32,26 +32,26 @@ public abstract class SummaryRowBase extends UIComponentBase {
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.SummaryRowRenderer";
 
-    public enum PropertyKeys {
-
-        listener
-    }
-
     public SummaryRowBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
-    @Override
+	@Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
-    public javax.el.MethodExpression getListener() {
+	public javax.el.MethodExpression getListener() {
         return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.listener, null);
     }
 
-    public void setListener(javax.el.MethodExpression listener) {
+	public void setListener(javax.el.MethodExpression listener) {
         getStateHelper().put(PropertyKeys.listener, listener);
+    }
+
+	public enum PropertyKeys {
+
+        listener
     }
 
 }

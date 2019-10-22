@@ -94,7 +94,7 @@ public class CarouselRenderer extends CoreRenderer {
         boolean collapsed = carousel.isCollapsed();
         String style = carousel.getStyle();
         String styleClass = carousel.getStyleClass();
-        styleClass = (styleClass == null) ? Carousel.CONTAINER_CLASS : Carousel.CONTAINER_CLASS + " " + styleClass;
+        styleClass = (styleClass == null) ? Carousel.CONTAINER_CLASS : new StringBuilder().append(Carousel.CONTAINER_CLASS).append(" ").append(styleClass).toString();
 
         //container
         writer.startElement("div", null);
@@ -121,7 +121,7 @@ public class CarouselRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         String itemStyleClass = carousel.getItemStyleClass();
-        itemStyleClass = itemStyleClass == null ? Carousel.ITEM_CLASS : Carousel.ITEM_CLASS + " " + itemStyleClass;
+        itemStyleClass = itemStyleClass == null ? Carousel.ITEM_CLASS : new StringBuilder().append(Carousel.ITEM_CLASS).append(" ").append(itemStyleClass).toString();
 
         writer.startElement("div", null);
         writer.writeAttribute("class", carousel.isVertical() ? Carousel.VERTICAL_VIEWPORT_CLASS : Carousel.VIEWPORT_CLASS, null);

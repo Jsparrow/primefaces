@@ -42,10 +42,14 @@ import org.primefaces.context.PrimeRequestContext;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.Constants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class FileDownloadActionListener implements ActionListener, StateHolder {
 
-    private ValueExpression value;
+    private static final Logger logger = LoggerFactory.getLogger(FileDownloadActionListener.class);
+
+	private ValueExpression value;
 
     private ValueExpression contentDisposition;
 
@@ -62,7 +66,7 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
     }
 
     @Override
-    public void processAction(ActionEvent actionEvent) throws AbortProcessingException {
+    public void processAction(ActionEvent actionEvent) {
         FacesContext context = FacesContext.getCurrentInstance();
         ELContext elContext = context.getELContext();
         StreamedContent content = (StreamedContent) value.getValue(elContext);
@@ -115,6 +119,7 @@ public class FileDownloadActionListener implements ActionListener, StateHolder {
                     inputStream.close();
                 }
                 catch (IOException e) {
+					logger.error(e.getMessage(), e);
                     // ignore
                 }
             }

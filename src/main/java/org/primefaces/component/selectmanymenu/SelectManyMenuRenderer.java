@@ -45,7 +45,7 @@ import org.primefaces.util.WidgetBuilder;
 public class SelectManyMenuRenderer extends SelectManyRenderer {
 
     @Override
-    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) {
         Renderer renderer = ComponentUtils.getUnwrappedRenderer(
                 context,
                 "javax.faces.SelectMany",
@@ -68,7 +68,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
 
         String style = menu.getStyle();
         String styleClass = menu.getStyleClass();
-        styleClass = styleClass == null ? SelectManyMenu.CONTAINER_CLASS : SelectManyMenu.CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? SelectManyMenu.CONTAINER_CLASS : new StringBuilder().append(SelectManyMenu.CONTAINER_CLASS).append(" ").append(styleClass).toString();
         styleClass = menu.isDisabled() ? styleClass + " ui-state-disabled" : styleClass;
         styleClass = !menu.isValid() ? styleClass + " ui-state-error" : styleClass;
 
@@ -149,8 +149,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
             writer.startElement("table", null);
             writer.writeAttribute("class", SelectManyMenu.LIST_CLASS, null);
             writer.startElement("tbody", null);
-            for (int i = 0; i < selectItems.size(); i++) {
-                SelectItem selectItem = selectItems.get(i);
+            for (SelectItem selectItem : selectItems) {
                 encodeItem(context, menu, selectItem, values, submittedValues, converter, customContent, showCheckbox);
             }
             writer.endElement("tbody");
@@ -159,8 +158,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         else {
             writer.startElement("ul", null);
             writer.writeAttribute("class", SelectManyMenu.LIST_CLASS, null);
-            for (int i = 0; i < selectItems.size(); i++) {
-                SelectItem selectItem = selectItems.get(i);
+            for (SelectItem selectItem : selectItems) {
                 encodeItem(context, menu, selectItem, values, submittedValues, converter, customContent, showCheckbox);
             }
             writer.endElement("ul");
@@ -257,8 +255,7 @@ public class SelectManyMenuRenderer extends SelectManyRenderer {
         Object values = getValues(menu);
         Object submittedValues = getSubmittedValues(menu);
 
-        for (int i = 0; i < selectItems.size(); i++) {
-            SelectItem selectItem = selectItems.get(i);
+        for (SelectItem selectItem : selectItems) {
             encodeOption(context, menu, selectItem, values, submittedValues, converter);
         }
     }

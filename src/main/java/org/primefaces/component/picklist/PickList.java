@@ -188,34 +188,34 @@ public class PickList extends PickListBase {
                 DualListModel<?> list = (DualListModel<?>) getValue();
                 FacesEvent wrapperEvent = null;
 
-                if (eventName.equals("select")) {
+                if ("select".equals(eventName)) {
                     String listName = params.get(clientId + "_listName");
                     int itemIndex = Integer.parseInt(params.get(clientId + "_itemIndex"));
 
-                    if (listName.equals("target")) {
+                    if ("target".equals(listName)) {
                         wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), list.getTarget().get(itemIndex));
                     }
                     else {
                         wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), list.getSource().get(itemIndex));
                     }
                 }
-                else if (eventName.equals("unselect")) {
+                else if ("unselect".equals(eventName)) {
                     String listName = params.get(clientId + "_listName");
                     int itemIndex = Integer.parseInt(params.get(clientId + "_itemIndex"));
 
-                    if (listName.equals("target")) {
+                    if ("target".equals(listName)) {
                         wrapperEvent = new UnselectEvent(this, behaviorEvent.getBehavior(), list.getTarget().get(itemIndex));
                     }
                     else {
                         wrapperEvent = new UnselectEvent(this, behaviorEvent.getBehavior(), list.getSource().get(itemIndex));
                     }
                 }
-                else if (eventName.equals("reorder")) {
+                else if ("reorder".equals(eventName)) {
                     wrapperEvent = behaviorEvent;
                 }
 
                 if (wrapperEvent == null) {
-                    throw new FacesException("Component " + this.getClass().getName() + " does not support event " + eventName + "!");
+                    throw new FacesException(new StringBuilder().append("Component ").append(this.getClass().getName()).append(" does not support event ").append(eventName).append("!").toString());
                 }
 
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
@@ -238,7 +238,7 @@ public class PickList extends PickListBase {
 
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if (eventName.equals("transfer")) {
+            if ("transfer".equals(eventName)) {
                 String[] items = paramValues.get(clientId + "_transferred");
                 boolean isAdd = Boolean.parseBoolean(params.get(clientId + "_add"));
                 List transferredItems = new ArrayList();
@@ -248,13 +248,13 @@ public class PickList extends PickListBase {
 
                 super.queueEvent(transferEvent);
             }
-            else if (eventName.equals("select")) {
+            else if ("select".equals(eventName)) {
                 customEvents.put(eventName, (AjaxBehaviorEvent) event);
             }
-            else if (eventName.equals("unselect")) {
+            else if ("unselect".equals(eventName)) {
                 customEvents.put(eventName, (AjaxBehaviorEvent) event);
             }
-            else if (eventName.equals("reorder")) {
+            else if ("reorder".equals(eventName)) {
                 customEvents.put(eventName, (AjaxBehaviorEvent) event);
             }
         }

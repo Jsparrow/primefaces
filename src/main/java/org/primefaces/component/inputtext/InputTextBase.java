@@ -34,61 +34,61 @@ public abstract class InputTextBase extends HtmlInputText implements Widget, RTL
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.InputTextRenderer";
 
-    public enum PropertyKeys {
+    public InputTextBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getPlaceholder() {
+        return (String) getStateHelper().eval(PropertyKeys.placeholder, null);
+    }
+
+	public void setPlaceholder(String placeholder) {
+        getStateHelper().put(PropertyKeys.placeholder, placeholder);
+    }
+
+	public String getWidgetVar() {
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
+
+	public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
+
+	public String getType() {
+        return (String) getStateHelper().eval(PropertyKeys.type, "text");
+    }
+
+	public void setType(String type) {
+        getStateHelper().put(PropertyKeys.type, type);
+    }
+
+	public String getCounter() {
+        return (String) getStateHelper().eval(PropertyKeys.counter, null);
+    }
+
+	public void setCounter(String counter) {
+        getStateHelper().put(PropertyKeys.counter, counter);
+    }
+
+	public String getCounterTemplate() {
+        return (String) getStateHelper().eval(PropertyKeys.counterTemplate, null);
+    }
+
+	public void setCounterTemplate(String counterTemplate) {
+        getStateHelper().put(PropertyKeys.counterTemplate, counterTemplate);
+    }
+
+	public enum PropertyKeys {
 
         placeholder,
         widgetVar,
         type,
         counter,
         counterTemplate
-    }
-
-    public InputTextBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getPlaceholder() {
-        return (String) getStateHelper().eval(PropertyKeys.placeholder, null);
-    }
-
-    public void setPlaceholder(String placeholder) {
-        getStateHelper().put(PropertyKeys.placeholder, placeholder);
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public String getType() {
-        return (String) getStateHelper().eval(PropertyKeys.type, "text");
-    }
-
-    public void setType(String type) {
-        getStateHelper().put(PropertyKeys.type, type);
-    }
-
-    public String getCounter() {
-        return (String) getStateHelper().eval(PropertyKeys.counter, null);
-    }
-
-    public void setCounter(String counter) {
-        getStateHelper().put(PropertyKeys.counter, counter);
-    }
-
-    public String getCounterTemplate() {
-        return (String) getStateHelper().eval(PropertyKeys.counterTemplate, null);
-    }
-
-    public void setCounterTemplate(String counterTemplate) {
-        getStateHelper().put(PropertyKeys.counterTemplate, counterTemplate);
     }
 }

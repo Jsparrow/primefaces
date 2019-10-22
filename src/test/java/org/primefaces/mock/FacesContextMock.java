@@ -53,7 +53,7 @@ public class FacesContextMock extends FacesContext {
     private UIViewRoot viewRoot;
 
     public FacesContextMock() {
-        this.attributes = new HashMap<Object, Object>();
+        this.attributes = new HashMap<>();
 
         setCurrentInstance(this);
     }
@@ -88,9 +88,7 @@ public class FacesContextMock extends FacesContext {
 
     @Override
     public void addMessage(String clientId, FacesMessage message) {
-        if (!messages.containsKey(clientId)) {
-            messages.put(clientId, new ArrayList<>());
-        }
+        messages.putIfAbsent(clientId, new ArrayList<>());
         
         messages.get(clientId).add(message);
     }

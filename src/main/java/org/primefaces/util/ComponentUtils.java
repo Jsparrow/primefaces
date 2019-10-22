@@ -184,20 +184,18 @@ public class ComponentUtils {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String behaviorEvent = params.get("javax.faces.behavior.event");
 
-        if (null != behaviorEvent) {
-            List<ClientBehavior> behaviorsForEvent = behaviors.get(behaviorEvent);
+        if (null == behaviorEvent) {
+			return;
+		}
+		List<ClientBehavior> behaviorsForEvent = behaviors.get(behaviorEvent);
+		if (behaviorsForEvent != null && !behaviorsForEvent.isEmpty()) {
+		    String behaviorSource = params.get("javax.faces.source");
+		    String clientId = component.getClientId(context);
 
-            if (behaviorsForEvent != null && !behaviorsForEvent.isEmpty()) {
-                String behaviorSource = params.get("javax.faces.source");
-                String clientId = component.getClientId(context);
-
-                if (behaviorSource != null && clientId.equals(behaviorSource)) {
-                    for (ClientBehavior behavior : behaviorsForEvent) {
-                        behavior.decode(context, component);
-                    }
-                }
-            }
-        }
+		    if (behaviorSource != null && clientId.equals(behaviorSource)) {
+		        behaviorsForEvent.forEach(behavior -> behavior.decode(context, component));
+		    }
+		}
     }
 
     public static String escapeSelector(String selector) {
@@ -212,9 +210,7 @@ public class ComponentUtils {
 
     public static void processDecodesOfFacetsAndChilds(UIComponent component, FacesContext context) {
         if (component.getFacetCount() > 0) {
-            for (UIComponent facet : component.getFacets().values()) {
-                facet.processDecodes(context);
-            }
+            component.getFacets().values().forEach(facet -> facet.processDecodes(context));
         }
 
         if (component.getChildCount() > 0) {
@@ -227,9 +223,7 @@ public class ComponentUtils {
 
     public static void processValidatorsOfFacetsAndChilds(UIComponent component, FacesContext context) {
         if (component.getFacetCount() > 0) {
-            for (UIComponent facet : component.getFacets().values()) {
-                facet.processValidators(context);
-            }
+            component.getFacets().values().forEach(facet -> facet.processValidators(context));
         }
 
         if (component.getChildCount() > 0) {
@@ -242,9 +236,7 @@ public class ComponentUtils {
 
     public static void processUpdatesOfFacetsAndChilds(UIComponent component, FacesContext context) {
         if (component.getFacetCount() > 0) {
-            for (UIComponent facet : component.getFacets().values()) {
-                facet.processUpdates(context);
-            }
+            component.getFacets().values().forEach(facet -> facet.processUpdates(context));
         }
 
         if (component.getChildCount() > 0) {
@@ -628,11 +620,10 @@ public class ComponentUtils {
             }
         }
 
-        if (includeSelf && isIteratorComponent.test(component)) {
-            function.accept(component);
-            return true;
-        }
-
-        return false;
+        if (!(includeSelf && isIteratorComponent.test(component))) {
+			return false;
+		}
+		function.accept(component);
+		return true;
     }
 }

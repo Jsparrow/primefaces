@@ -46,8 +46,7 @@ public class RowExpressionResolver implements SearchExpressionResolver, ClientId
 
     @Override
     public UIComponent resolveComponent(FacesContext context, UIComponent source, UIComponent last, String expression, int options) {
-        throw new FacesException("@row likely returns multiple components, therefore it's not supported in #resolveComponent... expression \""
-                + expression + "\" referenced from \"" + source.getClientId(context) + "\".");
+        throw new FacesException(new StringBuilder().append("@row likely returns multiple components, therefore it's not supported in #resolveComponent... expression \"").append(expression).append("\" referenced from \"").append(source.getClientId(context)).append("\".").toString());
     }
 
     @Override
@@ -59,7 +58,7 @@ public class RowExpressionResolver implements SearchExpressionResolver, ClientId
 
         StringBuilder clientIds = new StringBuilder();
 
-        for (UIComponent column : data.getChildren()) {
+        data.getChildren().forEach(column -> {
             // handle dynamic columns
             if (column instanceof Columns) {
 
@@ -85,7 +84,7 @@ public class RowExpressionResolver implements SearchExpressionResolver, ClientId
                 }
             }
             else if (column instanceof UIColumn) {
-                for (UIComponent cell : column.getChildren()) {
+                column.getChildren().forEach(cell -> {
 
                     if (clientIds.length() > 0) {
                         clientIds.append(" ");
@@ -96,9 +95,9 @@ public class RowExpressionResolver implements SearchExpressionResolver, ClientId
                     clientIds.append(row);
                     clientIds.append(separatorChar);
                     clientIds.append(cell.getId());
-                }
+                });
             }
-        }
+        });
 
         return clientIds.toString();
     }
@@ -106,8 +105,7 @@ public class RowExpressionResolver implements SearchExpressionResolver, ClientId
     protected int validate(FacesContext context, UIComponent source, UIComponent last, String expression) {
 
         if (!(last instanceof UIData)) {
-            throw new FacesException("The last resolved component must be instance of UIData to support @row. Expression: \"" + expression
-                    + "\" referenced from \"" + last.getClientId(context) + "\".");
+            throw new FacesException(new StringBuilder().append("The last resolved component must be instance of UIData to support @row. Expression: \"").append(expression).append("\" referenced from \"").append(last.getClientId(context)).append("\".").toString());
         }
 
         try {
@@ -117,24 +115,24 @@ public class RowExpressionResolver implements SearchExpressionResolver, ClientId
 
                 int row = Integer.parseInt(matcher.group(1));
                 if (row < 0) {
-                    throw new FacesException("Row number must be greater than 0. Expression: \"" + expression + "\"");
+                    throw new FacesException(new StringBuilder().append("Row number must be greater than 0. Expression: \"").append(expression).append("\"").toString());
                 }
 
                 UIData data = (UIData) last;
                 if (data.getRowCount() < row + 1) {
-                    throw new FacesException("The row count of the target is lesser than the row number. Expression: \"" + expression + "\"");
+                    throw new FacesException(new StringBuilder().append("The row count of the target is lesser than the row number. Expression: \"").append(expression).append("\"").toString());
                 }
 
                 return row;
 
             }
             else {
-                throw new FacesException("Expression does not match following pattern @row(n). Expression: \"" + expression + "\"");
+                throw new FacesException(new StringBuilder().append("Expression does not match following pattern @row(n). Expression: \"").append(expression).append("\"").toString());
             }
 
         }
         catch (Exception e) {
-            throw new FacesException("Expression does not match following pattern @row(n). Expression: \"" + expression + "\"", e);
+            throw new FacesException(new StringBuilder().append("Expression does not match following pattern @row(n). Expression: \"").append(expression).append("\"").toString(), e);
         }
     }
 

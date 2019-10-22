@@ -45,7 +45,7 @@ public class NotificationBarRenderer extends CoreRenderer {
     protected void encodeMarkup(FacesContext context, NotificationBar bar) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = bar.getStyleClass();
-        styleClass = styleClass == null ? NotificationBar.STYLE_CLASS : NotificationBar.STYLE_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? NotificationBar.STYLE_CLASS : new StringBuilder().append(NotificationBar.STYLE_CLASS).append(" ").append(styleClass).toString();
 
         writer.startElement("div", bar);
         writer.writeAttribute("id", bar.getClientId(context), null);

@@ -79,7 +79,7 @@ public class TriStateCheckboxRenderer extends InputRenderer {
 
         String style = checkbox.getStyle();
         String styleClass = checkbox.getStyleClass();
-        styleClass = styleClass == null ? HTML.CHECKBOX_CLASS : HTML.CHECKBOX_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? HTML.CHECKBOX_CLASS : new StringBuilder().append(HTML.CHECKBOX_CLASS).append(" ").append(styleClass).toString();
 
         writer.startElement("div", checkbox);
         writer.writeAttribute("id", clientId, "id");
@@ -140,32 +140,28 @@ public class TriStateCheckboxRenderer extends InputRenderer {
                 = checkbox.getStateThreeIcon() != null ? TriStateCheckbox.UI_ICON + checkbox.getStateThreeIcon()
                                                        : TriStateCheckbox.UI_ICON + "ui-icon-closethick";
 
-        String statesIconsClasses = "[\"" + stateOneIconClass + "\",\"" + stateTwoIconClass + "\",\"" + stateThreeIconClass + "\"]";
+        String statesIconsClasses = new StringBuilder().append("[\"").append(stateOneIconClass).append("\",\"").append(stateTwoIconClass).append("\",\"").append(stateThreeIconClass).append("\"]")
+				.toString();
 
         String stateOneTitle = checkbox.getStateOneTitle() == null ? "" : checkbox.getStateOneTitle();
         String stateTwoTitle = checkbox.getStateTwoTitle() == null ? "" : checkbox.getStateTwoTitle();
         String stateThreeTitle = checkbox.getStateThreeTitle() == null ? "" : checkbox.getStateThreeTitle();
 
-        String statesTitles = "{\"titles\": [\""
-                + EscapeUtils.forJavaScript(stateOneTitle)
-                + "\",\""
-                + EscapeUtils.forJavaScript(stateTwoTitle)
-                + "\",\""
-                + EscapeUtils.forJavaScript(stateThreeTitle)
-                + "\"]}";
+        String statesTitles = new StringBuilder().append("{\"titles\": [\"").append(EscapeUtils.forJavaScript(stateOneTitle)).append("\",\"").append(EscapeUtils.forJavaScript(stateTwoTitle)).append("\",\"").append(EscapeUtils.forJavaScript(stateThreeTitle))
+				.append("\"]}").toString();
 
         String iconClass = "ui-chkbox-icon ui-c"; //HTML.CHECKBOX_ICON_CLASS;
         String activeTitle = "";
         if (valCheck == 0) {
-            iconClass = iconClass + " " + stateOneIconClass;
+            iconClass = new StringBuilder().append(iconClass).append(" ").append(stateOneIconClass).toString();
             activeTitle = stateOneTitle;
         }
         else if (valCheck == 1) {
-            iconClass = iconClass + " " + stateTwoIconClass;
+            iconClass = new StringBuilder().append(iconClass).append(" ").append(stateTwoIconClass).toString();
             activeTitle = stateTwoTitle;
         }
         else if (valCheck == 2) {
-            iconClass = iconClass + " " + stateThreeIconClass;
+            iconClass = new StringBuilder().append(iconClass).append(" ").append(stateThreeIconClass).toString();
             activeTitle = stateThreeTitle;
         }
 
@@ -185,14 +181,14 @@ public class TriStateCheckboxRenderer extends InputRenderer {
     protected void encodeItemLabel(final FacesContext context, final TriStateCheckbox checkbox) throws IOException {
         String label = checkbox.getItemLabel();
 
-        if (label != null) {
-            ResponseWriter writer = context.getResponseWriter();
-
-            writer.startElement("span", null);
-            writer.writeAttribute("class", HTML.CHECKBOX_LABEL_CLASS, null);
-            writer.writeText(label, "itemLabel");
-            writer.endElement("span");
-        }
+        if (label == null) {
+			return;
+		}
+		ResponseWriter writer = context.getResponseWriter();
+		writer.startElement("span", null);
+		writer.writeAttribute("class", HTML.CHECKBOX_LABEL_CLASS, null);
+		writer.writeText(label, "itemLabel");
+		writer.endElement("span");
     }
 
     protected void encodeScript(final FacesContext context, final TriStateCheckbox checkbox) throws IOException {

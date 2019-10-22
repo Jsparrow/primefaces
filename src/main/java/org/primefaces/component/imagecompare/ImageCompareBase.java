@@ -33,7 +33,72 @@ public abstract class ImageCompareBase extends UIComponentBase implements Widget
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.ImageCompareRenderer";
 
-    public enum PropertyKeys {
+    public ImageCompareBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getWidgetVar() {
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
+
+	public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
+
+	public String getLeftImage() {
+        return (String) getStateHelper().eval(PropertyKeys.leftImage, null);
+    }
+
+	public void setLeftImage(String leftImage) {
+        getStateHelper().put(PropertyKeys.leftImage, leftImage);
+    }
+
+	public String getRightImage() {
+        return (String) getStateHelper().eval(PropertyKeys.rightImage, null);
+    }
+
+	public void setRightImage(String rightImage) {
+        getStateHelper().put(PropertyKeys.rightImage, rightImage);
+    }
+
+	public String getWidth() {
+        return (String) getStateHelper().eval(PropertyKeys.width, null);
+    }
+
+	public void setWidth(String width) {
+        getStateHelper().put(PropertyKeys.width, width);
+    }
+
+	public String getHeight() {
+        return (String) getStateHelper().eval(PropertyKeys.height, null);
+    }
+
+	public void setHeight(String height) {
+        getStateHelper().put(PropertyKeys.height, height);
+    }
+
+	public String getStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
+    }
+
+	public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
+    }
+
+	public String getStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
+    }
+
+	public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+	public enum PropertyKeys {
 
         widgetVar,
         leftImage,
@@ -42,70 +107,5 @@ public abstract class ImageCompareBase extends UIComponentBase implements Widget
         height,
         style,
         styleClass;
-    }
-
-    public ImageCompareBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public String getLeftImage() {
-        return (String) getStateHelper().eval(PropertyKeys.leftImage, null);
-    }
-
-    public void setLeftImage(String leftImage) {
-        getStateHelper().put(PropertyKeys.leftImage, leftImage);
-    }
-
-    public String getRightImage() {
-        return (String) getStateHelper().eval(PropertyKeys.rightImage, null);
-    }
-
-    public void setRightImage(String rightImage) {
-        getStateHelper().put(PropertyKeys.rightImage, rightImage);
-    }
-
-    public String getWidth() {
-        return (String) getStateHelper().eval(PropertyKeys.width, null);
-    }
-
-    public void setWidth(String width) {
-        getStateHelper().put(PropertyKeys.width, width);
-    }
-
-    public String getHeight() {
-        return (String) getStateHelper().eval(PropertyKeys.height, null);
-    }
-
-    public void setHeight(String height) {
-        getStateHelper().put(PropertyKeys.height, height);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 }

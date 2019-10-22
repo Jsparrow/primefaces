@@ -59,14 +59,14 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
     protected void encodeMarkup(FacesContext context, AbstractMenu abstractMenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         MegaMenu menu = (MegaMenu) abstractMenu;
-        boolean vertical = menu.getOrientation().equals("vertical");
+        boolean vertical = "vertical".equals(menu.getOrientation());
         String clientId = menu.getClientId(context);
         String style = menu.getStyle();
         String styleClass = menu.getStyleClass();
-        styleClass = styleClass == null ? MegaMenu.CONTAINER_CLASS : MegaMenu.CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? MegaMenu.CONTAINER_CLASS : new StringBuilder().append(MegaMenu.CONTAINER_CLASS).append(" ").append(styleClass).toString();
 
         if (vertical) {
-            styleClass = styleClass + " " + MegaMenu.VERTICAL_CLASS;
+            styleClass = new StringBuilder().append(styleClass).append(" ").append(MegaMenu.VERTICAL_CLASS).toString();
         }
 
         writer.startElement("div", menu);
@@ -125,12 +125,12 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
 
     protected void encodeRootSubmenu(FacesContext context, MegaMenu menu, Submenu submenu) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        boolean vertical = menu.getOrientation().equals("vertical");
+        boolean vertical = "vertical".equals(menu.getOrientation());
         String icon = submenu.getIcon();
         String label = submenu.getLabel();
         String style = submenu.getStyle();
         String styleClass = submenu.getStyleClass();
-        styleClass = styleClass == null ? Menu.TIERED_SUBMENU_CLASS : Menu.TIERED_SUBMENU_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? Menu.TIERED_SUBMENU_CLASS : new StringBuilder().append(Menu.TIERED_SUBMENU_CLASS).append(" ").append(styleClass).toString();
 
         writer.startElement("li", null);
         writer.writeAttribute("class", styleClass, null);
@@ -148,7 +148,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
 
         if (icon != null) {
             writer.startElement("span", null);
-            writer.writeAttribute("class", Menu.MENUITEM_ICON_CLASS + " " + icon, null);
+            writer.writeAttribute("class", new StringBuilder().append(Menu.MENUITEM_ICON_CLASS).append(" ").append(icon).toString(), null);
             writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
             writer.endElement("span");
         }
@@ -236,7 +236,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
         String label = submenu.getLabel();
         String style = submenu.getStyle();
         String styleClass = submenu.getStyleClass();
-        styleClass = styleClass == null ? Menu.SUBMENU_TITLE_CLASS : Menu.SUBMENU_TITLE_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? Menu.SUBMENU_TITLE_CLASS : new StringBuilder().append(Menu.SUBMENU_TITLE_CLASS).append(" ").append(styleClass).toString();
 
         writer.startElement("ul", null);
         writer.writeAttribute("class", Menu.LIST_CLASS, null);
@@ -282,7 +282,7 @@ public class MegaMenuRenderer extends BaseMenuRenderer {
     protected void encodeSubmenuSeparator(FacesContext context, Separator separator) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = separator.getStyleClass();
-        styleClass = styleClass == null ? UISeparator.DEFAULT_STYLE_CLASS : UISeparator.DEFAULT_STYLE_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? UISeparator.DEFAULT_STYLE_CLASS : new StringBuilder().append(UISeparator.DEFAULT_STYLE_CLASS).append(" ").append(styleClass).toString();
 
         writer.startElement("hr", null);
         writer.writeAttribute("class", styleClass, "styleClass");

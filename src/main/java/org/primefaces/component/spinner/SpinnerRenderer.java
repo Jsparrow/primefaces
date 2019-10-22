@@ -93,7 +93,7 @@ public class SpinnerRenderer extends InputRenderer {
         String clientId = spinner.getClientId(context);
         String styleClass = spinner.getStyleClass();
         boolean valid = spinner.isValid();
-        styleClass = styleClass == null ? Spinner.CONTAINER_CLASS : Spinner.CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? Spinner.CONTAINER_CLASS : new StringBuilder().append(Spinner.CONTAINER_CLASS).append(" ").append(styleClass).toString();
         styleClass = spinner.isDisabled() ? styleClass + " ui-state-disabled" : styleClass;
         styleClass = !spinner.isValid() ? styleClass + " ui-state-error" : styleClass;
         String upButtonClass = (valid) ? Spinner.UP_BUTTON_CLASS : Spinner.UP_BUTTON_CLASS + " ui-state-error";

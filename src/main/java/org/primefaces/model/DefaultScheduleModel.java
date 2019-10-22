@@ -62,13 +62,7 @@ public class DefaultScheduleModel implements ScheduleModel, Serializable {
 
     @Override
     public ScheduleEvent getEvent(String id) {
-        for (ScheduleEvent event : events) {
-            if (event.getId().equals(id)) {
-                return event;
-            }
-        }
-
-        return null;
+        return events.stream().filter(event -> event.getId().equals(id)).findFirst().orElse(null);
     }
 
     @Override

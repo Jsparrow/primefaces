@@ -28,33 +28,33 @@ import java.util.Map;
 
 public interface ScheduleEvent {
 
-    public String getId();
+    String getId();
 
-    public void setId(String id);
+    void setId(String id);
 
-    public Object getData();
+    Object getData();
 
-    public String getTitle();
+    String getTitle();
 
-    public LocalDateTime getStartDate();
+    LocalDateTime getStartDate();
 
-    public void setStartDate(LocalDateTime start);
+    void setStartDate(LocalDateTime start);
 
-    public LocalDateTime getEndDate();
+    LocalDateTime getEndDate();
 
-    public void setEndDate(LocalDateTime end);
+    void setEndDate(LocalDateTime end);
 
-    public boolean isAllDay();
+    boolean isAllDay();
 
-    public String getStyleClass();
+    String getStyleClass();
 
-    public boolean isEditable();
+    boolean isEditable();
 
-    public String getDescription();
+    String getDescription();
 
-    public String getUrl();
+    String getUrl();
 
-    public ScheduleRenderingMode getRenderingMode();
+    ScheduleRenderingMode getRenderingMode();
 
-    public Map<String, Object> getDynamicProperties();
+    Map<String, Object> getDynamicProperties();
 }

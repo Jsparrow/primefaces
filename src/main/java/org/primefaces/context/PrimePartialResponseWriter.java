@@ -141,7 +141,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriterWrapper {
         super.delete(targetId);
     }
 
-    public void encodeJSONObject(String paramName, JSONObject jsonObject) throws IOException, JSONException {
+    public void encodeJSONObject(String paramName, JSONObject jsonObject) throws IOException {
         String json = jsonObject.toString();
         json = EscapeUtils.forXml(json);
 
@@ -151,7 +151,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriterWrapper {
         getWrapped().write(json);
     }
 
-    public void encodeJSONArray(String paramName, JSONArray jsonArray) throws IOException, JSONException {
+    public void encodeJSONArray(String paramName, JSONArray jsonArray) throws IOException {
         String json = jsonArray.toString();
         json = EscapeUtils.forXml(json);
 
@@ -161,64 +161,61 @@ public class PrimePartialResponseWriter extends PartialResponseWriterWrapper {
         getWrapped().write(json);
     }
 
-    public void encodeJSONValue(String paramName, Object paramValue) throws IOException, JSONException {
+    public void encodeJSONValue(String paramName, Object paramValue) throws IOException {
         String json = new JSONObject().put(paramName, paramValue).toString();
         json = EscapeUtils.forXml(json);
 
         getWrapped().write(json.substring(1, json.length() - 1));
     }
 
-    public void encodeCallbackParams(Map<String, Object> params) throws IOException, JSONException {
+    public void encodeCallbackParams(Map<String, Object> params) throws IOException {
 
-        if (params != null && !params.isEmpty()) {
+        if (!(params != null && !params.isEmpty())) {
+			return;
+		}
+		startExtension(CALLBACK_EXTENSION_PARAMS);
+		getWrapped().write("{");
+		for (Iterator<String> it = params.keySet().iterator(); it.hasNext();) {
+		    String paramName = it.next();
+		    Object paramValue = params.get(paramName);
 
-            startExtension(CALLBACK_EXTENSION_PARAMS);
-            getWrapped().write("{");
+		    if (paramValue == null) {
+		        encodeJSONValue(paramName, null);
+		    }
+		    else {
+		        if (paramValue instanceof JSONObject) {
+		            encodeJSONObject(paramName, (JSONObject) paramValue);
+		        }
+		        else if (paramValue instanceof JSONArray) {
+		            encodeJSONArray(paramName, (JSONArray) paramValue);
+		        }
+		        else if (BeanUtils.isBean(paramValue)) {
+		            encodeJSONObject(paramName, new JSONObject(paramValue));
+		        }
+		        else {
+		            encodeJSONValue(paramName, paramValue);
+		        }
+		    }
 
-            for (Iterator<String> it = params.keySet().iterator(); it.hasNext();) {
-                String paramName = it.next();
-                Object paramValue = params.get(paramName);
-
-                if (paramValue == null) {
-                    encodeJSONValue(paramName, null);
-                }
-                else {
-                    if (paramValue instanceof JSONObject) {
-                        encodeJSONObject(paramName, (JSONObject) paramValue);
-                    }
-                    else if (paramValue instanceof JSONArray) {
-                        encodeJSONArray(paramName, (JSONArray) paramValue);
-                    }
-                    else if (BeanUtils.isBean(paramValue)) {
-                        encodeJSONObject(paramName, new JSONObject(paramValue));
-                    }
-                    else {
-                        encodeJSONValue(paramName, paramValue);
-                    }
-                }
-
-                if (it.hasNext()) {
-                    getWrapped().write(",");
-                }
-            }
-
-            getWrapped().write("}");
-            endExtension();
-        }
+		    if (it.hasNext()) {
+		        getWrapped().write(",");
+		    }
+		}
+		getWrapped().write("}");
+		endExtension();
     }
 
     protected void encodeScripts(PrimeRequestContext requestContext) throws IOException {
         List<String> scripts = requestContext.getScriptsToExecute();
-        if (!scripts.isEmpty()) {
-            startEval();
-
-            for (int i = 0; i < scripts.size(); i++) {
-                getWrapped().write(scripts.get(i));
-                getWrapped().write(';');
-            }
-
-            endEval();
-        }
+        if (scripts.isEmpty()) {
+			return;
+		}
+		startEval();
+		for (String script : scripts) {
+		    getWrapped().write(script);
+		    getWrapped().write(';');
+		}
+		endEval();
     }
 
     protected void startMetadataIfNecessary() throws IOException {
@@ -271,8 +268,7 @@ public class PrimePartialResponseWriter extends PartialResponseWriterWrapper {
                             newResources.removeAll(initialResources);
 
                             boolean updateStarted = false;
-                            for (int i = 0; i < newResources.size(); i++) {
-                                ResourceUtils.ResourceInfo resourceInfo = newResources.get(i);
+                            for (ResourceUtils.ResourceInfo resourceInfo : newResources) {
                                 if (!updateStarted) {
                                     ((PartialResponseWriter) getWrapped()).startUpdate("javax.faces.Resource");
                                     updateStarted = true;

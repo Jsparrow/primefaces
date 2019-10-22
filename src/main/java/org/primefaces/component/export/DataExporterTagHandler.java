@@ -60,7 +60,7 @@ public class DataExporterTagHandler extends TagHandler {
     }
 
     @Override
-    public void apply(FaceletContext faceletContext, UIComponent parent) throws ELException {
+    public void apply(FaceletContext faceletContext, UIComponent parent) {
         if (!ComponentHandler.isNew(parent)) {
             return;
         }

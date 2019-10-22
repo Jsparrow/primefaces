@@ -35,52 +35,52 @@ public abstract class BarChartBase extends UIComponentBase implements Widget, Cl
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.BarChartRenderer";
 
-    public enum PropertyKeys {
+    public BarChartBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getWidgetVar() {
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
+
+	public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
+
+	public org.primefaces.model.charts.bar.BarChartModel getModel() {
+        return (org.primefaces.model.charts.bar.BarChartModel) getStateHelper().eval(PropertyKeys.model, null);
+    }
+
+	public void setModel(org.primefaces.model.charts.bar.BarChartModel model) {
+        getStateHelper().put(PropertyKeys.model, model);
+    }
+
+	public String getStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
+    }
+
+	public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
+    }
+
+	public String getStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
+    }
+
+	public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+	public enum PropertyKeys {
 
         widgetVar,
         model,
         style,
         styleClass
-    }
-
-    public BarChartBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public org.primefaces.model.charts.bar.BarChartModel getModel() {
-        return (org.primefaces.model.charts.bar.BarChartModel) getStateHelper().eval(PropertyKeys.model, null);
-    }
-
-    public void setModel(org.primefaces.model.charts.bar.BarChartModel model) {
-        getStateHelper().put(PropertyKeys.model, model);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 }

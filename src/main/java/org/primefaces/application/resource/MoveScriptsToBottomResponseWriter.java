@@ -182,8 +182,7 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
                 String type = entry.getKey();
                 List<String> includes = entry.getValue();
 
-                for (int i = 0; i < includes.size(); i++) {
-                    String src = includes.get(i);
+                for (String src : includes) {
                     if (src != null && !src.isEmpty()) {
                         getWrapped().startElement("script", null);
                         getWrapped().writeAttribute("type", type, null);
@@ -231,22 +230,19 @@ public class MoveScriptsToBottomResponseWriter extends ResponseWriterWrapper {
 
         String minimized = script.toString();
 
-        if (!LangUtils.isValueBlank(minimized)) {
-            if ("text/javascript".equalsIgnoreCase(type)) {
-                minimized = minimized.replace(";;", ";");
+        boolean condition = !LangUtils.isValueBlank(minimized) && "text/javascript".equalsIgnoreCase(type);
+		if (condition) {
+		    minimized = minimized.replace(";;", ";");
 
-                if (minimized.contains("PrimeFaces")) {
-                    minimized = minimized.replace("PrimeFaces.settings", "pf.settings")
-                        .replace("PrimeFaces.cw", "pf.cw")
-                        .replace("PrimeFaces.ab", "pf.ab")
-                        .replace("window.PrimeFaces", "pf");
+		    if (minimized.contains("PrimeFaces")) {
+		        minimized = minimized.replace("PrimeFaces.settings", "pf.settings")
+		            .replace("PrimeFaces.cw", "pf.cw")
+		            .replace("PrimeFaces.ab", "pf.ab")
+		            .replace("window.PrimeFaces", "pf");
 
-                    minimized = "var pf=window.PrimeFaces;"
-                            + minimized
-                            + "if(window.$){$(PrimeFaces.escapeClientId(\"" + id + "\")).remove();}";
-                }
-            }
-        }
+		        minimized = new StringBuilder().append("var pf=window.PrimeFaces;").append(minimized).append("if(window.$){$(PrimeFaces.escapeClientId(\"").append(id).append("\")).remove();}").toString();
+		    }
+		}
 
         return minimized;
     }

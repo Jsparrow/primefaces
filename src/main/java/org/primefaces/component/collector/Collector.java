@@ -52,7 +52,7 @@ public class Collector implements ActionListener, StateHolder {
     }
 
     @Override
-    public void processAction(ActionEvent actionEvent) throws AbortProcessingException {
+    public void processAction(ActionEvent actionEvent) {
         if (value == null) {
             throw new AbortProcessingException("Value has not been set");
         }

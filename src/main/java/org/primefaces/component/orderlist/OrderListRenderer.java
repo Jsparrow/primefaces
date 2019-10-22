@@ -69,7 +69,7 @@ public class OrderListRenderer extends CoreRenderer {
         String controlsLocation = ol.getControlsLocation();
         String style = ol.getStyle();
         String styleClass = ol.getStyleClass();
-        styleClass = styleClass == null ? OrderList.CONTAINER_CLASS : OrderList.CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? OrderList.CONTAINER_CLASS : new StringBuilder().append(OrderList.CONTAINER_CLASS).append(" ").append(styleClass).toString();
 
         if (ol.isDisabled()) {
             styleClass = styleClass + " ui-state-disabled";
@@ -89,13 +89,13 @@ public class OrderListRenderer extends CoreRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", "ui-g", null);
 
-        if (controlsLocation.equals("left")) {
+        if ("left".equals(controlsLocation)) {
             encodeControls(context, ol);
         }
 
         encodeList(context, ol);
 
-        if (controlsLocation.equals("right")) {
+        if ("right".equals(controlsLocation)) {
             encodeControls(context, ol);
         }
 
@@ -108,7 +108,7 @@ public class OrderListRenderer extends CoreRenderer {
         String clientId = ol.getClientId(context);
         UIComponent caption = ol.getFacet("caption");
         String listStyleClass = OrderList.LIST_CLASS;
-        String columnGridClass = ol.getControlsLocation().equals("none") ? "ui-g-12 ui-md-12" : "ui-g-12 ui-md-10";
+        String columnGridClass = "none".equals(ol.getControlsLocation()) ? "ui-g-12 ui-md-12" : "ui-g-12 ui-md-10";
 
         writer.startElement("div", null);
         writer.writeAttribute("class", columnGridClass, null);
@@ -214,12 +214,12 @@ public class OrderListRenderer extends CoreRenderer {
 
         writer.startElement("button", null);
         writer.writeAttribute("type", "button", null);
-        writer.writeAttribute("class", HTML.BUTTON_ICON_ONLY_BUTTON_CLASS + " " + styleClass, null);
+        writer.writeAttribute("class", new StringBuilder().append(HTML.BUTTON_ICON_ONLY_BUTTON_CLASS).append(" ").append(styleClass).toString(), null);
         writer.writeAttribute("title", title, null);
 
         //icon
         writer.startElement("span", null);
-        writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " " + icon, null);
+        writer.writeAttribute("class", new StringBuilder().append(HTML.BUTTON_LEFT_ICON_CLASS).append(" ").append(icon).toString(), null);
         writer.endElement("span");
 
         //text
@@ -244,7 +244,7 @@ public class OrderListRenderer extends CoreRenderer {
 
     @Override
     @SuppressWarnings("unchecked")
-    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) {
         try {
             OrderList ol = (OrderList) component;
             List orderedList = new ArrayList();

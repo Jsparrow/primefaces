@@ -58,21 +58,22 @@ public class MediaRenderer extends CoreRenderer {
         String sourceParam = player.getSourceParam();
 
         Object value = media.getValue();
-        if (value instanceof StreamedContent && player.getType().equals("application/pdf")) {
+        if (value instanceof StreamedContent && "application/pdf".equals(player.getType())) {
             StreamedContent streamedContent = (StreamedContent) value;
             if (streamedContent.getName() != null) {
                 int index = src.indexOf('?');
-                src = src.substring(0, index) + ";/" + streamedContent.getName() + "" + src.substring(index, src.length());
+                src = new StringBuilder().append(src.substring(0, index)).append(";/").append(streamedContent.getName()).append("").append(src.substring(index, src.length()))
+						.toString();
             }
         }
 
         String type = player.getType();
-        if (type != null && type.equals("application/pdf")) {
+        if (type != null && "application/pdf".equals(type)) {
             String view = media.getView();
             String zoom = media.getZoom();
 
             if (view != null) {
-                src = src + "#view=" + view;
+                src = new StringBuilder().append(src).append("#view=").append(view).toString();
             }
 
             if (zoom != null) {
@@ -153,8 +154,7 @@ public class MediaRenderer extends CoreRenderer {
             }
         }
 
-        throw new IllegalArgumentException("Cannot resolve mediaplayer for media component '"
-                + media.getClientId(context) + "', cannot play source:" + media.getValue());
+        throw new IllegalArgumentException(new StringBuilder().append("Cannot resolve mediaplayer for media component '").append(media.getClientId(context)).append("', cannot play source:").append(media.getValue()).toString());
     }
 
     protected String getMediaSrc(FacesContext context, Media media) throws Exception {

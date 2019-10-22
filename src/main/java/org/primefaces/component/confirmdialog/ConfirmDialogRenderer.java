@@ -53,7 +53,7 @@ public class ConfirmDialogRenderer extends CoreRenderer {
         String clientId = dialog.getClientId(context);
         String style = dialog.getStyle();
         String styleClass = dialog.getStyleClass();
-        styleClass = styleClass == null ? ConfirmDialog.CONTAINER_CLASS : ConfirmDialog.CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? ConfirmDialog.CONTAINER_CLASS : new StringBuilder().append(ConfirmDialog.CONTAINER_CLASS).append(" ").append(styleClass).toString();
 
         if (ComponentUtils.isRTL(context, dialog)) {
             styleClass += " ui-dialog-rtl";
@@ -139,7 +139,7 @@ public class ConfirmDialogRenderer extends CoreRenderer {
         String messageText = dialog.getMessage();
         UIComponent messageFacet = dialog.getFacet("message");
         String defaultIcon = dialog.isGlobal() ? "ui-icon" : "ui-icon ui-icon-" + dialog.getSeverity();
-        String severityIcon = defaultIcon + " " + ConfirmDialog.SEVERITY_ICON_CLASS;
+        String severityIcon = new StringBuilder().append(defaultIcon).append(" ").append(ConfirmDialog.SEVERITY_ICON_CLASS).toString();
 
         writer.startElement("div", null);
         writer.writeAttribute("class", Dialog.CONTENT_CLASS, null);

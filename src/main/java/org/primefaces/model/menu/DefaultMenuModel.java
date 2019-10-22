@@ -34,9 +34,10 @@ public class DefaultMenuModel extends BaseMenuModel {
 
     @Override
     public void generateUniqueIds() {
-        if (!generated) {
-            super.generateUniqueIds();
-            generated = true;
-        }
+        if (generated) {
+			return;
+		}
+		super.generateUniqueIds();
+		generated = true;
     }
 }

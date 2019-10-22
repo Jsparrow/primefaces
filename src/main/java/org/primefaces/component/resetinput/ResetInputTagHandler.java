@@ -44,7 +44,7 @@ public class ResetInputTagHandler extends TagHandler {
     }
 
     @Override
-    public void apply(FaceletContext faceletContext, UIComponent parent) throws IOException, FacesException, FaceletException, ELException {
+    public void apply(FaceletContext faceletContext, UIComponent parent) throws IOException {
         if (parent == null || !ComponentHandler.isNew(parent)) {
             return;
         }

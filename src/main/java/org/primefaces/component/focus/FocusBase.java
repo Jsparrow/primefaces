@@ -32,7 +32,40 @@ public abstract class FocusBase extends UIComponentBase {
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.FocusRenderer";
 
-    public enum PropertyKeys {
+    public FocusBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getFor() {
+        return (String) getStateHelper().eval(PropertyKeys.forValue, null);
+    }
+
+	public void setFor(String _for) {
+        getStateHelper().put(PropertyKeys.forValue, _for);
+    }
+
+	public String getContext() {
+        return (String) getStateHelper().eval(PropertyKeys.context, null);
+    }
+
+	public void setContext(String context) {
+        getStateHelper().put(PropertyKeys.context, context);
+    }
+
+	public String getMinSeverity() {
+        return (String) getStateHelper().eval(PropertyKeys.minSeverity, "error");
+    }
+
+	public void setMinSeverity(String minSeverity) {
+        getStateHelper().put(PropertyKeys.minSeverity, minSeverity);
+    }
+
+	public enum PropertyKeys {
 
         forValue("for"),
         context,
@@ -51,39 +84,6 @@ public abstract class FocusBase extends UIComponentBase {
         public String toString() {
             return ((toString != null) ? toString : super.toString());
         }
-    }
-
-    public FocusBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getFor() {
-        return (String) getStateHelper().eval(PropertyKeys.forValue, null);
-    }
-
-    public void setFor(String _for) {
-        getStateHelper().put(PropertyKeys.forValue, _for);
-    }
-
-    public String getContext() {
-        return (String) getStateHelper().eval(PropertyKeys.context, null);
-    }
-
-    public void setContext(String context) {
-        getStateHelper().put(PropertyKeys.context, context);
-    }
-
-    public String getMinSeverity() {
-        return (String) getStateHelper().eval(PropertyKeys.minSeverity, "error");
-    }
-
-    public void setMinSeverity(String minSeverity) {
-        getStateHelper().put(PropertyKeys.minSeverity, minSeverity);
     }
 
 }

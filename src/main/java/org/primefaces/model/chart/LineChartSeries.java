@@ -116,12 +116,18 @@ public class LineChartSeries extends ChartSeries {
         AxisType yaxis = this.getYaxis();
 
         writer.write("{");
-        writer.write("label:\"" + EscapeUtils.forJavaScript(this.getLabel()) + "\"");
+        writer.write(new StringBuilder().append("label:\"").append(EscapeUtils.forJavaScript(this.getLabel())).append("\"").toString());
         writer.write(",renderer: $.jqplot." + renderer);
 
-        if (xaxis != null) writer.write(",xaxis:\"" + xaxis + "\"");
-        if (yaxis != null) writer.write(",yaxis:\"" + yaxis + "\"");
-        if (disableStack) writer.write(",disableStack:true");
+        if (xaxis != null) {
+			writer.write(new StringBuilder().append(",xaxis:\"").append(xaxis).append("\"").toString());
+		}
+        if (yaxis != null) {
+			writer.write(new StringBuilder().append(",yaxis:\"").append(yaxis).append("\"").toString());
+		}
+        if (disableStack) {
+			writer.write(",disableStack:true");
+		}
 
 
         if (fill) {
@@ -130,7 +136,7 @@ public class LineChartSeries extends ChartSeries {
         }
 
         writer.write(",showLine:" + this.isShowLine());
-        writer.write(",markerOptions:{show:" + this.isShowMarker() + ", style:'" + this.getMarkerStyle() + "'}");
+        writer.write(new StringBuilder().append(",markerOptions:{show:").append(this.isShowMarker()).append(", style:'").append(this.getMarkerStyle()).append("'}").toString());
         if (smoothLine) {
             writer.write(",rendererOptions:{smooth: true }");
         }

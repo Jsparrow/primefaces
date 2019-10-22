@@ -77,13 +77,13 @@ public class DatePicker extends DatePickerBase {
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
             if (eventName != null) {
-                if (eventName.equals("dateSelect")) {
+                if ("dateSelect".equals(eventName)) {
                     customEvents.put("dateSelect", (AjaxBehaviorEvent) event);
                 }
-                else if (eventName.equals("close")) {
+                else if ("close".equals(eventName)) {
                     customEvents.put("close", (AjaxBehaviorEvent) event);
                 }
-                else if (eventName.equals("viewChange")) {
+                else if ("viewChange".equals(eventName)) {
                     int month = Integer.parseInt(params.get(clientId + "_month"));
                     int year = Integer.parseInt(params.get(clientId + "_year"));
                     DateViewChangeEvent dateViewChangeEvent = new DateViewChangeEvent(this, behaviorEvent.getBehavior(), month, year);
@@ -125,13 +125,13 @@ public class DatePicker extends DatePickerBase {
     protected void validateValue(FacesContext context, Object value) {
         super.validateValue(context, value);
 
-        if (isValid() && !isEmpty(value)) {
-            ValidationResult validationResult = validateValueInternal(context, value);
-
-            if (!isValid()) {
-                createFacesMessageFromValidationResult(context, validationResult);
-            }
-        }
+        if (!(isValid() && !isEmpty(value))) {
+			return;
+		}
+		ValidationResult validationResult = validateValueInternal(context, value);
+		if (!isValid()) {
+		    createFacesMessageFromValidationResult(context, validationResult);
+		}
     }
 
     protected ValidationResult validateValueInternal(FacesContext context, Object value) {
@@ -152,10 +152,10 @@ public class DatePicker extends DatePickerBase {
         else if (value instanceof Date) {
             validationResult = validateDateValue(context, CalendarUtils.convertDate2LocalDate((Date) value, CalendarUtils.calculateZoneId(getTimeZone())));
         }
-        else if (value instanceof List && getSelectionMode().equals("multiple")) {
+        else if (value instanceof List && "multiple".equals(getSelectionMode())) {
             //TODO: needs to be validated
         }
-        else if (value instanceof List && getSelectionMode().equals("range")) {
+        else if (value instanceof List && "range".equals(getSelectionMode())) {
             List rangeValues = (List) value;
 
             if (rangeValues.get(0) instanceof LocalDate) {
@@ -210,17 +210,16 @@ public class DatePicker extends DatePickerBase {
             }
         }
 
-        if (isValid()) {
-            if (maxDate != null && !date.equals(maxDate) && date.isAfter(maxDate)) {
-                setValid(false);
-                if (minDate != null) {
-                    return ValidationResult.INVALID_OUT_OF_RANGE;
-                }
-                else {
-                    return ValidationResult.INVALID_MAX_DATE;
-                }
-            }
-        }
+        boolean condition = isValid() && maxDate != null && !date.equals(maxDate) && date.isAfter(maxDate);
+		if (condition) {
+		    setValid(false);
+		    if (minDate != null) {
+		        return ValidationResult.INVALID_OUT_OF_RANGE;
+		    }
+		    else {
+		        return ValidationResult.INVALID_MAX_DATE;
+		    }
+		}
 
         if (isValid()) {
             List<Object> disabledDates = getDisabledDates();
@@ -250,12 +249,11 @@ public class DatePicker extends DatePickerBase {
 
         if (isValid()) {
             List<Object> disabledDays = getDisabledDays();
-            if (disabledDays != null) {
-                if (disabledDays.contains(date.getDayOfWeek().getValue())) {
-                    setValid(false);
-                    return ValidationResult.INVALID_DISABLED_DATE;
-                }
-            }
+            boolean condition1 = disabledDays != null && disabledDays.contains(date.getDayOfWeek().getValue());
+			if (condition1) {
+			    setValid(false);
+			    return ValidationResult.INVALID_DISABLED_DATE;
+			}
         }
 
         return ValidationResult.OK;

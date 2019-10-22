@@ -36,7 +36,64 @@ public abstract class DataGridBase extends UIData implements Widget, ClientBehav
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.DataGridRenderer";
 
-    public enum PropertyKeys {
+    public DataGridBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getWidgetVar() {
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
+
+	public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
+
+	public int getColumns() {
+        return (Integer) getStateHelper().eval(PropertyKeys.columns, 3);
+    }
+
+	public void setColumns(int columns) {
+        getStateHelper().put(PropertyKeys.columns, columns);
+    }
+
+	public String getStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
+    }
+
+	public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
+    }
+
+	public String getStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
+    }
+
+	public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+	public String getEmptyMessage() {
+        return (String) getStateHelper().eval(PropertyKeys.emptyMessage, "No records found.");
+    }
+
+	public void setEmptyMessage(String emptyMessage) {
+        getStateHelper().put(PropertyKeys.emptyMessage, emptyMessage);
+    }
+
+	public String getLayout() {
+        return (String) getStateHelper().eval(PropertyKeys.layout, "tabular");
+    }
+
+	public void setLayout(String layout) {
+        getStateHelper().put(PropertyKeys.layout, layout);
+    }
+
+	public enum PropertyKeys {
 
         widgetVar,
         columns,
@@ -44,62 +101,5 @@ public abstract class DataGridBase extends UIData implements Widget, ClientBehav
         styleClass,
         emptyMessage,
         layout
-    }
-
-    public DataGridBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public int getColumns() {
-        return (Integer) getStateHelper().eval(PropertyKeys.columns, 3);
-    }
-
-    public void setColumns(int columns) {
-        getStateHelper().put(PropertyKeys.columns, columns);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public String getEmptyMessage() {
-        return (String) getStateHelper().eval(PropertyKeys.emptyMessage, "No records found.");
-    }
-
-    public void setEmptyMessage(String emptyMessage) {
-        getStateHelper().put(PropertyKeys.emptyMessage, emptyMessage);
-    }
-
-    public String getLayout() {
-        return (String) getStateHelper().eval(PropertyKeys.layout, "tabular");
-    }
-
-    public void setLayout(String layout) {
-        getStateHelper().put(PropertyKeys.layout, layout);
     }
 }

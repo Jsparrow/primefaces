@@ -41,7 +41,7 @@ import org.primefaces.util.LangUtils;
 public abstract class InputRenderer extends CoreRenderer {
 
     @Override
-    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) {
         Converter converter = ComponentUtils.getConverter(context, component);
 
         if (converter != null) {
@@ -79,10 +79,11 @@ public abstract class InputRenderer extends CoreRenderer {
      * @throws IOException if any error occurs writing the response
      */
     protected void renderARIARequired(FacesContext context, UIInput component) throws IOException {
-        if (component.isRequired()) {
-            ResponseWriter writer = context.getResponseWriter();
-            writer.writeAttribute(HTML.ARIA_REQUIRED, "true", null);
-        }
+        if (!component.isRequired()) {
+			return;
+		}
+		ResponseWriter writer = context.getResponseWriter();
+		writer.writeAttribute(HTML.ARIA_REQUIRED, "true", null);
     }
 
     /**
@@ -93,10 +94,11 @@ public abstract class InputRenderer extends CoreRenderer {
      * @throws IOException if any error occurs writing the response
      */
     protected void renderARIAInvalid(FacesContext context, UIInput component) throws IOException {
-        if (!component.isValid()) {
-            ResponseWriter writer = context.getResponseWriter();
-            writer.writeAttribute(HTML.ARIA_INVALID, "true", null);
-        }
+        if (component.isValid()) {
+			return;
+		}
+		ResponseWriter writer = context.getResponseWriter();
+		writer.writeAttribute(HTML.ARIA_INVALID, "true", null);
     }
 
     /**
@@ -136,10 +138,11 @@ public abstract class InputRenderer extends CoreRenderer {
             writer.writeAttribute(HTML.ARIA_DISABLED, "true", null);
         }
 
-        if (readonly) {
-            writer.writeAttribute("readonly", "readonly", null);
-            writer.writeAttribute(HTML.ARIA_READONLY, "true", null);
-        }
+        if (!readonly) {
+			return;
+		}
+		writer.writeAttribute("readonly", "readonly", null);
+		writer.writeAttribute(HTML.ARIA_READONLY, "true", null);
     }
 
     /**

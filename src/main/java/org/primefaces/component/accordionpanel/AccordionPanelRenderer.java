@@ -96,7 +96,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
         String clientId = acco.getClientId(context);
         String widgetVar = acco.resolveWidgetVar(context);
         String styleClass = acco.getStyleClass();
-        styleClass = styleClass == null ? AccordionPanel.CONTAINER_CLASS : AccordionPanel.CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? AccordionPanel.CONTAINER_CLASS : new StringBuilder().append(AccordionPanel.CONTAINER_CLASS).append(" ").append(styleClass).toString();
 
         if (ComponentUtils.isRTL(context, acco)) {
             styleClass = styleClass + " ui-accordion-rtl";
@@ -162,7 +162,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
     protected void encodeTabs(FacesContext context, AccordionPanel acco) throws IOException {
         boolean dynamic = acco.isDynamic();
         String var = acco.getVar();
-        boolean rtl = acco.getDir().equalsIgnoreCase("rtl");
+        boolean rtl = "rtl".equalsIgnoreCase(acco.getDir());
 
         String activeIndex = acco.getActiveIndex();
         List<String> activeIndexes = activeIndex == null
@@ -175,7 +175,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
             for (int i = 0; i < acco.getChildCount(); i++) {
                 UIComponent child = acco.getChildren().get(i);
                 if (child.isRendered() && child instanceof Tab) {
-                    boolean active = activeIndexes.indexOf(Integer.toString(j)) != -1;
+                    boolean active = activeIndexes.contains(Integer.toString(j));
 
                     encodeTab(context, acco, (Tab) child, active, dynamic, rtl);
 
@@ -189,7 +189,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
 
             for (int i = 0; i < dataCount; i++) {
                 acco.setIndex(i);
-                boolean active = activeIndexes.indexOf(Integer.toString(i)) != -1;
+                boolean active = activeIndexes.contains(Integer.toString(i));
 
                 encodeTab(context, acco, tab, active, dynamic, rtl);
             }
@@ -205,7 +205,7 @@ public class AccordionPanelRenderer extends CoreRenderer {
 
         String headerClass = active ? AccordionPanel.ACTIVE_TAB_HEADER_CLASS : AccordionPanel.TAB_HEADER_CLASS;
         headerClass = tab.isDisabled() ? headerClass + " ui-state-disabled" : headerClass;
-        headerClass = tab.getTitleStyleClass() == null ? headerClass : headerClass + " " + tab.getTitleStyleClass();
+        headerClass = tab.getTitleStyleClass() == null ? headerClass : new StringBuilder().append(headerClass).append(" ").append(tab.getTitleStyleClass()).toString();
         String iconClass = active
                            ? AccordionPanel.ACTIVE_TAB_HEADER_ICON_CLASS
                            : (rtl ? AccordionPanel.TAB_HEADER_ICON_RTL_CLASS : AccordionPanel.TAB_HEADER_ICON_CLASS);

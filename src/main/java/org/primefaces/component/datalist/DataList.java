@@ -89,43 +89,41 @@ public class DataList extends DataListBase {
     public String getListTag() {
         String type = getType();
 
-        if (type.equalsIgnoreCase("unordered")) {
+        if ("unordered".equalsIgnoreCase(type)) {
             return "ul";
         }
-        else if (type.equalsIgnoreCase("ordered")) {
+        else if ("ordered".equalsIgnoreCase(type)) {
             return "ol";
         }
-        else if (type.equalsIgnoreCase("definition")) {
+        else if ("definition".equalsIgnoreCase(type)) {
             return "dl";
         }
-        else if (type.equalsIgnoreCase("none")) {
+        else if ("none".equalsIgnoreCase(type)) {
             return null;
         }
         else {
-            throw new FacesException("DataList '" + getClientId() + "' has invalid list type:'" + type + "'");
+            throw new FacesException(new StringBuilder().append("DataList '").append(getClientId()).append("' has invalid list type:'").append(type).append("'").toString());
         }
     }
 
     public boolean isDefinition() {
-        return getType().equalsIgnoreCase("definition");
+        return "definition".equalsIgnoreCase(getType());
     }
 
     public void loadLazyData() {
         DataModel model = getDataModel();
 
-        if (model instanceof LazyDataModel) {
-            LazyDataModel lazyModel = (LazyDataModel) model;
-
-            List<?> data = lazyModel.load(getFirst(), getRows(), null, null, null);
-
-            lazyModel.setPageSize(getRows());
-            lazyModel.setWrappedData(data);
-
-            //Update paginator for callback
-            if (ComponentUtils.isRequestSource(this, getFacesContext()) && isPaginator()) {
-                PrimeFaces.current().ajax().addCallbackParam("totalRecords", lazyModel.getRowCount());
-            }
-        }
+        if (!(model instanceof LazyDataModel)) {
+			return;
+		}
+		LazyDataModel lazyModel = (LazyDataModel) model;
+		List<?> data = lazyModel.load(getFirst(), getRows(), null, null, null);
+		lazyModel.setPageSize(getRows());
+		lazyModel.setWrappedData(data);
+		//Update paginator for callback
+		if (ComponentUtils.isRequestSource(this, getFacesContext()) && isPaginator()) {
+		    PrimeFaces.current().ajax().addCallbackParam("totalRecords", lazyModel.getRowCount());
+		}
     }
 
     @Override
@@ -138,7 +136,7 @@ public class DataList extends DataListBase {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
-            if (eventName.equals("page")) {
+            if ("page".equals(eventName)) {
                 String clientId = getClientId(context);
                 int rows = getRowsToRender();
                 int first = Integer.parseInt(params.get(clientId + "_first"));
@@ -149,7 +147,7 @@ public class DataList extends DataListBase {
 
                 super.queueEvent(pageEvent);
             }
-            else if (eventName.equals("tap") || eventName.equals("taphold")) {
+            else if ("tap".equals(eventName) || "taphold".equals(eventName)) {
                 String clientId = getClientId(context);
                 int index = Integer.parseInt(params.get(clientId + "_item"));
                 setRowIndex(index);
@@ -168,15 +166,16 @@ public class DataList extends DataListBase {
 
     @Override
     protected void processFacets(FacesContext context, PhaseId phaseId) {
-        if (getFacetCount() > 0) {
-            UIComponent descriptionFacet = getFacet("description");
-            for (UIComponent facet : getFacets().values()) {
-                if (facet.equals(descriptionFacet)) {
-                    continue;
-                }
-                process(context, facet, phaseId);
-            }
-        }
+        if (getFacetCount() <= 0) {
+			return;
+		}
+		UIComponent descriptionFacet = getFacet("description");
+		for (UIComponent facet : getFacets().values()) {
+		    if (facet.equals(descriptionFacet)) {
+		        continue;
+		    }
+		    process(context, facet, phaseId);
+		}
     }
 
     @Override
@@ -257,11 +256,12 @@ public class DataList extends DataListBase {
 
     public void restoreDataListState() {
         DataListState ls = getDataListState(false);
-        if (ls != null && isPaginator()) {
-            setFirst(ls.getFirst());
-            int rows = (ls.getRows() == 0) ? getRows() : ls.getRows();
-            setRows(rows);
-        }
+        if (!(ls != null && isPaginator())) {
+			return;
+		}
+		setFirst(ls.getFirst());
+		int rows = (ls.getRows() == 0) ? getRows() : ls.getRows();
+		setRows(rows);
     }
 
     public DataListState getDataListState(boolean create) {

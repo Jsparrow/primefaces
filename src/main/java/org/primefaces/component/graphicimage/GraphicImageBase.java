@@ -32,53 +32,53 @@ public abstract class GraphicImageBase extends HtmlGraphicImage {
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.GraphicImageRenderer";
 
-    public enum PropertyKeys {
+    public GraphicImageBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public boolean isCache() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.cache, true);
+    }
+
+	public void setCache(boolean cache) {
+        getStateHelper().put(PropertyKeys.cache, cache);
+    }
+
+	public String getName() {
+        return (String) getStateHelper().eval(PropertyKeys.name, null);
+    }
+
+	public void setName(String name) {
+        getStateHelper().put(PropertyKeys.name, name);
+    }
+
+	public String getLibrary() {
+        return (String) getStateHelper().eval(PropertyKeys.library, null);
+    }
+
+	public void setLibrary(String library) {
+        getStateHelper().put(PropertyKeys.library, library);
+    }
+
+	public boolean isStream() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.stream, true);
+    }
+
+	public void setStream(boolean stream) {
+        getStateHelper().put(PropertyKeys.stream, stream);
+    }
+
+	public enum PropertyKeys {
 
         cache,
         name,
         library,
         stream
-    }
-
-    public GraphicImageBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public boolean isCache() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.cache, true);
-    }
-
-    public void setCache(boolean cache) {
-        getStateHelper().put(PropertyKeys.cache, cache);
-    }
-
-    public String getName() {
-        return (String) getStateHelper().eval(PropertyKeys.name, null);
-    }
-
-    public void setName(String name) {
-        getStateHelper().put(PropertyKeys.name, name);
-    }
-
-    public String getLibrary() {
-        return (String) getStateHelper().eval(PropertyKeys.library, null);
-    }
-
-    public void setLibrary(String library) {
-        getStateHelper().put(PropertyKeys.library, library);
-    }
-
-    public boolean isStream() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.stream, true);
-    }
-
-    public void setStream(boolean stream) {
-        getStateHelper().put(PropertyKeys.stream, stream);
     }
 
 }

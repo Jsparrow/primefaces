@@ -100,7 +100,7 @@ public class KeyboardRenderer extends InputRenderer {
         defaultClass = !keyboard.isValid() ? defaultClass + " ui-state-error" : defaultClass;
         defaultClass = keyboard.isDisabled() ? defaultClass + " ui-state-disabled" : defaultClass;
         String styleClass = keyboard.getStyleClass();
-        styleClass = styleClass == null ? defaultClass : defaultClass + " " + styleClass;
+        styleClass = styleClass == null ? defaultClass : new StringBuilder().append(defaultClass).append(" ").append(styleClass).toString();
         String valueToRender = ComponentUtils.getValueToRender(context, keyboard);
 
         writer.startElement("input", keyboard);

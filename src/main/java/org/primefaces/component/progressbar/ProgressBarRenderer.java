@@ -67,8 +67,8 @@ public class ProgressBarRenderer extends CoreRenderer {
         String labelTemplate = progressBar.getLabelTemplate();
         String style = progressBar.getStyle();
         String styleClass = progressBar.getStyleClass();
-        styleClass = styleClass == null ? ProgressBar.CONTAINER_CLASS : ProgressBar.CONTAINER_CLASS + " " + styleClass;
-        styleClass = styleClass + " " + (mode.equals("determinate") ? ProgressBar.DETERMINATE_CLASS : ProgressBar.INDETERMINATE_CLASS);
+        styleClass = styleClass == null ? ProgressBar.CONTAINER_CLASS : new StringBuilder().append(ProgressBar.CONTAINER_CLASS).append(" ").append(styleClass).toString();
+        styleClass = new StringBuilder().append(styleClass).append(" ").append("determinate".equals(mode) ? ProgressBar.DETERMINATE_CLASS : ProgressBar.INDETERMINATE_CLASS).toString();
 
         if (progressBar.isDisabled()) {
             styleClass = styleClass + " ui-state-disabled";
@@ -85,7 +85,7 @@ public class ProgressBarRenderer extends CoreRenderer {
         writer.startElement("div", progressBar);
         writer.writeAttribute("class", ProgressBar.VALUE_CLASS, null);
         if (value != 0) {
-            writer.writeAttribute("style", "display:block;width:" + value + "%", style);
+            writer.writeAttribute("style", new StringBuilder().append("display:block;width:").append(value).append("%").toString(), style);
         }
         writer.endElement("div");
 

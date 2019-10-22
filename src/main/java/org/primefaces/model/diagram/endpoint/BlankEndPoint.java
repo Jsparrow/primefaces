@@ -28,7 +28,6 @@ public class BlankEndPoint extends EndPoint {
     private static final long serialVersionUID = 1L;
 
     public BlankEndPoint() {
-        super();
     }
 
     public BlankEndPoint(EndPointAnchor anchor) {

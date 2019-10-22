@@ -46,7 +46,7 @@ public class ConstantsHashMap<K, V> extends HashMap<K, V> {
     @Override
     public V get(Object key) {
         if (!containsKey(key)) {
-            throw new FacesException("Class " + clazz.getName() + " does not contain the constant " + key);
+            throw new FacesException(new StringBuilder().append("Class ").append(clazz.getName()).append(" does not contain the constant ").append(key).toString());
         }
 
         return super.get(key);

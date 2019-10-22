@@ -30,7 +30,6 @@ public class DotEndPoint extends EndPoint {
     private int radius = 10;
 
     public DotEndPoint() {
-        super();
     }
 
     public DotEndPoint(EndPointAnchor anchor) {

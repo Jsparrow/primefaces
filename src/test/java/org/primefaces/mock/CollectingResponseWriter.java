@@ -55,7 +55,7 @@ public class CollectingResponseWriter extends ResponseWriter {
 
 	@Override
 	public void endElement(String arg0) throws IOException {
-		builder.append("</" + arg0 + ">");
+		builder.append(new StringBuilder().append("</").append(arg0).append(">").toString());
 	}
 
 	@Override
@@ -87,7 +87,7 @@ public class CollectingResponseWriter extends ResponseWriter {
 	@Override
 	public void writeAttribute(String arg0, Object arg1, String arg2)
 			throws IOException {
-		builder.append(" " + arg0 + "=\"" + arg1 + "\"");
+		builder.append(new StringBuilder().append(" ").append(arg0).append("=\"").append(arg1).append("\"").toString());
 
 	}
 

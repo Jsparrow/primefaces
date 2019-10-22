@@ -143,7 +143,7 @@ public class Layout extends LayoutBase {
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
             FacesEvent wrapperEvent = null;
 
-            if (eventName.equals("toggle")) {
+            if ("toggle".equals(eventName)) {
                 boolean collapsed = Boolean.parseBoolean(params.get(clientId + "_collapsed"));
                 LayoutUnit unit = getLayoutUnitByPosition(params.get(clientId + "_unit"));
                 Visibility visibility = collapsed ? Visibility.HIDDEN : Visibility.VISIBLE;
@@ -151,22 +151,22 @@ public class Layout extends LayoutBase {
 
                 wrapperEvent = new ToggleEvent(unit, behaviorEvent.getBehavior(), visibility);
             }
-            else if (eventName.equals("close")) {
+            else if ("close".equals(eventName)) {
                 LayoutUnit unit = getLayoutUnitByPosition(params.get(clientId + "_unit"));
                 unit.setVisible(false);
 
                 wrapperEvent = new CloseEvent(unit, behaviorEvent.getBehavior());
             }
-            else if (eventName.equals("resize")) {
+            else if ("resize".equals(eventName)) {
                 LayoutUnit unit = getLayoutUnitByPosition(params.get(clientId + "_unit"));
                 String position = unit.getPosition();
                 int width = Integer.parseInt(params.get(clientId + "_width"));
                 int height = Integer.parseInt(params.get(clientId + "_height"));
 
-                if (position.equals("west") || position.equals("east")) {
+                if ("west".equals(position) || "east".equals(position)) {
                     unit.setSize(String.valueOf(width));
                 }
-                else if (position.equals("north") || position.equals("south")) {
+                else if ("north".equals(position) || "south".equals(position)) {
                     unit.setSize(String.valueOf(height));
                 }
 
@@ -174,7 +174,7 @@ public class Layout extends LayoutBase {
             }
 
             if (wrapperEvent == null) {
-                throw new FacesException("Component " + this.getClass().getName() + " does not support event " + eventName + "!");
+                throw new FacesException(new StringBuilder().append("Component ").append(this.getClass().getName()).append(" does not support event ").append(eventName).append("!").toString());
             }
 
             wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());

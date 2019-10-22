@@ -78,12 +78,13 @@ public class BubbleRenderer extends CartesianPlotRenderer {
             writer.write(",zoom:true");
         }
 
-        if (model.isShowDatatip()) {
-            writer.write(",datatip:true");
-            if (model.getDatatipFormat() != null) {
-                writer.write(",datatipFormat:\"" + model.getDatatipFormat() + "\"");
-            }
-        }
+        if (!model.isShowDatatip()) {
+			return;
+		}
+		writer.write(",datatip:true");
+		if (model.getDatatipFormat() != null) {
+		    writer.write(new StringBuilder().append(",datatipFormat:\"").append(model.getDatatipFormat()).append("\"").toString());
+		}
     }
 
 }

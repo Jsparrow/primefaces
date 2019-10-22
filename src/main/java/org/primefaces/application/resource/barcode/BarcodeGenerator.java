@@ -33,7 +33,6 @@ public abstract class BarcodeGenerator {
     private AbstractBarcodeBean barcodeBean;
 
     public BarcodeGenerator() {
-        super();
     }
 
     public BarcodeGenerator(AbstractBarcodeBean bean) {

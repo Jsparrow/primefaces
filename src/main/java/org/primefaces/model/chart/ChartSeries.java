@@ -37,7 +37,7 @@ public class ChartSeries implements Serializable {
 
     private String label;
 
-    private Map<Object, Number> data = new LinkedHashMap<Object, Number>();
+    private Map<Object, Number> data = new LinkedHashMap<>();
 
     private AxisType xaxis;
 
@@ -97,11 +97,17 @@ public class ChartSeries implements Serializable {
     public void encode(Writer writer) throws IOException {
         String renderer = this.getRenderer();
         writer.write("{");
-        writer.write("label:\"" + EscapeUtils.forJavaScript(label) + "\"");
+        writer.write(new StringBuilder().append("label:\"").append(EscapeUtils.forJavaScript(label)).append("\"").toString());
 
-        if (renderer != null) writer.write(",renderer: $.jqplot." + renderer);
-        if (xaxis != null) writer.write(",xaxis:\"" + xaxis + "\"");
-        if (yaxis != null) writer.write(",yaxis:\"" + yaxis + "\"");
+        if (renderer != null) {
+			writer.write(",renderer: $.jqplot." + renderer);
+		}
+        if (xaxis != null) {
+			writer.write(new StringBuilder().append(",xaxis:\"").append(xaxis).append("\"").toString());
+		}
+        if (yaxis != null) {
+			writer.write(new StringBuilder().append(",yaxis:\"").append(yaxis).append("\"").toString());
+		}
 
         writer.write("}");
     }

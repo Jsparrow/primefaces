@@ -32,7 +32,67 @@ public abstract class BreadCrumbBase extends AbstractMenu implements Widget {
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.BreadCrumbRenderer";
 
-    public enum PropertyKeys {
+    public BreadCrumbBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	@Override
+    public org.primefaces.model.menu.MenuModel getModel() {
+        return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
+    }
+
+	public void setModel(org.primefaces.model.menu.MenuModel model) {
+        getStateHelper().put(PropertyKeys.model, model);
+    }
+
+	public String getStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
+    }
+
+	public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
+    }
+
+	public String getStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
+    }
+
+	public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+	public String getHomeDisplay() {
+        return (String) getStateHelper().eval(PropertyKeys.homeDisplay, "icon");
+    }
+
+	public void setHomeDisplay(String homeDisplay) {
+        getStateHelper().put(PropertyKeys.homeDisplay, homeDisplay);
+    }
+
+	@Override
+    public String getTabindex() {
+        return (String) getStateHelper().eval(PropertyKeys.tabindex, "0");
+    }
+
+	@Override
+    public void setTabindex(String tabindex) {
+        getStateHelper().put(PropertyKeys.tabindex, tabindex);
+    }
+
+	public boolean isLastItemDisabled() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.lastItemDisabled, false);
+    }
+
+	public void setLastItemDisabled(boolean lastItemDisabled) {
+        getStateHelper().put(PropertyKeys.lastItemDisabled, lastItemDisabled);
+    }
+
+	public enum PropertyKeys {
 
         model,
         style,
@@ -40,65 +100,5 @@ public abstract class BreadCrumbBase extends AbstractMenu implements Widget {
         homeDisplay,
         tabindex,
         lastItemDisabled;
-    }
-
-    public BreadCrumbBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    @Override
-    public org.primefaces.model.menu.MenuModel getModel() {
-        return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
-    }
-
-    public void setModel(org.primefaces.model.menu.MenuModel model) {
-        getStateHelper().put(PropertyKeys.model, model);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public String getHomeDisplay() {
-        return (String) getStateHelper().eval(PropertyKeys.homeDisplay, "icon");
-    }
-
-    public void setHomeDisplay(String homeDisplay) {
-        getStateHelper().put(PropertyKeys.homeDisplay, homeDisplay);
-    }
-
-    @Override
-    public String getTabindex() {
-        return (String) getStateHelper().eval(PropertyKeys.tabindex, "0");
-    }
-
-    @Override
-    public void setTabindex(String tabindex) {
-        getStateHelper().put(PropertyKeys.tabindex, tabindex);
-    }
-
-    public boolean isLastItemDisabled() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.lastItemDisabled, false);
-    }
-
-    public void setLastItemDisabled(boolean lastItemDisabled) {
-        getStateHelper().put(PropertyKeys.lastItemDisabled, lastItemDisabled);
     }
 }

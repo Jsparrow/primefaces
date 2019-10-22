@@ -88,7 +88,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         String menuButtonId = clientId + "_menuButton";
         String buttonId = clientId + "_button";
         String styleClass = button.getStyleClass();
-        styleClass = styleClass == null ? SplitButton.STYLE_CLASS : SplitButton.STYLE_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? SplitButton.STYLE_CLASS : new StringBuilder().append(SplitButton.STYLE_CLASS).append(" ").append(styleClass).toString();
 
         writer.startElement("div", button);
         writer.writeAttribute("id", clientId, "id");
@@ -132,8 +132,8 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
 
         //icon
         if (!isValueBlank(icon)) {
-            String defaultIconClass = button.getIconPos().equals("left") ? HTML.BUTTON_LEFT_ICON_CLASS : HTML.BUTTON_RIGHT_ICON_CLASS;
-            String iconClass = defaultIconClass + " " + icon;
+            String defaultIconClass = "left".equals(button.getIconPos()) ? HTML.BUTTON_LEFT_ICON_CLASS : HTML.BUTTON_RIGHT_ICON_CLASS;
+            String iconClass = new StringBuilder().append(defaultIconClass).append(" ").append(icon).toString();
 
             writer.startElement("span", null);
             writer.writeAttribute("class", iconClass, null);
@@ -214,7 +214,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         else {
             UIForm form = ComponentTraversalUtils.closestForm(context, button);
             if (form == null) {
-                throw new FacesException("SplitButton : \"" + button.getClientId(context) + "\" must be inside a form element");
+                throw new FacesException(new StringBuilder().append("SplitButton : \"").append(button.getClientId(context)).append("\" must be inside a form element").toString());
             }
 
             onclick.append(buildNonAjaxRequest(context, button, form, null, false));
@@ -231,7 +231,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
     protected void encodeMenu(FacesContext context, SplitButton button, String menuId) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String menuStyleClass = button.getMenuStyleClass();
-        menuStyleClass = (menuStyleClass == null) ? SplitButton.SPLITBUTTON_CONTAINER_CLASS : SplitButton.SPLITBUTTON_CONTAINER_CLASS + " " + menuStyleClass;
+        menuStyleClass = (menuStyleClass == null) ? SplitButton.SPLITBUTTON_CONTAINER_CLASS : new StringBuilder().append(SplitButton.SPLITBUTTON_CONTAINER_CLASS).append(" ").append(menuStyleClass).toString();
 
         writer.startElement("div", null);
         writer.writeAttribute("id", menuId, null);
@@ -267,10 +267,10 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
                 if (menuItem.isRendered()) {
                     String containerStyle = menuItem.getContainerStyle();
                     String containerStyleClass = menuItem.getContainerStyleClass();
-                    containerStyleClass = (containerStyleClass == null) ? Menu.MENUITEM_CLASS : Menu.MENUITEM_CLASS + " " + containerStyleClass;
+                    containerStyleClass = (containerStyleClass == null) ? Menu.MENUITEM_CLASS : new StringBuilder().append(Menu.MENUITEM_CLASS).append(" ").append(containerStyleClass).toString();
 
                     if (isSubmenu) {
-                        containerStyleClass = containerStyleClass + " " + Menu.SUBMENU_CHILD_CLASS;
+                        containerStyleClass = new StringBuilder().append(containerStyleClass).append(" ").append(Menu.SUBMENU_CHILD_CLASS).toString();
                     }
 
                     writer.startElement("li", null);
@@ -311,7 +311,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
             }
 
             String styleClass = menuitem.getStyleClass();
-            styleClass = styleClass == null ? AbstractMenu.MENUITEM_LINK_CLASS : AbstractMenu.MENUITEM_LINK_CLASS + " " + styleClass;
+            styleClass = styleClass == null ? AbstractMenu.MENUITEM_LINK_CLASS : new StringBuilder().append(AbstractMenu.MENUITEM_LINK_CLASS).append(" ").append(styleClass).toString();
             styleClass = disabled ? styleClass + " ui-state-disabled" : styleClass;
 
             writer.writeAttribute("class", styleClass, null);
@@ -330,7 +330,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
 
             if (icon != null) {
                 writer.startElement("span", null);
-                writer.writeAttribute("class", AbstractMenu.MENUITEM_ICON_CLASS + " " + icon, null);
+                writer.writeAttribute("class", new StringBuilder().append(AbstractMenu.MENUITEM_ICON_CLASS).append(" ").append(icon).toString(), null);
                 writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
                 writer.endElement("span");
             }
@@ -355,7 +355,7 @@ public class SplitButtonRenderer extends MenuItemAwareRenderer {
         String label = submenu.getLabel();
         String style = submenu.getStyle();
         String styleClass = submenu.getStyleClass();
-        styleClass = styleClass == null ? Menu.SUBMENU_TITLE_CLASS : Menu.SUBMENU_TITLE_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? Menu.SUBMENU_TITLE_CLASS : new StringBuilder().append(Menu.SUBMENU_TITLE_CLASS).append(" ").append(styleClass).toString();
 
         writer.startElement("li", null);
         writer.writeAttribute("class", styleClass, null);

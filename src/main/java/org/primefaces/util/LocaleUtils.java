@@ -94,7 +94,7 @@ public class LocaleUtils {
                 result = (java.util.Locale) locale;
             }
             else {
-                throw new IllegalArgumentException("Type:" + locale.getClass() + " is not a valid locale type for: " + clientId);
+                throw new IllegalArgumentException(new StringBuilder().append("Type:").append(locale.getClass()).append(" is not a valid locale type for: ").append(clientId).toString());
             }
         }
         else {

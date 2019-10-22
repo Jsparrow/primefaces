@@ -45,10 +45,13 @@ import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import org.primefaces.model.file.UploadedFile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class FileUploadUtilsTest {
 
-    private FileUpload fileUpload;
+    private static final Logger logger = LoggerFactory.getLogger(FileUploadUtilsTest.class);
+	private FileUpload fileUpload;
     private InputStream inputStream;
     private PrimeApplicationContext appContext;
 
@@ -78,6 +81,7 @@ public class FileUploadUtilsTest {
             when(file.getInputStream()).thenReturn(stream);
         }
         catch (IOException e) {
+			logger.error(e.getMessage(), e);
         }
         return file;
     }

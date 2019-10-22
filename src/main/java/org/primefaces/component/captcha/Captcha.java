@@ -59,68 +59,63 @@ public class Captcha extends CaptchaBase {
     protected void validateValue(FacesContext context, Object value) {
         super.validateValue(context, value);
 
-        if (isValid()) {
+        if (!isValid()) {
+			return;
+		}
+		boolean result = false;
+		try {
+		    URL url = new URL("https://www.google.com/recaptcha/api/siteverify");
+		    URLConnection conn = url.openConnection();
+		    conn.setDoInput(true);
+		    conn.setDoOutput(true);
+		    conn.setUseCaches(false);
+		    conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+		    String postBody = createPostParameters(context, value);
 
-            boolean result = false;
+		    OutputStream out = conn.getOutputStream();
+		    out.write(postBody.getBytes());
+		    out.flush();
+		    out.close();
 
-            try {
-                URL url = new URL("https://www.google.com/recaptcha/api/siteverify");
-                URLConnection conn = url.openConnection();
-                conn.setDoInput(true);
-                conn.setDoOutput(true);
-                conn.setUseCaches(false);
-                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-                String postBody = createPostParameters(context, value);
+		    BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+		    StringBuilder response = new StringBuilder();
 
-                OutputStream out = conn.getOutputStream();
-                out.write(postBody.getBytes());
-                out.flush();
-                out.close();
+		    rd.lines().forEach(response::append);
 
-                BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                String inputLine;
-                StringBuffer response = new StringBuffer();
+		    JSONObject json = new JSONObject(response.toString());
+		    result = json.getBoolean("success");
 
-                while ((inputLine = rd.readLine()) != null) {
-                    response.append(inputLine);
-                }
+		    rd.close();
+		}
+		catch (Exception exception) {
+		    throw new FacesException(exception);
+		}
+		finally {
+		    // the captcha token is valid for only one request, in case of an ajax request we have to get a new one
+		    if (context.getPartialViewContext().isAjaxRequest()) {
+		        PrimeFaces.current().executeScript("if (document.getElementById('g-recaptcha-response')) { "
+		                + "try { grecaptcha.reset(); } catch (error) { PrimeFaces.error(error); } }");
+		    }
+		}
+		if (!result) {
+		    setValid(false);
 
-                JSONObject json = new JSONObject(response.toString());
-                result = json.getBoolean("success");
+		    String validatorMessage = getValidatorMessage();
+		    FacesMessage msg = null;
 
-                rd.close();
-            }
-            catch (Exception exception) {
-                throw new FacesException(exception);
-            }
-            finally {
-                // the captcha token is valid for only one request, in case of an ajax request we have to get a new one
-                if (context.getPartialViewContext().isAjaxRequest()) {
-                    PrimeFaces.current().executeScript("if (document.getElementById('g-recaptcha-response')) { "
-                            + "try { grecaptcha.reset(); } catch (error) { PrimeFaces.error(error); } }");
-                }
-            }
+		    if (validatorMessage != null) {
+		        msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, validatorMessage, validatorMessage);
+		    }
+		    else {
+		        Object[] params = new Object[2];
+		        params[0] = MessageFactory.getLabel(context, this);
+		        params[1] = value;
 
-            if (!result) {
-                setValid(false);
+		        msg = MessageFactory.getMessage(Captcha.INVALID_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
+		    }
 
-                String validatorMessage = getValidatorMessage();
-                FacesMessage msg = null;
-
-                if (validatorMessage != null) {
-                    msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, validatorMessage, validatorMessage);
-                }
-                else {
-                    Object[] params = new Object[2];
-                    params[0] = MessageFactory.getLabel(context, this);
-                    params[1] = value;
-
-                    msg = MessageFactory.getMessage(Captcha.INVALID_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, params);
-                }
-
-                context.addMessage(getClientId(context), msg);
-            }
-        }
+		    context.addMessage(getClientId(context), msg);
+		}
     }
 
     private String createPostParameters(FacesContext context, Object value) throws UnsupportedEncodingException {

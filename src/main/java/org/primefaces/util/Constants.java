@@ -25,7 +25,48 @@ package org.primefaces.util;
 
 public class Constants {
 
-    public static class ContextParams {
+    public static final String DOWNLOAD_COOKIE = "primefaces.download";
+
+	public static final String LIBRARY = "primefaces";
+
+	public static final String DYNAMIC_CONTENT_PARAM = "pfdrid";
+
+	public static final String DYNAMIC_CONTENT_CACHE_PARAM = "pfdrid_c";
+
+	public static final String DYNAMIC_CONTENT_TYPE_PARAM = "pfdrt";
+
+	public static final String DYNAMIC_RESOURCES_MAPPING = "primefaces.dynamicResourcesMapping";
+
+	public static final String BARCODE_MAPPING = "primefaces.barcodeMapping";
+
+	public static final String FRAGMENT_ID = "primefaces.fragment";
+
+	public static final String EMPTY_STRING = "";
+
+	public static final String CLIENT_BEHAVIOR_RENDERING_MODE = "CLIENT_BEHAVIOR_RENDERING_MODE";
+
+	public static final String DEFAULT_CACHE_REGION = "primefaces.DEFAULT_CACHE_REGION";
+
+	public static final String HELPER_RENDERER = "org.primefaces.HELPER_RENDERER";
+
+	/**
+     * @deprecated Use MULTI_VIEW_STATES instead
+     */
+    @Deprecated
+    public static final String TABLE_STATE = "primefaces.TABLE_STATE";
+
+	/**
+     * @deprecated Use MULTI_VIEW_STATES instead
+     */
+    @Deprecated
+    public static final String DATALIST_STATE = "primefaces.DATALIST_STATE";
+
+	public static final String MULTI_VIEW_STATES = "primefaces.MULTI_VIEW_STATES";
+
+	private Constants() {
+    }
+
+	public static class ContextParams {
 
         // JSF context params
         public static final String INTERPRET_EMPTY_STRING_AS_NULL = "javax.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL";
@@ -65,19 +106,6 @@ public class Constants {
         public static final String NONCE_PARAM = "primefaces.nonce";
     }
 
-    public static final String DOWNLOAD_COOKIE = "primefaces.download";
-
-    public static final String LIBRARY = "primefaces";
-
-    public static final String DYNAMIC_CONTENT_PARAM = "pfdrid";
-    public static final String DYNAMIC_CONTENT_CACHE_PARAM = "pfdrid_c";
-    public static final String DYNAMIC_CONTENT_TYPE_PARAM = "pfdrt";
-    public static final String DYNAMIC_RESOURCES_MAPPING = "primefaces.dynamicResourcesMapping";
-
-    public static final String BARCODE_MAPPING = "primefaces.barcodeMapping";
-
-    public static final String FRAGMENT_ID = "primefaces.fragment";
-
     public static class DIALOG_FRAMEWORK {
 
         public static final String OUTCOME = "dialog.outcome";
@@ -87,30 +115,5 @@ public class Constants {
         public static final String SOURCE_WIDGET = "dialog.source.widget";
         public static final String CONVERSATION_PARAM = "pfdlgcid";
         public static final String INCLUDE_VIEW_PARAMS = "includeViewParams";
-    }
-
-    public static final String EMPTY_STRING = "";
-
-    public static final String CLIENT_BEHAVIOR_RENDERING_MODE = "CLIENT_BEHAVIOR_RENDERING_MODE";
-
-    public static final String DEFAULT_CACHE_REGION = "primefaces.DEFAULT_CACHE_REGION";
-
-    public static final String HELPER_RENDERER = "org.primefaces.HELPER_RENDERER";
-
-    /**
-     * @deprecated Use MULTI_VIEW_STATES instead
-     */
-    @Deprecated
-    public static final String TABLE_STATE = "primefaces.TABLE_STATE";
-
-    /**
-     * @deprecated Use MULTI_VIEW_STATES instead
-     */
-    @Deprecated
-    public static final String DATALIST_STATE = "primefaces.DATALIST_STATE";
-
-    public static final String MULTI_VIEW_STATES = "primefaces.MULTI_VIEW_STATES";
-
-    private Constants() {
     }
 }

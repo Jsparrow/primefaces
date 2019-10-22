@@ -86,7 +86,7 @@ public class HeadRenderer extends Renderer {
             theme = "aristo";   //default
         }
 
-        if (theme != null && !theme.equals("none")) {
+        if (theme != null && !"none".equals(theme)) {
             encodeCSS(context, "primefaces-" + theme, "theme.css");
         }
 
@@ -103,8 +103,7 @@ public class HeadRenderer extends Renderer {
         //Registered Resources
         UIViewRoot viewRoot = context.getViewRoot();
         List<UIComponent> resources = viewRoot.getComponentResources(context, "head");
-        for (int i = 0; i < resources.size(); i++) {
-            UIComponent resource = resources.get(i);
+        for (UIComponent resource : resources) {
             resource.encodeAll(context);
         }
 
@@ -116,11 +115,11 @@ public class HeadRenderer extends Renderer {
         writer.writeAttribute("type", "text/javascript", null);
         writer.write("if(window.PrimeFaces){");
 
-        writer.write("PrimeFaces.settings.locale='" + LocaleUtils.getCurrentLocale(context) + "';");
+        writer.write(new StringBuilder().append("PrimeFaces.settings.locale='").append(LocaleUtils.getCurrentLocale(context)).append("';").toString());
 
         if (csvEnabled) {
-            writer.write("PrimeFaces.settings.validateEmptyFields=" + applicationContext.getConfig().isValidateEmptyFields() + ";");
-            writer.write("PrimeFaces.settings.considerEmptyStringNull=" + applicationContext.getConfig().isInterpretEmptyStringAsNull() + ";");
+            writer.write(new StringBuilder().append("PrimeFaces.settings.validateEmptyFields=").append(applicationContext.getConfig().isValidateEmptyFields()).append(";").toString());
+            writer.write(new StringBuilder().append("PrimeFaces.settings.considerEmptyStringNull=").append(applicationContext.getConfig().isInterpretEmptyStringAsNull()).append(";").toString());
         }
 
         if (applicationContext.getConfig().isLegacyWidgetNamespace()) {
@@ -135,8 +134,8 @@ public class HeadRenderer extends Renderer {
             writer.write("PrimeFaces.settings.partialSubmit=true;");
         }
 
-        if (!projectStage.equals(ProjectStage.Production)) {
-            writer.write("PrimeFaces.settings.projectStage='" + projectStage.toString() + "';");
+        if (projectStage != ProjectStage.Production) {
+            writer.write(new StringBuilder().append("PrimeFaces.settings.projectStage='").append(projectStage.toString()).append("';").toString());
         }
 
         writer.write("}");
@@ -161,7 +160,7 @@ public class HeadRenderer extends Renderer {
 
         Resource cssResource = context.getApplication().getResourceHandler().createResource(resource, library);
         if (cssResource == null) {
-            throw new FacesException("Error loading css, cannot find \"" + resource + "\" resource of \"" + library + "\" library");
+            throw new FacesException(new StringBuilder().append("Error loading css, cannot find \"").append(resource).append("\" resource of \"").append(library).append("\" library").toString());
         }
         else {
             writer.startElement("link", null);
@@ -183,15 +182,15 @@ public class HeadRenderer extends Renderer {
             writer.endElement("script");
         }
 
-        if (beanValidationEnabled) {
-            resource = context.getApplication().getResourceHandler().createResource("validation/beanvalidation.js", "primefaces");
-
-            if (resource != null) {
-                writer.startElement("script", null);
-                writer.writeAttribute("type", "text/javascript", null);
-                writer.writeAttribute("src", resource.getRequestPath(), null);
-                writer.endElement("script");
-            }
-        }
+        if (!beanValidationEnabled) {
+			return;
+		}
+		resource = context.getApplication().getResourceHandler().createResource("validation/beanvalidation.js", "primefaces");
+		if (resource != null) {
+		    writer.startElement("script", null);
+		    writer.writeAttribute("type", "text/javascript", null);
+		    writer.writeAttribute("src", resource.getRequestPath(), null);
+		    writer.endElement("script");
+		}
     }
 }

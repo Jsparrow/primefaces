@@ -39,7 +39,6 @@ public class CollectionDataModel<E> extends DataModel<E> {
     }
 
     public CollectionDataModel(Collection<E> collection) {
-        super();
         setWrappedData(collection);
     }
 
@@ -83,20 +82,19 @@ public class CollectionDataModel<E> extends DataModel<E> {
         }
 
         DataModelListener[] listeners = getDataModelListeners();
-        if (oldIndex != index && listeners != null) {
-
-            Object rowData = null;
-            if (isRowAvailable()) {
-                rowData = getRowData();
-            }
-
-            DataModelEvent event = new DataModelEvent(this, index, rowData);
-            for (DataModelListener listener : listeners) {
-                if (listener != null) {
-                    listener.rowSelected(event);
-                }
-            }
-        }
+        if (!(oldIndex != index && listeners != null)) {
+			return;
+		}
+		Object rowData = null;
+		if (isRowAvailable()) {
+		    rowData = getRowData();
+		}
+		DataModelEvent event = new DataModelEvent(this, index, rowData);
+		for (DataModelListener listener : listeners) {
+		    if (listener != null) {
+		        listener.rowSelected(event);
+		    }
+		}
     }
 
     @Override

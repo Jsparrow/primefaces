@@ -43,10 +43,10 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
         BreadCrumb breadCrumb = (BreadCrumb) menu;
         String clientId = breadCrumb.getClientId(context);
         String styleClass = breadCrumb.getStyleClass();
-        styleClass = styleClass == null ? BreadCrumb.CONTAINER_CLASS : BreadCrumb.CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? BreadCrumb.CONTAINER_CLASS : new StringBuilder().append(BreadCrumb.CONTAINER_CLASS).append(" ").append(styleClass).toString();
         int elementCount = menu.getElementsCount();
         List<MenuElement> menuElements = menu.getElements();
-        boolean isIconHome = breadCrumb.getHomeDisplay().equals("icon");
+        boolean isIconHome = "icon".equals(breadCrumb.getHomeDisplay());
 
         //home icon for first item
         if (isIconHome && elementCount > 0) {
@@ -126,7 +126,7 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
 
         String style = menuItem.getStyle();
         String styleClass = menuItem.getStyleClass();
-        styleClass = styleClass == null ? BreadCrumb.MENUITEM_LINK_CLASS : BreadCrumb.MENUITEM_LINK_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? BreadCrumb.MENUITEM_LINK_CLASS : new StringBuilder().append(BreadCrumb.MENUITEM_LINK_CLASS).append(" ").append(styleClass).toString();
         styleClass += " ui-state-disabled";
 
         writer.startElement("span", null); // outer span
@@ -140,7 +140,7 @@ public class BreadCrumbRenderer extends BaseMenuRenderer {
 
         if (icon != null) {
             writer.startElement("span", null);
-            writer.writeAttribute("class", BreadCrumb.MENUITEM_ICON_CLASS + " " + icon, null);
+            writer.writeAttribute("class", new StringBuilder().append(BreadCrumb.MENUITEM_ICON_CLASS).append(" ").append(icon).toString(), null);
             writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
             writer.endElement("span");
         }

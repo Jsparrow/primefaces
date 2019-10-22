@@ -72,7 +72,7 @@ public class DataScrollerRenderer extends CoreRenderer {
     protected void encodeMarkup(FacesContext context, DataScroller ds, int chunkSize) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = ds.getClientId(context);
-        boolean inline = ds.getMode().equals("inline");
+        boolean inline = "inline".equals(ds.getMode());
         boolean isLazy = ds.isLazy();
         UIComponent header = ds.getFacet("header");
         UIComponent loader = ds.getFacet("loader");
@@ -81,7 +81,7 @@ public class DataScrollerRenderer extends CoreRenderer {
 
         String style = ds.getStyle();
         String userStyleClass = ds.getStyleClass();
-        String styleClass = (userStyleClass == null) ? containerClass : containerClass + " " + userStyleClass;
+        String styleClass = (userStyleClass == null) ? containerClass : new StringBuilder().append(containerClass).append(" ").append(userStyleClass).toString();
 
         writer.startElement("div", ds);
         writer.writeAttribute("id", clientId, null);
@@ -103,9 +103,9 @@ public class DataScrollerRenderer extends CoreRenderer {
         }
 
         writer.startElement("div", ds);
-        writer.writeAttribute("class", DataScroller.CONTENT_CLASS + " " + contentCornerClass, null);
+        writer.writeAttribute("class", new StringBuilder().append(DataScroller.CONTENT_CLASS).append(" ").append(contentCornerClass).toString(), null);
         if (inline) {
-            writer.writeAttribute("style", "height:" + ds.getScrollHeight() + "px", null);
+            writer.writeAttribute("style", new StringBuilder().append("height:").append(ds.getScrollHeight()).append("px").toString(), null);
         }
 
         int rowCount = ds.getRowCount();
@@ -219,16 +219,16 @@ public class DataScrollerRenderer extends CoreRenderer {
     protected void loadLazyData(FacesContext context, DataScroller ds, int start, int size) {
         LazyDataModel lazyModel = (LazyDataModel) ds.getValue();
 
-        if (lazyModel != null) {
-            List<?> data = lazyModel.load(start, size, null, null, null);
-            lazyModel.setPageSize(size);
-            lazyModel.setWrappedData(data);
-
-            //Update virtualscoller for callback
-            if (ComponentUtils.isRequestSource(ds, context) && ds.isVirtualScroll()) {
-                PrimeFaces.current().ajax().addCallbackParam("totalSize", lazyModel.getRowCount());
-            }
-        }
+        if (lazyModel == null) {
+			return;
+		}
+		List<?> data = lazyModel.load(start, size, null, null, null);
+		lazyModel.setPageSize(size);
+		lazyModel.setWrappedData(data);
+		//Update virtualscoller for callback
+		if (ComponentUtils.isRequestSource(ds, context) && ds.isVirtualScroll()) {
+		    PrimeFaces.current().ajax().addCallbackParam("totalSize", lazyModel.getRowCount());
+		}
     }
 
     @Override

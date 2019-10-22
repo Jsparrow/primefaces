@@ -191,7 +191,7 @@ public class CspResponseWriter extends ResponseWriterWrapper {
             // no id written -> generate a new one and write it
             // otherwise we can't identify the element for our scripts
             if (LangUtils.isValueBlank(id)) {
-                id = lastElement.toLowerCase() + "-" + UUID.randomUUID().toString();
+                id = new StringBuilder().append(lastElement.toLowerCase()).append("-").append(UUID.randomUUID().toString()).toString();
                 getWrapped().writeAttribute("id", id, null);
             }
 
@@ -222,10 +222,10 @@ public class CspResponseWriter extends ResponseWriterWrapper {
         startElement("script", null);
         StringBuilder javascriptBuilder = new StringBuilder(cspState.getEventHandlers().size() * 25);
 
-        for (Map.Entry<String, Map<String, String>> elements : cspState.getEventHandlers().entrySet()) {
+        cspState.getEventHandlers().entrySet().forEach(elements -> {
             String id = elements.getKey();
 
-            for (Map.Entry<String, String> events : elements.getValue().entrySet()) {
+            elements.getValue().entrySet().forEach(events -> {
                 String event = events.getKey();
                 String javascript = events.getValue();
 
@@ -236,8 +236,8 @@ public class CspResponseWriter extends ResponseWriterWrapper {
                 javascriptBuilder.append("',function(event){");
                 javascriptBuilder.append(javascript);
                 javascriptBuilder.append("});");
-            }
-        }
+            });
+        });
 
         String javascript = javascriptBuilder.toString();
         writeText(javascript, null);

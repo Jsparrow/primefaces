@@ -26,10 +26,14 @@ package org.primefaces.util;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class LangUtils {
 
-    private LangUtils() {
+    private static final Logger logger = LoggerFactory.getLogger(LangUtils.class);
+
+	private LangUtils() {
     }
 
     public static boolean isValueEmpty(String value) {
@@ -59,8 +63,8 @@ public class LangUtils {
             return false;
         }
 
-        for (int i = 0; i < array.length; i++) {
-            if (array[i].equals(object)) {
+        for (Object anArray : array) {
+            if (anArray.equals(object)) {
                 return true;
             }
         }
@@ -80,15 +84,14 @@ public class LangUtils {
 
     public static String[] concat(String[]... arrays) {
         int destSize = 0;
-        for (int i = 0; i < arrays.length; i++) {
-            destSize += arrays[i].length;
+        for (String[] array1 : arrays) {
+            destSize += array1.length;
         }
 
         String[] dest = new String[destSize];
 
         int lastIndex = 0;
-        for (int i = 0; i < arrays.length; i++) {
-            String[] array = arrays[i];
+        for (String[] array : arrays) {
             System.arraycopy(array, 0, dest, lastIndex, array.length);
             lastIndex += array.length;
         }
@@ -101,8 +104,8 @@ public class LangUtils {
             return false;
         }
 
-        for (int i = 0; i < array.length; i++) {
-            if (array[i].equalsIgnoreCase(searchedText)) {
+        for (String anArray : array) {
+            if (anArray.equalsIgnoreCase(searchedText)) {
                 return true;
             }
         }
@@ -119,7 +122,8 @@ public class LangUtils {
             return loadClassForName(name);
         }
         catch (ClassNotFoundException e) {
-            return null;
+            logger.error(e.getMessage(), e);
+			return null;
         }
     }
 
@@ -128,7 +132,8 @@ public class LangUtils {
             return Class.forName(name, false, LangUtils.class.getClassLoader());
         }
         catch (ClassNotFoundException e) {
-            try {
+            logger.error(e.getMessage(), e);
+			try {
                 return Class.forName(name, false, getContextClassLoader());
             }
             catch (ClassNotFoundException e2) {

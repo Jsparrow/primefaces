@@ -78,9 +78,7 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
             }
         }
         catch (PropertyNotFoundException e) {
-            String message = "Skip transform metadata for component \"" + input.getClientId(context) + "\" because"
-                    + " the ValueExpression of the \"value\" attribute"
-                    + " isn't resolvable completely (e.g. a sub-expression returns null)";
+            String message = new StringBuilder().append("Skip transform metadata for component \"").append(input.getClientId(context)).append("\" because").append(" the ValueExpression of the \"value\" attribute").append(" isn't resolvable completely (e.g. a sub-expression returns null)").toString();
             LOGGER.log(Level.FINE, message);
         }
     }
@@ -90,14 +88,13 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
         Annotation constraint = constraintDescriptor.getAnnotation();
         Class<? extends Annotation> annotationType = constraint.annotationType();
 
-        if (!isMaxlenghtSet(input)) {
-            if (annotationType.equals(Size.class)) {
-                Size size = (Size) constraint;
-                if (size.max() > 0) {
-                    setMaxlength(input, size.max());
-                }
-            }
-        }
+        boolean condition = !isMaxlenghtSet(input) && annotationType.equals(Size.class);
+		if (condition) {
+		    Size size = (Size) constraint;
+		    if (size.max() > 0) {
+		        setMaxlength(input, size.max());
+		    }
+		}
 
         if (input instanceof Spinner) {
             Spinner spinner = (Spinner) input;
@@ -155,24 +152,24 @@ public class BeanValidationInputMetadataTransformer extends AbstractInputMetadat
             }
         }
 
-        if (input instanceof UICalendar) {
-            UICalendar uicalendar = (UICalendar) input;
-            boolean hasTime = uicalendar.hasTime();
-            // for BeanValidation 2.0
-            String annotationClassName = annotationType.getSimpleName();
-
-            if (annotationType.equals(Past.class) && uicalendar.getMaxdate() == null) {
-                uicalendar.setMaxdate(hasTime ? LocalDateTime.now() : LocalDate.now().minusDays(1));
-            }
-            if (annotationClassName.equals(PastOrPresentClientValidationConstraint.CONSTRAINT_ID) && uicalendar.getMaxdate() == null) {
-                uicalendar.setMaxdate(hasTime ? LocalDateTime.now() : LocalDate.now());
-            }
-            if (annotationType.equals(Future.class) && uicalendar.getMindate() == null) {
-                uicalendar.setMindate(hasTime ? LocalDateTime.now() : LocalDate.now().plusDays(1));
-            }
-            if (annotationClassName.equals(FutureOrPresentClientValidationConstraint.CONSTRAINT_ID) && uicalendar.getMindate() == null) {
-                uicalendar.setMindate(hasTime ? LocalDateTime.now() : LocalDate.now());
-            }
-        }
+        if (!(input instanceof UICalendar)) {
+			return;
+		}
+		UICalendar uicalendar = (UICalendar) input;
+		boolean hasTime = uicalendar.hasTime();
+		// for BeanValidation 2.0
+		String annotationClassName = annotationType.getSimpleName();
+		if (annotationType.equals(Past.class) && uicalendar.getMaxdate() == null) {
+		    uicalendar.setMaxdate(hasTime ? LocalDateTime.now() : LocalDate.now().minusDays(1));
+		}
+		if (annotationClassName.equals(PastOrPresentClientValidationConstraint.CONSTRAINT_ID) && uicalendar.getMaxdate() == null) {
+		    uicalendar.setMaxdate(hasTime ? LocalDateTime.now() : LocalDate.now());
+		}
+		if (annotationType.equals(Future.class) && uicalendar.getMindate() == null) {
+		    uicalendar.setMindate(hasTime ? LocalDateTime.now() : LocalDate.now().plusDays(1));
+		}
+		if (annotationClassName.equals(FutureOrPresentClientValidationConstraint.CONSTRAINT_ID) && uicalendar.getMindate() == null) {
+		    uicalendar.setMindate(hasTime ? LocalDateTime.now() : LocalDate.now());
+		}
     }
 }

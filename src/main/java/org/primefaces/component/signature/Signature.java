@@ -48,13 +48,14 @@ public class Signature extends SignatureBase {
         super.processUpdates(context);
         String base64Value = this.getBase64Value();
 
-        if (base64Value != null) {
-            ValueExpression ve = this.getValueExpression(PropertyKeys.base64Value.toString());
-            if (ve != null) {
-                ve.setValue(context.getELContext(), base64Value);
-                getStateHelper().put(PropertyKeys.base64Value, null);
-            }
-        }
+        if (base64Value == null) {
+			return;
+		}
+		ValueExpression ve = this.getValueExpression(PropertyKeys.base64Value.toString());
+		if (ve != null) {
+		    ve.setValue(context.getELContext(), base64Value);
+		    getStateHelper().put(PropertyKeys.base64Value, null);
+		}
     }
 
     public String resolveStyleClass() {

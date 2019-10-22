@@ -32,10 +32,14 @@ import javax.faces.context.FacesContext;
 
 import org.primefaces.renderkit.CoreRenderer;
 import org.primefaces.util.ComponentUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class FeedReaderRenderer extends CoreRenderer {
 
-    @Override
+    private static final Logger logger = LoggerFactory.getLogger(FeedReaderRenderer.class);
+
+	@Override
     public void encodeEnd(FacesContext context, UIComponent component) throws IOException {
         FeedReader reader = (FeedReader) component;
         Map<String, Object> requestMap = context.getExternalContext().getRequestMap();
@@ -54,7 +58,8 @@ public class FeedReaderRenderer extends CoreRenderer {
 
         }
         catch (Exception e) {
-            UIComponent errorFacet = reader.getFacet("error");
+            logger.error(e.getMessage(), e);
+			UIComponent errorFacet = reader.getFacet("error");
             if (ComponentUtils.shouldRenderFacet(errorFacet)) {
                 errorFacet.encodeAll(context);
             }

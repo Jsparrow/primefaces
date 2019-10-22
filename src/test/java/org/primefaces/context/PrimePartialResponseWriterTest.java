@@ -35,7 +35,7 @@ import org.json.JSONObject;
 public class PrimePartialResponseWriterTest {
     
 	@Test
-    public void testEncodeJSONArray() throws IOException, JSONException {
+    public void testEncodeJSONArray() throws IOException {
         CollectingPartialResponseWriter partialResponseWriter = new CollectingPartialResponseWriter();
         PrimePartialResponseWriter primePartialResponseWriter = new PrimePartialResponseWriter(partialResponseWriter);
 
@@ -51,7 +51,7 @@ public class PrimePartialResponseWriterTest {
     }
 
     @Test
-    public void testEncodeJSONObject() throws IOException, JSONException {
+    public void testEncodeJSONObject() throws IOException {
         CollectingPartialResponseWriter partialResponseWriter = new CollectingPartialResponseWriter();
         PrimePartialResponseWriter primePartialResponseWriter = new PrimePartialResponseWriter(partialResponseWriter);
 
@@ -65,7 +65,7 @@ public class PrimePartialResponseWriterTest {
     }
 
     @Test
-    public void testEncodeJSONValue() throws IOException, JSONException {
+    public void testEncodeJSONValue() throws IOException {
         CollectingPartialResponseWriter partialResponseWriter = new CollectingPartialResponseWriter();
         PrimePartialResponseWriter primePartialResponseWriter = new PrimePartialResponseWriter(partialResponseWriter);
 

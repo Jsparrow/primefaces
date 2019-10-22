@@ -30,44 +30,44 @@ public abstract class ToolbarGroupBase extends UIComponentBase {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-    public enum PropertyKeys {
-
-        align,
-        style,
-        styleClass
-    }
-
     public ToolbarGroupBase() {
         setRendererType(null);
     }
 
-    @Override
+	@Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
-    public String getAlign() {
+	public String getAlign() {
         return (String) getStateHelper().eval(PropertyKeys.align, "left");
     }
 
-    public void setAlign(String align) {
+	public void setAlign(String align) {
         getStateHelper().put(PropertyKeys.align, align);
     }
 
-    public String getStyle() {
+	public String getStyle() {
         return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(String style) {
+	public void setStyle(String style) {
         getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public String getStyleClass() {
+	public String getStyleClass() {
         return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(String styleClass) {
+	public void setStyleClass(String styleClass) {
         getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+	public enum PropertyKeys {
+
+        align,
+        style,
+        styleClass
     }
 
 }

@@ -77,9 +77,9 @@ public class PickListRenderer extends InputRenderer {
         String clientId = pickList.getClientId(context);
         DualListModel model = getModelValueToRender(context, pickList);
         String styleClass = pickList.getStyleClass();
-        styleClass = styleClass == null ? PickList.CONTAINER_CLASS : PickList.CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? PickList.CONTAINER_CLASS : new StringBuilder().append(PickList.CONTAINER_CLASS).append(" ").append(styleClass).toString();
         String labelDisplay = pickList.getLabelDisplay();
-        boolean vertical = pickList.getOrientation().equals("vertical");
+        boolean vertical = "vertical".equals(pickList.getOrientation());
         if (vertical) {
             styleClass += " ui-picklist-vertical";
         }
@@ -189,12 +189,12 @@ public class PickListRenderer extends InputRenderer {
 
     protected void encodeButton(FacesContext context, String title, String styleClass, String icon, String labelDisplay) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        boolean tooltip = labelDisplay.equals("tooltip");
+        boolean tooltip = "tooltip".equals(labelDisplay);
         String buttonClass = tooltip ? HTML.BUTTON_ICON_ONLY_BUTTON_CLASS : HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS;
 
         writer.startElement("button", null);
         writer.writeAttribute("type", "button", null);
-        writer.writeAttribute("class", buttonClass + " " + styleClass, null);
+        writer.writeAttribute("class", new StringBuilder().append(buttonClass).append(" ").append(styleClass).toString(), null);
 
         if (tooltip) {
             writer.writeAttribute("title", title, null);
@@ -202,7 +202,7 @@ public class PickListRenderer extends InputRenderer {
 
         //icon
         writer.startElement("span", null);
-        writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " " + icon, null);
+        writer.writeAttribute("class", new StringBuilder().append(HTML.BUTTON_LEFT_ICON_CLASS).append(" ").append(icon).toString(), null);
         writer.endElement("span");
 
         //text
@@ -278,7 +278,7 @@ public class PickListRenderer extends InputRenderer {
             String itemValue = converter != null ?
                                converter.getAsString(context, pickList, pickList.getItemValue()) : pickList.getItemValue().toString();
             String itemLabel = pickList.getItemLabel();
-            String itemClass = pickList.isItemDisabled() ? PickList.ITEM_CLASS + " " + PickList.ITEM_DISABLED_CLASS : PickList.ITEM_CLASS;
+            String itemClass = pickList.isItemDisabled() ? new StringBuilder().append(PickList.ITEM_CLASS).append(" ").append(PickList.ITEM_DISABLED_CLASS).toString() : PickList.ITEM_CLASS;
 
             writer.startElement("li", null);
             writer.writeAttribute("class", itemClass, null);
@@ -341,7 +341,7 @@ public class PickListRenderer extends InputRenderer {
 
     @Override
     @SuppressWarnings("unchecked")
-    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) {
         try {
             PickList pickList = (PickList) component;
             String[][] value = (String[][]) submittedValue;

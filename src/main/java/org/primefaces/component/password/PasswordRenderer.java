@@ -88,7 +88,7 @@ public class PasswordRenderer extends InputRenderer {
         String inputClass = Password.STYLE_CLASS;
         inputClass = password.isValid() ? inputClass : inputClass + " ui-state-error";
         inputClass = !disabled ? inputClass : inputClass + " ui-state-disabled";
-        String styleClass = password.getStyleClass() == null ? inputClass : inputClass + " " + password.getStyleClass();
+        String styleClass = password.getStyleClass() == null ? inputClass : new StringBuilder().append(inputClass).append(" ").append(password.getStyleClass()).toString();
 
         writer.startElement("input", password);
         writer.writeAttribute("id", clientId, "id");

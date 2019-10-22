@@ -33,52 +33,52 @@ public abstract class SpotlightBase extends UIComponentBase implements Widget {
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.SpotlightRenderer";
 
-    public enum PropertyKeys {
+    public SpotlightBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getWidgetVar() {
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
+
+	public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
+
+	public String getTarget() {
+        return (String) getStateHelper().eval(PropertyKeys.target, null);
+    }
+
+	public void setTarget(String target) {
+        getStateHelper().put(PropertyKeys.target, target);
+    }
+
+	public boolean isActive() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.active, false);
+    }
+
+	public void setActive(boolean active) {
+        getStateHelper().put(PropertyKeys.active, active);
+    }
+
+	public boolean isBlockScroll() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.blockScroll, false);
+    }
+
+	public void setBlockScroll(boolean blockScroll) {
+        getStateHelper().put(PropertyKeys.blockScroll, blockScroll);
+    }
+
+	public enum PropertyKeys {
 
         widgetVar,
         target,
         active,
         blockScroll
-    }
-
-    public SpotlightBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public String getTarget() {
-        return (String) getStateHelper().eval(PropertyKeys.target, null);
-    }
-
-    public void setTarget(String target) {
-        getStateHelper().put(PropertyKeys.target, target);
-    }
-
-    public boolean isActive() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.active, false);
-    }
-
-    public void setActive(boolean active) {
-        getStateHelper().put(PropertyKeys.active, active);
-    }
-
-    public boolean isBlockScroll() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.blockScroll, false);
-    }
-
-    public void setBlockScroll(boolean blockScroll) {
-        getStateHelper().put(PropertyKeys.blockScroll, blockScroll);
     }
 }

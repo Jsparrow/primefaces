@@ -111,17 +111,17 @@ public class GrowlRenderer extends UINotificationRenderer {
                     if (growl.isSkipDetailIfEqualsSummary() && Objects.equals(summary, detail)) {
                         detail = Constants.EMPTY_STRING;
                     }
-                    writer.writeText("summary:\"" + summary + "\",detail:\"" + detail + "\"", null);
+                    writer.writeText(new StringBuilder().append("summary:\"").append(summary).append("\",detail:\"").append(detail).append("\"").toString(), null);
                 }
                 else if (growl.isShowSummary() && !growl.isShowDetail()) {
-                    writer.writeText("summary:\"" + summary + "\",detail:\"\"", null);
+                    writer.writeText(new StringBuilder().append("summary:\"").append(summary).append("\",detail:\"\"").toString(), null);
                 }
                 else if (!growl.isShowSummary() && growl.isShowDetail()) {
-                    writer.writeText("summary:\"\",detail:\"" + detail + "\"", null);
+                    writer.writeText(new StringBuilder().append("summary:\"\",detail:\"").append(detail).append("\"").toString(), null);
                 }
 
-                writer.write(",severity:'" + severityName + "'");
-                writer.write(",severityText:'" + getSeverityText(message) + "'");
+                writer.write(new StringBuilder().append(",severity:'").append(severityName).append("'").toString());
+                writer.write(new StringBuilder().append(",severityText:'").append(getSeverityText(message)).append("'").toString());
 
                 writer.write("}");
 

@@ -58,7 +58,7 @@ public class OverlayPanelRenderer extends CoreRenderer {
         String clientId = panel.getClientId(context);
         String style = panel.getStyle();
         String styleClass = panel.getStyleClass();
-        styleClass = styleClass == null ? OverlayPanel.STYLE_CLASS : OverlayPanel.STYLE_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? OverlayPanel.STYLE_CLASS : new StringBuilder().append(OverlayPanel.STYLE_CLASS).append(" ").append(styleClass).toString();
 
         writer.startElement("div", panel);
         writer.writeAttribute("id", clientId, "id");

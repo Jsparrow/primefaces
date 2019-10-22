@@ -145,9 +145,7 @@ public class InputNumberTest {
         setupValues("crash", false, null, null, false);
         
         // Act
-        FacesException thrown = Assertions.assertThrows(FacesException.class, () -> {
-            renderer.decode(context, inputNumber);
-        });
+        FacesException thrown = Assertions.assertThrows(FacesException.class, () -> renderer.decode(context, inputNumber));
         
 
         // Assert (expected exception)

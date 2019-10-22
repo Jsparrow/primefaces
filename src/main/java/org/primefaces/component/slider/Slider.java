@@ -88,7 +88,7 @@ public class Slider extends SliderBase {
 
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if (eventName.equals("slideEnd")) {
+            if ("slideEnd".equals(eventName)) {
                 double sliderValue = Double.parseDouble(params.get(clientId + "_slideValue"));
                 SlideEndEvent slideEndEvent = new SlideEndEvent(this, behaviorEvent.getBehavior(), sliderValue);
                 slideEndEvent.setPhaseId(behaviorEvent.getPhaseId());
@@ -163,18 +163,19 @@ public class Slider extends SliderBase {
             }
         }
 
-        if (!isValid()) {
-            String validatorMessage = getValidatorMessage();
-            FacesMessage msg = null;
-            if (validatorMessage != null) {
-                msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, validatorMessage, validatorMessage);
-            }
-            else {
-                Object[] params = new Object[] {MessageFactory.getLabel(context, this)};
-                msg = MessageFactory.getMessage(VALUE_OUT_OF_RANGE, FacesMessage.SEVERITY_ERROR, params);
-            }
-            context.addMessage(getClientId(context), msg);
-        }
+        if (isValid()) {
+			return;
+		}
+		String validatorMessage = getValidatorMessage();
+		FacesMessage msg = null;
+		if (validatorMessage != null) {
+		    msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, validatorMessage, validatorMessage);
+		}
+		else {
+		    Object[] params = new Object[] {MessageFactory.getLabel(context, this)};
+		    msg = MessageFactory.getMessage(VALUE_OUT_OF_RANGE, FacesMessage.SEVERITY_ERROR, params);
+		}
+		context.addMessage(getClientId(context), msg);
     }
 
     private Object getSubmittedValue(UIInput input) {

@@ -28,6 +28,8 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.faces.component.UIComponentBase;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Utility class to scan a component and generated the Markdown information 
@@ -39,7 +41,9 @@ import javax.faces.component.UIComponentBase;
 public class GenerateAjaxBehaviorDoc {
 
     
-    public static void main(String[] args) {
+    private static final Logger logger = LoggerFactory.getLogger(GenerateAjaxBehaviorDoc.class);
+
+	public static void main(String[] args) {
         try {
             for (String className : args) {
                 Class<?> clazz = Class.forName(className);
@@ -47,7 +51,7 @@ public class GenerateAjaxBehaviorDoc {
             }
         }
         catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage(), e);
         }
     }
 
@@ -57,15 +61,15 @@ public class GenerateAjaxBehaviorDoc {
         Collections.sort(events);
         String eventString = events.toString();
         eventString =  eventString.substring(eventString.indexOf("[")+1, eventString.indexOf("]"));
-        System.out.println("## Ajax Behavior Events");
+        logger.info("## Ajax Behavior Events");
         System.out.println();
-        System.out.println("The following AJAX behavior events are available for this component. If no event is specific the default event is called.  ");
-        System.out.println("  ");
-        System.out.println("**Default Event:** " + defaultEvent + "  ");
-        System.out.println("**Available Events:** " + eventString + "  ");
+        logger.info("The following AJAX behavior events are available for this component. If no event is specific the default event is called.  ");
+        logger.info("  ");
+        logger.info(new StringBuilder().append("**Default Event:** ").append(defaultEvent).append("  ").toString());
+        logger.info(new StringBuilder().append("**Available Events:** ").append(eventString).append("  ").toString());
         System.out.println();
-        System.out.println("```xhtml");
-        System.out.println(String.format("<p:ajax event=\"%s\" listener=\"#{bean.handle%s}\" update=\"msgs\" />", defaultEvent,defaultEvent));
-        System.out.println("```");
+        logger.info("```xhtml");
+        logger.info(String.format("<p:ajax event=\"%s\" listener=\"#{bean.handle%s}\" update=\"msgs\" />", defaultEvent,defaultEvent));
+        logger.info("```");
     }
 }

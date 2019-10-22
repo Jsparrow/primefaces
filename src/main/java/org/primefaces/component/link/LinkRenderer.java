@@ -44,7 +44,7 @@ public class LinkRenderer extends OutcomeTargetRenderer {
         String style = link.getStyle();
         String defaultStyleClass = disabled ? Link.DISABLED_STYLE_CLASS : Link.STYLE_CLASS;
         String styleClass = link.getStyleClass();
-        styleClass = (styleClass == null) ? defaultStyleClass : defaultStyleClass + " " + styleClass;
+        styleClass = (styleClass == null) ? defaultStyleClass : new StringBuilder().append(defaultStyleClass).append(" ").append(styleClass).toString();
 
         if (disabled) {
             writer.startElement("span", link);

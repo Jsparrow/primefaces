@@ -57,7 +57,7 @@ public class LinkButton extends LinkButtonBase {
             styleClass = HTML.BUTTON_TEXT_ONLY_BUTTON_CLASS;
         }
         else if (value != null && !LangUtils.isValueBlank(icon)) {
-            styleClass = getIconPos().equals("left") ? HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS : HTML.BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS;
+            styleClass = "left".equals(getIconPos()) ? HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS : HTML.BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS;
         }
         else if (value == null && !LangUtils.isValueBlank(icon)) {
             styleClass = HTML.BUTTON_ICON_ONLY_BUTTON_CLASS;
@@ -69,7 +69,7 @@ public class LinkButton extends LinkButtonBase {
 
         String userStyleClass = getStyleClass();
         if (userStyleClass != null) {
-            styleClass = styleClass + " " + userStyleClass;
+            styleClass = new StringBuilder().append(styleClass).append(" ").append(userStyleClass).toString();
         }
 
         return "ui-linkbutton " + styleClass;

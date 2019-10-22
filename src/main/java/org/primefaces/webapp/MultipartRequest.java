@@ -63,7 +63,7 @@ public class MultipartRequest extends HttpServletRequestWrapper {
         try {
             List<FileItem> fileItems = servletFileUpload.parseRequest(request);
 
-            for (FileItem item : fileItems) {
+            fileItems.forEach(item -> {
                 if (item.isFormField()) {
                     List<String> items = formParams.computeIfAbsent(item.getFieldName(), k -> new ArrayList<>());
                     items.add(getItemString(item));
@@ -72,7 +72,7 @@ public class MultipartRequest extends HttpServletRequestWrapper {
                     List<FileItem> items = fileParams.computeIfAbsent(item.getFieldName(), k -> new ArrayList<>());
                     items.add(item);
                 }
-            }
+            });
         }
         catch (FileUploadException e) {
             LOGGER.log(Level.SEVERE, "Error in parsing fileupload request", e);
@@ -113,9 +113,7 @@ public class MultipartRequest extends HttpServletRequestWrapper {
         if (parameterMap == null) {
             Map<String, String[]> map = new LinkedHashMap<>();
 
-            for (Entry<String, List<String>> entry : formParams.entrySet()) {
-                map.put(entry.getKey(), entry.getValue().toArray(new String[0]));
-            }
+            formParams.entrySet().forEach(entry -> map.put(entry.getKey(), entry.getValue().toArray(new String[0])));
 
             map.putAll(super.getParameterMap());
 

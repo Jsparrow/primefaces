@@ -36,7 +36,113 @@ public abstract class AccordionPanelBase extends UITabPanel implements Widget, R
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.AccordionPanelRenderer";
 
-    public enum PropertyKeys {
+    public AccordionPanelBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getWidgetVar() {
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
+
+	public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
+
+	public String getActiveIndex() {
+        return (String) getStateHelper().eval(PropertyKeys.activeIndex, "0");
+    }
+
+	public void setActiveIndex(String activeIndex) {
+        getStateHelper().put(PropertyKeys.activeIndex, activeIndex);
+    }
+
+	public String getStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
+    }
+
+	public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
+    }
+
+	public String getStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
+    }
+
+	public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+	public String getOnTabChange() {
+        return (String) getStateHelper().eval(PropertyKeys.onTabChange, null);
+    }
+
+	public void setOnTabChange(String onTabChange) {
+        getStateHelper().put(PropertyKeys.onTabChange, onTabChange);
+    }
+
+	public String getOnTabShow() {
+        return (String) getStateHelper().eval(PropertyKeys.onTabShow, null);
+    }
+
+	public void setOnTabShow(String onTabShow) {
+        getStateHelper().put(PropertyKeys.onTabShow, onTabShow);
+    }
+
+	public String getOnTabClose() {
+        return (String) getStateHelper().eval(PropertyKeys.onTabClose, null);
+    }
+
+	public void setOnTabClose(String onTabClose) {
+        getStateHelper().put(PropertyKeys.onTabClose, onTabClose);
+    }
+
+	public boolean isCache() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.cache, true);
+    }
+
+	public void setCache(boolean cache) {
+        getStateHelper().put(PropertyKeys.cache, cache);
+    }
+
+	public boolean isMultiple() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.multiple, false);
+    }
+
+	public void setMultiple(boolean multiple) {
+        getStateHelper().put(PropertyKeys.multiple, multiple);
+    }
+
+	@Override
+	public String getDir() {
+        return (String) getStateHelper().eval(PropertyKeys.dir, "ltr");
+    }
+
+	public void setDir(String dir) {
+        getStateHelper().put(PropertyKeys.dir, dir);
+    }
+
+	public String getTabindex() {
+        return (String) getStateHelper().eval(PropertyKeys.tabindex, "0");
+    }
+
+	public void setTabindex(String tabindex) {
+        getStateHelper().put(PropertyKeys.tabindex, tabindex);
+    }
+
+	public javax.el.MethodExpression getTabController() {
+        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.tabController, null);
+    }
+
+	public void setTabController(javax.el.MethodExpression tabController) {
+        getStateHelper().put(PropertyKeys.tabController, tabController);
+    }
+
+	public enum PropertyKeys {
 
         widgetVar,
         activeIndex,
@@ -50,110 +156,5 @@ public abstract class AccordionPanelBase extends UITabPanel implements Widget, R
         dir,
         tabindex,
         tabController
-    }
-
-    public AccordionPanelBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public String getActiveIndex() {
-        return (String) getStateHelper().eval(PropertyKeys.activeIndex, "0");
-    }
-
-    public void setActiveIndex(String activeIndex) {
-        getStateHelper().put(PropertyKeys.activeIndex, activeIndex);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public String getOnTabChange() {
-        return (String) getStateHelper().eval(PropertyKeys.onTabChange, null);
-    }
-
-    public void setOnTabChange(String onTabChange) {
-        getStateHelper().put(PropertyKeys.onTabChange, onTabChange);
-    }
-
-    public String getOnTabShow() {
-        return (String) getStateHelper().eval(PropertyKeys.onTabShow, null);
-    }
-
-    public void setOnTabShow(String onTabShow) {
-        getStateHelper().put(PropertyKeys.onTabShow, onTabShow);
-    }
-
-    public String getOnTabClose() {
-        return (String) getStateHelper().eval(PropertyKeys.onTabClose, null);
-    }
-
-    public void setOnTabClose(String onTabClose) {
-        getStateHelper().put(PropertyKeys.onTabClose, onTabClose);
-    }
-
-    public boolean isCache() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.cache, true);
-    }
-
-    public void setCache(boolean cache) {
-        getStateHelper().put(PropertyKeys.cache, cache);
-    }
-
-    public boolean isMultiple() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.multiple, false);
-    }
-
-    public void setMultiple(boolean multiple) {
-        getStateHelper().put(PropertyKeys.multiple, multiple);
-    }
-
-    public String getDir() {
-        return (String) getStateHelper().eval(PropertyKeys.dir, "ltr");
-    }
-
-    public void setDir(String dir) {
-        getStateHelper().put(PropertyKeys.dir, dir);
-    }
-
-    public String getTabindex() {
-        return (String) getStateHelper().eval(PropertyKeys.tabindex, "0");
-    }
-
-    public void setTabindex(String tabindex) {
-        getStateHelper().put(PropertyKeys.tabindex, tabindex);
-    }
-
-    public javax.el.MethodExpression getTabController() {
-        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.tabController, null);
-    }
-
-    public void setTabController(javax.el.MethodExpression tabController) {
-        getStateHelper().put(PropertyKeys.tabController, tabController);
     }
 }

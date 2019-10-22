@@ -33,7 +33,64 @@ public abstract class ClockBase extends UIOutput implements Widget {
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.ClockRenderer";
 
-    public enum PropertyKeys {
+    public ClockBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getPattern() {
+        return (String) getStateHelper().eval(PropertyKeys.pattern, null);
+    }
+
+	public void setPattern(String pattern) {
+        getStateHelper().put(PropertyKeys.pattern, pattern);
+    }
+
+	public String getMode() {
+        return (String) getStateHelper().eval(PropertyKeys.mode, "client");
+    }
+
+	public void setMode(String mode) {
+        getStateHelper().put(PropertyKeys.mode, mode);
+    }
+
+	public boolean isAutoSync() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.autoSync, false);
+    }
+
+	public void setAutoSync(boolean autoSync) {
+        getStateHelper().put(PropertyKeys.autoSync, autoSync);
+    }
+
+	public int getSyncInterval() {
+        return (Integer) getStateHelper().eval(PropertyKeys.syncInterval, 60000);
+    }
+
+	public void setSyncInterval(int syncInterval) {
+        getStateHelper().put(PropertyKeys.syncInterval, syncInterval);
+    }
+
+	public Object getTimeZone() {
+        return getStateHelper().eval(PropertyKeys.timeZone, null);
+    }
+
+	public void setTimeZone(Object timeZone) {
+        getStateHelper().put(PropertyKeys.timeZone, timeZone);
+    }
+
+	public String getDisplayMode() {
+        return (String) getStateHelper().eval(PropertyKeys.displayMode, "digital");
+    }
+
+	public void setDisplayMode(String displayMode) {
+        getStateHelper().put(PropertyKeys.displayMode, displayMode);
+    }
+
+	public enum PropertyKeys {
 
         pattern,
         mode,
@@ -41,62 +98,5 @@ public abstract class ClockBase extends UIOutput implements Widget {
         syncInterval,
         timeZone,
         displayMode
-    }
-
-    public ClockBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getPattern() {
-        return (String) getStateHelper().eval(PropertyKeys.pattern, null);
-    }
-
-    public void setPattern(String pattern) {
-        getStateHelper().put(PropertyKeys.pattern, pattern);
-    }
-
-    public String getMode() {
-        return (String) getStateHelper().eval(PropertyKeys.mode, "client");
-    }
-
-    public void setMode(String mode) {
-        getStateHelper().put(PropertyKeys.mode, mode);
-    }
-
-    public boolean isAutoSync() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.autoSync, false);
-    }
-
-    public void setAutoSync(boolean autoSync) {
-        getStateHelper().put(PropertyKeys.autoSync, autoSync);
-    }
-
-    public int getSyncInterval() {
-        return (Integer) getStateHelper().eval(PropertyKeys.syncInterval, 60000);
-    }
-
-    public void setSyncInterval(int syncInterval) {
-        getStateHelper().put(PropertyKeys.syncInterval, syncInterval);
-    }
-
-    public Object getTimeZone() {
-        return getStateHelper().eval(PropertyKeys.timeZone, null);
-    }
-
-    public void setTimeZone(Object timeZone) {
-        getStateHelper().put(PropertyKeys.timeZone, timeZone);
-    }
-
-    public String getDisplayMode() {
-        return (String) getStateHelper().eval(PropertyKeys.displayMode, "digital");
-    }
-
-    public void setDisplayMode(String displayMode) {
-        getStateHelper().put(PropertyKeys.displayMode, displayMode);
     }
 }

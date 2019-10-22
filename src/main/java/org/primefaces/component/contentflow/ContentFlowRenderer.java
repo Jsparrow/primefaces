@@ -49,7 +49,7 @@ public class ContentFlowRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String style = cf.getStyle();
         String styleClass = cf.getStyleClass();
-        String containerClass = (styleClass == null) ? ContentFlow.CONTAINER_CLASS : ContentFlow.CONTAINER_CLASS + " " + styleClass;
+        String containerClass = (styleClass == null) ? ContentFlow.CONTAINER_CLASS : new StringBuilder().append(ContentFlow.CONTAINER_CLASS).append(" ").append(styleClass).toString();
 
         writer.startElement("div", cf);
         writer.writeAttribute("id", cf.getClientId(context), null);

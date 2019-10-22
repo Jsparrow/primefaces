@@ -49,76 +49,76 @@ public class StreamedContentHandler extends BaseDynamicContentHandler {
         String library = params.get("ln");
         String resourceKey = params.get(Constants.DYNAMIC_CONTENT_PARAM);
 
-        if (resourceKey != null && library != null && library.equals(Constants.LIBRARY)) {
-            StreamedContent streamedContent = null;
-            boolean cache = Boolean.parseBoolean(params.get(Constants.DYNAMIC_CONTENT_CACHE_PARAM));
+        if (!(resourceKey != null && library != null && library.equals(Constants.LIBRARY))) {
+			return;
+		}
+		StreamedContent streamedContent = null;
+		boolean cache = Boolean.parseBoolean(params.get(Constants.DYNAMIC_CONTENT_CACHE_PARAM));
+		try {
+		    ExternalContext externalContext = context.getExternalContext();
+		    Map<String, Object> session = externalContext.getSessionMap();
+		    Map<String, String> dynamicResourcesMapping = (Map) session.get(Constants.DYNAMIC_RESOURCES_MAPPING);
 
-            try {
-                ExternalContext externalContext = context.getExternalContext();
-                Map<String, Object> session = externalContext.getSessionMap();
-                Map<String, String> dynamicResourcesMapping = (Map) session.get(Constants.DYNAMIC_RESOURCES_MAPPING);
+		    if (dynamicResourcesMapping != null) {
+		        String dynamicContentEL = dynamicResourcesMapping.get(resourceKey);
 
-                if (dynamicResourcesMapping != null) {
-                    String dynamicContentEL = dynamicResourcesMapping.get(resourceKey);
+		        if (dynamicContentEL != null) {
+		            ELContext eLContext = context.getELContext();
+		            ValueExpression ve = context.getApplication().getExpressionFactory().createValueExpression(
+		                    context.getELContext(), dynamicContentEL, StreamedContent.class);
+		            streamedContent = (StreamedContent) ve.getValue(eLContext);
 
-                    if (dynamicContentEL != null) {
-                        ELContext eLContext = context.getELContext();
-                        ValueExpression ve = context.getApplication().getExpressionFactory().createValueExpression(
-                                context.getELContext(), dynamicContentEL, StreamedContent.class);
-                        streamedContent = (StreamedContent) ve.getValue(eLContext);
+		            if (streamedContent == null || streamedContent.getStream() == null) {
+		                if (externalContext.getRequest() instanceof HttpServletRequest) {
+		                    externalContext.responseSendError(HttpServletResponse.SC_NOT_FOUND,
+		                            ((HttpServletRequest) externalContext.getRequest()).getRequestURI());
+		                }
+		                else {
+		                    externalContext.responseSendError(HttpServletResponse.SC_NOT_FOUND, null);
+		                }
+		                return;
+		            }
 
-                        if (streamedContent == null || streamedContent.getStream() == null) {
-                            if (externalContext.getRequest() instanceof HttpServletRequest) {
-                                externalContext.responseSendError(HttpServletResponse.SC_NOT_FOUND,
-                                        ((HttpServletRequest) externalContext.getRequest()).getRequestURI());
-                            }
-                            else {
-                                externalContext.responseSendError(HttpServletResponse.SC_NOT_FOUND, null);
-                            }
-                            return;
-                        }
+		            externalContext.setResponseStatus(HttpServletResponse.SC_OK);
+		            externalContext.setResponseContentType(streamedContent.getContentType());
 
-                        externalContext.setResponseStatus(HttpServletResponse.SC_OK);
-                        externalContext.setResponseContentType(streamedContent.getContentType());
+		            handleCache(externalContext, cache);
 
-                        handleCache(externalContext, cache);
+		            if (streamedContent.getContentLength() != null) {
+		                externalContext.setResponseContentLength(streamedContent.getContentLength());
+		            }
 
-                        if (streamedContent.getContentLength() != null) {
-                            externalContext.setResponseContentLength(streamedContent.getContentLength());
-                        }
+		            if (streamedContent.getContentEncoding() != null) {
+		                externalContext.setResponseHeader("Content-Encoding", streamedContent.getContentEncoding());
+		            }
 
-                        if (streamedContent.getContentEncoding() != null) {
-                            externalContext.setResponseHeader("Content-Encoding", streamedContent.getContentEncoding());
-                        }
+		            if (streamedContent.getName() != null) {
+		                externalContext.setResponseHeader("Content-Disposition", new StringBuilder().append("inline;filename=\"").append(streamedContent.getName()).append("\"").toString());
+		            }
 
-                        if (streamedContent.getName() != null) {
-                            externalContext.setResponseHeader("Content-Disposition", "inline;filename=\"" + streamedContent.getName() + "\"");
-                        }
+		            byte[] buffer = new byte[2048];
 
-                        byte[] buffer = new byte[2048];
+		            int length;
+		            InputStream inputStream = streamedContent.getStream();
+		            while ((length = (inputStream.read(buffer))) >= 0) {
+		                externalContext.getResponseOutputStream().write(buffer, 0, length);
+		            }
+		        }
+		    }
 
-                        int length;
-                        InputStream inputStream = streamedContent.getStream();
-                        while ((length = (inputStream.read(buffer))) >= 0) {
-                            externalContext.getResponseOutputStream().write(buffer, 0, length);
-                        }
-                    }
-                }
+		    externalContext.responseFlushBuffer();
+		    context.responseComplete();
 
-                externalContext.responseFlushBuffer();
-                context.responseComplete();
-
-            }
-            catch (Exception e) {
-                LOGGER.log(Level.SEVERE, "Error in streaming dynamic resource.", e);
-                throw new IOException(e);
-            }
-            finally {
-                //cleanup
-                if (streamedContent != null && streamedContent.getStream() != null) {
-                    streamedContent.getStream().close();
-                }
-            }
-        }
+		}
+		catch (Exception e) {
+		    LOGGER.log(Level.SEVERE, "Error in streaming dynamic resource.", e);
+		    throw new IOException(e);
+		}
+		finally {
+		    //cleanup
+		    if (streamedContent != null && streamedContent.getStream() != null) {
+		        streamedContent.getStream().close();
+		    }
+		}
     }
 }

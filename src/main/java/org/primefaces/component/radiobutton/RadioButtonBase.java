@@ -33,7 +33,80 @@ public abstract class RadioButtonBase extends UIComponentBase implements Widget 
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.RadioButtonRenderer";
 
-    public enum PropertyKeys {
+    public RadioButtonBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getWidgetVar() {
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
+
+	public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
+
+	public boolean isDisabled() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+    }
+
+	public void setDisabled(boolean disabled) {
+        getStateHelper().put(PropertyKeys.disabled, disabled);
+    }
+
+	public int getItemIndex() {
+        return (Integer) getStateHelper().eval(PropertyKeys.itemIndex, 0);
+    }
+
+	public void setItemIndex(int itemIndex) {
+        getStateHelper().put(PropertyKeys.itemIndex, itemIndex);
+    }
+
+	public String getOnchange() {
+        return (String) getStateHelper().eval(PropertyKeys.onchange, null);
+    }
+
+	public void setOnchange(String onchange) {
+        getStateHelper().put(PropertyKeys.onchange, onchange);
+    }
+
+	public String getFor() {
+        return (String) getStateHelper().eval(PropertyKeys.forValue, null);
+    }
+
+	public void setFor(String _for) {
+        getStateHelper().put(PropertyKeys.forValue, _for);
+    }
+
+	public String getStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
+    }
+
+	public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
+    }
+
+	public String getStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
+    }
+
+	public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+	public String getTabindex() {
+        return (String) getStateHelper().eval(PropertyKeys.tabindex, null);
+    }
+
+	public void setTabindex(String tabindex) {
+        getStateHelper().put(PropertyKeys.tabindex, tabindex);
+    }
+
+	public enum PropertyKeys {
 
         widgetVar,
         disabled,
@@ -57,78 +130,5 @@ public abstract class RadioButtonBase extends UIComponentBase implements Widget 
         public String toString() {
             return ((toString != null) ? toString : super.toString());
         }
-    }
-
-    public RadioButtonBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public boolean isDisabled() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
-    }
-
-    public void setDisabled(boolean disabled) {
-        getStateHelper().put(PropertyKeys.disabled, disabled);
-    }
-
-    public int getItemIndex() {
-        return (Integer) getStateHelper().eval(PropertyKeys.itemIndex, 0);
-    }
-
-    public void setItemIndex(int itemIndex) {
-        getStateHelper().put(PropertyKeys.itemIndex, itemIndex);
-    }
-
-    public String getOnchange() {
-        return (String) getStateHelper().eval(PropertyKeys.onchange, null);
-    }
-
-    public void setOnchange(String onchange) {
-        getStateHelper().put(PropertyKeys.onchange, onchange);
-    }
-
-    public String getFor() {
-        return (String) getStateHelper().eval(PropertyKeys.forValue, null);
-    }
-
-    public void setFor(String _for) {
-        getStateHelper().put(PropertyKeys.forValue, _for);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public String getTabindex() {
-        return (String) getStateHelper().eval(PropertyKeys.tabindex, null);
-    }
-
-    public void setTabindex(String tabindex) {
-        getStateHelper().put(PropertyKeys.tabindex, tabindex);
     }
 }

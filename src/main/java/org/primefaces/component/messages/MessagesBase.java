@@ -34,7 +34,90 @@ public abstract class MessagesBase extends UIMessages implements UINotification 
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.MessagesRenderer";
 
-    public enum PropertyKeys {
+    public MessagesBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public boolean isEscape() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.escape, true);
+    }
+
+	public void setEscape(boolean escape) {
+        getStateHelper().put(PropertyKeys.escape, escape);
+    }
+
+	@Override
+    public String getSeverity() {
+        return (String) getStateHelper().eval(PropertyKeys.severity, null);
+    }
+
+	public void setSeverity(String severity) {
+        getStateHelper().put(PropertyKeys.severity, severity);
+    }
+
+	public boolean isClosable() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.closable, false);
+    }
+
+	public void setClosable(boolean closable) {
+        getStateHelper().put(PropertyKeys.closable, closable);
+    }
+
+	public String getStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
+    }
+
+	public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
+    }
+
+	public String getStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
+    }
+
+	public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+	public boolean isShowIcon() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showIcon, true);
+    }
+
+	public void setShowIcon(boolean showIcon) {
+        getStateHelper().put(PropertyKeys.showIcon, showIcon);
+    }
+
+	public String getForType() {
+        return (String) getStateHelper().eval(PropertyKeys.forType, null);
+    }
+
+	public void setForType(String forType) {
+        getStateHelper().put(PropertyKeys.forType, forType);
+    }
+
+	public String getForIgnores() {
+        return (String) getStateHelper().eval(PropertyKeys.forIgnores, null);
+    }
+
+	public void setForIgnores(String forIgnores) {
+        getStateHelper().put(PropertyKeys.forIgnores, forIgnores);
+    }
+
+	@Override
+    public boolean isSkipDetailIfEqualsSummary() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.skipDetailIfEqualsSummary, false);
+    }
+
+	public void setSkipDetailIfEqualsSummary(boolean skipDetailIfEqualsSummary) {
+        getStateHelper().put(PropertyKeys.skipDetailIfEqualsSummary, skipDetailIfEqualsSummary);
+    }
+
+	public enum PropertyKeys {
 
         escape,
         severity,
@@ -45,88 +128,5 @@ public abstract class MessagesBase extends UIMessages implements UINotification 
         forType,
         forIgnores,
         skipDetailIfEqualsSummary
-    }
-
-    public MessagesBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public boolean isEscape() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.escape, true);
-    }
-
-    public void setEscape(boolean escape) {
-        getStateHelper().put(PropertyKeys.escape, escape);
-    }
-
-    @Override
-    public String getSeverity() {
-        return (String) getStateHelper().eval(PropertyKeys.severity, null);
-    }
-
-    public void setSeverity(String severity) {
-        getStateHelper().put(PropertyKeys.severity, severity);
-    }
-
-    public boolean isClosable() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.closable, false);
-    }
-
-    public void setClosable(boolean closable) {
-        getStateHelper().put(PropertyKeys.closable, closable);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public boolean isShowIcon() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showIcon, true);
-    }
-
-    public void setShowIcon(boolean showIcon) {
-        getStateHelper().put(PropertyKeys.showIcon, showIcon);
-    }
-
-    public String getForType() {
-        return (String) getStateHelper().eval(PropertyKeys.forType, null);
-    }
-
-    public void setForType(String forType) {
-        getStateHelper().put(PropertyKeys.forType, forType);
-    }
-
-    public String getForIgnores() {
-        return (String) getStateHelper().eval(PropertyKeys.forIgnores, null);
-    }
-
-    public void setForIgnores(String forIgnores) {
-        getStateHelper().put(PropertyKeys.forIgnores, forIgnores);
-    }
-
-    @Override
-    public boolean isSkipDetailIfEqualsSummary() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.skipDetailIfEqualsSummary, false);
-    }
-
-    public void setSkipDetailIfEqualsSummary(boolean skipDetailIfEqualsSummary) {
-        getStateHelper().put(PropertyKeys.skipDetailIfEqualsSummary, skipDetailIfEqualsSummary);
     }
 }

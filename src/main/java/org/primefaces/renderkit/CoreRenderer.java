@@ -139,7 +139,7 @@ public abstract class CoreRenderer extends Renderer {
             boolean hasEventValue = (eventValue != null);
             boolean hasEventBehaviors = (eventBehaviors != null && !eventBehaviors.isEmpty());
 
-            if (domEvent.equals("onchange") && !hasEventBehaviors) {
+            if ("onchange".equals(domEvent) && !hasEventBehaviors) {
                 eventBehaviors = behaviors.get("valueChange");
                 hasEventBehaviors = (eventBehaviors != null && !eventBehaviors.isEmpty());
                 if (hasEventBehaviors) {
@@ -296,8 +296,7 @@ public abstract class CoreRenderer extends Renderer {
 
                 if (hasBehaviors) {
                     ClientBehaviorContext cbc = null;
-                    for (int i = 0; i < behaviors.size(); i++) {
-                        ClientBehavior behavior = behaviors.get(i);
+                    for (ClientBehavior behavior : behaviors) {
                         if (cbc == null) {
                             cbc = ClientBehaviorContext.createClientBehaviorContext(context, component, behaviorEventName,
                                     component.getClientId(context), Collections.<ClientBehaviorContext.Parameter>emptyList());
@@ -476,7 +475,8 @@ public abstract class CoreRenderer extends Renderer {
 
             request.append(
                     params.entrySet().stream()
-                            .map(e -> "'" + e.getKey() + "':'" + EscapeUtils.forJavaScript(String.valueOf(e.getValue())) + "'")
+                            .map(e -> new StringBuilder().append("'").append(e.getKey()).append("':'").append(EscapeUtils.forJavaScript(String.valueOf(e.getValue()))).append("'")
+									.toString())
                             .collect(Collectors.joining(","))
             );
 
@@ -505,73 +505,71 @@ public abstract class CoreRenderer extends Renderer {
         ResponseWriter writer = context.getResponseWriter();
         Map<String, List<ClientBehavior>> clientBehaviors = component.getClientBehaviors();
 
-        if (clientBehaviors != null && !clientBehaviors.isEmpty()) {
-            boolean written = false;
-            Collection<String> eventNames = (component instanceof MixedClientBehaviorHolder)
-                    ? ((MixedClientBehaviorHolder) component).getUnobstrusiveEventNames() : clientBehaviors.keySet();
-            String clientId = ((UIComponent) component).getClientId(context);
-            List<ClientBehaviorContext.Parameter> params = new ArrayList<>(1);
-            params.add(new ClientBehaviorContext.Parameter(Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.UNOBSTRUSIVE));
+        if (!(clientBehaviors != null && !clientBehaviors.isEmpty())) {
+			return;
+		}
+		boolean written = false;
+		Collection<String> eventNames = (component instanceof MixedClientBehaviorHolder)
+		        ? ((MixedClientBehaviorHolder) component).getUnobstrusiveEventNames() : clientBehaviors.keySet();
+		String clientId = ((UIComponent) component).getClientId(context);
+		List<ClientBehaviorContext.Parameter> params = new ArrayList<>(1);
+		params.add(new ClientBehaviorContext.Parameter(Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.UNOBSTRUSIVE));
+		writer.write(",behaviors:{");
+		for (String eventName : eventNames) {
+		    List<ClientBehavior> eventBehaviors = clientBehaviors.get(eventName);
 
-            writer.write(",behaviors:{");
-            for (Iterator<String> eventNameIterator = eventNames.iterator(); eventNameIterator.hasNext();) {
-                String eventName = eventNameIterator.next();
-                List<ClientBehavior> eventBehaviors = clientBehaviors.get(eventName);
+		    if (eventBehaviors != null && !eventBehaviors.isEmpty()) {
+		        if (written) {
+		            writer.write(",");
+		        }
 
-                if (eventBehaviors != null && !eventBehaviors.isEmpty()) {
-                    if (written) {
-                        writer.write(",");
-                    }
+		        int eventBehaviorsSize = eventBehaviors.size();
 
-                    int eventBehaviorsSize = eventBehaviors.size();
+		        writer.write(eventName + ":");
+		        writer.write("function(ext,event) {");
 
-                    writer.write(eventName + ":");
-                    writer.write("function(ext,event) {");
+		        if (eventBehaviorsSize > 1) {
+		            boolean chained = false;
+		            writer.write("PrimeFaces.bcnu(ext,event,[");
 
-                    if (eventBehaviorsSize > 1) {
-                        boolean chained = false;
-                        writer.write("PrimeFaces.bcnu(ext,event,[");
+		            for (int i = 0; i < eventBehaviorsSize; i++) {
+		                ClientBehavior behavior = eventBehaviors.get(i);
+		                ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(
+		                        context, (UIComponent) component, eventName, clientId, params);
+		                String script = behavior.getScript(cbc);
 
-                        for (int i = 0; i < eventBehaviorsSize; i++) {
-                            ClientBehavior behavior = eventBehaviors.get(i);
-                            ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(
-                                    context, (UIComponent) component, eventName, clientId, params);
-                            String script = behavior.getScript(cbc);
+		                if (script != null) {
+		                    if (chained) {
+		                        writer.write(",");
+		                    }
 
-                            if (script != null) {
-                                if (chained) {
-                                    writer.write(",");
-                                }
+		                    writer.write("function(ext,event) {");
+		                    writer.write(script);
+		                    writer.write("}");
 
-                                writer.write("function(ext,event) {");
-                                writer.write(script);
-                                writer.write("}");
+		                    chained = true;
+		                }
+		            }
 
-                                chained = true;
-                            }
-                        }
+		            writer.write("]);");
+		        }
+		        else {
+		            ClientBehavior behavior = eventBehaviors.get(0);
+		            ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(
+		                    context, (UIComponent) component, eventName, clientId, params);
+		            String script = behavior.getScript(cbc);
 
-                        writer.write("]);");
-                    }
-                    else {
-                        ClientBehavior behavior = eventBehaviors.get(0);
-                        ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(
-                                context, (UIComponent) component, eventName, clientId, params);
-                        String script = behavior.getScript(cbc);
+		            if (script != null) {
+		                writer.write(script);
+		            }
+		        }
 
-                        if (script != null) {
-                            writer.write(script);
-                        }
-                    }
+		        writer.write("}");
 
-                    writer.write("}");
-
-                    written = true;
-                }
-            }
-
-            writer.write("}");
-        }
+		        written = true;
+		    }
+		}
+		writer.write("}");
     }
 
     protected void decodeBehaviors(FacesContext context, UIComponent component) {
@@ -603,16 +601,15 @@ public abstract class CoreRenderer extends Renderer {
                 params = Collections.emptyList();
             }
 
-            for (int i = 0; i < behaviors.size(); i++) {
-                ClientBehavior behavior = behaviors.get(i);
-                ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(
+            behaviors.stream().map(behavior -> {
+				ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(
                         context, component, event, clientId, params);
-                String script = behavior.getScript(cbc);
-
-                if (script != null) {
+				return behavior.getScript(cbc);
+			}).forEach(script -> {
+				if (script != null) {
                     sb.append(script).append(";");
                 }
-            }
+			});
         }
 
         return sb.length() == 0 ? null : sb.toString();
@@ -643,9 +640,7 @@ public abstract class CoreRenderer extends Renderer {
             converter = ComponentUtils.getConverter(context, comp);
         }
         catch (PropertyNotFoundException e) {
-            String message = "Skip rendering of CSV metadata for component \"" + comp.getClientId(context) + "\" because"
-                    + " the ValueExpression of the \"value\" attribute"
-                    + " isn't resolvable completely (e.g. a sub-expression returns null)";
+            String message = new StringBuilder().append("Skip rendering of CSV metadata for component \"").append(comp.getClientId(context)).append("\" because").append(" the ValueExpression of the \"value\" attribute").append(" isn't resolvable completely (e.g. a sub-expression returns null)").toString();
             LOGGER.log(Level.FINE, message);
             return;
         }
@@ -660,13 +655,21 @@ public abstract class CoreRenderer extends Renderer {
 
 
         //messages
-        if (label != null) writer.writeAttribute(HTML.VALIDATION_METADATA.LABEL, label, null);
-        if (requiredMessage != null) writer.writeAttribute(HTML.VALIDATION_METADATA.REQUIRED_MESSAGE, requiredMessage, null);
-        if (validatorMessage != null) writer.writeAttribute(HTML.VALIDATION_METADATA.VALIDATOR_MESSAGE, validatorMessage, null);
-        if (converterMessage != null) writer.writeAttribute(HTML.VALIDATION_METADATA.CONVERTER_MESSAGE, converterMessage, null);
+        if (label != null) {
+			writer.writeAttribute(HTML.VALIDATION_METADATA.LABEL, label, null);
+		}
+        if (requiredMessage != null) {
+			writer.writeAttribute(HTML.VALIDATION_METADATA.REQUIRED_MESSAGE, requiredMessage, null);
+		}
+        if (validatorMessage != null) {
+			writer.writeAttribute(HTML.VALIDATION_METADATA.VALIDATOR_MESSAGE, validatorMessage, null);
+		}
+        if (converterMessage != null) {
+			writer.writeAttribute(HTML.VALIDATION_METADATA.CONVERTER_MESSAGE, converterMessage, null);
+		}
 
         //converter
-        if (converter != null && converter instanceof ClientConverter) {
+        if (converter instanceof ClientConverter) {
             ClientConverter clientConverter = (ClientConverter) converter;
             Map<String, Object> metadata = clientConverter.getMetadata();
 

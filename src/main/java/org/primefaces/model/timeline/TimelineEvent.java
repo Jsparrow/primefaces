@@ -240,7 +240,7 @@ public class TimelineEvent<T> implements Serializable {
     }
 
     public static <T> Builder<T> builder() {
-        return new Builder<T>();
+        return new Builder<>();
     }
 
     @Override
@@ -267,15 +267,9 @@ public class TimelineEvent<T> implements Serializable {
 
     @Override
     public String toString() {
-        return "TimelineEvent{"
-                + "id=" + id
-                + ", data=" + data
-                + ", startDate=" + startDate
-                + ", endDate=" + endDate
-                + ", editable=" + editable
-                + ", group='" + group + '\''
-                + ", styleClass='" + styleClass + '\''
-                + '}';
+        return new StringBuilder().append("TimelineEvent{").append("id=").append(id).append(", data=").append(data).append(", startDate=").append(startDate)
+				.append(", endDate=").append(endDate).append(", editable=").append(editable).append(", group='").append(group).append('\'').append(", styleClass='")
+				.append(styleClass).append('\'').append('}').toString();
     }
 
     private void checkStartDate(Date startDate) {

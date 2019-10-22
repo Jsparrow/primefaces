@@ -33,7 +33,64 @@ public abstract class BlockUIBase extends UIPanel implements Widget {
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.BlockUIRenderer";
 
-    public enum PropertyKeys {
+    public BlockUIBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getWidgetVar() {
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
+
+	public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
+
+	public String getTrigger() {
+        return (String) getStateHelper().eval(PropertyKeys.trigger, null);
+    }
+
+	public void setTrigger(String trigger) {
+        getStateHelper().put(PropertyKeys.trigger, trigger);
+    }
+
+	public String getBlock() {
+        return (String) getStateHelper().eval(PropertyKeys.block, null);
+    }
+
+	public void setBlock(String block) {
+        getStateHelper().put(PropertyKeys.block, block);
+    }
+
+	public boolean isBlocked() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.blocked, false);
+    }
+
+	public void setBlocked(boolean blocked) {
+        getStateHelper().put(PropertyKeys.blocked, blocked);
+    }
+
+	public boolean isAnimate() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.animate, true);
+    }
+
+	public void setAnimate(boolean animate) {
+        getStateHelper().put(PropertyKeys.animate, animate);
+    }
+
+	public String getStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
+    }
+
+	public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+	public enum PropertyKeys {
 
         widgetVar,
         trigger,
@@ -41,62 +98,5 @@ public abstract class BlockUIBase extends UIPanel implements Widget {
         blocked,
         animate,
         styleClass
-    }
-
-    public BlockUIBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public String getTrigger() {
-        return (String) getStateHelper().eval(PropertyKeys.trigger, null);
-    }
-
-    public void setTrigger(String trigger) {
-        getStateHelper().put(PropertyKeys.trigger, trigger);
-    }
-
-    public String getBlock() {
-        return (String) getStateHelper().eval(PropertyKeys.block, null);
-    }
-
-    public void setBlock(String block) {
-        getStateHelper().put(PropertyKeys.block, block);
-    }
-
-    public boolean isBlocked() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.blocked, false);
-    }
-
-    public void setBlocked(boolean blocked) {
-        getStateHelper().put(PropertyKeys.blocked, blocked);
-    }
-
-    public boolean isAnimate() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.animate, true);
-    }
-
-    public void setAnimate(boolean animate) {
-        getStateHelper().put(PropertyKeys.animate, animate);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 }

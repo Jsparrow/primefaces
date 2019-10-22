@@ -35,43 +35,43 @@ public abstract class ColumnTogglerBase extends UIComponentBase implements Widge
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.ColumnTogglerRenderer";
 
-    public enum PropertyKeys {
-
-        widgetVar,
-        trigger,
-        datasource;
-    }
-
     public ColumnTogglerBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
-    @Override
+	@Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
+	public String getWidgetVar() {
         return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(String widgetVar) {
+	public void setWidgetVar(String widgetVar) {
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public String getTrigger() {
+	public String getTrigger() {
         return (String) getStateHelper().eval(PropertyKeys.trigger, null);
     }
 
-    public void setTrigger(String trigger) {
+	public void setTrigger(String trigger) {
         getStateHelper().put(PropertyKeys.trigger, trigger);
     }
 
-    public String getDatasource() {
+	public String getDatasource() {
         return (String) getStateHelper().eval(PropertyKeys.datasource, null);
     }
 
-    public void setDatasource(String datasource) {
+	public void setDatasource(String datasource) {
         getStateHelper().put(PropertyKeys.datasource, datasource);
+    }
+
+	public enum PropertyKeys {
+
+        widgetVar,
+        trigger,
+        datasource;
     }
 }

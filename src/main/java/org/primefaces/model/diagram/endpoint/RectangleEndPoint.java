@@ -32,7 +32,6 @@ public class RectangleEndPoint extends EndPoint {
     private int height = 20;
 
     public RectangleEndPoint() {
-        super();
     }
 
     public RectangleEndPoint(EndPointAnchor anchor) {

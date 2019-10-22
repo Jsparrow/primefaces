@@ -142,12 +142,12 @@ public class ApplicationMock extends Application {
     }
 
     @Override
-    public UIComponent createComponent(String componentType) throws FacesException {
+    public UIComponent createComponent(String componentType) {
         return null;
     }
 
     @Override
-    public UIComponent createComponent(ValueBinding componentBinding, FacesContext context, String componentType) throws FacesException {
+    public UIComponent createComponent(ValueBinding componentBinding, FacesContext context, String componentType) {
         return null;
     }
 
@@ -187,7 +187,7 @@ public class ApplicationMock extends Application {
     }
 
     @Override
-    public MethodBinding createMethodBinding(String ref, Class<?>[] params) throws ReferenceSyntaxException {
+    public MethodBinding createMethodBinding(String ref, Class<?>[] params) {
         return null;
     }
 
@@ -207,7 +207,7 @@ public class ApplicationMock extends Application {
     }
 
     @Override
-    public Validator createValidator(String validatorId) throws FacesException {
+    public Validator createValidator(String validatorId) {
         return null;
     }
 
@@ -217,7 +217,7 @@ public class ApplicationMock extends Application {
     }
 
     @Override
-    public ValueBinding createValueBinding(String ref) throws ReferenceSyntaxException {
+    public ValueBinding createValueBinding(String ref) {
         return null;
     }
 

@@ -57,19 +57,18 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
         String menuid = params.get(clientId + "_menuid");
-        if (menuid != null) {
-            MenuItem menuitem = findMenuitem(((MenuItemAware) component).getElements(), menuid);
-            MenuActionEvent event = new MenuActionEvent(component, menuitem);
-
-            if (menuitem.isImmediate()) {
-                event.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
-            }
-            else {
-                event.setPhaseId(PhaseId.INVOKE_APPLICATION);
-            }
-
-            component.queueEvent(event);
-        }
+        if (menuid == null) {
+			return;
+		}
+		MenuItem menuitem = findMenuitem(((MenuItemAware) component).getElements(), menuid);
+		MenuActionEvent event = new MenuActionEvent(component, menuitem);
+		if (menuitem.isImmediate()) {
+		    event.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
+		}
+		else {
+		    event.setPhaseId(PhaseId.INVOKE_APPLICATION);
+		}
+		component.queueEvent(event);
     }
 
     protected void encodeOnClick(FacesContext context, UIComponent source, MenuItem menuitem) throws IOException {
@@ -116,7 +115,7 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
                         : buildNonAjaxRequest(context, ((UIComponent) menuitem), form, ((UIComponent) menuitem).getClientId(context), true);
             }
 
-            onclick = (onclick == null) ? command : onclick + ";" + command;
+            onclick = (onclick == null) ? command : new StringBuilder().append(onclick).append(";").append(command).toString();
         }
 
         if (onclick != null) {
@@ -129,15 +128,16 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
             }
         }
 
-        if (menuitem instanceof DialogReturnAware) {
-            List<ClientBehaviorContext.Parameter> behaviorParams = new ArrayList<>(1);
-            behaviorParams.add(new ClientBehaviorContext.Parameter(Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.UNOBSTRUSIVE));
-            String dialogReturnBehavior = getEventBehaviors(context, (ClientBehaviorHolder) menuitem, DialogReturnAware.EVENT_DIALOG_RETURN,
-                    behaviorParams);
-            if (dialogReturnBehavior != null) {
-                writer.writeAttribute(DialogReturnAware.ATTRIBUTE_DIALOG_RETURN_SCRIPT, dialogReturnBehavior, null);
-            }
-        }
+        if (!(menuitem instanceof DialogReturnAware)) {
+			return;
+		}
+		List<ClientBehaviorContext.Parameter> behaviorParams = new ArrayList<>(1);
+		behaviorParams.add(new ClientBehaviorContext.Parameter(Constants.CLIENT_BEHAVIOR_RENDERING_MODE, ClientBehaviorRenderingMode.UNOBSTRUSIVE));
+		String dialogReturnBehavior = getEventBehaviors(context, (ClientBehaviorHolder) menuitem, DialogReturnAware.EVENT_DIALOG_RETURN,
+		        behaviorParams);
+		if (dialogReturnBehavior != null) {
+		    writer.writeAttribute(DialogReturnAware.ATTRIBUTE_DIALOG_RETURN_SCRIPT, dialogReturnBehavior, null);
+		}
     }
 
     protected void encodeSeparator(FacesContext context, Separator separator) throws IOException {
@@ -148,7 +148,7 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String style = separator.getStyle();
         String styleClass = separator.getStyleClass();
-        styleClass = styleClass == null ? Menu.SEPARATOR_CLASS : Menu.SEPARATOR_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? Menu.SEPARATOR_CLASS : new StringBuilder().append(Menu.SEPARATOR_CLASS).append(" ").append(styleClass).toString();
 
         //title
         writer.startElement("li", null);
@@ -161,22 +161,21 @@ public class MenuItemAwareRenderer extends OutcomeTargetRenderer {
     }
 
     protected void setConfirmationScript(FacesContext context, MenuItem item) {
-        if (item instanceof ClientBehaviorHolder) {
-            Map<String, List<ClientBehavior>> behaviors = ((ClientBehaviorHolder) item).getClientBehaviors();
-            List<ClientBehavior> clickBehaviors = (behaviors == null) ? null : behaviors.get("click");
-
-            if (clickBehaviors != null && !clickBehaviors.isEmpty()) {
-                for (int i = 0; i < clickBehaviors.size(); i++) {
-                    ClientBehavior clientBehavior = clickBehaviors.get(i);
-                    if (clientBehavior instanceof ConfirmBehavior) {
-                        ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(
-                                context, (UIComponent) item, "click", item.getClientId(), Collections.EMPTY_LIST);
-                        clientBehavior.getScript(cbc);
-                        break;
-                    }
-                }
-            }
-        }
+        if (!(item instanceof ClientBehaviorHolder)) {
+			return;
+		}
+		Map<String, List<ClientBehavior>> behaviors = ((ClientBehaviorHolder) item).getClientBehaviors();
+		List<ClientBehavior> clickBehaviors = (behaviors == null) ? null : behaviors.get("click");
+		if (clickBehaviors != null && !clickBehaviors.isEmpty()) {
+		    for (ClientBehavior clientBehavior : clickBehaviors) {
+		        if (clientBehavior instanceof ConfirmBehavior) {
+		            ClientBehaviorContext cbc = ClientBehaviorContext.createClientBehaviorContext(
+		                    context, (UIComponent) item, "click", item.getClientId(), Collections.EMPTY_LIST);
+		            clientBehavior.getScript(cbc);
+		            break;
+		        }
+		    }
+		}
     }
 
     protected MenuItem findMenuitem(List<MenuElement> elements, String id) {

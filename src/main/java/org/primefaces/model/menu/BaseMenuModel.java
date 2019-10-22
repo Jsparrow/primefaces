@@ -60,7 +60,7 @@ public class BaseMenuModel implements MenuModel, Serializable {
         int counter = 0;
 
         for (MenuElement element : elements) {
-            String id = (seed == null) ? String.valueOf(counter++) : seed + ID_SEPARATOR + counter++;
+            String id = (seed == null) ? String.valueOf(counter++) : new StringBuilder().append(seed).append(ID_SEPARATOR).append(counter++).toString();
             element.setId(id);
 
             if (element instanceof MenuGroup) {

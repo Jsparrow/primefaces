@@ -28,7 +28,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -37,18 +36,22 @@ import java.util.NoSuchElementException;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class LazyDataModelIteratorTest {
 
-    @Test
+    private static final Logger logger = LoggerFactory.getLogger(LazyDataModelIteratorTest.class);
+
+	@Test
     public void testIteratorPageSizeLessThanTotalItems() {
-        System.out.println("\ntestIteratorPageSizeLessThanTotalItems");
+        logger.info("\ntestIteratorPageSizeLessThanTotalItems");
         LazyDataModelImpl dataModel = new LazyDataModelImpl();
         dataModel.setPageSize(3);
         dataModel.totalItems = 10;
         List<Integer> items = new ArrayList<>();
         for (Integer item : dataModel) {
-            System.out.println(item);
+            logger.info(String.valueOf(item));
             items.add(item);
         }
         Assertions.assertEquals(10, items.size());
@@ -57,13 +60,13 @@ public class LazyDataModelIteratorTest {
 
     @Test
     public void testIteratorPageSizeEqualToTotalItems() {
-        System.out.println("\ntestIteratorPageSizeEqualToTotalItems");
+        logger.info("\ntestIteratorPageSizeEqualToTotalItems");
         LazyDataModelImpl dataModel = new LazyDataModelImpl();
         dataModel.setPageSize(20);
         dataModel.totalItems = 20;
         List<Integer> items = new ArrayList<>();
         for (Integer item : dataModel) {
-            System.out.println(item);
+            logger.info(String.valueOf(item));
             items.add(item);
         }
         Assertions.assertEquals(20, items.size());
@@ -72,13 +75,13 @@ public class LazyDataModelIteratorTest {
 
     @Test
     public void testIteratorPageSizeGreaterThanTotalItems() {
-        System.out.println("\ntestIteratorPageSizeGreaterThanTotalItems");
+        logger.info("\ntestIteratorPageSizeGreaterThanTotalItems");
         LazyDataModelImpl dataModel = new LazyDataModelImpl();
         dataModel.setPageSize(10);
         dataModel.totalItems = 9;
         List<Integer> items = new ArrayList<>();
         for (Integer item : dataModel) {
-            System.out.println(item);
+            logger.info(String.valueOf(item));
             items.add(item);
         }
         Assertions.assertEquals(9, items.size());
@@ -87,13 +90,13 @@ public class LazyDataModelIteratorTest {
 
     @Test
     public void testIteratorZeroTotalItems() {
-        System.out.println("\ntestIteratorZeroTotalItems");
+        logger.info("\ntestIteratorZeroTotalItems");
         LazyDataModelImpl dataModel = new LazyDataModelImpl();
         dataModel.setPageSize(10);
         dataModel.totalItems = 0;
         List<Integer> items = new ArrayList<>();
         for (Integer item : dataModel) {
-            System.out.println(item);
+            logger.info(String.valueOf(item));
             items.add(item);
         }
         Assertions.assertEquals(0, items.size());
@@ -102,15 +105,13 @@ public class LazyDataModelIteratorTest {
 
     @Test
     public void testIteratorWhileHasNext() {
-        System.out.println("\ntestIteratorWhileHasNext");
+        logger.info("\ntestIteratorWhileHasNext");
         LazyDataModelImpl dataModel = new LazyDataModelImpl();
         dataModel.setPageSize(10);
         dataModel.totalItems = 5;
         List<Integer> items = new ArrayList<>();
-        Iterator<Integer> it = dataModel.iterator();
-        while (it.hasNext()) {
-            Integer item = it.next();
-            System.out.println(item);
+        for (Integer item : dataModel) {
+            logger.info(String.valueOf(item));
             items.add(item);
         }
         Assertions.assertEquals(5, items.size());
@@ -119,7 +120,7 @@ public class LazyDataModelIteratorTest {
 
     @Test
     public void testIteratorWhileNoSuchElementException() {
-        System.out.println("\ntestIteratorWhileNoSuchElementException");
+        logger.info("\ntestIteratorWhileNoSuchElementException");
         
         // Act
         NoSuchElementException thrown = Assertions.assertThrows(NoSuchElementException.class, () -> {
@@ -136,7 +137,7 @@ public class LazyDataModelIteratorTest {
 
     @Test
     public void testIteratorWhileRemoveUnsupportedOperationException() {
-        System.out.println("\ntestIteratorWhileRemoveUnsupportedOperationException");
+        logger.info("\ntestIteratorWhileRemoveUnsupportedOperationException");
         
         UnsupportedOperationException thrown = Assertions.assertThrows(UnsupportedOperationException.class, () -> {
             LazyDataModelImpl dataModel = new LazyDataModelImpl();
@@ -154,7 +155,7 @@ public class LazyDataModelIteratorTest {
 
     @Test
     public void testOverloadedIteratorSingleSorting() {
-        System.out.println("\ntestOverloadedIteratorSingleSorting");
+        logger.info("\ntestOverloadedIteratorSingleSorting");
         LazyDataModelImpl dataModel = new LazyDataModelImpl();
         dataModel.setPageSize(2);
         dataModel.totalItems = 1;
@@ -168,11 +169,11 @@ public class LazyDataModelIteratorTest {
 
     @Test
     public void testOverloadedIteratorMultiSorting() {
-        System.out.println("\ntestOverloadedIteratorMultiSorting");
+        logger.info("\ntestOverloadedIteratorMultiSorting");
         LazyDataModelImpl dataModel = new LazyDataModelImpl();
         dataModel.setPageSize(2);
         dataModel.totalItems = 1;
-        Iterator<Integer> it = dataModel.iterator(Arrays.asList(new SortMeta()), Collections.singletonMap("foo", (Object) "bar"));
+        Iterator<Integer> it = dataModel.iterator(Collections.singletonList(new SortMeta()), Collections.singletonMap("foo", (Object) "bar"));
         while (it.hasNext()) {
             Integer item = it.next();
             Assertions.assertNotNull(item);
@@ -184,17 +185,21 @@ public class LazyDataModelIteratorTest {
 
         private static final long serialVersionUID = 1L;
 
-        int totalItems;
-        int multiSortingLoadCounter;
-        int singleSortingLoadCounter;
+		private final Logger logger1 = LoggerFactory.getLogger(LazyDataModelImpl.class);
 
-        int getLoadCount() {
+		int totalItems;
+
+		int multiSortingLoadCounter;
+
+		int singleSortingLoadCounter;
+
+		int getLoadCount() {
             return multiSortingLoadCounter + singleSortingLoadCounter;
         }
 
-        @Override
+		@Override
         public List<Integer> load(int first, int pageSize, List<SortMeta> multiSortMeta, Map<String, Object> filters) {
-            System.out.println(String.format("Loading %d items from offset %d", pageSize, first));
+            logger1.info(String.format("Loading %d items from offset %d", pageSize, first));
             multiSortingLoadCounter++;
             List<Integer> page = new ArrayList<>();
             for(int i = first; i < first + pageSize && i < totalItems; i++) {
@@ -203,9 +208,9 @@ public class LazyDataModelIteratorTest {
             return page;
         }
 
-        @Override
+		@Override
         public List<Integer> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
-            System.out.println(String.format("Loading %d items from offset %d", pageSize, first));
+            logger1.info(String.format("Loading %d items from offset %d", pageSize, first));
             singleSortingLoadCounter++;
             List<Integer> page = new ArrayList<>();
             for(int i = first; i < first + pageSize && i < totalItems; i++) {

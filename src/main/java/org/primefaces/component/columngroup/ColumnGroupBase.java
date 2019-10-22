@@ -30,26 +30,26 @@ public abstract class ColumnGroupBase extends UIComponentBase {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-    public enum PropertyKeys {
-
-        type
-    }
-
     public ColumnGroupBase() {
         setRendererType(null);
     }
 
-    @Override
+	@Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
-    public String getType() {
+	public String getType() {
         return (String) getStateHelper().eval(PropertyKeys.type, null);
     }
 
-    public void setType(String type) {
+	public void setType(String type) {
         getStateHelper().put(PropertyKeys.type, type);
+    }
+
+	public enum PropertyKeys {
+
+        type
     }
 
 }

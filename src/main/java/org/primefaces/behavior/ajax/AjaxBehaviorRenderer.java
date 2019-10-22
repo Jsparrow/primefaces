@@ -45,15 +45,13 @@ public class AjaxBehaviorRenderer extends ClientBehaviorRenderer {
     public void decode(FacesContext context, UIComponent component, ClientBehavior behavior) {
         AjaxBehavior ajaxBehavior = (AjaxBehavior) behavior;
 
-        if (!ajaxBehavior.isDisabled()) {
-            AjaxBehaviorEvent event = new AjaxBehaviorEvent(component, behavior);
-
-            PhaseId phaseId = isImmediate(component, ajaxBehavior) ? PhaseId.APPLY_REQUEST_VALUES : PhaseId.INVOKE_APPLICATION;
-
-            event.setPhaseId(phaseId);
-
-            component.queueEvent(event);
-        }
+        if (ajaxBehavior.isDisabled()) {
+			return;
+		}
+		AjaxBehaviorEvent event = new AjaxBehaviorEvent(component, behavior);
+		PhaseId phaseId = isImmediate(component, ajaxBehavior) ? PhaseId.APPLY_REQUEST_VALUES : PhaseId.INVOKE_APPLICATION;
+		event.setPhaseId(phaseId);
+		component.queueEvent(event);
     }
 
     @Override

@@ -50,12 +50,7 @@ public class AutoUpdatePhaseListener implements PhaseListener {
 
         List<String> clientIds = AutoUpdateListener.getAutoUpdateComponentClientIds(context);
         if (clientIds != null && !clientIds.isEmpty()) {
-            for (int i = 0; i < clientIds.size(); i++) {
-                String clientId = clientIds.get(i);
-                if (!context.getPartialViewContext().getRenderIds().contains(clientId)) {
-                    context.getPartialViewContext().getRenderIds().add(clientId);
-                }
-            }
+            clientIds.stream().filter(clientId -> !context.getPartialViewContext().getRenderIds().contains(clientId)).forEach(clientId -> context.getPartialViewContext().getRenderIds().add(clientId));
         }
     }
 

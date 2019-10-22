@@ -58,7 +58,7 @@ public class SlideMenuRenderer extends TieredMenuRenderer {
         String style = menu.getStyle();
         String styleClass = menu.getStyleClass();
         String defaultStyleClass = menu.isOverlay() ? SlideMenu.DYNAMIC_CONTAINER_CLASS : SlideMenu.STATIC_CONTAINER_CLASS;
-        styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
+        styleClass = styleClass == null ? defaultStyleClass : new StringBuilder().append(defaultStyleClass).append(" ").append(styleClass).toString();
 
         writer.startElement("div", menu);
         writer.writeAttribute("id", menu.getClientId(context), "id");

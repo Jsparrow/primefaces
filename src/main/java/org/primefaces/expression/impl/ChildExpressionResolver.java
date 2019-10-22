@@ -49,8 +49,8 @@ public class ChildExpressionResolver implements SearchExpressionResolver {
             int childNumber = Integer.parseInt(matcher.group(1));
 
             if (childNumber + 1 > last.getChildCount()) {
-                throw new FacesException("Component with clientId \""
-                        + last.getClientId(context) + "\" has fewer children as \"" + childNumber + "\". Expression: \"" + expression + "\"");
+                throw new FacesException(new StringBuilder().append("Component with clientId \"").append(last.getClientId(context)).append("\" has fewer children as \"").append(childNumber).append("\". Expression: \"").append(expression)
+						.append("\"").toString());
             }
 
             List<UIComponent> list = last.getChildren();
@@ -66,12 +66,12 @@ public class ChildExpressionResolver implements SearchExpressionResolver {
                 }
             }
             if (count < childNumber) {
-                throw new FacesException("Component with clientId \""
-                        + last.getClientId(context) + "\" has fewer children as \"" + childNumber + "\". Expression: \"" + expression + "\"");
+                throw new FacesException(new StringBuilder().append("Component with clientId \"").append(last.getClientId(context)).append("\" has fewer children as \"").append(childNumber).append("\". Expression: \"").append(expression)
+						.append("\"").toString());
             }
         }
         else {
-            throw new FacesException("Expression does not match following pattern @child(n). Expression: \"" + expression + "\"");
+            throw new FacesException(new StringBuilder().append("Expression does not match following pattern @child(n). Expression: \"").append(expression).append("\"").toString());
         }
 
         return null;

@@ -35,7 +35,72 @@ public abstract class MultiSelectListboxBase extends UISelectOne implements Widg
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.MultiSelectListboxRenderer";
 
-    public enum PropertyKeys {
+    public MultiSelectListboxBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getWidgetVar() {
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
+
+	public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
+
+	public String getStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
+    }
+
+	public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
+    }
+
+	public String getStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
+    }
+
+	public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+	public boolean isDisabled() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+    }
+
+	public void setDisabled(boolean disabled) {
+        getStateHelper().put(PropertyKeys.disabled, disabled);
+    }
+
+	public String getEffect() {
+        return (String) getStateHelper().eval(PropertyKeys.effect, null);
+    }
+
+	public void setEffect(String effect) {
+        getStateHelper().put(PropertyKeys.effect, effect);
+    }
+
+	public boolean isShowHeaders() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showHeaders, false);
+    }
+
+	public void setShowHeaders(boolean showHeaders) {
+        getStateHelper().put(PropertyKeys.showHeaders, showHeaders);
+    }
+
+	public String getHeader() {
+        return (String) getStateHelper().eval(PropertyKeys.header, null);
+    }
+
+	public void setHeader(String header) {
+        getStateHelper().put(PropertyKeys.header, header);
+    }
+
+	public enum PropertyKeys {
 
         widgetVar,
         style,
@@ -44,70 +109,5 @@ public abstract class MultiSelectListboxBase extends UISelectOne implements Widg
         effect,
         showHeaders,
         header
-    }
-
-    public MultiSelectListboxBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public boolean isDisabled() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
-    }
-
-    public void setDisabled(boolean disabled) {
-        getStateHelper().put(PropertyKeys.disabled, disabled);
-    }
-
-    public String getEffect() {
-        return (String) getStateHelper().eval(PropertyKeys.effect, null);
-    }
-
-    public void setEffect(String effect) {
-        getStateHelper().put(PropertyKeys.effect, effect);
-    }
-
-    public boolean isShowHeaders() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showHeaders, false);
-    }
-
-    public void setShowHeaders(boolean showHeaders) {
-        getStateHelper().put(PropertyKeys.showHeaders, showHeaders);
-    }
-
-    public String getHeader() {
-        return (String) getStateHelper().eval(PropertyKeys.header, null);
-    }
-
-    public void setHeader(String header) {
-        getStateHelper().put(PropertyKeys.header, header);
     }
 }

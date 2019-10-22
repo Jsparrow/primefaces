@@ -96,8 +96,8 @@ public class LinkButtonRenderer extends OutcomeTargetRenderer {
 
         String icon = linkButton.getIcon();
         if (!isValueBlank(icon)) {
-            String defaultIconClass = linkButton.getIconPos().equals("left") ? HTML.BUTTON_LEFT_ICON_CLASS : HTML.BUTTON_RIGHT_ICON_CLASS;
-            String iconClass = defaultIconClass + " " + icon;
+            String defaultIconClass = "left".equals(linkButton.getIconPos()) ? HTML.BUTTON_LEFT_ICON_CLASS : HTML.BUTTON_RIGHT_ICON_CLASS;
+            String iconClass = new StringBuilder().append(defaultIconClass).append(" ").append(icon).toString();
 
             writer.startElement("span", null);
             writer.writeAttribute("class", iconClass, null);

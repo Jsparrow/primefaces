@@ -47,10 +47,11 @@ public class InterceptingResolver extends ELResolver {
     @Override
     public void setValue(ELContext context, Object base, Object property, Object value) {
         // currently not used -> see #7114
-        if (base != null && property != null) {
-            context.setPropertyResolved(true);
-            valueReference = new ValueReference(base, property.toString());
-        }
+		if (!(base != null && property != null)) {
+			return;
+		}
+		context.setPropertyResolved(true);
+		valueReference = new ValueReference(base, property.toString());
     }
 
     @Override

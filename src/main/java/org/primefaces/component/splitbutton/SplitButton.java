@@ -65,7 +65,7 @@ public class SplitButton extends SplitButtonBase {
                 styleClass = HTML.BUTTON_TEXT_ONLY_BUTTON_CLASS;
             }
             else if (!valueBlank && !iconBlank) {
-                styleClass = getIconPos().equals("left")
+                styleClass = "left".equals(getIconPos())
                              ? HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS
                              : HTML.BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS;
             }
@@ -77,7 +77,7 @@ public class SplitButton extends SplitButtonBase {
             styleClass = BUTTON_TEXT_ONLY_BUTTON_CLASS;
         }
         else if (!valueBlank && !iconBlank) {
-            styleClass = getIconPos().equals("left") ? BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS : BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS;
+            styleClass = "left".equals(getIconPos()) ? BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS : BUTTON_TEXT_ICON_RIGHT_BUTTON_CLASS;
         }
         else if (valueBlank && !iconBlank) {
             styleClass = BUTTON_ICON_ONLY_BUTTON_CLASS;
@@ -123,7 +123,7 @@ public class SplitButton extends SplitButtonBase {
     }
 
     @Override
-    public void broadcast(FacesEvent event) throws AbortProcessingException {
+    public void broadcast(FacesEvent event) {
         broadcastMenuActionEvent(event, getFacesContext(), super::broadcast);
     }
 }

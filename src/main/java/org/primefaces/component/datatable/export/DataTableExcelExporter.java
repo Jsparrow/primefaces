@@ -70,8 +70,8 @@ public class DataTableExcelExporter extends DataTableExporter {
         }
 
         sheetName = WorkbookUtil.createSafeSheetName(sheetName);
-        if (sheetName.equals("empty") || sheetName.equals("null")) {
-            sheetName = "Sheet (" + (index + 1) + ")";
+        if ("empty".equals(sheetName) || "null".equals(sheetName)) {
+            sheetName = new StringBuilder().append("Sheet (").append(index + 1).append(")").toString();
         }
 
         Sheet sheet = createSheet(wb, sheetName);
@@ -105,7 +105,7 @@ public class DataTableExcelExporter extends DataTableExporter {
         int sheetRowIndex = sheet.getLastRowNum() + 1;
         Row row = sheet.createRow(sheetRowIndex);
 
-        for (UIColumn col : table.getColumns()) {
+        table.getColumns().forEach(col -> {
             if (col instanceof DynamicColumn) {
                 ((DynamicColumn) col).applyStatelessModel();
             }
@@ -113,11 +113,11 @@ public class DataTableExcelExporter extends DataTableExporter {
             if (col.isRendered() && col.isExportable()) {
                 addColumnValue(row, col.getChildren(), col);
             }
-        }
+        });
     }
 
     protected void addColumnFacets(DataTable table, Sheet sheet, DataTableExporter.ColumnType columnType) {
-        int sheetRowIndex = columnType.equals(DataTableExporter.ColumnType.HEADER) ? 0 : (sheet.getLastRowNum() + 1);
+        int sheetRowIndex = columnType == DataTableExporter.ColumnType.HEADER ? 0 : (sheet.getLastRowNum() + 1);
         Row rowHeader = sheet.createRow(sheetRowIndex);
 
         for (UIColumn col : table.getColumns()) {
@@ -181,15 +181,11 @@ public class DataTableExcelExporter extends DataTableExporter {
         }
         else {
             StringBuilder builder = new StringBuilder();
-            for (UIComponent component : components) {
-                if (component.isRendered()) {
-                    String value = exportValue(context, component);
-
-                    if (value != null) {
-                        builder.append(value);
-                    }
-                }
-            }
+            components.stream().filter(UIComponent::isRendered).map(component -> exportValue(context, component)).forEach(value -> {
+				if (value != null) {
+			        builder.append(value);
+			    }
+			});
 
             cell.setCellValue(createRichTextString(builder.toString()));
         }
@@ -279,10 +275,10 @@ public class DataTableExcelExporter extends DataTableExporter {
         if (options != null) {
             String facetFontStyle = options.getFacetFontStyle();
             if (facetFontStyle != null) {
-                if (facetFontStyle.equalsIgnoreCase("BOLD")) {
+                if ("BOLD".equalsIgnoreCase(facetFontStyle)) {
                     facetFont.setBold(true);
                 }
-                if (facetFontStyle.equalsIgnoreCase("ITALIC")) {
+                if ("ITALIC".equalsIgnoreCase(facetFontStyle)) {
                     facetFont.setItalic(true);
                 }
             }
@@ -333,10 +329,10 @@ public class DataTableExcelExporter extends DataTableExporter {
 
             String cellFontStyle = options.getCellFontStyle();
             if (cellFontStyle != null) {
-                if (cellFontStyle.equalsIgnoreCase("BOLD")) {
+                if ("BOLD".equalsIgnoreCase(cellFontStyle)) {
                     cellFont.setBold(true);
                 }
-                if (cellFontStyle.equalsIgnoreCase("ITALIC")) {
+                if ("ITALIC".equalsIgnoreCase(cellFontStyle)) {
                     cellFont.setItalic(true);
                 }
             }

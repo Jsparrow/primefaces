@@ -72,7 +72,7 @@ public class CommandLinkRenderer extends CoreRenderer {
             String request;
             boolean ajax = link.isAjax();
             String styleClass = link.getStyleClass();
-            styleClass = styleClass == null ? CommandLink.STYLE_CLASS : CommandLink.STYLE_CLASS + " " + styleClass;
+            styleClass = styleClass == null ? CommandLink.STYLE_CLASS : new StringBuilder().append(CommandLink.STYLE_CLASS).append(" ").append(styleClass).toString();
             PrimeRequestContext requestContext = PrimeRequestContext.getCurrentInstance(context);
             boolean csvEnabled = requestContext.getApplicationContext().getConfig().isClientSideValidationEnabled() && link.isValidateClient();
 
@@ -103,7 +103,7 @@ public class CommandLinkRenderer extends CoreRenderer {
             else {
                 UIForm form = ComponentTraversalUtils.closestForm(context, link);
                 if (form == null) {
-                    throw new FacesException("Commandlink \"" + clientId + "\" must be inside a form component");
+                    throw new FacesException(new StringBuilder().append("Commandlink \"").append(clientId).append("\" must be inside a form component").toString());
                 }
 
                 request = buildNonAjaxRequest(context, link, form, clientId, true);
@@ -145,7 +145,7 @@ public class CommandLinkRenderer extends CoreRenderer {
         }
         else {
             String styleClass = link.getStyleClass();
-            styleClass = styleClass == null ? CommandLink.DISABLED_STYLE_CLASS : CommandLink.DISABLED_STYLE_CLASS + " " + styleClass;
+            styleClass = styleClass == null ? CommandLink.DISABLED_STYLE_CLASS : new StringBuilder().append(CommandLink.DISABLED_STYLE_CLASS).append(" ").append(styleClass).toString();
 
             writer.startElement("span", link);
             writer.writeAttribute("id", clientId, "id");

@@ -36,26 +36,6 @@ public class ConfirmBehavior extends AbstractBehavior {
 
     public static final String BEHAVIOR_ID = "org.primefaces.behavior.ConfirmBehavior";
 
-    public enum PropertyKeys implements BehaviorAttribute {
-        header(String.class),
-        message(String.class),
-        icon(String.class),
-        disabled(Boolean.class),
-        beforeShow(String.class),
-        escape(Boolean.class);
-
-        private final Class<?> expectedType;
-
-        PropertyKeys(Class<?> expectedType) {
-            this.expectedType = expectedType;
-        }
-
-        @Override
-        public Class<?> getExpectedType() {
-            return expectedType;
-        }
-    }
-
     @Override
     public String getScript(ClientBehaviorContext behaviorContext) {
         FacesContext context = behaviorContext.getFacesContext();
@@ -75,74 +55,89 @@ public class ConfirmBehavior extends AbstractBehavior {
         String beforeShow = JSONObject.quote(getBeforeShow());
 
         if (component instanceof Confirmable) {
-            String sourceProperty = (source == null) ? "source:this" : "source:\"" + source + "\"";
-            String script = "PrimeFaces.confirm({" + sourceProperty
-                                                   + ",escape:" + isEscape()
-                                                   + ",header:" + headerText
-                                                   + ",message:" + messageText
-                                                   + ",icon:\"" + getIcon()
-                                                   + "\",beforeShow:" + beforeShow
-                                                   + "});return false;";
+            String sourceProperty = (source == null) ? "source:this" : new StringBuilder().append("source:\"").append(source).append("\"").toString();
+            String script = new StringBuilder().append("PrimeFaces.confirm({").append(sourceProperty).append(",escape:").append(isEscape()).append(",header:").append(headerText)
+					.append(",message:").append(messageText).append(",icon:\"").append(getIcon()).append("\",beforeShow:").append(beforeShow).append("});return false;")
+					.toString();
             ((Confirmable) component).setConfirmationScript(script);
 
             return null;
         }
         else {
-            throw new FacesException("Component " + source + " is not a Confirmable. "
-                    + "ConfirmBehavior can only be attached to components that implement " + Confirmable.class.getName() + " interface");
+            throw new FacesException(new StringBuilder().append("Component ").append(source).append(" is not a Confirmable. ").append("ConfirmBehavior can only be attached to components that implement ").append(Confirmable.class.getName()).append(" interface").toString());
         }
     }
 
-    @Override
+	@Override
     protected BehaviorAttribute[] getAllAttributes() {
         return PropertyKeys.values();
     }
 
-    public String getHeader() {
+	public String getHeader() {
         return eval(PropertyKeys.header, null);
     }
 
-    public void setHeader(String header) {
+	public void setHeader(String header) {
         put(PropertyKeys.header, header);
     }
 
-    public String getMessage() {
+	public String getMessage() {
         return eval(PropertyKeys.message, null);
     }
 
-    public void setMessage(String message) {
+	public void setMessage(String message) {
         put(PropertyKeys.message, message);
     }
 
-    public String getIcon() {
+	public String getIcon() {
         return eval(PropertyKeys.icon, null);
     }
 
-    public void setIcon(String icon) {
+	public void setIcon(String icon) {
         put(PropertyKeys.icon, icon);
     }
 
-    public boolean isDisabled() {
+	public boolean isDisabled() {
         return eval(PropertyKeys.disabled, Boolean.FALSE);
     }
 
-    public void setDisabled(boolean disabled) {
+	public void setDisabled(boolean disabled) {
         put(PropertyKeys.disabled, disabled);
     }
 
-    public String getBeforeShow() {
+	public String getBeforeShow() {
         return eval(PropertyKeys.beforeShow, null);
     }
 
-    public void setBeforeShow(String beforeShow) {
+	public void setBeforeShow(String beforeShow) {
         put(PropertyKeys.beforeShow, beforeShow);
     }
 
-    public boolean isEscape() {
+	public boolean isEscape() {
         return eval(PropertyKeys.escape, Boolean.TRUE);
     }
 
-    public void setEscape(boolean escape) {
+	public void setEscape(boolean escape) {
         put(PropertyKeys.escape, escape);
+    }
+
+	public enum PropertyKeys implements BehaviorAttribute {
+        header(String.class),
+        message(String.class),
+        icon(String.class),
+        disabled(Boolean.class),
+        beforeShow(String.class),
+        escape(Boolean.class);
+
+        private final Class<?> expectedType;
+
+        PropertyKeys(Class<?> expectedType) {
+            this.expectedType = expectedType;
+        }
+
+        @Override
+        public Class<?> getExpectedType() {
+            return expectedType;
+        }
     }
 }

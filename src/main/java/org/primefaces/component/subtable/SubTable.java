@@ -42,11 +42,7 @@ public class SubTable extends SubTableBase {
         if (columns == null) {
             columns = new ArrayList<>();
 
-            for (UIComponent child : getChildren()) {
-                if (child.isRendered() && child instanceof Column) {
-                    columns.add((Column) child);
-                }
-            }
+            getChildren().stream().filter(child -> child.isRendered() && child instanceof Column).forEach(child -> columns.add((Column) child));
         }
 
         return columns;

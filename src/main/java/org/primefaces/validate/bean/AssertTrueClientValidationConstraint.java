@@ -27,8 +27,8 @@ public class AssertTrueClientValidationConstraint extends AbstractClientValidati
 
     public static final String CONSTRAINT_ID = "AssertTrue";
     public static final String MESSAGE_METADATA = "data-p-atrue-msg";
-    public static final String CONSTRAINT_CLASS_NAME = CONSTRAINT_PACKAGE  + "." + CONSTRAINT_ID;
-    public static final String MESSAGE_ID = "{" + CONSTRAINT_CLASS_NAME + ".message}";
+    public static final String CONSTRAINT_CLASS_NAME = new StringBuilder().append(CONSTRAINT_PACKAGE).append(".").append(CONSTRAINT_ID).toString();
+    public static final String MESSAGE_ID = new StringBuilder().append("{").append(CONSTRAINT_CLASS_NAME).append(".message}").toString();
 
     public AssertTrueClientValidationConstraint() {
         super(MESSAGE_ID, MESSAGE_METADATA);

@@ -122,23 +122,23 @@ public class Wizard extends WizardBase {
     }
 
     @Override
-    public void broadcast(FacesEvent event) throws AbortProcessingException {
+    public void broadcast(FacesEvent event) {
         super.broadcast(event);
 
-        if (event instanceof FlowEvent) {
-            FlowEvent flowEvent = (FlowEvent) event;
-            FacesContext context = getFacesContext();
-            MethodExpression me = getFlowListener();
+        if (!(event instanceof FlowEvent)) {
+			return;
+		}
+		FlowEvent flowEvent = (FlowEvent) event;
+		FacesContext context = getFacesContext();
+		MethodExpression me = getFlowListener();
+		if (me != null) {
+		    String step = (String) me.invoke(context.getELContext(), new Object[]{event});
 
-            if (me != null) {
-                String step = (String) me.invoke(context.getELContext(), new Object[]{event});
-
-                setStep(step);
-            }
-            else {
-                setStep(flowEvent.getNewStep());
-            }
-        }
+		    setStep(step);
+		}
+		else {
+		    setStep(flowEvent.getNewStep());
+		}
     }
 
 }

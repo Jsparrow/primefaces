@@ -95,13 +95,7 @@ public class AccordionPanel extends AccordionPanelBase {
     }
 
     public Tab findTab(String tabClientId) {
-        for (UIComponent component : getChildren()) {
-            if (component.getClientId().equals(tabClientId)) {
-                return (Tab) component;
-            }
-        }
-
-        return null;
+        return getChildren().stream().filter(component -> component.getClientId().equals(tabClientId)).findFirst().map(component -> (Tab) component).orElse(null);
     }
 
     @Override
@@ -115,7 +109,7 @@ public class AccordionPanel extends AccordionPanelBase {
             boolean repeating = isRepeating();
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if (eventName.equals("tabChange")) {
+            if ("tabChange".equals(eventName)) {
                 String tabClientId = params.get(clientId + "_newTab");
                 TabChangeEvent changeEvent = new TabChangeEvent(this, behaviorEvent.getBehavior(), findTab(tabClientId));
 
@@ -134,7 +128,7 @@ public class AccordionPanel extends AccordionPanelBase {
                     setIndex(-1);
                 }
             }
-            else if (eventName.equals("tabClose")) {
+            else if ("tabClose".equals(eventName)) {
                 String tabClientId = params.get(clientId + "_tabId");
                 TabCloseEvent closeEvent = new TabCloseEvent(this, behaviorEvent.getBehavior(), findTab(tabClientId));
 
@@ -168,10 +162,11 @@ public class AccordionPanel extends AccordionPanelBase {
         super.processUpdates(context);
 
         ValueExpression expr = getValueExpression(PropertyKeys.activeIndex.toString());
-        if (expr != null) {
-            expr.setValue(getFacesContext().getELContext(), getActiveIndex());
-            resetActiveIndex();
-        }
+        if (expr == null) {
+			return;
+		}
+		expr.setValue(getFacesContext().getELContext(), getActiveIndex());
+		resetActiveIndex();
     }
 
     protected void resetActiveIndex() {
@@ -179,15 +174,16 @@ public class AccordionPanel extends AccordionPanelBase {
     }
 
     @Override
-    public void broadcast(FacesEvent event) throws AbortProcessingException {
+    public void broadcast(FacesEvent event) {
         super.broadcast(event);
 
-        if (event instanceof TabEvent) {
-            MethodExpression me = getTabController();
-            if (me != null) {
-                boolean retVal = (Boolean) me.invoke(getFacesContext().getELContext(), new Object[]{event});
-                PrimeFaces.current().ajax().addCallbackParam("access", retVal);
-            }
-        }
+        if (!(event instanceof TabEvent)) {
+			return;
+		}
+		MethodExpression me = getTabController();
+		if (me != null) {
+		    boolean retVal = (Boolean) me.invoke(getFacesContext().getELContext(), new Object[]{event});
+		    PrimeFaces.current().ajax().addCallbackParam("access", retVal);
+		}
     }
 }

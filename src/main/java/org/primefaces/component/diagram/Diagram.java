@@ -107,28 +107,29 @@ public class Diagram extends DiagramBase {
             DiagramModel model = (DiagramModel) getValue();
 
             if (model != null) {
-                if (eventName.equals("connect") || eventName.equals("disconnect")) {
+                if ("connect".equals(eventName) || "disconnect".equals(eventName)) {
                     FacesEvent wrapperEvent = null;
                     Element sourceElement = model.findElement(params.get(clientId + "_sourceId"));
                     Element targetElement = model.findElement(params.get(clientId + "_targetId"));
                     EndPoint sourceEndPoint = model.findEndPoint(sourceElement, params.get(clientId + "_sourceEndPointId"));
                     EndPoint targetEndPoint = model.findEndPoint(targetElement, params.get(clientId + "_targetEndPointId"));
 
-                    if (eventName.equals("connect")) {
+                    if ("connect".equals(eventName)) {
                         wrapperEvent = new ConnectEvent(this, behaviorEvent.getBehavior(), sourceElement, targetElement, sourceEndPoint, targetEndPoint);
                     }
-                    else if (eventName.equals("disconnect")) {
+                    else if ("disconnect".equals(eventName)) {
                         wrapperEvent = new DisconnectEvent(this, behaviorEvent.getBehavior(), sourceElement, targetElement, sourceEndPoint, targetEndPoint);
                     }
 
                     if (wrapperEvent == null) {
-                        throw new FacesException("Component " + this.getClass().getName() + " does not support event " + eventName + "!");
+                        throw new FacesException(new StringBuilder().append("Component ").append(this.getClass().getName()).append(" does not support event ").append(eventName).append("!")
+								.toString());
                     }
 
                     wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
                     super.queueEvent(wrapperEvent);
                 }
-                else if (eventName.equals("connectionChange")) {
+                else if ("connectionChange".equals(eventName)) {
                     Element originalSourceElement = model.findElement(params.get(clientId + "_originalSourceId"));
                     Element newSourceElement = model.findElement(params.get(clientId + "_newSourceId"));
                     Element originalTargetElement = model.findElement(params.get(clientId + "_originalTargetId"));
@@ -145,7 +146,7 @@ public class Diagram extends DiagramBase {
                     connectionChangeEvent.setPhaseId(behaviorEvent.getPhaseId());
                     super.queueEvent(connectionChangeEvent);
                 }
-                else if (eventName.equals("positionChange")) {
+                else if ("positionChange".equals(eventName)) {
                     Element element = model.findElement(params.get(clientId + "_elementId"));
                     String[] position = params.get(clientId + "_position").split(",");
 

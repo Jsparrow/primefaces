@@ -65,7 +65,7 @@ public class SignatureRenderer extends InputRenderer {
         String style = signature.getStyle();
         String styleClass = signature.getStyleClass();
         String defaultStyle = signature.resolveStyleClass();
-        styleClass = styleClass == null ? defaultStyle : defaultStyle + " " + styleClass;
+        styleClass = styleClass == null ? defaultStyle : new StringBuilder().append(defaultStyle).append(" ").append(styleClass).toString();
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);

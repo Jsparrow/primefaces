@@ -40,7 +40,7 @@ public class PanelGridFacetColumnRenderer extends CoreRenderer implements Helper
         String style = column.getStyle();
         String styleClass = column.getStyleClass();
         String defaultStyleClass = PanelGrid.CELL_CLASS + " ui-widget-header";
-        styleClass = (styleClass == null) ? defaultStyleClass : defaultStyleClass + " " + styleClass;
+        styleClass = (styleClass == null) ? defaultStyleClass : new StringBuilder().append(defaultStyleClass).append(" ").append(styleClass).toString();
 
         writer.startElement("td", null);
         writer.writeAttribute("role", "columnheader", null);

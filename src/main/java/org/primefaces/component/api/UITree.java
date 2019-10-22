@@ -46,10 +46,14 @@ import org.primefaces.model.TreeNode;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.MessageFactory;
 import org.primefaces.util.SharedStringBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import javax.faces.component.UIComponent;
 
 public abstract class UITree extends UIComponentBase implements NamingContainer {
 
-    public static final String SEPARATOR = "_";
+    private static final Logger logger = LoggerFactory.getLogger(UITree.class);
+	public static final String SEPARATOR = "_";
     public static final String REQUIRED_MESSAGE_ID = "primefaces.tree.REQUIRED";
     public static final String CHECKBOX_CLASS = "ui-selection";
     public static final String ROOT_ROW_KEY = "root";
@@ -65,26 +69,11 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
 
     private Boolean isNested = null;
 
-    public enum PropertyKeys {
-        var,
-        selectionMode,
-        selection,
-        saved,
-        value,
-        required,
-        requiredMessage,
-        skipChildren,
-        showUnselectableCheckbox,
-        nodeVar,
-        propagateSelectionDown,
-        propagateSelectionUp;
-    }
-
     public String getRowKey() {
         return rowKey;
     }
 
-    public void setRowKey(String rowKey) {
+	public void setRowKey(String rowKey) {
         Map<String, Object> requestMap = getFacesContext().getExternalContext().getRequestMap();
         saveDescendantState();
         String nodeVar = getNodeVar();
@@ -121,7 +110,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         restoreDescendantState();
     }
 
-    private void addToPreselection(TreeNode node) {
+	private void addToPreselection(TreeNode node) {
         if (preselection == null) {
             preselection = new ArrayList<>();
         }
@@ -129,103 +118,103 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         preselection.add(node);
     }
 
-    public TreeNode getRowNode() {
+	public TreeNode getRowNode() {
         return rowNode;
     }
 
-    public java.lang.String getVar() {
+	public java.lang.String getVar() {
         return (String) getStateHelper().eval(PropertyKeys.var, null);
     }
 
-    public void setVar(java.lang.String _var) {
+	public void setVar(java.lang.String _var) {
         getStateHelper().put(PropertyKeys.var, _var);
     }
 
-    public java.lang.String getNodeVar() {
+	public java.lang.String getNodeVar() {
         return (String) getStateHelper().eval(PropertyKeys.nodeVar, null);
     }
 
-    public void setNodeVar(java.lang.String _nodeVar) {
+	public void setNodeVar(java.lang.String _nodeVar) {
         getStateHelper().put(PropertyKeys.nodeVar, _nodeVar);
     }
 
-    public TreeNode getValue() {
+	public TreeNode getValue() {
         return (TreeNode) getStateHelper().eval(PropertyKeys.value, null);
     }
 
-    public void setValue(TreeNode _value) {
+	public void setValue(TreeNode _value) {
         getStateHelper().put(PropertyKeys.value, _value);
     }
 
-    public java.lang.String getSelectionMode() {
+	public java.lang.String getSelectionMode() {
         return (String) getStateHelper().eval(PropertyKeys.selectionMode, null);
     }
 
-    public void setSelectionMode(java.lang.String _selectionMode) {
+	public void setSelectionMode(java.lang.String _selectionMode) {
         getStateHelper().put(PropertyKeys.selectionMode, _selectionMode);
     }
 
-    public java.lang.Object getSelection() {
+	public java.lang.Object getSelection() {
         return getStateHelper().eval(PropertyKeys.selection, null);
     }
 
-    public void setSelection(java.lang.Object _selection) {
+	public void setSelection(java.lang.Object _selection) {
         getStateHelper().put(PropertyKeys.selection, _selection);
     }
 
-    public boolean isRequired() {
+	public boolean isRequired() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.required, false);
     }
 
-    public void setRequired(boolean _required) {
+	public void setRequired(boolean _required) {
         getStateHelper().put(PropertyKeys.required, _required);
     }
 
-    public java.lang.String getRequiredMessage() {
+	public java.lang.String getRequiredMessage() {
         return (java.lang.String) getStateHelper().eval(PropertyKeys.requiredMessage, null);
     }
 
-    public void setRequiredMessage(java.lang.String _requiredMessage) {
+	public void setRequiredMessage(java.lang.String _requiredMessage) {
         getStateHelper().put(PropertyKeys.requiredMessage, _requiredMessage);
     }
 
-    public boolean isSkipChildren() {
+	public boolean isSkipChildren() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.skipChildren, false);
     }
 
-    public void setSkipChildren(boolean _skipChildren) {
+	public void setSkipChildren(boolean _skipChildren) {
         getStateHelper().put(PropertyKeys.skipChildren, _skipChildren);
     }
 
-    public boolean isShowUnselectableCheckbox() {
+	public boolean isShowUnselectableCheckbox() {
         return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.showUnselectableCheckbox, false);
     }
 
-    public void setShowUnselectableCheckbox(boolean _showUnselectableCheckbox) {
+	public void setShowUnselectableCheckbox(boolean _showUnselectableCheckbox) {
         getStateHelper().put(PropertyKeys.showUnselectableCheckbox, _showUnselectableCheckbox);
     }
 
-    public Object getLocalSelectedNodes() {
+	public Object getLocalSelectedNodes() {
         return getStateHelper().get(PropertyKeys.selection);
     }
 
-    public boolean isPropagateSelectionDown() {
+	public boolean isPropagateSelectionDown() {
         return (Boolean) getStateHelper().eval(PropertyKeys.propagateSelectionDown, true);
     }
 
-    public void setPropagateSelectionDown(boolean _propagateSelectionDown) {
+	public void setPropagateSelectionDown(boolean _propagateSelectionDown) {
         getStateHelper().put(PropertyKeys.propagateSelectionDown, _propagateSelectionDown);
     }
 
-    public boolean isPropagateSelectionUp() {
+	public boolean isPropagateSelectionUp() {
         return (Boolean) getStateHelper().eval(PropertyKeys.propagateSelectionUp, true);
     }
 
-    public void setPropagateSelectionUp(boolean _propagateSelectionUp) {
+	public void setPropagateSelectionUp(boolean _propagateSelectionUp) {
         getStateHelper().put(PropertyKeys.propagateSelectionUp, _propagateSelectionUp);
     }
 
-    protected TreeNode findTreeNode(TreeNode searchRoot, String rowKey) {
+	protected TreeNode findTreeNode(TreeNode searchRoot, String rowKey) {
         if (rowKey == null || searchRoot == null) {
             return null;
         }
@@ -257,7 +246,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         }
     }
 
-    public void buildRowKeys(TreeNode node) {
+	public void buildRowKeys(TreeNode node) {
         int childCount = node.getChildCount();
         if (childCount > 0) {
             for (int i = 0; i < childCount; i++) {
@@ -266,46 +255,47 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
                     addToPreselection(childNode);
                 }
 
-                String childRowKey = (node.getParent() == null) ? String.valueOf(i) : node.getRowKey() + "_" + i;
+                String childRowKey = (node.getParent() == null) ? String.valueOf(i) : new StringBuilder().append(node.getRowKey()).append("_").append(i).toString();
                 childNode.setRowKey(childRowKey);
                 buildRowKeys(childNode);
             }
         }
     }
 
-    public void populateRowKeys(TreeNode node, List<String> keys) {
-        if (node != null) {
-            int childCount = node.getChildCount();
-            if (childCount > 0) {
-                for (int i = 0; i < childCount; i++) {
-                    TreeNode childNode = node.getChildren().get(i);
-                    keys.add(childNode.getRowKey());
-                    populateRowKeys(childNode, keys);
-                }
-            }
-        }
+	public void populateRowKeys(TreeNode node, List<String> keys) {
+        if (node == null) {
+			return;
+		}
+		int childCount = node.getChildCount();
+		if (childCount > 0) {
+		    for (int i = 0; i < childCount; i++) {
+		        TreeNode childNode = node.getChildren().get(i);
+		        keys.add(childNode.getRowKey());
+		        populateRowKeys(childNode, keys);
+		    }
+		}
     }
 
-    public void updateRowKeys(TreeNode node) {
+	public void updateRowKeys(TreeNode node) {
         int childCount = node.getChildCount();
         if (childCount > 0) {
             for (int i = 0; i < childCount; i++) {
                 TreeNode childNode = node.getChildren().get(i);
 
-                String childRowKey = (node.getParent() == null) ? String.valueOf(i) : node.getRowKey() + "_" + i;
+                String childRowKey = (node.getParent() == null) ? String.valueOf(i) : new StringBuilder().append(node.getRowKey()).append("_").append(i).toString();
                 childNode.setRowKey(childRowKey);
                 updateRowKeys(childNode);
             }
         }
     }
 
-    public void initPreselection() {
+	public void initPreselection() {
         ValueExpression ve = getValueExpression(UITree.PropertyKeys.selection.toString());
         if (ve != null) {
             if (preselection != null) {
                 String selectionMode = getSelectionMode();
                 if (selectionMode != null) {
-                    if (selectionMode.equals("single")) {
+                    if ("single".equals(selectionMode)) {
                         if (!preselection.isEmpty()) {
                             ve.setValue(FacesContext.getCurrentInstance().getELContext(), preselection.get(0));
                         }
@@ -323,7 +313,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         }
     }
 
-    private void updateSelectedNodes(TreeNode node) {
+	private void updateSelectedNodes(TreeNode node) {
         int childCount = node.getChildCount();
         if (childCount > 0) {
             for (int i = 0; i < childCount; i++) {
@@ -337,20 +327,20 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         }
     }
 
-    public void refreshSelectedNodeKeys() {
+	public void refreshSelectedNodeKeys() {
         TreeNode root = getValue();
         preselection = null;
         updateSelectedNodes(root);
         initPreselection();
     }
 
-    public String getSelectedRowKeysAsString() {
+	public String getSelectedRowKeysAsString() {
         String value = null;
         Object selection = getSelection();
         String selectionMode = getSelectionMode();
 
         if (selection != null) {
-            if (selectionMode.equals("single")) {
+            if ("single".equals(selectionMode)) {
                 TreeNode node = (TreeNode) selection;
                 value = node.getRowKey();
             }
@@ -372,7 +362,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         return value;
     }
 
-    @Override
+	@Override
     public String getContainerClientId(FacesContext context) {
         String clientId = super.getContainerClientId(context);
         String _rowKey = getRowKey();
@@ -387,13 +377,13 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         }
     }
 
-    @Override
+	@Override
     public void queueEvent(FacesEvent event) {
         super.queueEvent(new WrapperEvent(this, event, getRowKey()));
     }
 
-    @Override
-    public void broadcast(FacesEvent event) throws AbortProcessingException {
+	@Override
+    public void broadcast(FacesEvent event) {
         if (!(event instanceof WrapperEvent)) {
             super.broadcast(event);
             return;
@@ -427,7 +417,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         setRowKey(oldRowKey);
     }
 
-    @Override
+	@Override
     public void processDecodes(FacesContext context) {
         if (!isRendered()) {
             return;
@@ -454,7 +444,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         popComponentFromEL(context);
     }
 
-    @Override
+	@Override
     public void processValidators(FacesContext context) {
         if (!isRendered()) {
             return;
@@ -470,43 +460,42 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         popComponentFromEL(context);
     }
 
-    protected void validateSelection(FacesContext context) {
+	protected void validateSelection(FacesContext context) {
         String selectionMode = getSelectionMode();
-        if (selectionMode != null && isRequired()) {
-            boolean valid = true;
-            Object selection = getSelection();
+        if (!(selectionMode != null && isRequired())) {
+			return;
+		}
+		boolean valid = true;
+		Object selection = getSelection();
+		if ("single".equals(selectionMode)) {
+		    if (selection == null) {
+		        valid = false;
+		    }
+		}
+		else {
+		    TreeNode[] selectionArray = (TreeNode[]) selection;
+		    if (selectionArray.length == 0) {
+		        valid = false;
+		    }
+		}
+		if (!valid) {
+		    String requiredMessage = getRequiredMessage();
+		    FacesMessage msg;
 
-            if (selectionMode.equals("single")) {
-                if (selection == null) {
-                    valid = false;
-                }
-            }
-            else {
-                TreeNode[] selectionArray = (TreeNode[]) selection;
-                if (selectionArray.length == 0) {
-                    valid = false;
-                }
-            }
+		    if (requiredMessage != null) {
+		        msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, requiredMessage, requiredMessage);
+		    }
+		    else {
+		        msg = MessageFactory.getMessage(REQUIRED_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, new Object[]{getClientId(context)});
+		    }
 
-            if (!valid) {
-                String requiredMessage = getRequiredMessage();
-                FacesMessage msg;
-
-                if (requiredMessage != null) {
-                    msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, requiredMessage, requiredMessage);
-                }
-                else {
-                    msg = MessageFactory.getMessage(REQUIRED_MESSAGE_ID, FacesMessage.SEVERITY_ERROR, new Object[]{getClientId(context)});
-                }
-
-                context.addMessage(getClientId(context), msg);
-                context.validationFailed();
-                context.renderResponse();
-            }
-        }
+		    context.addMessage(getClientId(context), msg);
+		    context.validationFailed();
+		    context.renderResponse();
+		}
     }
 
-    @Override
+	@Override
     public void processUpdates(FacesContext context) {
         if (!isRendered()) {
             return;
@@ -523,58 +512,57 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         popComponentFromEL(context);
     }
 
-    public void updateSelection(FacesContext context) {
+	public void updateSelection(FacesContext context) {
         String selectionMode = getSelectionMode();
         boolean propagateSelectionDown = isPropagateSelectionDown();
         boolean propagateSelectionUp = isPropagateSelectionUp();
 
         ValueExpression selectionVE = getValueExpression(UITree.PropertyKeys.selection.toString());
 
-        if (selectionMode != null && selectionVE != null) {
-            Object selection = getLocalSelectedNodes();
-            Object previousSelection = selectionVE.getValue(context.getELContext());
+        if (!(selectionMode != null && selectionVE != null)) {
+			return;
+		}
+		Object selection = getLocalSelectedNodes();
+		Object previousSelection = selectionVE.getValue(context.getELContext());
+		if ("single".equals(selectionMode)) {
+		    if (previousSelection != null) {
+		        ((TreeNode) previousSelection).setSelected(false);
+		    }
+		    if (selection != null) {
+		        ((TreeNode) selection).setSelected(true);
+		    }
+		}
+		else {
+		    TreeNode[] previousSelections = (TreeNode[]) previousSelection;
+		    TreeNode[] selections = (TreeNode[]) selection;
 
-            if (selectionMode.equals("single")) {
-                if (previousSelection != null) {
-                    ((TreeNode) previousSelection).setSelected(false);
-                }
-                if (selection != null) {
-                    ((TreeNode) selection).setSelected(true);
-                }
-            }
-            else {
-                TreeNode[] previousSelections = (TreeNode[]) previousSelection;
-                TreeNode[] selections = (TreeNode[]) selection;
+		    if (previousSelections != null) {
+		        for (TreeNode node : previousSelections) {
+		            if (node instanceof CheckboxTreeNode) {
+		                ((CheckboxTreeNode) node).setSelected(false, propagateSelectionDown, propagateSelectionUp);
+		            }
+		            else {
+		                node.setSelected(false);
+		            }
+		        }
+		    }
 
-                if (previousSelections != null) {
-                    for (TreeNode node : previousSelections) {
-                        if (node instanceof CheckboxTreeNode) {
-                            ((CheckboxTreeNode) node).setSelected(false, propagateSelectionDown, propagateSelectionUp);
-                        }
-                        else {
-                            node.setSelected(false);
-                        }
-                    }
-                }
-
-                if (selections != null) {
-                    for (TreeNode node : selections) {
-                        if (node instanceof CheckboxTreeNode) {
-                            ((CheckboxTreeNode) node).setSelected(true, propagateSelectionDown, propagateSelectionUp);
-                        }
-                        else {
-                            node.setSelected(true);
-                        }
-                    }
-                }
-            }
-
-            selectionVE.setValue(context.getELContext(), selection);
-            setSelection(null);
-        }
+		    if (selections != null) {
+		        for (TreeNode node : selections) {
+		            if (node instanceof CheckboxTreeNode) {
+		                ((CheckboxTreeNode) node).setSelected(true, propagateSelectionDown, propagateSelectionUp);
+		            }
+		            else {
+		                node.setSelected(true);
+		            }
+		        }
+		    }
+		}
+		selectionVE.setValue(context.getELContext(), selection);
+		setSelection(null);
     }
 
-    protected void processNodes(FacesContext context, PhaseId phaseId) {
+	protected void processNodes(FacesContext context, PhaseId phaseId) {
         if (isSkipChildren()) {
             return;
         }
@@ -590,23 +578,24 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         setRowKey(null);
     }
 
-    protected void processNode(FacesContext context, PhaseId phaseId, TreeNode treeNode, String rowKey) {
+	protected void processNode(FacesContext context, PhaseId phaseId, TreeNode treeNode, String rowKey) {
         processColumnChildren(context, phaseId, rowKey);
 
         //process child nodes if node is expanded or node itself is the root
-        if (shouldVisitNode(treeNode)) {
-            int childIndex = 0;
-            for (Iterator<TreeNode> iterator = treeNode.getChildren().iterator(); iterator.hasNext(); ) {
-                String childRowKey = rowKey == null ? String.valueOf(childIndex) : rowKey + SEPARATOR + childIndex;
+		if (!shouldVisitNode(treeNode)) {
+			return;
+		}
+		int childIndex = 0;
+		for (Iterator<TreeNode> iterator = treeNode.getChildren().iterator(); iterator.hasNext(); ) {
+		    String childRowKey = rowKey == null ? String.valueOf(childIndex) : new StringBuilder().append(rowKey).append(SEPARATOR).append(childIndex).toString();
 
-                processNode(context, phaseId, iterator.next(), childRowKey);
+		    processNode(context, phaseId, iterator.next(), childRowKey);
 
-                childIndex++;
-            }
-        }
+		    childIndex++;
+		}
     }
 
-    protected void processFacets(FacesContext context, PhaseId phaseId) {
+	protected void processFacets(FacesContext context, PhaseId phaseId) {
         setRowKey(null);
 
         if (getFacetCount() > 0) {
@@ -627,7 +616,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         }
     }
 
-    protected void processColumnFacets(FacesContext context, PhaseId phaseId) {
+	protected void processColumnFacets(FacesContext context, PhaseId phaseId) {
         setRowKey(null);
 
         for (UIComponent child : getChildren()) {
@@ -654,31 +643,24 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         }
     }
 
-    protected void processColumnChildren(FacesContext context, PhaseId phaseId, String nodeKey) {
+	protected void processColumnChildren(FacesContext context, PhaseId phaseId, String nodeKey) {
         setRowKey(nodeKey);
 
         if (nodeKey == null) {
             return;
         }
 
-        for (UIComponent child : getChildren()) {
-            if (child.isRendered()) {
-                if (child instanceof UIColumn) {
-                    for (UIComponent grandkid : child.getChildren()) {
-                        if (grandkid.isRendered()) {
-                            processComponent(context, grandkid, phaseId);
-                        }
-                    }
-                }
-                else {
-                    processComponent(context, child, phaseId);
-                }
-            }
-
-        }
+        getChildren().stream().filter(UIComponent::isRendered).forEach(child -> {
+		    if (child instanceof UIColumn) {
+		        child.getChildren().stream().filter(UIComponent::isRendered).forEach(grandkid -> processComponent(context, grandkid, phaseId));
+		    }
+		    else {
+		        processComponent(context, child, phaseId);
+		    }
+		});
     }
 
-    protected void processComponent(FacesContext context, UIComponent component, PhaseId phaseId) {
+	protected void processComponent(FacesContext context, UIComponent component, PhaseId phaseId) {
         if (phaseId == PhaseId.APPLY_REQUEST_VALUES) {
             component.processDecodes(context);
         }
@@ -693,15 +675,13 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         }
     }
 
-    private void saveDescendantState() {
+	private void saveDescendantState() {
         FacesContext context = getFacesContext();
 
-        for (UIComponent child : getChildren()) {
-            saveDescendantState(child, context);
-        }
+        getChildren().forEach(child -> saveDescendantState(child, context));
     }
 
-    private void saveDescendantState(UIComponent component, FacesContext context) {
+	private void saveDescendantState(UIComponent component, FacesContext context) {
         Map<String, SavedState> saved = (Map<String, SavedState>) getStateHelper().get(PropertyKeys.saved);
 
         if (component instanceof EditableValueHolder) {
@@ -729,26 +709,20 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
             state.setLocalValueSet(input.isLocalValueSet());
         }
 
-        for (UIComponent uiComponent : component.getChildren()) {
-            saveDescendantState(uiComponent, context);
-        }
+        component.getChildren().forEach(uiComponent -> saveDescendantState(uiComponent, context));
 
         if (component.getFacetCount() > 0) {
-            for (UIComponent facet : component.getFacets().values()) {
-                saveDescendantState(facet, context);
-            }
+            component.getFacets().values().forEach(facet -> saveDescendantState(facet, context));
         }
     }
 
-    private void restoreDescendantState() {
+	private void restoreDescendantState() {
         FacesContext context = getFacesContext();
 
-        for (UIComponent child : getChildren()) {
-            restoreDescendantState(child, context);
-        }
+        getChildren().forEach(child -> restoreDescendantState(child, context));
     }
 
-    private void restoreDescendantState(UIComponent component, FacesContext context) {
+	private void restoreDescendantState(UIComponent component, FacesContext context) {
         //force id reset
         String id = component.getId();
         component.setId(id);
@@ -769,20 +743,15 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
             input.setSubmittedValue(state.getSubmittedValue());
             input.setLocalValueSet(state.isLocalValueSet());
         }
-        for (UIComponent kid : component.getChildren()) {
-            restoreDescendantState(kid, context);
-        }
+        component.getChildren().forEach(kid -> restoreDescendantState(kid, context));
 
         if (component.getFacetCount() > 0) {
-            for (UIComponent facet : component.getFacets().values()) {
-                restoreDescendantState(facet, context);
-            }
+            component.getFacets().values().forEach(facet -> restoreDescendantState(facet, context));
         }
     }
 
-    @Override
-    public boolean invokeOnComponent(FacesContext context, String clientId, ContextCallback callback)
-            throws FacesException {
+	@Override
+    public boolean invokeOnComponent(FacesContext context, String clientId, ContextCallback callback) {
 
         // skip if the component is not a children of the UITree
         if (!clientId.startsWith(getClientId(context))) {
@@ -792,7 +761,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         return super.invokeOnComponent(context, clientId, callback);
     }
 
-    @Override
+	@Override
     public boolean visitTree(VisitContext context, VisitCallback callback) {
         if (!isVisitable(context)) {
             return false;
@@ -836,13 +805,13 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         return false;
     }
 
-    protected boolean doVisitChildren(VisitContext context) {
+	protected boolean doVisitChildren(VisitContext context) {
         Collection<String> idsToVisit = context.getSubtreeIdsToVisit(this);
 
         return (!idsToVisit.isEmpty());
     }
 
-    protected boolean visitFacets(VisitContext context, VisitCallback callback, boolean visitNodes) {
+	protected boolean visitFacets(VisitContext context, VisitCallback callback, boolean visitNodes) {
         if (visitNodes) {
             setRowKey(null);
         }
@@ -858,7 +827,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         return false;
     }
 
-    private boolean visitColumns(VisitContext context, VisitCallback callback, String rowKey) {
+	private boolean visitColumns(VisitContext context, VisitCallback callback, String rowKey) {
         setRowKey(rowKey);
 
         if (rowKey == null) {
@@ -904,7 +873,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         return false;
     }
 
-    protected boolean visitColumnContent(VisitContext context, VisitCallback callback, UIComponent component) {
+	protected boolean visitColumnContent(VisitContext context, VisitCallback callback, UIComponent component) {
         if (component.getChildCount() > 0) {
             for (UIComponent grandkid : component.getChildren()) {
                 if (grandkid.visitTree(context, callback)) {
@@ -916,14 +885,13 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         return false;
     }
 
-    protected boolean visitNodes(VisitContext context, VisitCallback callback, boolean visitRows) {
+	protected boolean visitNodes(VisitContext context, VisitCallback callback, boolean visitRows) {
         if (visitRows) {
             TreeNode root = getValue();
-            if (root != null) {
-                if (visitNode(context, callback, root, null)) {
-                    return true;
-                }
-            }
+            boolean condition = root != null && visitNode(context, callback, root, null);
+			if (condition) {
+			    return true;
+			}
 
             setRowKey(null);
         }
@@ -931,7 +899,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         return false;
     }
 
-    protected boolean visitNode(VisitContext context, VisitCallback callback, TreeNode treeNode, String rowKey) {
+	protected boolean visitNode(VisitContext context, VisitCallback callback, TreeNode treeNode, String rowKey) {
         if (visitColumns(context, callback, rowKey)) {
             return true;
         }
@@ -940,7 +908,7 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         if (shouldVisitNode(treeNode)) {
             int childIndex = 0;
             for (Iterator<TreeNode> iterator = treeNode.getChildren().iterator(); iterator.hasNext(); ) {
-                String childRowKey = rowKey == null ? String.valueOf(childIndex) : rowKey + SEPARATOR + childIndex;
+                String childRowKey = rowKey == null ? String.valueOf(childIndex) : new StringBuilder().append(rowKey).append(SEPARATOR).append(childIndex).toString();
 
                 if (visitNode(context, callback, iterator.next(), childRowKey)) {
                     return true;
@@ -953,32 +921,33 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         return false;
     }
 
-    public boolean isRTLRendering() {
+	public boolean isRTLRendering() {
         return rtl;
     }
 
-    public void setRTLRendering(boolean rtl) {
+	public void setRTLRendering(boolean rtl) {
         this.rtl = rtl;
     }
 
-    protected boolean shouldVisitNode(TreeNode node) {
+	protected boolean shouldVisitNode(TreeNode node) {
         return (node.isExpanded() || node.getParent() == null);
     }
 
-    protected boolean requiresIteration(FacesContext context, VisitContext visitContext) {
+	protected boolean requiresIteration(FacesContext context, VisitContext visitContext) {
         try {
             //JSF 2.1
             VisitHint skipHint = VisitHint.valueOf("SKIP_ITERATION");
             return !visitContext.getHints().contains(skipHint);
         }
         catch (IllegalArgumentException e) {
-            //JSF 2.0
+            logger.error(e.getMessage(), e);
+			//JSF 2.0
             Object skipHint = context.getAttributes().get("javax.faces.visit.SKIP_ITERATION");
             return !Boolean.TRUE.equals(skipHint);
         }
     }
 
-    @Override
+	@Override
     public void encodeBegin(FacesContext context) throws IOException {
 
         preEncode(context);
@@ -986,22 +955,37 @@ public abstract class UITree extends UIComponentBase implements NamingContainer 
         super.encodeBegin(context);
     }
 
-    protected void preDecode(FacesContext context) {
+	protected void preDecode(FacesContext context) {
     }
 
-    protected void preValidate(FacesContext context) {
+	protected void preValidate(FacesContext context) {
     }
 
-    protected void preUpdate(FacesContext context) {
+	protected void preUpdate(FacesContext context) {
     }
 
-    protected void preEncode(FacesContext context) {
+	protected void preEncode(FacesContext context) {
     }
 
-    protected Boolean isNestedWithinIterator() {
+	protected Boolean isNestedWithinIterator() {
         if (isNested == null) {
             isNested = ComponentUtils.isNestedWithinIterator(this);
         }
         return isNested;
+    }
+
+	public enum PropertyKeys {
+        var,
+        selectionMode,
+        selection,
+        saved,
+        value,
+        required,
+        requiredMessage,
+        skipChildren,
+        showUnselectableCheckbox,
+        nodeVar,
+        propagateSelectionDown,
+        propagateSelectionUp;
     }
 }

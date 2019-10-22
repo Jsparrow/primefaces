@@ -55,7 +55,7 @@ public class AutoUpdateListener implements ComponentSystemEventListener {
     }
 
     @Override
-    public void processEvent(ComponentSystemEvent cse) throws AbortProcessingException {
+    public void processEvent(ComponentSystemEvent cse) {
         FacesContext context = FacesContext.getCurrentInstance();
         String clientId = ((UIComponent) cse.getSource()).getClientId(context);
 

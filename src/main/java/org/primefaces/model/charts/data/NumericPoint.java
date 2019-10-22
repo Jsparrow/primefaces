@@ -39,11 +39,9 @@ public class NumericPoint implements Serializable {
     private Number y = 0;
 
     public NumericPoint() {
-        super();
     }
 
     public NumericPoint(Number x, Number y) {
-        super();
         this.x = x;
         this.y = y;
     }

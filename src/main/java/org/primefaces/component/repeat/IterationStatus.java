@@ -128,16 +128,8 @@ public class IterationStatus implements Serializable {
 
     @Override
     public String toString() {
-        return "IterationStatus{"
-                + "index=" + index
-                + ", first=" + first
-                + ", last=" + last
-                + ", begin=" + begin
-                + ", end=" + end
-                + ", step=" + step
-                + ", even=" + even
-                + ", current=" + current
-                + ", iterationCount=" + iterationCount
-                + '}';
+        return new StringBuilder().append("IterationStatus{").append("index=").append(index).append(", first=").append(first).append(", last=").append(last)
+				.append(", begin=").append(begin).append(", end=").append(end).append(", step=").append(step).append(", even=")
+				.append(even).append(", current=").append(current).append(", iterationCount=").append(iterationCount).append('}').toString();
     }
 }

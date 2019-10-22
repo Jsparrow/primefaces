@@ -56,7 +56,7 @@ public class MenubarRenderer extends TieredMenuRenderer {
         Menubar menubar = (Menubar) abstractMenu;
         String style = menubar.getStyle();
         String styleClass = menubar.getStyleClass();
-        styleClass = styleClass == null ? Menubar.CONTAINER_CLASS : Menubar.CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? Menubar.CONTAINER_CLASS : new StringBuilder().append(Menubar.CONTAINER_CLASS).append(" ").append(styleClass).toString();
 
         encodeMenu(context, menubar, style, styleClass, "menubar");
     }
@@ -68,7 +68,7 @@ public class MenubarRenderer extends TieredMenuRenderer {
         String icon = null;
 
         if (parent == null) {
-            icon = (submenu.getId().indexOf(BaseMenuModel.ID_SEPARATOR) == -1) ? Menu.SUBMENU_DOWN_ICON_CLASS : Menu.SUBMENU_RIGHT_ICON_CLASS;
+            icon = (!submenu.getId().contains(BaseMenuModel.ID_SEPARATOR)) ? Menu.SUBMENU_DOWN_ICON_CLASS : Menu.SUBMENU_RIGHT_ICON_CLASS;
         }
         else {
             icon = (parent instanceof Menubar) ? Menu.SUBMENU_DOWN_ICON_CLASS : Menu.SUBMENU_RIGHT_ICON_CLASS;

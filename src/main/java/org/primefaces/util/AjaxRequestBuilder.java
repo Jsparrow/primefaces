@@ -85,9 +85,7 @@ public class AjaxRequestBuilder {
 
             if (formComponent == null) {
                 if (context.isProjectStage(ProjectStage.Development)) {
-                    String message = "Component '" + component.getClientId(context)
-                            + "' should be inside a form or should reference a form via its form attribute."
-                            + " We will try to find a fallback form on the client side.";
+                    String message = new StringBuilder().append("Component '").append(component.getClientId(context)).append("' should be inside a form or should reference a form via its form attribute.").append(" We will try to find a fallback form on the client side.").toString();
                     LOG.info(message);
                 }
             }
@@ -172,7 +170,7 @@ public class AjaxRequestBuilder {
     }
 
     public AjaxRequestBuilder delay(String delay) {
-        if (!LangUtils.isValueBlank(delay) && !delay.equals("none")) {
+        if (!LangUtils.isValueBlank(delay) && !"none".equals(delay)) {
             buffer.append(",d:").append(delay);
 
             if (context.isProjectStage(ProjectStage.Development)) {
@@ -210,11 +208,10 @@ public class AjaxRequestBuilder {
         if (partialSubmitSet) {
             buffer.append(",ps:").append(value);
 
-            if (value) {
-                if (partialSubmitFilter != null) {
-                    buffer.append(",psf:\"").append(partialSubmitFilter).append("\"");
-                }
-            }
+            boolean condition = value && partialSubmitFilter != null;
+			if (condition) {
+			    buffer.append(",psf:\"").append(partialSubmitFilter).append("\"");
+			}
         }
 
         return this;
@@ -365,10 +362,10 @@ public class AjaxRequestBuilder {
     public String buildBehavior(ClientBehaviorRenderingMode mode) {
         addFragmentConfig();
 
-        if (mode.equals(ClientBehaviorRenderingMode.UNOBSTRUSIVE)) {
+        if (mode == ClientBehaviorRenderingMode.UNOBSTRUSIVE) {
             buffer.append("},ext);");
         }
-        else if (mode.equals(ClientBehaviorRenderingMode.OBSTRUSIVE)) {
+        else if (mode == ClientBehaviorRenderingMode.OBSTRUSIVE) {
             buffer.append("});");
         }
 

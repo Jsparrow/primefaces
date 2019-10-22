@@ -37,12 +37,16 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import org.primefaces.model.menu.MenuItem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public interface MenuItemAware {
 
-    List getElements();
+    Logger logger = LoggerFactory.getLogger(MenuItemAware.class);
 
-    default void broadcastMenuActionEvent(FacesEvent event, FacesContext context, Consumer<FacesEvent> broadcast) throws AbortProcessingException {
+	List getElements();
+
+    default void broadcastMenuActionEvent(FacesEvent event, FacesContext context, Consumer<FacesEvent> broadcast) {
         if (event instanceof MenuActionEvent) {
             MenuActionEvent menuActionEvent = (MenuActionEvent) event;
             MenuItem menuItem = menuActionEvent.getMenuItem();
@@ -64,13 +68,15 @@ public interface MenuItemAware {
                     invokeResult = me.invoke(elContext, null);
                 }
                 catch (MethodNotFoundException mnfe1) {
-                    try {
+                    logger.error(mnfe1.getMessage(), mnfe1);
+					try {
                         MethodExpression me = expressionFactory.createMethodExpression(elContext, command,
                                 String.class, new Class[]{ActionEvent.class});
                         invokeResult = me.invoke(elContext, new Object[]{event});
                     }
                     catch (MethodNotFoundException mnfe2) {
-                        MethodExpression me = expressionFactory.createMethodExpression(elContext, command,
+                        logger.error(mnfe2.getMessage(), mnfe2);
+						MethodExpression me = expressionFactory.createMethodExpression(elContext, command,
                                 String.class, new Class[]{MenuActionEvent.class});
                         invokeResult = me.invoke(elContext, new Object[]{event});
                     }

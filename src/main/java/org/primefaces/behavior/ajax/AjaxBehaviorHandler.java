@@ -53,28 +53,26 @@ public class AjaxBehaviorHandler extends AbstractBehaviorHandler<AjaxBehavior> {
         super.init(ctx, behavior, eventName, parent);
         TagAttribute listener = getAttribute(AjaxBehavior.PropertyKeys.listener.name());
 
-        if (listener != null) {
-
-            Class<? extends BehaviorEvent> eventMappingClass = null;
-
-            if (parent instanceof PrimeClientBehaviorHolder) {
-                Map<String, Class<? extends BehaviorEvent>> mapping = ((PrimeClientBehaviorHolder) parent).getBehaviorEventMapping();
-                if (mapping != null) {
-                    eventMappingClass = mapping.get(eventName);
-                }
-            }
-
-            if (eventMappingClass == null) {
-                behavior.addAjaxBehaviorListener(new AjaxBehaviorListenerImpl(
-                        listener.getMethodExpression(ctx, Void.class, EMPTY_PARAMS),
-                        listener.getMethodExpression(ctx, Void.class, ARG_PARAMS)));
-            }
-            else {
-                behavior.addAjaxBehaviorListener(new AjaxBehaviorListenerImpl(
-                        listener.getMethodExpression(ctx, Void.class, EMPTY_PARAMS),
-                        listener.getMethodExpression(ctx, Void.class, ARG_PARAMS),
-                        listener.getMethodExpression(ctx, Void.class, new Class[]{eventMappingClass})));
-            }
-        }
+        if (listener == null) {
+			return;
+		}
+		Class<? extends BehaviorEvent> eventMappingClass = null;
+		if (parent instanceof PrimeClientBehaviorHolder) {
+		    Map<String, Class<? extends BehaviorEvent>> mapping = ((PrimeClientBehaviorHolder) parent).getBehaviorEventMapping();
+		    if (mapping != null) {
+		        eventMappingClass = mapping.get(eventName);
+		    }
+		}
+		if (eventMappingClass == null) {
+		    behavior.addAjaxBehaviorListener(new AjaxBehaviorListenerImpl(
+		            listener.getMethodExpression(ctx, Void.class, EMPTY_PARAMS),
+		            listener.getMethodExpression(ctx, Void.class, ARG_PARAMS)));
+		}
+		else {
+		    behavior.addAjaxBehaviorListener(new AjaxBehaviorListenerImpl(
+		            listener.getMethodExpression(ctx, Void.class, EMPTY_PARAMS),
+		            listener.getMethodExpression(ctx, Void.class, ARG_PARAMS),
+		            listener.getMethodExpression(ctx, Void.class, new Class[]{eventMappingClass})));
+		}
     }
 }

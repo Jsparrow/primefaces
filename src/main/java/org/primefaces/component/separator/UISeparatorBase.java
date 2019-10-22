@@ -34,47 +34,47 @@ public abstract class UISeparatorBase extends UIComponentBase implements Separat
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.SeparatorRenderer";
 
-    public enum PropertyKeys {
-
-        title,
-        style,
-        styleClass;
-    }
-
     public UISeparatorBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
-    @Override
+	@Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
-    @Override
+	@Override
     public String getTitle() {
         return (String) getStateHelper().eval(PropertyKeys.title, null);
     }
 
-    public void setTitle(String title) {
+	public void setTitle(String title) {
         getStateHelper().put(PropertyKeys.title, title);
     }
 
-    @Override
+	@Override
     public String getStyle() {
         return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(String style) {
+	public void setStyle(String style) {
         getStateHelper().put(PropertyKeys.style, style);
     }
 
-    @Override
+	@Override
     public String getStyleClass() {
         return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(String styleClass) {
+	public void setStyleClass(String styleClass) {
         getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+	public enum PropertyKeys {
+
+        title,
+        style,
+        styleClass;
     }
 
 }

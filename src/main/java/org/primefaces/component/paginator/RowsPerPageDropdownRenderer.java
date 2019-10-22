@@ -46,70 +46,66 @@ public class RowsPerPageDropdownRenderer implements PaginatorElementRenderer {
         UIViewRoot viewroot = context.getViewRoot();
         char separator = UINamingContainer.getSeparatorChar(context);
 
-        if (template != null) {
-            ResponseWriter writer = context.getResponseWriter();
-            int actualRows = pageable.getRows();
-            String[] options = pageable.getRowsPerPageTemplate().split("[,]+");
-            String label = pageable.getRowsPerPageLabel();
-            if (label != null) {
-                LOGGER.info("RowsPerPageLabel attribute is deprecated, use 'primefaces.paginator.aria.ROWS_PER_PAGE' key instead to override default message.");
-            }
-            else {
-                label = MessageFactory.getMessage(UIData.ROWS_PER_PAGE_LABEL, null);
-            }
+        if (template == null) {
+			return;
+		}
+		ResponseWriter writer = context.getResponseWriter();
+		int actualRows = pageable.getRows();
+		String[] options = pageable.getRowsPerPageTemplate().split("[,]+");
+		String label = pageable.getRowsPerPageLabel();
+		if (label != null) {
+		    LOGGER.info("RowsPerPageLabel attribute is deprecated, use 'primefaces.paginator.aria.ROWS_PER_PAGE' key instead to override default message.");
+		}
+		else {
+		    label = MessageFactory.getMessage(UIData.ROWS_PER_PAGE_LABEL, null);
+		}
+		String clientId = pageable.getClientId(context);
+		String ddId = new StringBuilder().append(clientId).append(separator).append(viewroot.createUniqueId()).toString();
+		String ddName = clientId + "_rppDD";
+		String labelId = null;
+		if (label != null) {
+		    labelId = ddId + "_rppLabel";
 
-            String clientId = pageable.getClientId(context);
-            String ddId = clientId + separator + viewroot.createUniqueId();
-            String ddName = clientId + "_rppDD";
-            String labelId = null;
+		    writer.startElement("label", null);
+		    writer.writeAttribute("id", labelId, null);
+		    writer.writeAttribute("for", ddId, null);
+		    writer.writeAttribute("class", UIData.PAGINATOR_RPP_LABEL_CLASS, null);
+		    writer.writeText(label, null);
+		    writer.endElement("label");
+		}
+		writer.startElement("select", null);
+		writer.writeAttribute("id", ddId, null);
+		writer.writeAttribute("name", ddName, null);
+		if (label != null) {
+		    writer.writeAttribute(HTML.ARIA_LABELLEDBY, labelId, null);
+		}
+		writer.writeAttribute("class", UIData.PAGINATOR_RPP_OPTIONS_CLASS, null);
+		writer.writeAttribute("autocomplete", "off", null);
+		for (String option : options) {
+		    writer.startElement("option", null);
 
-            if (label != null) {
-                labelId = ddId + "_rppLabel";
+		    int rows;
+		    String optionText;
+		    if (option.trim().startsWith("{ShowAll|")) {
+		        optionText = option.substring(option.indexOf("'") + 1, option.lastIndexOf("'"));
+		        rows = pageable.getRowCount();
 
-                writer.startElement("label", null);
-                writer.writeAttribute("id", labelId, null);
-                writer.writeAttribute("for", ddId, null);
-                writer.writeAttribute("class", UIData.PAGINATOR_RPP_LABEL_CLASS, null);
-                writer.writeText(label, null);
-                writer.endElement("label");
-            }
+		        writer.writeAttribute("value", "*", null);
+		    }
+		    else {
+		        optionText = option.trim();
+		        rows = Integer.parseInt(optionText);
 
-            writer.startElement("select", null);
-            writer.writeAttribute("id", ddId, null);
-            writer.writeAttribute("name", ddName, null);
-            if (label != null) {
-                writer.writeAttribute(HTML.ARIA_LABELLEDBY, labelId, null);
-            }
-            writer.writeAttribute("class", UIData.PAGINATOR_RPP_OPTIONS_CLASS, null);
-            writer.writeAttribute("autocomplete", "off", null);
+		        writer.writeAttribute("value", rows, null);
+		    }
 
-            for (String option : options) {
-                writer.startElement("option", null);
+		    if (actualRows == rows) {
+		        writer.writeAttribute("selected", "selected", null);
+		    }
 
-                int rows;
-                String optionText;
-                if (option.trim().startsWith("{ShowAll|")) {
-                    optionText = option.substring(option.indexOf("'") + 1, option.lastIndexOf("'"));
-                    rows = pageable.getRowCount();
-
-                    writer.writeAttribute("value", "*", null);
-                }
-                else {
-                    optionText = option.trim();
-                    rows = Integer.parseInt(optionText);
-
-                    writer.writeAttribute("value", rows, null);
-                }
-
-                if (actualRows == rows) {
-                    writer.writeAttribute("selected", "selected", null);
-                }
-
-                writer.writeText(optionText, null);
-                writer.endElement("option");
-            }
-
-            writer.endElement("select");
-        }
+		    writer.writeText(optionText, null);
+		    writer.endElement("option");
+		}
+		writer.endElement("select");
     }
 }

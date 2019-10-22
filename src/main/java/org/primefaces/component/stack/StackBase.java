@@ -32,7 +32,65 @@ public abstract class StackBase extends AbstractMenu implements Widget {
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.StackRenderer";
 
-    public enum PropertyKeys {
+    public StackBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getWidgetVar() {
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
+
+	public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
+
+	@Override
+    public org.primefaces.model.menu.MenuModel getModel() {
+        return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
+    }
+
+	public void setModel(org.primefaces.model.menu.MenuModel model) {
+        getStateHelper().put(PropertyKeys.model, model);
+    }
+
+	public String getIcon() {
+        return (String) getStateHelper().eval(PropertyKeys.icon, null);
+    }
+
+	public void setIcon(String icon) {
+        getStateHelper().put(PropertyKeys.icon, icon);
+    }
+
+	public int getOpenSpeed() {
+        return (Integer) getStateHelper().eval(PropertyKeys.openSpeed, 300);
+    }
+
+	public void setOpenSpeed(int openSpeed) {
+        getStateHelper().put(PropertyKeys.openSpeed, openSpeed);
+    }
+
+	public int getCloseSpeed() {
+        return (Integer) getStateHelper().eval(PropertyKeys.closeSpeed, 300);
+    }
+
+	public void setCloseSpeed(int closeSpeed) {
+        getStateHelper().put(PropertyKeys.closeSpeed, closeSpeed);
+    }
+
+	public boolean isExpanded() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.expanded, false);
+    }
+
+	public void setExpanded(boolean expanded) {
+        getStateHelper().put(PropertyKeys.expanded, expanded);
+    }
+
+	public enum PropertyKeys {
 
         widgetVar,
         model,
@@ -40,63 +98,5 @@ public abstract class StackBase extends AbstractMenu implements Widget {
         openSpeed,
         closeSpeed,
         expanded
-    }
-
-    public StackBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    @Override
-    public org.primefaces.model.menu.MenuModel getModel() {
-        return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
-    }
-
-    public void setModel(org.primefaces.model.menu.MenuModel model) {
-        getStateHelper().put(PropertyKeys.model, model);
-    }
-
-    public String getIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.icon, null);
-    }
-
-    public void setIcon(String icon) {
-        getStateHelper().put(PropertyKeys.icon, icon);
-    }
-
-    public int getOpenSpeed() {
-        return (Integer) getStateHelper().eval(PropertyKeys.openSpeed, 300);
-    }
-
-    public void setOpenSpeed(int openSpeed) {
-        getStateHelper().put(PropertyKeys.openSpeed, openSpeed);
-    }
-
-    public int getCloseSpeed() {
-        return (Integer) getStateHelper().eval(PropertyKeys.closeSpeed, 300);
-    }
-
-    public void setCloseSpeed(int closeSpeed) {
-        getStateHelper().put(PropertyKeys.closeSpeed, closeSpeed);
-    }
-
-    public boolean isExpanded() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.expanded, false);
-    }
-
-    public void setExpanded(boolean expanded) {
-        getStateHelper().put(PropertyKeys.expanded, expanded);
     }
 }

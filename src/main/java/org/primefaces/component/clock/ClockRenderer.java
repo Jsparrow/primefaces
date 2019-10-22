@@ -45,10 +45,11 @@ public class ClockRenderer extends CoreRenderer {
     public void decode(FacesContext context, UIComponent component) {
         Clock clock = (Clock) component;
 
-        if (clock.isSyncRequest()) {
-            PrimeFaces.current().ajax().addCallbackParam("datetime", System.currentTimeMillis());
-            context.renderResponse();
-        }
+        if (!clock.isSyncRequest()) {
+			return;
+		}
+		PrimeFaces.current().ajax().addCallbackParam("datetime", System.currentTimeMillis());
+		context.renderResponse();
     }
 
     @Override
@@ -63,7 +64,7 @@ public class ClockRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = clock.getClientId(context);
 
-        if (clock.getDisplayMode().equals("analog")) {
+        if ("analog".equals(clock.getDisplayMode())) {
             writer.startElement("div", clock);
             writer.writeAttribute("id", clientId, null);
             writer.writeAttribute("class", Clock.ANALOG_STYLE_CLASS, null);
@@ -88,7 +89,7 @@ public class ClockRenderer extends CoreRenderer {
                 .attr("displayMode", clock.getDisplayMode())
                 .attr("locale", LocaleUtils.getCurrentLocale(context).toString());
 
-        if (mode.equals("server")) {
+        if ("server".equals(mode)) {
             wb.attr("value", getValueWithTimeZone(context, clock));
 
             if (clock.isAutoSync()) {

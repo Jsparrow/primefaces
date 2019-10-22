@@ -46,10 +46,10 @@ public class ColumnGroupHelperRenderer implements HelperColumnRenderer {
                 DataTable.COMPONENT_FAMILY,
                 DataTable.DEFAULT_RENDERER);
 
-        if (type.equals("header") || type.equals("frozenHeader") || type.equals("scrollableHeader")) {
+        if ("header".equals(type) || "frozenHeader".equals(type) || "scrollableHeader".equals(type)) {
             renderer.encodeColumnHeader(context, table, column);
         }
-        else if (type.equals("footer") || type.equals("frozenFooter") || type.equals("scrollableFooter")) {
+        else if ("footer".equals(type) || "frozenFooter".equals(type) || "scrollableFooter".equals(type)) {
             renderer.encodeColumnFooter(context, table, column);
         }
     }

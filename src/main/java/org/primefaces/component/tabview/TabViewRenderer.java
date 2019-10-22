@@ -115,11 +115,11 @@ public class TabViewRenderer extends CoreRenderer {
         String widgetVar = tabView.resolveWidgetVar(context);
         String orientation = tabView.getOrientation();
         String styleClass = tabView.getStyleClass();
-        String defaultStyleClass = TabView.CONTAINER_CLASS + " ui-tabs-" + orientation;
+        String defaultStyleClass = new StringBuilder().append(TabView.CONTAINER_CLASS).append(" ui-tabs-").append(orientation).toString();
         if (tabView.isScrollable()) {
-            defaultStyleClass = defaultStyleClass + " " + TabView.SCROLLABLE_TABS_CLASS;
+            defaultStyleClass = new StringBuilder().append(defaultStyleClass).append(" ").append(TabView.SCROLLABLE_TABS_CLASS).toString();
         }
-        styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
+        styleClass = styleClass == null ? defaultStyleClass : new StringBuilder().append(defaultStyleClass).append(" ").append(styleClass).toString();
 
         if (ComponentUtils.isRTL(context, tabView)) {
             styleClass += " ui-tabs-rtl";
@@ -134,7 +134,7 @@ public class TabViewRenderer extends CoreRenderer {
 
         writer.writeAttribute(HTML.WIDGET_VAR, widgetVar, null);
 
-        if (orientation.equals("bottom")) {
+        if ("bottom".equals(orientation)) {
             encodeContents(context, tabView);
             encodeHeaders(context, tabView);
         }
@@ -223,12 +223,12 @@ public class TabViewRenderer extends CoreRenderer {
             throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String defaultStyleClass = active ? TabView.ACTIVE_TAB_HEADER_CLASS : TabView.INACTIVE_TAB_HEADER_CLASS;
-        defaultStyleClass = defaultStyleClass + " ui-corner-" + tabView.getOrientation();   //cornering
+        defaultStyleClass = new StringBuilder().append(defaultStyleClass).append(" ui-corner-").append(tabView.getOrientation()).toString();   //cornering
         if (tab.isDisabled()) {
             defaultStyleClass = defaultStyleClass + " ui-state-disabled";
         }
         String styleClass = tab.getTitleStyleClass();
-        styleClass = (styleClass == null) ? defaultStyleClass : defaultStyleClass + " " + styleClass;
+        styleClass = (styleClass == null) ? defaultStyleClass : new StringBuilder().append(defaultStyleClass).append(" ").append(styleClass).toString();
         UIComponent titleFacet = tab.getFacet("title");
         String tabindex = tab.isDisabled() ? "-1" : tabView.getTabindex();
 

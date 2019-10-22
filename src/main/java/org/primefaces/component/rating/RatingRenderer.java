@@ -89,7 +89,7 @@ public class RatingRenderer extends InputRenderer {
         boolean readonly = rating.isReadonly();
         String style = rating.getStyle();
         String styleClass = rating.getStyleClass();
-        styleClass = styleClass == null ? Rating.CONTAINER_CLASS : Rating.CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? Rating.CONTAINER_CLASS : new StringBuilder().append(Rating.CONTAINER_CLASS).append(" ").append(styleClass).toString();
 
         if (disabled) {
             styleClass = styleClass + " ui-state-disabled";

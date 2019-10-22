@@ -33,7 +33,80 @@ public abstract class TerminalBase extends UIPanel implements Widget {
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.TerminalRenderer";
 
-    public enum PropertyKeys {
+    public TerminalBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getWidgetVar() {
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
+
+	public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
+
+	public String getStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
+    }
+
+	public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
+    }
+
+	public String getStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
+    }
+
+	public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+	public String getWelcomeMessage() {
+        return (String) getStateHelper().eval(PropertyKeys.welcomeMessage, null);
+    }
+
+	public void setWelcomeMessage(String welcomeMessage) {
+        getStateHelper().put(PropertyKeys.welcomeMessage, welcomeMessage);
+    }
+
+	public String getPrompt() {
+        return (String) getStateHelper().eval(PropertyKeys.prompt, "prime $");
+    }
+
+	public void setPrompt(String prompt) {
+        getStateHelper().put(PropertyKeys.prompt, prompt);
+    }
+
+	public javax.el.MethodExpression getCommandHandler() {
+        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.commandHandler, null);
+    }
+
+	public void setCommandHandler(javax.el.MethodExpression commandHandler) {
+        getStateHelper().put(PropertyKeys.commandHandler, commandHandler);
+    }
+
+	public org.primefaces.model.terminal.TerminalAutoCompleteModel getAutoCompleteModel() {
+        return (org.primefaces.model.terminal.TerminalAutoCompleteModel) getStateHelper().eval(PropertyKeys.autoCompleteModel, null);
+    }
+
+	public void setAutoCompleteModel(org.primefaces.model.terminal.TerminalAutoCompleteModel autoCompleteModel) {
+        getStateHelper().put(PropertyKeys.autoCompleteModel, autoCompleteModel);
+    }
+
+	public boolean isEscape() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.escape, true);
+    }
+
+	public void setEscape(boolean escape) {
+        getStateHelper().put(PropertyKeys.escape, escape);
+    }
+
+	public enum PropertyKeys {
 
         widgetVar,
         style,
@@ -43,78 +116,5 @@ public abstract class TerminalBase extends UIPanel implements Widget {
         commandHandler,
         autoCompleteModel,
         escape
-    }
-
-    public TerminalBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public String getWelcomeMessage() {
-        return (String) getStateHelper().eval(PropertyKeys.welcomeMessage, null);
-    }
-
-    public void setWelcomeMessage(String welcomeMessage) {
-        getStateHelper().put(PropertyKeys.welcomeMessage, welcomeMessage);
-    }
-
-    public String getPrompt() {
-        return (String) getStateHelper().eval(PropertyKeys.prompt, "prime $");
-    }
-
-    public void setPrompt(String prompt) {
-        getStateHelper().put(PropertyKeys.prompt, prompt);
-    }
-
-    public javax.el.MethodExpression getCommandHandler() {
-        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.commandHandler, null);
-    }
-
-    public void setCommandHandler(javax.el.MethodExpression commandHandler) {
-        getStateHelper().put(PropertyKeys.commandHandler, commandHandler);
-    }
-
-    public org.primefaces.model.terminal.TerminalAutoCompleteModel getAutoCompleteModel() {
-        return (org.primefaces.model.terminal.TerminalAutoCompleteModel) getStateHelper().eval(PropertyKeys.autoCompleteModel, null);
-    }
-
-    public void setAutoCompleteModel(org.primefaces.model.terminal.TerminalAutoCompleteModel autoCompleteModel) {
-        getStateHelper().put(PropertyKeys.autoCompleteModel, autoCompleteModel);
-    }
-
-    public boolean isEscape() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.escape, true);
-    }
-
-    public void setEscape(boolean escape) {
-        getStateHelper().put(PropertyKeys.escape, escape);
     }
 }

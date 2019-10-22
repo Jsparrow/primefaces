@@ -43,7 +43,7 @@ public class StepsRenderer extends BaseMenuRenderer {
         String clientId = steps.getClientId(context);
         String styleClass = steps.getStyleClass();
         String containerClass = steps.isReadonly() ? Steps.READONLY_CONTAINER_CLASS : Steps.CONTAINER_CLASS;
-        styleClass = styleClass == null ? containerClass : containerClass + " " + styleClass;
+        styleClass = styleClass == null ? containerClass : new StringBuilder().append(containerClass).append(" ").append(styleClass).toString();
         int activeIndex = steps.getActiveIndex();
         List<MenuElement> elements = steps.getElements();
 
@@ -95,7 +95,7 @@ public class StepsRenderer extends BaseMenuRenderer {
         String containerStyleClass = item.getContainerStyleClass();
 
         if (containerStyleClass != null) {
-            itemClass = itemClass + " " + containerStyleClass;
+            itemClass = new StringBuilder().append(itemClass).append(" ").append(containerStyleClass).toString();
         }
 
         //header container

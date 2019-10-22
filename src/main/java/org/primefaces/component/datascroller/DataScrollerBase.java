@@ -32,7 +32,88 @@ public abstract class DataScrollerBase extends UIData implements Widget {
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.DataScrollerRenderer";
 
-    public enum PropertyKeys {
+    public DataScrollerBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getWidgetVar() {
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
+
+	public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
+
+	public String getStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
+    }
+
+	public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
+    }
+
+	public String getStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
+    }
+
+	public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+	public int getChunkSize() {
+        return (Integer) getStateHelper().eval(PropertyKeys.chunkSize, 0);
+    }
+
+	public void setChunkSize(int chunkSize) {
+        getStateHelper().put(PropertyKeys.chunkSize, chunkSize);
+    }
+
+	public String getMode() {
+        return (String) getStateHelper().eval(PropertyKeys.mode, "document");
+    }
+
+	public void setMode(String mode) {
+        getStateHelper().put(PropertyKeys.mode, mode);
+    }
+
+	public String getScrollHeight() {
+        return (String) getStateHelper().eval(PropertyKeys.scrollHeight, null);
+    }
+
+	public void setScrollHeight(String scrollHeight) {
+        getStateHelper().put(PropertyKeys.scrollHeight, scrollHeight);
+    }
+
+	public int getBuffer() {
+        return (Integer) getStateHelper().eval(PropertyKeys.buffer, 10);
+    }
+
+	public void setBuffer(int buffer) {
+        getStateHelper().put(PropertyKeys.buffer, buffer);
+    }
+
+	public boolean isVirtualScroll() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.virtualScroll, false);
+    }
+
+	public void setVirtualScroll(boolean virtualScroll) {
+        getStateHelper().put(PropertyKeys.virtualScroll, virtualScroll);
+    }
+
+	public boolean isStartAtBottom() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.startAtBottom, false);
+    }
+
+	public void setStartAtBottom(boolean startAtBottom) {
+        getStateHelper().put(PropertyKeys.startAtBottom, startAtBottom);
+    }
+
+	public enum PropertyKeys {
 
         widgetVar,
         style,
@@ -43,86 +124,5 @@ public abstract class DataScrollerBase extends UIData implements Widget {
         buffer,
         virtualScroll,
         startAtBottom
-    }
-
-    public DataScrollerBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public int getChunkSize() {
-        return (Integer) getStateHelper().eval(PropertyKeys.chunkSize, 0);
-    }
-
-    public void setChunkSize(int chunkSize) {
-        getStateHelper().put(PropertyKeys.chunkSize, chunkSize);
-    }
-
-    public String getMode() {
-        return (String) getStateHelper().eval(PropertyKeys.mode, "document");
-    }
-
-    public void setMode(String mode) {
-        getStateHelper().put(PropertyKeys.mode, mode);
-    }
-
-    public String getScrollHeight() {
-        return (String) getStateHelper().eval(PropertyKeys.scrollHeight, null);
-    }
-
-    public void setScrollHeight(String scrollHeight) {
-        getStateHelper().put(PropertyKeys.scrollHeight, scrollHeight);
-    }
-
-    public int getBuffer() {
-        return (Integer) getStateHelper().eval(PropertyKeys.buffer, 10);
-    }
-
-    public void setBuffer(int buffer) {
-        getStateHelper().put(PropertyKeys.buffer, buffer);
-    }
-
-    public boolean isVirtualScroll() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.virtualScroll, false);
-    }
-
-    public void setVirtualScroll(boolean virtualScroll) {
-        getStateHelper().put(PropertyKeys.virtualScroll, virtualScroll);
-    }
-
-    public boolean isStartAtBottom() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.startAtBottom, false);
-    }
-
-    public void setStartAtBottom(boolean startAtBottom) {
-        getStateHelper().put(PropertyKeys.startAtBottom, startAtBottom);
     }
 }
