@@ -53,21 +53,23 @@ public class BarChartSeries extends ChartSeries {
     @Override
     public void encode(Writer writer) throws IOException {
         writer.write("{");
-        writer.write("label:\"" + EscapeUtils.forJavaScript(this.getLabel()) + "\"");
+        writer.write(new StringBuilder().append("label:\"").append(EscapeUtils.forJavaScript(this.getLabel())).append("\"").toString());
 
         writer.write(",renderer: $.jqplot." + getRenderer());
 
         AxisType xaxis = getXaxis();
         if (xaxis != null) {
-            writer.write(",xaxis:\"" + xaxis + "\"");
+            writer.write(new StringBuilder().append(",xaxis:\"").append(xaxis).append("\"").toString());
         }
 
         AxisType yaxis = getYaxis();
         if (yaxis != null) {
-            writer.write(",yaxis:\"" + yaxis + "\"");
+            writer.write(new StringBuilder().append(",yaxis:\"").append(yaxis).append("\"").toString());
         }
 
-        if (disableStack) writer.write(",disableStack:true");
+        if (disableStack) {
+			writer.write(",disableStack:true");
+		}
 
         writer.write("}");
     }

@@ -30,44 +30,44 @@ public abstract class AjaxExceptionHandlerBase extends UIComponentBase {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-    public enum PropertyKeys {
-
-        onexception,
-        update,
-        type;
-    }
-
     public AjaxExceptionHandlerBase() {
         setRendererType(null);
     }
 
-    @Override
+	@Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
-    public String getOnexception() {
+	public String getOnexception() {
         return (String) getStateHelper().eval(PropertyKeys.onexception, null);
     }
 
-    public void setOnexception(String onexception) {
+	public void setOnexception(String onexception) {
         getStateHelper().put(PropertyKeys.onexception, onexception);
     }
 
-    public String getUpdate() {
+	public String getUpdate() {
         return (String) getStateHelper().eval(PropertyKeys.update, null);
     }
 
-    public void setUpdate(String update) {
+	public void setUpdate(String update) {
         getStateHelper().put(PropertyKeys.update, update);
     }
 
-    public String getType() {
+	public String getType() {
         return (String) getStateHelper().eval(PropertyKeys.type, null);
     }
 
-    public void setType(String type) {
+	public void setType(String type) {
         getStateHelper().put(PropertyKeys.type, type);
+    }
+
+	public enum PropertyKeys {
+
+        onexception,
+        update,
+        type;
     }
 
 }

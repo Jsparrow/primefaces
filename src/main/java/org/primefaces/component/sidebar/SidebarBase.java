@@ -33,7 +33,104 @@ public abstract class SidebarBase extends UIComponentBase implements Widget {
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.SidebarRenderer";
 
-    public enum PropertyKeys {
+    public SidebarBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getWidgetVar() {
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
+
+	public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
+
+	public String getStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
+    }
+
+	public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
+    }
+
+	public String getStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
+    }
+
+	public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+	public boolean isVisible() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.visible, false);
+    }
+
+	public void setVisible(boolean visible) {
+        getStateHelper().put(PropertyKeys.visible, visible);
+    }
+
+	public String getPosition() {
+        return (String) getStateHelper().eval(PropertyKeys.position, "left");
+    }
+
+	public void setPosition(String position) {
+        getStateHelper().put(PropertyKeys.position, position);
+    }
+
+	public boolean isFullScreen() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.fullScreen, false);
+    }
+
+	public void setFullScreen(boolean fullScreen) {
+        getStateHelper().put(PropertyKeys.fullScreen, fullScreen);
+    }
+
+	public boolean isBlockScroll() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.blockScroll, false);
+    }
+
+	public void setBlockScroll(boolean blockScroll) {
+        getStateHelper().put(PropertyKeys.blockScroll, blockScroll);
+    }
+
+	public int getBaseZIndex() {
+        return (Integer) getStateHelper().eval(PropertyKeys.baseZIndex, 0);
+    }
+
+	public void setBaseZIndex(int baseZIndex) {
+        getStateHelper().put(PropertyKeys.baseZIndex, baseZIndex);
+    }
+
+	public String getAppendTo() {
+        return (String) getStateHelper().eval(PropertyKeys.appendTo, null);
+    }
+
+	public void setAppendTo(String appendTo) {
+        getStateHelper().put(PropertyKeys.appendTo, appendTo);
+    }
+
+	public String getOnShow() {
+        return (String) getStateHelper().eval(PropertyKeys.onShow, null);
+    }
+
+	public void setOnShow(String onShow) {
+        getStateHelper().put(PropertyKeys.onShow, onShow);
+    }
+
+	public String getOnHide() {
+        return (String) getStateHelper().eval(PropertyKeys.onHide, null);
+    }
+
+	public void setOnHide(String onHide) {
+        getStateHelper().put(PropertyKeys.onHide, onHide);
+    }
+
+	public enum PropertyKeys {
 
         widgetVar,
         style,
@@ -46,102 +143,5 @@ public abstract class SidebarBase extends UIComponentBase implements Widget {
         appendTo,
         onShow,
         onHide
-    }
-
-    public SidebarBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public boolean isVisible() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.visible, false);
-    }
-
-    public void setVisible(boolean visible) {
-        getStateHelper().put(PropertyKeys.visible, visible);
-    }
-
-    public String getPosition() {
-        return (String) getStateHelper().eval(PropertyKeys.position, "left");
-    }
-
-    public void setPosition(String position) {
-        getStateHelper().put(PropertyKeys.position, position);
-    }
-
-    public boolean isFullScreen() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.fullScreen, false);
-    }
-
-    public void setFullScreen(boolean fullScreen) {
-        getStateHelper().put(PropertyKeys.fullScreen, fullScreen);
-    }
-
-    public boolean isBlockScroll() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.blockScroll, false);
-    }
-
-    public void setBlockScroll(boolean blockScroll) {
-        getStateHelper().put(PropertyKeys.blockScroll, blockScroll);
-    }
-
-    public int getBaseZIndex() {
-        return (Integer) getStateHelper().eval(PropertyKeys.baseZIndex, 0);
-    }
-
-    public void setBaseZIndex(int baseZIndex) {
-        getStateHelper().put(PropertyKeys.baseZIndex, baseZIndex);
-    }
-
-    public String getAppendTo() {
-        return (String) getStateHelper().eval(PropertyKeys.appendTo, null);
-    }
-
-    public void setAppendTo(String appendTo) {
-        getStateHelper().put(PropertyKeys.appendTo, appendTo);
-    }
-
-    public String getOnShow() {
-        return (String) getStateHelper().eval(PropertyKeys.onShow, null);
-    }
-
-    public void setOnShow(String onShow) {
-        getStateHelper().put(PropertyKeys.onShow, onShow);
-    }
-
-    public String getOnHide() {
-        return (String) getStateHelper().eval(PropertyKeys.onHide, null);
-    }
-
-    public void setOnHide(String onHide) {
-        getStateHelper().put(PropertyKeys.onHide, onHide);
     }
 }

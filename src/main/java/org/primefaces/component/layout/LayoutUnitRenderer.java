@@ -40,9 +40,9 @@ public class LayoutUnitRenderer extends CoreRenderer {
         LayoutUnit unit = (LayoutUnit) component;
         boolean nesting = unit.isNesting();
 
-        String defaultStyleClass = Layout.UNIT_CLASS + " ui-layout-" + unit.getPosition();
+        String defaultStyleClass = new StringBuilder().append(Layout.UNIT_CLASS).append(" ui-layout-").append(unit.getPosition()).toString();
         String styleClass = unit.getStyleClass();
-        styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
+        styleClass = styleClass == null ? defaultStyleClass : new StringBuilder().append(defaultStyleClass).append(" ").append(styleClass).toString();
 
         writer.startElement("div", component);
         writer.writeAttribute("id", component.getClientId(context), "id");

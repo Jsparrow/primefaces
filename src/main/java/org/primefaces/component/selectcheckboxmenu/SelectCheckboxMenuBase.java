@@ -34,7 +34,180 @@ public abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox impl
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.SelectCheckboxMenuRenderer";
 
-    public enum PropertyKeys {
+    public SelectCheckboxMenuBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getWidgetVar() {
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
+
+	public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
+
+	public int getScrollHeight() {
+        return (Integer) getStateHelper().eval(PropertyKeys.scrollHeight, Integer.MAX_VALUE);
+    }
+
+	public void setScrollHeight(int scrollHeight) {
+        getStateHelper().put(PropertyKeys.scrollHeight, scrollHeight);
+    }
+
+	public String getOnShow() {
+        return (String) getStateHelper().eval(PropertyKeys.onShow, null);
+    }
+
+	public void setOnShow(String onShow) {
+        getStateHelper().put(PropertyKeys.onShow, onShow);
+    }
+
+	public String getOnHide() {
+        return (String) getStateHelper().eval(PropertyKeys.onHide, null);
+    }
+
+	public void setOnHide(String onHide) {
+        getStateHelper().put(PropertyKeys.onHide, onHide);
+    }
+
+	public boolean isFilter() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.filter, false);
+    }
+
+	public void setFilter(boolean filter) {
+        getStateHelper().put(PropertyKeys.filter, filter);
+    }
+
+	public String getFilterMatchMode() {
+        return (String) getStateHelper().eval(PropertyKeys.filterMatchMode, null);
+    }
+
+	public void setFilterMatchMode(String filterMatchMode) {
+        getStateHelper().put(PropertyKeys.filterMatchMode, filterMatchMode);
+    }
+
+	public String getFilterFunction() {
+        return (String) getStateHelper().eval(PropertyKeys.filterFunction, null);
+    }
+
+	public void setFilterFunction(String filterFunction) {
+        getStateHelper().put(PropertyKeys.filterFunction, filterFunction);
+    }
+
+	public java.lang.String getFilterPlaceholder() {
+        return (String) getStateHelper().eval(PropertyKeys.filterPlaceholder, null);
+    }
+
+	public void setFilterPlaceholder(String filterPlaceholder) {
+        getStateHelper().put(PropertyKeys.filterPlaceholder, filterPlaceholder);
+    }
+
+	public boolean isCaseSensitive() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.caseSensitive, false);
+    }
+
+	public void setCaseSensitive(boolean caseSensitive) {
+        getStateHelper().put(PropertyKeys.caseSensitive, caseSensitive);
+    }
+
+	public String getPanelStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.panelStyle, null);
+    }
+
+	public void setPanelStyle(String panelStyle) {
+        getStateHelper().put(PropertyKeys.panelStyle, panelStyle);
+    }
+
+	public String getPanelStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.panelStyleClass, null);
+    }
+
+	public void setPanelStyleClass(String panelStyleClass) {
+        getStateHelper().put(PropertyKeys.panelStyleClass, panelStyleClass);
+    }
+
+	public String getAppendTo() {
+        return (String) getStateHelper().eval(PropertyKeys.appendTo, "@(body)");
+    }
+
+	public void setAppendTo(String appendTo) {
+        getStateHelper().put(PropertyKeys.appendTo, appendTo);
+    }
+
+	@Override
+    public String getTabindex() {
+        return (String) getStateHelper().eval(PropertyKeys.tabindex, null);
+    }
+
+	@Override
+    public void setTabindex(String tabindex) {
+        getStateHelper().put(PropertyKeys.tabindex, tabindex);
+    }
+
+	@Override
+    public String getTitle() {
+        return (String) getStateHelper().eval(PropertyKeys.title, null);
+    }
+
+	@Override
+    public void setTitle(String title) {
+        getStateHelper().put(PropertyKeys.title, title);
+    }
+
+	public boolean isShowHeader() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.showHeader, true);
+    }
+
+	public void setShowHeader(boolean showHeader) {
+        getStateHelper().put(PropertyKeys.showHeader, showHeader);
+    }
+
+	public boolean isUpdateLabel() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.updateLabel, false);
+    }
+
+	public void setUpdateLabel(boolean updateLabel) {
+        getStateHelper().put(PropertyKeys.updateLabel, updateLabel);
+    }
+
+	public boolean isMultiple() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.multiple, false);
+    }
+
+	public void setMultiple(boolean multiple) {
+        getStateHelper().put(PropertyKeys.multiple, multiple);
+    }
+
+	public boolean isDynamic() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.dynamic, false);
+    }
+
+	public void setDynamic(boolean dynamic) {
+        getStateHelper().put(PropertyKeys.dynamic, dynamic);
+    }
+
+	public String getLabelSeparator() {
+        return (String) getStateHelper().eval(PropertyKeys.labelSeparator, ", ");
+    }
+
+	public void setLabelSeparator(String labelSeparator) {
+        getStateHelper().put(PropertyKeys.labelSeparator, labelSeparator);
+    }
+
+	public String getEmptyLabel() {
+        return (String) getStateHelper().eval(PropertyKeys.emptyLabel, null);
+    }
+
+	public void setEmptyLabel(String emptyLabel) {
+        getStateHelper().put(PropertyKeys.emptyLabel, emptyLabel);
+    }
+
+	public enum PropertyKeys {
 
         widgetVar,
         scrollHeight,
@@ -56,178 +229,5 @@ public abstract class SelectCheckboxMenuBase extends HtmlSelectManyCheckbox impl
         dynamic,
         labelSeparator,
         emptyLabel
-    }
-
-    public SelectCheckboxMenuBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public int getScrollHeight() {
-        return (Integer) getStateHelper().eval(PropertyKeys.scrollHeight, Integer.MAX_VALUE);
-    }
-
-    public void setScrollHeight(int scrollHeight) {
-        getStateHelper().put(PropertyKeys.scrollHeight, scrollHeight);
-    }
-
-    public String getOnShow() {
-        return (String) getStateHelper().eval(PropertyKeys.onShow, null);
-    }
-
-    public void setOnShow(String onShow) {
-        getStateHelper().put(PropertyKeys.onShow, onShow);
-    }
-
-    public String getOnHide() {
-        return (String) getStateHelper().eval(PropertyKeys.onHide, null);
-    }
-
-    public void setOnHide(String onHide) {
-        getStateHelper().put(PropertyKeys.onHide, onHide);
-    }
-
-    public boolean isFilter() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.filter, false);
-    }
-
-    public void setFilter(boolean filter) {
-        getStateHelper().put(PropertyKeys.filter, filter);
-    }
-
-    public String getFilterMatchMode() {
-        return (String) getStateHelper().eval(PropertyKeys.filterMatchMode, null);
-    }
-
-    public void setFilterMatchMode(String filterMatchMode) {
-        getStateHelper().put(PropertyKeys.filterMatchMode, filterMatchMode);
-    }
-
-    public String getFilterFunction() {
-        return (String) getStateHelper().eval(PropertyKeys.filterFunction, null);
-    }
-
-    public void setFilterFunction(String filterFunction) {
-        getStateHelper().put(PropertyKeys.filterFunction, filterFunction);
-    }
-
-    public java.lang.String getFilterPlaceholder() {
-        return (String) getStateHelper().eval(PropertyKeys.filterPlaceholder, null);
-    }
-
-    public void setFilterPlaceholder(String filterPlaceholder) {
-        getStateHelper().put(PropertyKeys.filterPlaceholder, filterPlaceholder);
-    }
-
-    public boolean isCaseSensitive() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.caseSensitive, false);
-    }
-
-    public void setCaseSensitive(boolean caseSensitive) {
-        getStateHelper().put(PropertyKeys.caseSensitive, caseSensitive);
-    }
-
-    public String getPanelStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.panelStyle, null);
-    }
-
-    public void setPanelStyle(String panelStyle) {
-        getStateHelper().put(PropertyKeys.panelStyle, panelStyle);
-    }
-
-    public String getPanelStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.panelStyleClass, null);
-    }
-
-    public void setPanelStyleClass(String panelStyleClass) {
-        getStateHelper().put(PropertyKeys.panelStyleClass, panelStyleClass);
-    }
-
-    public String getAppendTo() {
-        return (String) getStateHelper().eval(PropertyKeys.appendTo, "@(body)");
-    }
-
-    public void setAppendTo(String appendTo) {
-        getStateHelper().put(PropertyKeys.appendTo, appendTo);
-    }
-
-    @Override
-    public String getTabindex() {
-        return (String) getStateHelper().eval(PropertyKeys.tabindex, null);
-    }
-
-    @Override
-    public void setTabindex(String tabindex) {
-        getStateHelper().put(PropertyKeys.tabindex, tabindex);
-    }
-
-    @Override
-    public String getTitle() {
-        return (String) getStateHelper().eval(PropertyKeys.title, null);
-    }
-
-    @Override
-    public void setTitle(String title) {
-        getStateHelper().put(PropertyKeys.title, title);
-    }
-
-    public boolean isShowHeader() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.showHeader, true);
-    }
-
-    public void setShowHeader(boolean showHeader) {
-        getStateHelper().put(PropertyKeys.showHeader, showHeader);
-    }
-
-    public boolean isUpdateLabel() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.updateLabel, false);
-    }
-
-    public void setUpdateLabel(boolean updateLabel) {
-        getStateHelper().put(PropertyKeys.updateLabel, updateLabel);
-    }
-
-    public boolean isMultiple() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.multiple, false);
-    }
-
-    public void setMultiple(boolean multiple) {
-        getStateHelper().put(PropertyKeys.multiple, multiple);
-    }
-
-    public boolean isDynamic() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.dynamic, false);
-    }
-
-    public void setDynamic(boolean dynamic) {
-        getStateHelper().put(PropertyKeys.dynamic, dynamic);
-    }
-
-    public String getLabelSeparator() {
-        return (String) getStateHelper().eval(PropertyKeys.labelSeparator, ", ");
-    }
-
-    public void setLabelSeparator(String labelSeparator) {
-        getStateHelper().put(PropertyKeys.labelSeparator, labelSeparator);
-    }
-
-    public String getEmptyLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.emptyLabel, null);
-    }
-
-    public void setEmptyLabel(String emptyLabel) {
-        getStateHelper().put(PropertyKeys.emptyLabel, emptyLabel);
     }
 }

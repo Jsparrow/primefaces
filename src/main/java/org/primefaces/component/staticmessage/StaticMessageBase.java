@@ -31,69 +31,69 @@ public abstract class StaticMessageBase extends UIComponentBase {
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.StaticMessageRenderer";
 
-    public enum PropertyKeys {
+    public StaticMessageBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public boolean isEscape() {
+        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.escape, true);
+    }
+
+	public void setEscape(boolean escape) {
+        getStateHelper().put(PropertyKeys.escape, escape);
+    }
+
+	public String getSeverity() {
+        return (String) getStateHelper().eval(PropertyKeys.severity, null);
+    }
+
+	public void setSeverity(String severity) {
+        getStateHelper().put(PropertyKeys.severity, severity);
+    }
+
+	public String getSummary() {
+        return (String) getStateHelper().eval(PropertyKeys.summary, null);
+    }
+
+	public void setSummary(String summary) {
+        getStateHelper().put(PropertyKeys.summary, summary);
+    }
+
+	public String getDetail() {
+        return (String) getStateHelper().eval(PropertyKeys.detail, null);
+    }
+
+	public void setDetail(String detail) {
+        getStateHelper().put(PropertyKeys.detail, detail);
+    }
+
+	public String getStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
+    }
+
+	public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
+    }
+
+	public String getStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
+    }
+
+	public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+	public enum PropertyKeys {
         summary,
         detail,
         escape,
         style,
         styleClass,
         severity;
-    }
-
-    public StaticMessageBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public boolean isEscape() {
-        return (java.lang.Boolean) getStateHelper().eval(PropertyKeys.escape, true);
-    }
-
-    public void setEscape(boolean escape) {
-        getStateHelper().put(PropertyKeys.escape, escape);
-    }
-
-    public String getSeverity() {
-        return (String) getStateHelper().eval(PropertyKeys.severity, null);
-    }
-
-    public void setSeverity(String severity) {
-        getStateHelper().put(PropertyKeys.severity, severity);
-    }
-
-    public String getSummary() {
-        return (String) getStateHelper().eval(PropertyKeys.summary, null);
-    }
-
-    public void setSummary(String summary) {
-        getStateHelper().put(PropertyKeys.summary, summary);
-    }
-
-    public String getDetail() {
-        return (String) getStateHelper().eval(PropertyKeys.detail, null);
-    }
-
-    public void setDetail(String detail) {
-        getStateHelper().put(PropertyKeys.detail, detail);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 }

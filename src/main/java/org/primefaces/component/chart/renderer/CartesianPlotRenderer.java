@@ -58,18 +58,17 @@ public abstract class CartesianPlotRenderer extends BasePlotRenderer {
         }
         writer.write("}");
 
-        if (model.isShowDatatip()) {
-            writer.write(",datatip:true");
-
-            String datatipEditor = model.getDatatipEditor();
-            if (model.getDatatipFormat() != null) {
-                writer.write(",datatipFormat:\"" + model.getDatatipFormat() + "\"");
-            }
-
-            if (datatipEditor != null) {
-                writer.write(",datatipEditor:" + datatipEditor);
-            }
-        }
+        if (!model.isShowDatatip()) {
+			return;
+		}
+		writer.write(",datatip:true");
+		String datatipEditor = model.getDatatipEditor();
+		if (model.getDatatipFormat() != null) {
+		    writer.write(new StringBuilder().append(",datatipFormat:\"").append(model.getDatatipFormat()).append("\"").toString());
+		}
+		if (datatipEditor != null) {
+		    writer.write(",datatipEditor:" + datatipEditor);
+		}
     }
 
     protected void encodeAxis(FacesContext context, AxisType axisType, Axis axis) throws IOException {
@@ -84,11 +83,11 @@ public abstract class CartesianPlotRenderer extends BasePlotRenderer {
         int tickCount = axis.getTickCount();
 
         writer.write(axisType.toString() + ": {");
-        writer.write("label:\"" + EscapeUtils.forJavaScript(label) + "\"");
+        writer.write(new StringBuilder().append("label:\"").append(EscapeUtils.forJavaScript(label)).append("\"").toString());
 
         if (min != null) {
             if (min instanceof String) {
-                writer.write(",min:\"" + min + "\"");
+                writer.write(new StringBuilder().append(",min:\"").append(min).append("\"").toString());
             }
             else {
                 writer.write(",min:" + min);
@@ -97,7 +96,7 @@ public abstract class CartesianPlotRenderer extends BasePlotRenderer {
 
         if (max != null) {
             if (max instanceof String) {
-                writer.write(",max:\"" + max + "\"");
+                writer.write(new StringBuilder().append(",max:\"").append(max).append("\"").toString());
             }
             else {
                 writer.write(",max:" + max);
@@ -111,12 +110,12 @@ public abstract class CartesianPlotRenderer extends BasePlotRenderer {
         writer.write(",tickOptions:{");
         writer.write("angle:" + tickAngle);
         if (tickFormat != null) {
-            writer.write(",formatString:\"" + tickFormat + "\"");
+            writer.write(new StringBuilder().append(",formatString:\"").append(tickFormat).append("\"").toString());
         }
         writer.write("}");
 
         if (tickInterval != null) {
-            writer.write(",tickInterval:\"" + tickInterval + "\"");
+            writer.write(new StringBuilder().append(",tickInterval:\"").append(tickInterval).append("\"").toString());
         }
         if (tickCount != 0) {
             writer.write(",numberTicks:" + tickCount);

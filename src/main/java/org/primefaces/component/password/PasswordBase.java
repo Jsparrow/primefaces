@@ -33,7 +33,96 @@ public abstract class PasswordBase extends HtmlInputText implements Widget {
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.PasswordRenderer";
 
-    public enum PropertyKeys {
+    public PasswordBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getPlaceholder() {
+        return (String) getStateHelper().eval(PropertyKeys.placeholder, null);
+    }
+
+	public void setPlaceholder(String placeholder) {
+        getStateHelper().put(PropertyKeys.placeholder, placeholder);
+    }
+
+	public String getWidgetVar() {
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
+
+	public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
+
+	public boolean isFeedback() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.feedback, false);
+    }
+
+	public void setFeedback(boolean feedback) {
+        getStateHelper().put(PropertyKeys.feedback, feedback);
+    }
+
+	public boolean isInline() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.inline, false);
+    }
+
+	public void setInline(boolean inline) {
+        getStateHelper().put(PropertyKeys.inline, inline);
+    }
+
+	public String getPromptLabel() {
+        return (String) getStateHelper().eval(PropertyKeys.promptLabel, "Please enter a password");
+    }
+
+	public void setPromptLabel(String promptLabel) {
+        getStateHelper().put(PropertyKeys.promptLabel, promptLabel);
+    }
+
+	public String getWeakLabel() {
+        return (String) getStateHelper().eval(PropertyKeys.weakLabel, "Weak");
+    }
+
+	public void setWeakLabel(String weakLabel) {
+        getStateHelper().put(PropertyKeys.weakLabel, weakLabel);
+    }
+
+	public String getGoodLabel() {
+        return (String) getStateHelper().eval(PropertyKeys.goodLabel, "Good");
+    }
+
+	public void setGoodLabel(String goodLabel) {
+        getStateHelper().put(PropertyKeys.goodLabel, goodLabel);
+    }
+
+	public String getStrongLabel() {
+        return (String) getStateHelper().eval(PropertyKeys.strongLabel, "Strong");
+    }
+
+	public void setStrongLabel(String strongLabel) {
+        getStateHelper().put(PropertyKeys.strongLabel, strongLabel);
+    }
+
+	public boolean isRedisplay() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.redisplay, false);
+    }
+
+	public void setRedisplay(boolean redisplay) {
+        getStateHelper().put(PropertyKeys.redisplay, redisplay);
+    }
+
+	public String getMatch() {
+        return (String) getStateHelper().eval(PropertyKeys.match, null);
+    }
+
+	public void setMatch(String match) {
+        getStateHelper().put(PropertyKeys.match, match);
+    }
+
+	public enum PropertyKeys {
 
         placeholder,
         widgetVar,
@@ -45,94 +134,5 @@ public abstract class PasswordBase extends HtmlInputText implements Widget {
         strongLabel,
         redisplay,
         match
-    }
-
-    public PasswordBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getPlaceholder() {
-        return (String) getStateHelper().eval(PropertyKeys.placeholder, null);
-    }
-
-    public void setPlaceholder(String placeholder) {
-        getStateHelper().put(PropertyKeys.placeholder, placeholder);
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public boolean isFeedback() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.feedback, false);
-    }
-
-    public void setFeedback(boolean feedback) {
-        getStateHelper().put(PropertyKeys.feedback, feedback);
-    }
-
-    public boolean isInline() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.inline, false);
-    }
-
-    public void setInline(boolean inline) {
-        getStateHelper().put(PropertyKeys.inline, inline);
-    }
-
-    public String getPromptLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.promptLabel, "Please enter a password");
-    }
-
-    public void setPromptLabel(String promptLabel) {
-        getStateHelper().put(PropertyKeys.promptLabel, promptLabel);
-    }
-
-    public String getWeakLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.weakLabel, "Weak");
-    }
-
-    public void setWeakLabel(String weakLabel) {
-        getStateHelper().put(PropertyKeys.weakLabel, weakLabel);
-    }
-
-    public String getGoodLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.goodLabel, "Good");
-    }
-
-    public void setGoodLabel(String goodLabel) {
-        getStateHelper().put(PropertyKeys.goodLabel, goodLabel);
-    }
-
-    public String getStrongLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.strongLabel, "Strong");
-    }
-
-    public void setStrongLabel(String strongLabel) {
-        getStateHelper().put(PropertyKeys.strongLabel, strongLabel);
-    }
-
-    public boolean isRedisplay() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.redisplay, false);
-    }
-
-    public void setRedisplay(boolean redisplay) {
-        getStateHelper().put(PropertyKeys.redisplay, redisplay);
-    }
-
-    public String getMatch() {
-        return (String) getStateHelper().eval(PropertyKeys.match, null);
-    }
-
-    public void setMatch(String match) {
-        getStateHelper().put(PropertyKeys.match, match);
     }
 }

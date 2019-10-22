@@ -40,12 +40,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.primefaces.mock.FacesContextMock;
 import org.primefaces.mock.TestVisitContextFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import java.util.Collections;
 
 public class PrimeFacesTest {
 
-    @BeforeEach
+    private static final Logger logger = LoggerFactory.getLogger(PrimeFacesTest.class);
+
+	@BeforeEach
     public void setup() {
-        Map<Object, Object> attributes = new HashMap<Object, Object>();
+        Map<Object, Object> attributes = new HashMap<>();
         attributes.put(UINamingContainer.SEPARATOR_CHAR_PARAM_NAME, ':');
 
         FacesContext context = new FacesContextMock(attributes);
@@ -82,7 +87,8 @@ public class PrimeFacesTest {
             PrimeFaces.current().ajax().update("doesnTExist");
         }
         catch (Exception e) {
-            Assertions.fail("This should actually NOT raise an exception");
+            logger.error(e.getMessage(), e);
+			Assertions.fail("This should actually NOT raise an exception");
         }
     }
 
@@ -110,10 +116,11 @@ public class PrimeFacesTest {
         FacesContext.getCurrentInstance().getViewRoot().getChildren().add(root);
 
         try {
-            PrimeFaces.current().ajax().update(Arrays.asList("doesnTExist"));
+            PrimeFaces.current().ajax().update(Collections.singletonList("doesnTExist"));
         }
         catch (Exception e) {
-            Assertions.fail("This should actually NOT raise an exception");
+            logger.error(e.getMessage(), e);
+			Assertions.fail("This should actually NOT raise an exception");
         }
     }
 }

@@ -33,7 +33,80 @@ public abstract class AjaxStatusBase extends UIComponentBase implements Widget {
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.AjaxStatusRenderer";
 
-    public enum PropertyKeys {
+    public AjaxStatusBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getWidgetVar() {
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
+
+	public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
+
+	public int getDelay() {
+        return (Integer) getStateHelper().eval(PropertyKeys.delay, 0);
+    }
+
+	public void setDelay(int delay) {
+        getStateHelper().put(PropertyKeys.delay, delay);
+    }
+
+	public String getOnstart() {
+        return (String) getStateHelper().eval(PropertyKeys.onstart, null);
+    }
+
+	public void setOnstart(String onstart) {
+        getStateHelper().put(PropertyKeys.onstart, onstart);
+    }
+
+	public String getOncomplete() {
+        return (String) getStateHelper().eval(PropertyKeys.oncomplete, null);
+    }
+
+	public void setOncomplete(String oncomplete) {
+        getStateHelper().put(PropertyKeys.oncomplete, oncomplete);
+    }
+
+	public String getOnsuccess() {
+        return (String) getStateHelper().eval(PropertyKeys.onsuccess, null);
+    }
+
+	public void setOnsuccess(String onsuccess) {
+        getStateHelper().put(PropertyKeys.onsuccess, onsuccess);
+    }
+
+	public String getOnerror() {
+        return (String) getStateHelper().eval(PropertyKeys.onerror, null);
+    }
+
+	public void setOnerror(String onerror) {
+        getStateHelper().put(PropertyKeys.onerror, onerror);
+    }
+
+	public String getStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
+    }
+
+	public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
+    }
+
+	public String getStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
+    }
+
+	public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+	public enum PropertyKeys {
 
         widgetVar,
         delay,
@@ -43,78 +116,5 @@ public abstract class AjaxStatusBase extends UIComponentBase implements Widget {
         onerror,
         style,
         styleClass;
-    }
-
-    public AjaxStatusBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public int getDelay() {
-        return (Integer) getStateHelper().eval(PropertyKeys.delay, 0);
-    }
-
-    public void setDelay(int delay) {
-        getStateHelper().put(PropertyKeys.delay, delay);
-    }
-
-    public String getOnstart() {
-        return (String) getStateHelper().eval(PropertyKeys.onstart, null);
-    }
-
-    public void setOnstart(String onstart) {
-        getStateHelper().put(PropertyKeys.onstart, onstart);
-    }
-
-    public String getOncomplete() {
-        return (String) getStateHelper().eval(PropertyKeys.oncomplete, null);
-    }
-
-    public void setOncomplete(String oncomplete) {
-        getStateHelper().put(PropertyKeys.oncomplete, oncomplete);
-    }
-
-    public String getOnsuccess() {
-        return (String) getStateHelper().eval(PropertyKeys.onsuccess, null);
-    }
-
-    public void setOnsuccess(String onsuccess) {
-        getStateHelper().put(PropertyKeys.onsuccess, onsuccess);
-    }
-
-    public String getOnerror() {
-        return (String) getStateHelper().eval(PropertyKeys.onerror, null);
-    }
-
-    public void setOnerror(String onerror) {
-        getStateHelper().put(PropertyKeys.onerror, onerror);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 }

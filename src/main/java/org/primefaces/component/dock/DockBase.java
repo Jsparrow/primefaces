@@ -32,7 +32,73 @@ public abstract class DockBase extends AbstractMenu implements Widget {
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.DockRenderer";
 
-    public enum PropertyKeys {
+    public DockBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getWidgetVar() {
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
+
+	public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
+
+	@Override
+    public org.primefaces.model.menu.MenuModel getModel() {
+        return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
+    }
+
+	public void setModel(org.primefaces.model.menu.MenuModel model) {
+        getStateHelper().put(PropertyKeys.model, model);
+    }
+
+	public String getPosition() {
+        return (String) getStateHelper().eval(PropertyKeys.position, "bottom");
+    }
+
+	public void setPosition(String position) {
+        getStateHelper().put(PropertyKeys.position, position);
+    }
+
+	public int getItemWidth() {
+        return (Integer) getStateHelper().eval(PropertyKeys.itemWidth, 40);
+    }
+
+	public void setItemWidth(int itemWidth) {
+        getStateHelper().put(PropertyKeys.itemWidth, itemWidth);
+    }
+
+	public int getMaxWidth() {
+        return (Integer) getStateHelper().eval(PropertyKeys.maxWidth, 50);
+    }
+
+	public void setMaxWidth(int maxWidth) {
+        getStateHelper().put(PropertyKeys.maxWidth, maxWidth);
+    }
+
+	public int getProximity() {
+        return (Integer) getStateHelper().eval(PropertyKeys.proximity, 90);
+    }
+
+	public void setProximity(int proximity) {
+        getStateHelper().put(PropertyKeys.proximity, proximity);
+    }
+
+	public String getHalign() {
+        return (String) getStateHelper().eval(PropertyKeys.halign, "center");
+    }
+
+	public void setHalign(String halign) {
+        getStateHelper().put(PropertyKeys.halign, halign);
+    }
+
+	public enum PropertyKeys {
 
         widgetVar,
         model,
@@ -41,71 +107,5 @@ public abstract class DockBase extends AbstractMenu implements Widget {
         maxWidth,
         proximity,
         halign
-    }
-
-    public DockBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    @Override
-    public org.primefaces.model.menu.MenuModel getModel() {
-        return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
-    }
-
-    public void setModel(org.primefaces.model.menu.MenuModel model) {
-        getStateHelper().put(PropertyKeys.model, model);
-    }
-
-    public String getPosition() {
-        return (String) getStateHelper().eval(PropertyKeys.position, "bottom");
-    }
-
-    public void setPosition(String position) {
-        getStateHelper().put(PropertyKeys.position, position);
-    }
-
-    public int getItemWidth() {
-        return (Integer) getStateHelper().eval(PropertyKeys.itemWidth, 40);
-    }
-
-    public void setItemWidth(int itemWidth) {
-        getStateHelper().put(PropertyKeys.itemWidth, itemWidth);
-    }
-
-    public int getMaxWidth() {
-        return (Integer) getStateHelper().eval(PropertyKeys.maxWidth, 50);
-    }
-
-    public void setMaxWidth(int maxWidth) {
-        getStateHelper().put(PropertyKeys.maxWidth, maxWidth);
-    }
-
-    public int getProximity() {
-        return (Integer) getStateHelper().eval(PropertyKeys.proximity, 90);
-    }
-
-    public void setProximity(int proximity) {
-        getStateHelper().put(PropertyKeys.proximity, proximity);
-    }
-
-    public String getHalign() {
-        return (String) getStateHelper().eval(PropertyKeys.halign, "center");
-    }
-
-    public void setHalign(String halign) {
-        getStateHelper().put(PropertyKeys.halign, halign);
     }
 }

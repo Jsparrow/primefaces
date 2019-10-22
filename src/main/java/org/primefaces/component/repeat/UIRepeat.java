@@ -48,10 +48,14 @@ import javax.faces.render.Renderer;
 import org.primefaces.component.api.SavedState;
 import org.primefaces.component.api.UITabPanel;
 import org.primefaces.model.IterableDataModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class UIRepeat extends UINamingContainer {
 
-    public static final String COMPONENT_TYPE = "org.primefaces.component.UIRepeat";
+    private static final Logger logger = LoggerFactory.getLogger(UIRepeat.class);
+
+	public static final String COMPONENT_TYPE = "org.primefaces.component.UIRepeat";
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
@@ -263,37 +267,39 @@ public class UIRepeat extends UINamingContainer {
     }
 
     private void captureOrigValue(FacesContext ctx) {
-        if (var != null || varStatus != null) {
-            Map<String, Object> attrs = ctx.getExternalContext().getRequestMap();
-            if (var != null) {
-                origValueOfVar = attrs.get(var);
-            }
-            if (varStatus != null) {
-                origValueOfVarStatus = attrs.get(varStatus);
-            }
-        }
+        if (!(var != null || varStatus != null)) {
+			return;
+		}
+		Map<String, Object> attrs = ctx.getExternalContext().getRequestMap();
+		if (var != null) {
+		    origValueOfVar = attrs.get(var);
+		}
+		if (varStatus != null) {
+		    origValueOfVarStatus = attrs.get(varStatus);
+		}
     }
 
     private void restoreOrigValue(FacesContext ctx) {
-        if (var != null || varStatus != null) {
-            Map<String, Object> attrs = ctx.getExternalContext().getRequestMap();
-            if (var != null) {
-                if (origValueOfVar != null) {
-                    attrs.put(var, origValueOfVar);
-                }
-                else {
-                    attrs.remove(var);
-                }
-            }
-            if (varStatus != null) {
-                if (origValueOfVarStatus != null) {
-                    attrs.put(varStatus, origValueOfVarStatus);
-                }
-                else {
-                    attrs.remove(varStatus);
-                }
-            }
-        }
+        if (!(var != null || varStatus != null)) {
+			return;
+		}
+		Map<String, Object> attrs = ctx.getExternalContext().getRequestMap();
+		if (var != null) {
+		    if (origValueOfVar != null) {
+		        attrs.put(var, origValueOfVar);
+		    }
+		    else {
+		        attrs.remove(var);
+		    }
+		}
+		if (varStatus != null) {
+		    if (origValueOfVarStatus != null) {
+		        attrs.put(varStatus, origValueOfVarStatus);
+		    }
+		    else {
+		        attrs.remove(varStatus);
+		    }
+		}
     }
 
     private Map<String, SavedState> getChildState() {
@@ -310,23 +316,18 @@ public class UIRepeat extends UINamingContainer {
     private void saveChildState(FacesContext ctx) {
         if (getChildCount() > 0) {
 
-            for (UIComponent uiComponent : getChildren()) {
-                saveChildState(ctx, uiComponent);
-            }
+            getChildren().forEach(uiComponent -> saveChildState(ctx, uiComponent));
         }
     }
 
     private void removeChildState(FacesContext ctx) {
-        if (getChildCount() > 0) {
-
-            for (UIComponent uiComponent : getChildren()) {
-                removeChildState(ctx, uiComponent);
-            }
-
-            if (childState != null) {
-                childState.remove(getClientId(ctx));
-            }
-        }
+        if (getChildCount() <= 0) {
+			return;
+		}
+		getChildren().forEach(uiComponent -> removeChildState(ctx, uiComponent));
+		if (childState != null) {
+		    childState.remove(getClientId(ctx));
+		}
     }
 
     private void removeChildState(FacesContext faces, UIComponent c) {
@@ -364,9 +365,7 @@ public class UIRepeat extends UINamingContainer {
     private void restoreChildState(FacesContext ctx) {
         if (getChildCount() > 0) {
 
-            for (UIComponent uiComponent : getChildren()) {
-                restoreChildState(ctx, uiComponent);
-            }
+            getChildren().forEach(uiComponent -> restoreChildState(ctx, uiComponent));
         }
     }
 
@@ -386,7 +385,7 @@ public class UIRepeat extends UINamingContainer {
             else {
                 String childId = clientId.substring(initialClientId.length() + 1);
                 childId = childId.substring(childId.indexOf(getSeparatorChar(faces)) + 1);
-                childId = initialClientId + getSeparatorChar(faces) + childId;
+                childId = new StringBuilder().append(initialClientId).append(getSeparatorChar(faces)).append(childId).toString();
                 if (initialChildState.containsKey(childId)) {
                     SavedState initialState = initialChildState.get(childId);
                     initialState.restoreState(evh);
@@ -418,23 +417,21 @@ public class UIRepeat extends UINamingContainer {
     }
 
     private boolean isNestedInIterator() {
-        if (isNested == null) {
-            UIComponent parent = this;
-            while (null != (parent = parent.getParent())) {
-                if (parent instanceof javax.faces.component.UIData || parent.getClass().getName().endsWith("UIRepeat")
-                        || (parent instanceof UITabPanel && ((UITabPanel) parent).isRepeating())) {
-                    isNested = Boolean.TRUE;
-                    break;
-                }
-            }
-            if (isNested == null) {
-                isNested = Boolean.FALSE;
-            }
-            return isNested;
-        }
-        else {
-            return isNested;
-        }
+        if (isNested != null) {
+			return isNested;
+		}
+		UIComponent parent = this;
+		while (null != (parent = parent.getParent())) {
+		    if (parent instanceof javax.faces.component.UIData || parent.getClass().getName().endsWith("UIRepeat")
+		            || (parent instanceof UITabPanel && ((UITabPanel) parent).isRepeating())) {
+		        isNested = Boolean.TRUE;
+		        break;
+		    }
+		}
+		if (isNested == null) {
+		    isNested = Boolean.FALSE;
+		}
+		return isNested;
     }
 
     /**
@@ -454,9 +451,7 @@ public class UIRepeat extends UINamingContainer {
         initialChildState = new ConcurrentHashMap<>();
         initialClientId = getClientId(facesContext);
         if (getChildCount() > 0) {
-            for (UIComponent child : getChildren()) {
-                saveInitialChildState(facesContext, child);
-            }
+            getChildren().forEach(child -> saveInitialChildState(facesContext, child));
         }
     }
 
@@ -512,10 +507,11 @@ public class UIRepeat extends UINamingContainer {
     }
 
     private void updateIterationStatus(FacesContext ctx, IterationStatus status) {
-        if (varStatus != null) {
-            Map<String, Object> attrs = ctx.getExternalContext().getRequestMap();
-            attrs.put(varStatus, status);
-        }
+        if (varStatus == null) {
+			return;
+		}
+		Map<String, Object> attrs = ctx.getExternalContext().getRequestMap();
+		attrs.put(varStatus, status);
     }
 
     private boolean isIndexAvailable() {
@@ -639,7 +635,7 @@ public class UIRepeat extends UINamingContainer {
 
     @Override
     public boolean invokeOnComponent(FacesContext faces, String clientId,
-                                     ContextCallback callback) throws FacesException {
+                                     ContextCallback callback) {
         String id = super.getClientId(faces);
         if (clientId.equals(id)) {
             pushComponentToEL(faces, this);
@@ -757,7 +753,8 @@ public class UIRepeat extends UINamingContainer {
             return !ctx.getHints().contains(skipHint);
         }
         catch (IllegalArgumentException e) {
-            //JSF 2.0
+            logger.error(e.getMessage(), e);
+			//JSF 2.0
             Object skipHint = ctx.getFacesContext().getAttributes().get("javax.faces.visit.SKIP_ITERATION");
             return !Boolean.TRUE.equals(skipHint);
         }
@@ -880,7 +877,7 @@ public class UIRepeat extends UINamingContainer {
     }
 
     @Override
-    public void broadcast(FacesEvent event) throws AbortProcessingException {
+    public void broadcast(FacesEvent event) {
         if (event instanceof IndexedEvent) {
             IndexedEvent idxEvent = (IndexedEvent) event;
             resetDataModel();

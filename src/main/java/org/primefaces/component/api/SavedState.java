@@ -44,7 +44,6 @@ public class SavedState implements Serializable {
     private boolean localValueSet = false;
 
     public SavedState() {
-        super();
     }
 
     public SavedState(EditableValueHolder evh) {
@@ -107,8 +106,7 @@ public class SavedState implements Serializable {
 
     @Override
     public String toString() {
-        return ("submittedValue: " + submittedValue + " value: " + value
-                + " localValueSet: " + localValueSet);
+        return (new StringBuilder().append("submittedValue: ").append(submittedValue).append(" value: ").append(value).append(" localValueSet: ").append(localValueSet).toString());
     }
 
     @Override

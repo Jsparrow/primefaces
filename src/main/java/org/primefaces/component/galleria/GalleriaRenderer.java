@@ -52,7 +52,7 @@ public class GalleriaRenderer extends CoreRenderer {
         String var = galleria.getVar();
         String style = galleria.getStyle();
         String styleClass = galleria.getStyleClass();
-        styleClass = (styleClass == null) ? Galleria.CONTAINER_CLASS : Galleria.CONTAINER_CLASS + " " + styleClass;
+        styleClass = (styleClass == null) ? Galleria.CONTAINER_CLASS : new StringBuilder().append(Galleria.CONTAINER_CLASS).append(" ").append(styleClass).toString();
         UIComponent content = galleria.getFacet("content");
 
         writer.startElement("div", component);

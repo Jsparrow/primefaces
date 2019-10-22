@@ -44,7 +44,7 @@ import org.primefaces.util.WidgetBuilder;
 public class SelectOneListboxRenderer extends SelectOneRenderer {
 
     @Override
-    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) {
         Renderer renderer = ComponentUtils.getUnwrappedRenderer(
                 context,
                 "javax.faces.SelectOne",
@@ -67,7 +67,7 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
 
         String style = listbox.getStyle();
         String styleClass = listbox.getStyleClass();
-        styleClass = styleClass == null ? SelectOneListbox.CONTAINER_CLASS : SelectOneListbox.CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? SelectOneListbox.CONTAINER_CLASS : new StringBuilder().append(SelectOneListbox.CONTAINER_CLASS).append(" ").append(styleClass).toString();
         styleClass = listbox.isDisabled() ? styleClass + " ui-state-disabled" : styleClass;
         styleClass = !listbox.isValid() ? styleClass + " ui-state-error" : styleClass;
 
@@ -145,8 +145,7 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
             writer.startElement("table", null);
             writer.writeAttribute("class", SelectOneListbox.LIST_CLASS, null);
             writer.startElement("tbody", null);
-            for (int i = 0; i < selectItems.size(); i++) {
-                SelectItem selectItem = selectItems.get(i);
+            for (SelectItem selectItem : selectItems) {
                 encodeItem(context, listbox, selectItem, values, submittedValues, converter, customContent);
             }
             writer.endElement("tbody");
@@ -155,8 +154,7 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         else {
             writer.startElement("ul", null);
             writer.writeAttribute("class", SelectOneListbox.LIST_CLASS, null);
-            for (int i = 0; i < selectItems.size(); i++) {
-                SelectItem selectItem = selectItems.get(i);
+            for (SelectItem selectItem : selectItems) {
                 encodeItem(context, listbox, selectItem, values, submittedValues, converter, customContent);
             }
             writer.endElement("ul");
@@ -240,8 +238,7 @@ public class SelectOneListboxRenderer extends SelectOneRenderer {
         Object values = getValues(listbox);
         Object submittedValues = getSubmittedValues(listbox);
 
-        for (int i = 0; i < selectItems.size(); i++) {
-            SelectItem selectItem = selectItems.get(i);
+        for (SelectItem selectItem : selectItems) {
             encodeOption(context, listbox, selectItem, values, submittedValues, converter);
         }
     }

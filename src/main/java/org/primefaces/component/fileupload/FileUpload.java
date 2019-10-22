@@ -53,7 +53,7 @@ public class FileUpload extends FileUploadBase {
     public static final String FILENAME_CLASS = "ui-fileupload-filename";
 
     @Override
-    public void broadcast(javax.faces.event.FacesEvent event) throws javax.faces.event.AbortProcessingException {
+    public void broadcast(javax.faces.event.FacesEvent event) {
         super.broadcast(event);
 
         FacesContext facesContext = getFacesContext();

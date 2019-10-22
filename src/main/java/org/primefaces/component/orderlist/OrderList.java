@@ -109,22 +109,22 @@ public class OrderList extends OrderListBase {
                 List<?> list = (List) getValue();
                 FacesEvent wrapperEvent = null;
 
-                if (eventName.equals("select")) {
+                if ("select".equals(eventName)) {
                     int itemIndex = Integer.parseInt(params.get(clientId + "_itemIndex"));
                     boolean metaKey = Boolean.parseBoolean(params.get(clientId + "_metaKey"));
                     boolean ctrlKey = Boolean.parseBoolean(params.get(clientId + "_ctrlKey"));
                     wrapperEvent = new SelectEvent(this, behaviorEvent.getBehavior(), list.get(itemIndex), metaKey, ctrlKey);
                 }
-                else if (eventName.equals("unselect")) {
+                else if ("unselect".equals(eventName)) {
                     int itemIndex = Integer.parseInt(params.get(clientId + "_itemIndex"));
                     wrapperEvent = new UnselectEvent(this, behaviorEvent.getBehavior(), list.get(itemIndex));
                 }
-                else if (eventName.equals("reorder")) {
+                else if ("reorder".equals(eventName)) {
                     wrapperEvent = behaviorEvent;
                 }
 
                 if (wrapperEvent == null) {
-                    throw new FacesException("Component " + this.getClass().getName() + " does not support event " + eventName + "!");
+                    throw new FacesException(new StringBuilder().append("Component ").append(this.getClass().getName()).append(" does not support event ").append(eventName).append("!").toString());
                 }
 
                 wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());

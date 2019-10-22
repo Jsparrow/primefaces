@@ -51,18 +51,17 @@ public class InputMaskRenderer extends InputRenderer {
         String clientId = inputMask.getClientId(context);
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId);
 
-        if (submittedValue != null) {
-            String mask = inputMask.getMask();
-
-            if (inputMask.isValidateMask() && !submittedValue.isEmpty() && !LangUtils.isValueBlank(mask)) {
-                Pattern pattern = translateMaskIntoRegex(context, mask);
-                if (!pattern.matcher(submittedValue).matches()) {
-                    submittedValue = "";
-                }
-            }
-
-            inputMask.setSubmittedValue(submittedValue);
-        }
+        if (submittedValue == null) {
+			return;
+		}
+		String mask = inputMask.getMask();
+		if (inputMask.isValidateMask() && !submittedValue.isEmpty() && !LangUtils.isValueBlank(mask)) {
+		    Pattern pattern = translateMaskIntoRegex(context, mask);
+		    if (!pattern.matcher(submittedValue).matches()) {
+		        submittedValue = "";
+		    }
+		}
+		inputMask.setSubmittedValue(submittedValue);
     }
 
 
@@ -148,7 +147,7 @@ public class InputMaskRenderer extends InputRenderer {
         String defaultClass = InputMask.STYLE_CLASS;
         defaultClass = !inputMask.isValid() ? defaultClass + " ui-state-error" : defaultClass;
         defaultClass = inputMask.isDisabled() ? defaultClass + " ui-state-disabled" : defaultClass;
-        styleClass = styleClass == null ? defaultClass : defaultClass + " " + styleClass;
+        styleClass = styleClass == null ? defaultClass : new StringBuilder().append(defaultClass).append(" ").append(styleClass).toString();
 
         writer.startElement("input", null);
         writer.writeAttribute("id", clientId, null);

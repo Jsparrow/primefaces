@@ -51,7 +51,6 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
     private List<T> data;
 
     public LazyDataModel() {
-        super();
     }
 
     @Override
@@ -94,17 +93,17 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
         }
 
         DataModelListener[] listeners = getDataModelListeners();
-        if (listeners != null && oldIndex != this.rowIndex) {
-            Object rowData = null;
-            if (isRowAvailable()) {
-                rowData = getRowData();
-            }
-
-            DataModelEvent dataModelEvent = new DataModelEvent(this, rowIndex, rowData);
-            for (int i = 0; i < listeners.length; i++) {
-                listeners[i].rowSelected(dataModelEvent);
-            }
-        }
+        if (!(listeners != null && oldIndex != this.rowIndex)) {
+			return;
+		}
+		Object rowData = null;
+		if (isRowAvailable()) {
+		    rowData = getRowData();
+		}
+		DataModelEvent dataModelEvent = new DataModelEvent(this, rowIndex, rowData);
+		for (DataModelListener listener : listeners) {
+		    listener.rowSelected(dataModelEvent);
+		}
     }
 
     @Override
@@ -159,15 +158,15 @@ public abstract class LazyDataModel<T> extends DataModel<T> implements Selectabl
 
     @Override
     public Iterator<T> iterator() {
-        return new LazyDataModelIterator<T>(this);
+        return new LazyDataModelIterator<>(this);
     }
 
     public Iterator<T> iterator(String sortField, SortOrder sortOrder, Map<String, Object> filters) {
-        return new LazyDataModelIterator<T>(this, sortField, sortOrder, filters);
+        return new LazyDataModelIterator<>(this, sortField, sortOrder, filters);
     }
 
     public Iterator<T> iterator(List<SortMeta> multiSortMeta, Map<String, Object> filters) {
-        return new LazyDataModelIterator<T>(this, multiSortMeta, filters);
+        return new LazyDataModelIterator<>(this, multiSortMeta, filters);
     }
 
 }

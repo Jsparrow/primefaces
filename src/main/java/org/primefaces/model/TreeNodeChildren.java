@@ -39,10 +39,11 @@ public class TreeNodeChildren extends TreeNodeList {
 
     private void eraseParent(TreeNode node) {
         TreeNode parentNode = node.getParent();
-        if (parentNode != null) {
-            parentNode.getChildren().remove(node);
-            node.setParent(null);
-        }
+        if (parentNode == null) {
+			return;
+		}
+		parentNode.getChildren().remove(node);
+		node.setParent(null);
     }
 
     @Override
@@ -226,7 +227,7 @@ public class TreeNodeChildren extends TreeNodeList {
     }
 
     private void updateRowKeys(TreeNode node, TreeNode childNode, int i) {
-        String childRowKey = node.getParent() == null ? String.valueOf(i) : node.getRowKey() + "_" + i;
+        String childRowKey = node.getParent() == null ? String.valueOf(i) : new StringBuilder().append(node.getRowKey()).append("_").append(i).toString();
         childNode.setRowKey(childRowKey);
         this.updateRowKeys(childNode);
     }

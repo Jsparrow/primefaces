@@ -35,7 +35,104 @@ public abstract class InputTextareaBase extends HtmlInputTextarea implements Wid
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.InputTextareaRenderer";
 
-    public enum PropertyKeys {
+    public InputTextareaBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getPlaceholder() {
+        return (String) getStateHelper().eval(PropertyKeys.placeholder, null);
+    }
+
+	public void setPlaceholder(String placeholder) {
+        getStateHelper().put(PropertyKeys.placeholder, placeholder);
+    }
+
+	public String getWidgetVar() {
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
+
+	public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
+
+	public boolean isAutoResize() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.autoResize, true);
+    }
+
+	public void setAutoResize(boolean autoResize) {
+        getStateHelper().put(PropertyKeys.autoResize, autoResize);
+    }
+
+	public int getMaxlength() {
+        return (Integer) getStateHelper().eval(PropertyKeys.maxlength, Integer.MAX_VALUE);
+    }
+
+	public void setMaxlength(int maxlength) {
+        getStateHelper().put(PropertyKeys.maxlength, maxlength);
+    }
+
+	public String getCounter() {
+        return (String) getStateHelper().eval(PropertyKeys.counter, null);
+    }
+
+	public void setCounter(String counter) {
+        getStateHelper().put(PropertyKeys.counter, counter);
+    }
+
+	public String getCounterTemplate() {
+        return (String) getStateHelper().eval(PropertyKeys.counterTemplate, null);
+    }
+
+	public void setCounterTemplate(String counterTemplate) {
+        getStateHelper().put(PropertyKeys.counterTemplate, counterTemplate);
+    }
+
+	public javax.el.MethodExpression getCompleteMethod() {
+        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.completeMethod, null);
+    }
+
+	public void setCompleteMethod(javax.el.MethodExpression completeMethod) {
+        getStateHelper().put(PropertyKeys.completeMethod, completeMethod);
+    }
+
+	public int getMinQueryLength() {
+        return (Integer) getStateHelper().eval(PropertyKeys.minQueryLength, 3);
+    }
+
+	public void setMinQueryLength(int minQueryLength) {
+        getStateHelper().put(PropertyKeys.minQueryLength, minQueryLength);
+    }
+
+	public int getQueryDelay() {
+        return (Integer) getStateHelper().eval(PropertyKeys.queryDelay, 700);
+    }
+
+	public void setQueryDelay(int queryDelay) {
+        getStateHelper().put(PropertyKeys.queryDelay, queryDelay);
+    }
+
+	public int getScrollHeight() {
+        return (Integer) getStateHelper().eval(PropertyKeys.scrollHeight, Integer.MAX_VALUE);
+    }
+
+	public void setScrollHeight(int scrollHeight) {
+        getStateHelper().put(PropertyKeys.scrollHeight, scrollHeight);
+    }
+
+	public boolean isAddLine() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.addLine, false);
+    }
+
+	public void setAddLine(boolean addLine) {
+        getStateHelper().put(PropertyKeys.addLine, addLine);
+    }
+
+	public enum PropertyKeys {
 
         placeholder,
         widgetVar,
@@ -48,102 +145,5 @@ public abstract class InputTextareaBase extends HtmlInputTextarea implements Wid
         queryDelay,
         scrollHeight,
         addLine
-    }
-
-    public InputTextareaBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getPlaceholder() {
-        return (String) getStateHelper().eval(PropertyKeys.placeholder, null);
-    }
-
-    public void setPlaceholder(String placeholder) {
-        getStateHelper().put(PropertyKeys.placeholder, placeholder);
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public boolean isAutoResize() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.autoResize, true);
-    }
-
-    public void setAutoResize(boolean autoResize) {
-        getStateHelper().put(PropertyKeys.autoResize, autoResize);
-    }
-
-    public int getMaxlength() {
-        return (Integer) getStateHelper().eval(PropertyKeys.maxlength, Integer.MAX_VALUE);
-    }
-
-    public void setMaxlength(int maxlength) {
-        getStateHelper().put(PropertyKeys.maxlength, maxlength);
-    }
-
-    public String getCounter() {
-        return (String) getStateHelper().eval(PropertyKeys.counter, null);
-    }
-
-    public void setCounter(String counter) {
-        getStateHelper().put(PropertyKeys.counter, counter);
-    }
-
-    public String getCounterTemplate() {
-        return (String) getStateHelper().eval(PropertyKeys.counterTemplate, null);
-    }
-
-    public void setCounterTemplate(String counterTemplate) {
-        getStateHelper().put(PropertyKeys.counterTemplate, counterTemplate);
-    }
-
-    public javax.el.MethodExpression getCompleteMethod() {
-        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.completeMethod, null);
-    }
-
-    public void setCompleteMethod(javax.el.MethodExpression completeMethod) {
-        getStateHelper().put(PropertyKeys.completeMethod, completeMethod);
-    }
-
-    public int getMinQueryLength() {
-        return (Integer) getStateHelper().eval(PropertyKeys.minQueryLength, 3);
-    }
-
-    public void setMinQueryLength(int minQueryLength) {
-        getStateHelper().put(PropertyKeys.minQueryLength, minQueryLength);
-    }
-
-    public int getQueryDelay() {
-        return (Integer) getStateHelper().eval(PropertyKeys.queryDelay, 700);
-    }
-
-    public void setQueryDelay(int queryDelay) {
-        getStateHelper().put(PropertyKeys.queryDelay, queryDelay);
-    }
-
-    public int getScrollHeight() {
-        return (Integer) getStateHelper().eval(PropertyKeys.scrollHeight, Integer.MAX_VALUE);
-    }
-
-    public void setScrollHeight(int scrollHeight) {
-        getStateHelper().put(PropertyKeys.scrollHeight, scrollHeight);
-    }
-
-    public boolean isAddLine() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.addLine, false);
-    }
-
-    public void setAddLine(boolean addLine) {
-        getStateHelper().put(PropertyKeys.addLine, addLine);
     }
 }

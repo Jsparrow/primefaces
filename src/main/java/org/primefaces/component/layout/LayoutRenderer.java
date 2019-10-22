@@ -46,17 +46,17 @@ public class LayoutRenderer extends CoreRenderer {
         Layout layout = (Layout) component;
         String clientId = layout.getClientId(context);
 
-        if (layout.isElementLayout()) {
-            writer.startElement("div", layout);
-            writer.writeAttribute("id", clientId, "id");
-
-            if (layout.getStyle() != null) {
-                writer.writeAttribute("style", layout.getStyle(), "style");
-            }
-            if (layout.getStyleClass() != null) {
-                writer.writeAttribute("class", layout.getStyleClass(), "styleClass");
-            }
-        }
+        if (!layout.isElementLayout()) {
+			return;
+		}
+		writer.startElement("div", layout);
+		writer.writeAttribute("id", clientId, "id");
+		if (layout.getStyle() != null) {
+		    writer.writeAttribute("style", layout.getStyle(), "style");
+		}
+		if (layout.getStyleClass() != null) {
+		    writer.writeAttribute("class", layout.getStyleClass(), "styleClass");
+		}
     }
 
     @Override

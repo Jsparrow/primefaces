@@ -75,58 +75,55 @@ public class OutputLabelRenderer extends CoreRenderer {
 
         String _for = label.getFor();
         if (!isValueBlank(_for)) {
-            ContextCallback callback = new ContextCallback() {
-                @Override
-                public void invokeContextCallback(FacesContext context, UIComponent target) {
-                    if (target instanceof InputHolder) {
-                        InputHolder inputHolder = ((InputHolder) target);
-                        state.setClientId(inputHolder.getInputClientId());
+            ContextCallback callback = (FacesContext context1, UIComponent target) -> {
+			    if (target instanceof InputHolder) {
+			        InputHolder inputHolder = ((InputHolder) target);
+			        state.setClientId(inputHolder.getInputClientId());
 
-                        inputHolder.setLabelledBy(clientId);
-                    }
-                    else {
-                        state.setClientId(target.getClientId(context));
-                    }
+			        inputHolder.setLabelledBy(clientId);
+			    }
+			    else {
+			        state.setClientId(target.getClientId(context1));
+			    }
 
-                    if (target instanceof UIInput) {
-                        UIInput input = (UIInput) target;
+			    if (target instanceof UIInput) {
+			        UIInput input = (UIInput) target;
 
-                        if (value != null && (input.getAttributes().get("label") == null || input.getValueExpression("label") == null)) {
-                            ValueExpression ve = label.getValueExpression("value");
+			        if (value != null && (input.getAttributes().get("label") == null || input.getValueExpression("label") == null)) {
+			            ValueExpression ve = label.getValueExpression("value");
 
-                            if (ve != null) {
-                                input.setValueExpression("label", ve);
-                            }
-                            else {
-                                String labelString = value;
-                                int colonPos = labelString.lastIndexOf(':');
+			            if (ve != null) {
+			                input.setValueExpression("label", ve);
+			            }
+			            else {
+			                String labelString = value;
+			                int colonPos = labelString.lastIndexOf(':');
 
-                                if (colonPos != -1) {
-                                    labelString = labelString.substring(0, colonPos);
-                                }
+			                if (colonPos != -1) {
+			                    labelString = labelString.substring(0, colonPos);
+			                }
 
-                                input.getAttributes().put("label", labelString);
-                            }
-                        }
+			                input.getAttributes().put("label", labelString);
+			            }
+			        }
 
-                        if (!input.isValid()) {
-                            styleClass.append(" ui-state-error");
-                        }
+			        if (!input.isValid()) {
+			            styleClass.append(" ui-state-error");
+			        }
 
-                        if ("auto".equals(indicateRequired)) {
-                            state.setRequired(input.isRequired());
+			        if ("auto".equals(indicateRequired)) {
+			            state.setRequired(input.isRequired());
 
-                            // fallback if required=false
-                            if (!state.isRequired()) {
-                                PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(context);
-                                if (applicationContext.getConfig().isBeanValidationEnabled() && isBeanValidationDefined(input, context)) {
-                                    state.setRequired(true);
-                                }
-                            }
-                        }
-                    }
-                }
-            };
+			            // fallback if required=false
+			            if (!state.isRequired()) {
+			                PrimeApplicationContext applicationContext = PrimeApplicationContext.getCurrentInstance(context1);
+			                if (applicationContext.getConfig().isBeanValidationEnabled() && isBeanValidationDefined(input, context1)) {
+			                    state.setRequired(true);
+			                }
+			            }
+			        }
+			    }
+			};
 
             UIComponent forComponent = SearchExpressionFacade.resolveComponent(context, label, _for);
 
@@ -204,10 +201,7 @@ public class OutputLabelRenderer extends CoreRenderer {
             }
         }
         catch (PropertyNotFoundException e) {
-            String message = "Skip evaluating [@NotNull,@NotBlank,@NotEmpty,@AssertTrue] for outputLabel and referenced component \""
-                    + input.getClientId(context)
-                    + "\" because the ValueExpression of the \"value\" attribute"
-                    + " isn't resolvable completely (e.g. a sub-expression returns null)";
+            String message = new StringBuilder().append("Skip evaluating [@NotNull,@NotBlank,@NotEmpty,@AssertTrue] for outputLabel and referenced component \"").append(input.getClientId(context)).append("\" because the ValueExpression of the \"value\" attribute").append(" isn't resolvable completely (e.g. a sub-expression returns null)").toString();
             LOGGER.log(Level.FINE, message);
         }
 

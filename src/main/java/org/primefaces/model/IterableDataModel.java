@@ -85,20 +85,19 @@ public class IterableDataModel<E> extends DataModel<E> {
         }
 
         DataModelListener[] dataModelListeners = getDataModelListeners();
-        if (oldIndex != index && dataModelListeners != null) {
-
-            Object rowData = null;
-            if (isRowAvailable()) {
-                rowData = getRowData();
-            }
-
-            DataModelEvent event = new DataModelEvent(this, index, rowData);
-            for (DataModelListener listener : dataModelListeners) {
-                if (listener != null) {
-                    listener.rowSelected(event);
-                }
-            }
-        }
+        if (!(oldIndex != index && dataModelListeners != null)) {
+			return;
+		}
+		Object rowData = null;
+		if (isRowAvailable()) {
+		    rowData = getRowData();
+		}
+		DataModelEvent event = new DataModelEvent(this, index, rowData);
+		for (DataModelListener listener : dataModelListeners) {
+		    if (listener != null) {
+		        listener.rowSelected(event);
+		    }
+		}
     }
 
     @Override

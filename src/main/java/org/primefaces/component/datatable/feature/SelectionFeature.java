@@ -66,11 +66,12 @@ public class SelectionFeature implements DataTableFeature {
             table.setValue(originalValue);
         }
 
-        if (table.isMultiViewState()) {
-            TableState ts = table.getTableState(true);
-            table.findSelectedRowKeys();
-            ts.setRowKeys(table.getSelectedRowKeys());
-        }
+        if (!table.isMultiViewState()) {
+			return;
+		}
+		TableState ts = table.getTableState(true);
+		table.findSelectedRowKeys();
+		ts.setRowKeys(table.getSelectedRowKeys());
     }
 
     void decodeSingleSelection(DataTable table, String selection) {
@@ -110,8 +111,8 @@ public class SelectionFeature implements DataTableFeature {
             }
             else {
                 String[] rowKeys = selection.split(",");
-                for (int i = 0; i < rowKeys.length; i++) {
-                    Object rowData = table.getRowData(rowKeys[i]);
+                for (String rowKey : rowKeys) {
+                    Object rowData = table.getRowData(rowKey);
 
                     if (rowData != null) {
                         selectionList.add(rowData);

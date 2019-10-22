@@ -53,7 +53,7 @@ public class LineRenderer extends CartesianPlotRenderer {
                 String xValueAsString = escapeChartData(xValue);
 
                 writer.write("[");
-                writer.write(xValueAsString + "," + yValueAsString);
+                writer.write(new StringBuilder().append(xValueAsString).append(",").append(yValueAsString).toString());
                 writer.write("]");
 
                 if (x.hasNext()) {
@@ -104,11 +104,12 @@ public class LineRenderer extends CartesianPlotRenderer {
             writer.write(",showPointLabels:true");
         }
 
-        if (model.isShowDatatip()) {
-            writer.write(",datatip:true");
-            if (model.getDatatipFormat() != null) {
-                writer.write(",datatipFormat:\"" + model.getDatatipFormat() + "\"");
-            }
-        }
+        if (!model.isShowDatatip()) {
+			return;
+		}
+		writer.write(",datatip:true");
+		if (model.getDatatipFormat() != null) {
+		    writer.write(new StringBuilder().append(",datatipFormat:\"").append(model.getDatatipFormat()).append("\"").toString());
+		}
     }
 }

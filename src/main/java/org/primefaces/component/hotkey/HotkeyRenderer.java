@@ -57,7 +57,8 @@ public class HotkeyRenderer extends CoreRenderer {
         String event = "keydown." + clientId;
 
         writer.write("$(function(){");
-        writer.write("$(document).off('" + event + "').on('" + event + "',null,'" + hotkey.getBind() + "',function(){");
+        writer.write(new StringBuilder().append("$(document).off('").append(event).append("').on('").append(event).append("',null,'").append(hotkey.getBind())
+				.append("',function(){").toString());
 
         if (hotkey.isAjaxified()) {
             String request = preConfiguredAjaxRequestBuilder(context, hotkey)

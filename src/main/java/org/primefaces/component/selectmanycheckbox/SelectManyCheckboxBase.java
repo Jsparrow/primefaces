@@ -33,34 +33,34 @@ public abstract class SelectManyCheckboxBase extends HtmlSelectManyCheckbox impl
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.SelectManyCheckboxRenderer";
 
-    public enum PropertyKeys {
-
-        widgetVar,
-        columns
-    }
-
     public SelectManyCheckboxBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
-    @Override
+	@Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
+	public String getWidgetVar() {
         return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(String widgetVar) {
+	public void setWidgetVar(String widgetVar) {
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public int getColumns() {
+	public int getColumns() {
         return (Integer) getStateHelper().eval(PropertyKeys.columns, 0);
     }
 
-    public void setColumns(int columns) {
+	public void setColumns(int columns) {
         getStateHelper().put(PropertyKeys.columns, columns);
+    }
+
+	public enum PropertyKeys {
+
+        widgetVar,
+        columns
     }
 }

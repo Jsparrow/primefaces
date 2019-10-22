@@ -32,26 +32,26 @@ public abstract class CellEditorBase extends UIComponentBase {
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.CellEditorRenderer";
 
-    public enum PropertyKeys {
-
-        disabled
-    }
-
     public CellEditorBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
-    @Override
+	@Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
-    public boolean isDisabled() {
+	public boolean isDisabled() {
         return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
     }
 
-    public void setDisabled(boolean disabled) {
+	public void setDisabled(boolean disabled) {
         getStateHelper().put(PropertyKeys.disabled, disabled);
+    }
+
+	public enum PropertyKeys {
+
+        disabled
     }
 
 }

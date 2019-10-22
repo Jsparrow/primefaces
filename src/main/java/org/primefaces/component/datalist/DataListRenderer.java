@@ -52,7 +52,7 @@ public class DataListRenderer extends DataRenderer {
                 list.loadLazyData();
             }
 
-            if (list.getType().equals("none")) {
+            if ("none".equals(list.getType())) {
                 encodeFreeList(context, list);
             }
             else {
@@ -92,7 +92,7 @@ public class DataListRenderer extends DataRenderer {
         boolean hasPaginator = list.isPaginator();
         boolean empty = (list.getRowCount() == 0);
         String paginatorPosition = list.getPaginatorPosition();
-        String styleClass = list.getStyleClass() == null ? DataList.DATALIST_CLASS : DataList.DATALIST_CLASS + " " + list.getStyleClass();
+        String styleClass = list.getStyleClass() == null ? DataList.DATALIST_CLASS : new StringBuilder().append(DataList.DATALIST_CLASS).append(" ").append(list.getStyleClass()).toString();
         String style = list.getStyle();
 
         if (hasPaginator) {
@@ -108,7 +108,7 @@ public class DataListRenderer extends DataRenderer {
 
         encodeFacet(context, list, "header", DataList.HEADER_CLASS);
 
-        if (hasPaginator && !paginatorPosition.equalsIgnoreCase("bottom")) {
+        if (hasPaginator && !"bottom".equalsIgnoreCase(paginatorPosition)) {
             encodePaginatorMarkup(context, list, "top");
         }
 
@@ -123,7 +123,7 @@ public class DataListRenderer extends DataRenderer {
             writer.endElement("div");
         }
         else {
-            if (list.getType().equals("none")) {
+            if ("none".equals(list.getType())) {
                 encodeFreeList(context, list);
             }
             else {
@@ -133,7 +133,7 @@ public class DataListRenderer extends DataRenderer {
 
         writer.endElement("div");
 
-        if (hasPaginator && !paginatorPosition.equalsIgnoreCase("top")) {
+        if (hasPaginator && !"top".equalsIgnoreCase(paginatorPosition)) {
             encodePaginatorMarkup(context, list, "bottom");
         }
 
@@ -171,8 +171,8 @@ public class DataListRenderer extends DataRenderer {
         boolean renderDefinition = isDefinition && ComponentUtils.shouldRenderFacet(definitionFacet);
         String itemType = list.getItemType();
         String listClass = DataList.LIST_CLASS;
-        if (itemType != null && itemType.equals("none")) {
-            listClass = listClass + " " + DataList.NO_BULLETS_CLASS;
+        if (itemType != null && "none".equals(itemType)) {
+            listClass = new StringBuilder().append(listClass).append(" ").append(DataList.NO_BULLETS_CLASS).toString();
         }
 
         String listTag = list.getListTag();
@@ -188,7 +188,7 @@ public class DataListRenderer extends DataRenderer {
         list.visitRows((status) -> {
             try {
                 String itemStyleClass = list.getItemStyleClass();
-                itemStyleClass = (itemStyleClass == null) ? DataList.LIST_ITEM_CLASS : DataList.LIST_ITEM_CLASS + " " + itemStyleClass;
+                itemStyleClass = (itemStyleClass == null) ? DataList.LIST_ITEM_CLASS : new StringBuilder().append(DataList.LIST_ITEM_CLASS).append(" ").append(itemStyleClass).toString();
 
                 writer.startElement(listItemTag, null);
                 writer.writeAttribute("class", itemStyleClass, null);

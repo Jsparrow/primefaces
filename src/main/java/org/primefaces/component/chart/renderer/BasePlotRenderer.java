@@ -51,7 +51,7 @@ public abstract class BasePlotRenderer {
         String extender = model.getExtender();
 
         if (title != null) {
-            writer.write(",title:\"" + EscapeUtils.forJavaScript(title) + "\"");
+            writer.write(new StringBuilder().append(",title:\"").append(EscapeUtils.forJavaScript(title)).append("\"").toString());
         }
 
         if (!model.isShadow()) {
@@ -59,16 +59,16 @@ public abstract class BasePlotRenderer {
         }
 
         if (seriesColors != null) {
-            writer.write(",seriesColors:[\"#" + seriesColors.replaceAll("[ ]*,[ ]*", "\",\"#") + "\"]");
+            writer.write(new StringBuilder().append(",seriesColors:[\"#").append(seriesColors.replaceAll("[ ]*,[ ]*", "\",\"#")).append("\"]").toString());
         }
 
         if (negativeSeriesColors != null) {
-            writer.write(",negativeSeriesColors:[\"#" + negativeSeriesColors.replaceAll("[ ]*,[ ]*", "\",\"#") + "\"]");
+            writer.write(new StringBuilder().append(",negativeSeriesColors:[\"#").append(negativeSeriesColors.replaceAll("[ ]*,[ ]*", "\",\"#")).append("\"]").toString());
         }
 
         if (legendPosition != null) {
             LegendPlacement legendPlacement = model.getLegendPlacement();
-            writer.write(",legendPosition:\"" + legendPosition + "\"");
+            writer.write(new StringBuilder().append(",legendPosition:\"").append(legendPosition).append("\"").toString());
 
             if (model.getLegendCols() != 0) {
                 writer.write(",legendCols:" + model.getLegendCols());
@@ -79,7 +79,7 @@ public abstract class BasePlotRenderer {
             }
 
             if (legendPlacement != null) {
-                writer.write(",legendPlacement:\"" + legendPlacement + "\"");
+                writer.write(new StringBuilder().append(",legendPlacement:\"").append(legendPlacement).append("\"").toString());
             }
 
             if (model.isLegendEscapeHtml()) {
@@ -99,7 +99,7 @@ public abstract class BasePlotRenderer {
             writer.write(",resetAxesOnResize:" + false);
         }
 
-        writer.write(",dataRenderMode:\"" + model.getDataRenderMode() + "\"");
+        writer.write(new StringBuilder().append(",dataRenderMode:\"").append(model.getDataRenderMode()).append("\"").toString());
     }
 
     protected String escapeChartData(Object value) {
@@ -108,7 +108,7 @@ public abstract class BasePlotRenderer {
 
         // do NOT quote numbers but quote all other objects
         if (!(value instanceof Number)) {
-            result = "\"" + EscapeUtils.forJavaScript(result) + "\"";
+            result = new StringBuilder().append("\"").append(EscapeUtils.forJavaScript(result)).append("\"").toString();
         }
 
         return result;

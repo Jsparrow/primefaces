@@ -99,8 +99,7 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
 
             boolean supportedEvent = false;
             if (targetList != null) {
-                for (int i = 0; i < targetList.size(); i++) {
-                    AttachedObjectTarget target = targetList.get(i);
+                for (AttachedObjectTarget target : targetList) {
                     if (target instanceof BehaviorHolderAttachedObjectTarget) {
                         BehaviorHolderAttachedObjectTarget behaviorTarget = (BehaviorHolderAttachedObjectTarget) target;
                         if ((null != eventName && eventName.equals(behaviorTarget.getName()))
@@ -154,15 +153,16 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
     }
 
     protected void setBehaviorAttribute(FaceletContext ctx, E behavior, TagAttribute attr, Class<?> type) {
-        if (attr != null) {
-            String attributeName = attr.getLocalName();
-            if (attr.isLiteral()) {
-                behavior.setLiteral(attributeName, attr.getObject(ctx, type));
-            }
-            else {
-                behavior.setValueExpression(attributeName, attr.getValueExpression(ctx, type));
-            }
-        }
+        if (attr == null) {
+			return;
+		}
+		String attributeName = attr.getLocalName();
+		if (attr.isLiteral()) {
+		    behavior.setLiteral(attributeName, attr.getObject(ctx, type));
+		}
+		else {
+		    behavior.setValueExpression(attributeName, attr.getValueExpression(ctx, type));
+		}
     }
 
     protected FaceletContext getFaceletContext(FacesContext context) {
@@ -194,7 +194,7 @@ public abstract class AbstractBehaviorHandler<E extends AbstractBehavior>
         else {
             Collection<String> eventNames = holder.getEventNames();
             if (!eventNames.contains(eventName)) {
-                throw new TagException(tag, "Event:" + eventName + " is not supported.");
+                throw new TagException(tag, new StringBuilder().append("Event:").append(eventName).append(" is not supported.").toString());
             }
         }
 

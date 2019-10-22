@@ -55,7 +55,7 @@ public class DataTableXMLExporter extends DataTableExporter {
         }
 
         builder.append("<?xml version=\"1.0\"?>\n");
-        builder.append("<" + table.getId() + ">\n");
+        builder.append(new StringBuilder().append("<").append(table.getId()).append(">\n").toString());
 
         if (config.isPageOnly()) {
             exportPageOnly(context, table, builder);
@@ -67,7 +67,7 @@ public class DataTableXMLExporter extends DataTableExporter {
             exportAll(context, table, builder);
         }
 
-        builder.append("</" + table.getId() + ">");
+        builder.append(new StringBuilder().append("</").append(table.getId()).append(">").toString());
 
         table.setRowIndex(-1);
 
@@ -85,12 +85,12 @@ public class DataTableXMLExporter extends DataTableExporter {
 
     @Override
     protected void preRowExport(DataTable table, Object document) {
-        ((StringBuilder) document).append("\t<" + table.getVar() + ">\n");
+        ((StringBuilder) document).append(new StringBuilder().append("\t<").append(table.getVar()).append(">\n").toString());
     }
 
     @Override
     protected void postRowExport(DataTable table, Object document) {
-        ((StringBuilder) document).append("\t</" + table.getVar() + ">\n");
+        ((StringBuilder) document).append(new StringBuilder().append("\t</").append(table.getVar()).append(">\n").toString());
     }
 
     @Override
@@ -134,23 +134,20 @@ public class DataTableXMLExporter extends DataTableExporter {
     protected void addColumnValue(StringBuilder builder, List<UIComponent> components, String tag, UIColumn column) throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
 
-        builder.append("\t\t<" + tag + ">");
+        builder.append(new StringBuilder().append("\t\t<").append(tag).append(">").toString());
 
         if (column.getExportFunction() != null) {
             builder.append(EscapeUtils.forXml(exportColumnByFunction(context, column)));
         }
         else {
-            for (UIComponent component : components) {
-                if (component.isRendered()) {
-                    String value = exportValue(context, component);
-                    if (value != null) {
-                        builder.append(EscapeUtils.forXml(value));
-                    }
-                }
-            }
+            components.stream().filter(UIComponent::isRendered).map(component -> exportValue(context, component)).forEach(value -> {
+				if (value != null) {
+			        builder.append(EscapeUtils.forXml(value));
+			    }
+			});
         }
 
-        builder.append("</" + tag + ">\n");
+        builder.append(new StringBuilder().append("</").append(tag).append(">\n").toString());
     }
 
     protected void configureResponse(ExternalContext externalContext, String filename) {

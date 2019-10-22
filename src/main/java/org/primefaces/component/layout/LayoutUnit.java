@@ -35,12 +35,6 @@ public class LayoutUnit extends LayoutUnitBase {
     }
 
     public boolean isNesting() {
-        for (UIComponent child : getChildren()) {
-            if (child instanceof Layout) {
-                return true;
-            }
-        }
-
-        return false;
+        return getChildren().stream().anyMatch(child -> child instanceof Layout);
     }
 }

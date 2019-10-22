@@ -74,7 +74,7 @@ public class ComponentTraversalUtils {
 
     public static <T> ArrayList<T> children(Class<T> type, UIComponent base) {
 
-        ArrayList<T> result = new ArrayList<T>();
+        ArrayList<T> result = new ArrayList<>();
 
         Iterator<UIComponent> kids = base.getFacetsAndChildren();
         while (kids.hasNext()) {
@@ -94,9 +94,7 @@ public class ComponentTraversalUtils {
         }
 
         if (base.getFacetCount() > 0) {
-            for (UIComponent facet : base.getFacets().values()) {
-                withId(id, facet, components);
-            }
+            base.getFacets().values().forEach(facet -> withId(id, facet, components));
         }
 
         if (base.getChildCount() > 0) {

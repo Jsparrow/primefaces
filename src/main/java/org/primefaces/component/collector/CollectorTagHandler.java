@@ -48,7 +48,7 @@ public class CollectorTagHandler extends TagHandler {
     }
 
     @Override
-    public void apply(FaceletContext faceletContext, UIComponent parent) throws IOException, FacesException, FaceletException, ELException {
+    public void apply(FaceletContext faceletContext, UIComponent parent) throws IOException {
         if (!ComponentHandler.isNew(parent)) {
             return;
         }

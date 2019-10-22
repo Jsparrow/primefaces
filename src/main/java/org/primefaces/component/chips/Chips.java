@@ -98,13 +98,13 @@ public class Chips extends ChipsBase {
         if (eventName != null && event instanceof AjaxBehaviorEvent) {
             AjaxBehaviorEvent ajaxBehaviorEvent = (AjaxBehaviorEvent) event;
 
-            if (eventName.equals("itemSelect")) {
+            if ("itemSelect".equals(eventName)) {
                 Object selectedItemValue = convertValue(context, params.get(getClientId(context) + "_itemSelect"));
                 SelectEvent selectEvent = new SelectEvent(this, ajaxBehaviorEvent.getBehavior(), selectedItemValue);
                 selectEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());
                 super.queueEvent(selectEvent);
             }
-            else if (eventName.equals("itemUnselect")) {
+            else if ("itemUnselect".equals(eventName)) {
                 Object unselectedItemValue = convertValue(context, params.get(getClientId(context) + "_itemUnselect"));
                 UnselectEvent unselectEvent = new UnselectEvent(this, ajaxBehaviorEvent.getBehavior(), unselectedItemValue);
                 unselectEvent.setPhaseId(ajaxBehaviorEvent.getPhaseId());

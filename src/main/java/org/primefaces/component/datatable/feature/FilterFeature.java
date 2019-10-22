@@ -98,7 +98,7 @@ public class FilterFeature implements DataTableFeature {
 
     @Override
     public void decode(FacesContext context, DataTable table) {
-        String globalFilterParam = table.getClientId(context) + UINamingContainer.getSeparatorChar(context) + "globalFilter";
+        String globalFilterParam = new StringBuilder().append(table.getClientId(context)).append(UINamingContainer.getSeparatorChar(context)).append("globalFilter").toString();
         List<FilterMeta> filterMetadata = populateFilterMetaData(context, table);
         Map<String, Object> filterParameterMap = populateFilterParameterMap(context, table, filterMetadata, globalFilterParam);
         table.setFilters(filterParameterMap);
@@ -140,7 +140,7 @@ public class FilterFeature implements DataTableFeature {
             }
         }
         else {
-            String globalFilterParam = clientId + UINamingContainer.getSeparatorChar(context) + "globalFilter";
+            String globalFilterParam = new StringBuilder().append(clientId).append(UINamingContainer.getSeparatorChar(context)).append("globalFilter").toString();
             globalFilterValue = params.get(globalFilterParam);
             filter(context, table, table.getFilterMetadata(), globalFilterValue);
 
@@ -163,23 +163,19 @@ public class FilterFeature implements DataTableFeature {
 
         renderer.encodeTbody(context, table, true);
 
-        if (table.isMultiViewState()) {
-            List<FilterMeta> filterMetadata = table.getFilterMetadata();
-            List<FilterState> filters = new ArrayList<>();
-
-            for (FilterMeta filterMeta : filterMetadata) {
-                filters.add(new FilterState(filterMeta.getColumn().getColumnKey(), filterMeta.getFilterValue()));
-            }
-
-            TableState ts = table.getTableState(true);
-            ts.setFilters(filters);
-            ts.setGlobalFilterValue(globalFilterValue);
-
-            if (table.isPaginator()) {
-                ts.setFirst(table.getFirst());
-                ts.setRows(table.getRows());
-            }
-        }
+        if (!table.isMultiViewState()) {
+			return;
+		}
+		List<FilterMeta> filterMetadata = table.getFilterMetadata();
+		List<FilterState> filters = new ArrayList<>();
+		filterMetadata.forEach(filterMeta -> filters.add(new FilterState(filterMeta.getColumn().getColumnKey(), filterMeta.getFilterValue())));
+		TableState ts = table.getTableState(true);
+		ts.setFilters(filters);
+		ts.setGlobalFilterValue(globalFilterValue);
+		if (table.isPaginator()) {
+		    ts.setFirst(table.getFirst());
+		    ts.setRows(table.getRows());
+		}
     }
 
     public void filter(FacesContext context, DataTable table, List<FilterMeta> filterMetadata, String globalFilterValue) {
@@ -347,11 +343,9 @@ public class FilterFeature implements DataTableFeature {
             return;
         }
 
-        for (UIComponent child : group.getChildren()) {
-            Row headerRow = (Row) child;
-
-            if (headerRow.isRendered()) {
-                for (UIComponent headerRowChild : headerRow.getChildren()) {
+        group.getChildren().stream().map(child -> (Row) child).forEach(headerRow -> {
+			if (headerRow.isRendered()) {
+                headerRow.getChildren().forEach(headerRowChild -> {
                     if (headerRowChild instanceof Column) {
                         Column column = (Column) headerRowChild;
                         if (column.isRendered()) {
@@ -360,7 +354,8 @@ public class FilterFeature implements DataTableFeature {
                                 UIComponent filterFacet = column.getFacet("filter");
                                 Object filterValue = ComponentUtils.shouldRenderFacet(filterFacet)
                                                      ? ((ValueHolder) filterFacet).getLocalValue()
-                                                     : params.get(column.getClientId(context) + separator + "filter");
+                                                     : params.get(new StringBuilder().append(column.getClientId(context)).append(separator).append("filter")
+															.toString());
 
                                 filterMetadata.add(new FilterMeta(column, filterVE, filterValue));
                             }
@@ -370,12 +365,12 @@ public class FilterFeature implements DataTableFeature {
                         Columns uiColumns = (Columns) headerRowChild;
                         List<DynamicColumn> dynamicColumns = uiColumns.getDynamicColumns();
 
-                        for (DynamicColumn dynaColumn : dynamicColumns) {
+                        dynamicColumns.forEach(dynaColumn -> {
                             dynaColumn.applyStatelessModel();
                             if (dynaColumn.isRendered()) {
                                 ValueExpression filterVE = dynaColumn.getValueExpression(Column.PropertyKeys.filterBy.toString());
                                 if (filterVE != null) {
-                                    String filterId = dynaColumn.getContainerClientId(context) + separator + "filter";
+                                    String filterId = new StringBuilder().append(dynaColumn.getContainerClientId(context)).append(separator).append("filter").toString();
                                     UIComponent filterFacet = dynaColumn.getFacet("filter");
                                     Object filterValue = ComponentUtils.shouldRenderFacet(filterFacet)
                                                           ? ((ValueHolder) filterFacet).getLocalValue()
@@ -384,17 +379,17 @@ public class FilterFeature implements DataTableFeature {
                                     filterMetadata.add(new FilterMeta(dynaColumn, filterVE, filterValue));
                                 }
                             }
-                        }
+                        });
                     }
-                }
+                });
             }
-        }
+		});
     }
 
     private void populateFilterMetaDataWithoutColumnGroups(FacesContext context, DataTable table, List<FilterMeta> filterMetadata,
                                                            Map<String, String> params, String separator) {
 
-        for (UIColumn column : table.getColumns()) {
+        table.getColumns().forEach(column -> {
             ValueExpression filterVE = column.getValueExpression(Column.PropertyKeys.filterBy.toString());
             if (filterVE != null) {
                 UIComponent filterFacet = column.getFacet("filter");
@@ -402,20 +397,20 @@ public class FilterFeature implements DataTableFeature {
                 String filterId;
 
                 if (column instanceof Column) {
-                    filterId = column.getClientId(context) + separator + "filter";
+                    filterId = new StringBuilder().append(column.getClientId(context)).append(separator).append("filter").toString();
                     filterValue = ComponentUtils.shouldRenderFacet(filterFacet) ? ((ValueHolder) filterFacet).getLocalValue() : params.get(filterId);
                 }
                 else if (column instanceof DynamicColumn) {
                     DynamicColumn dynamicColumn = (DynamicColumn) column;
                     dynamicColumn.applyModel();
-                    filterId = dynamicColumn.getContainerClientId(context) + separator + "filter";
+                    filterId = new StringBuilder().append(dynamicColumn.getContainerClientId(context)).append(separator).append("filter").toString();
                     filterValue = ComponentUtils.shouldRenderFacet(filterFacet) ? ((ValueHolder) filterFacet).getLocalValue() : params.get(filterId);
                     dynamicColumn.cleanModel();
                 }
 
                 filterMetadata.add(new FilterMeta(column, filterVE, filterValue));
             }
-        }
+        });
     }
 
     private ColumnGroup getColumnGroup(DataTable table, String target) {

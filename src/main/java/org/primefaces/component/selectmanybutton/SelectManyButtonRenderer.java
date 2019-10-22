@@ -45,7 +45,7 @@ import org.primefaces.util.WidgetBuilder;
 public class SelectManyButtonRenderer extends SelectManyRenderer {
 
     @Override
-    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) {
         Renderer renderer = ComponentUtils.getUnwrappedRenderer(
                 context,
                 "javax.faces.SelectMany",
@@ -68,8 +68,8 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
         int selectItemsSize = selectItems.size();
         String style = button.getStyle();
         String styleClass = button.getStyleClass();
-        styleClass = styleClass == null ? SelectManyButton.STYLE_CLASS : SelectManyButton.STYLE_CLASS + " " + styleClass;
-        styleClass = styleClass + " ui-buttonset-" + selectItemsSize;
+        styleClass = styleClass == null ? SelectManyButton.STYLE_CLASS : new StringBuilder().append(SelectManyButton.STYLE_CLASS).append(" ").append(styleClass).toString();
+        styleClass = new StringBuilder().append(styleClass).append(" ui-buttonset-").append(selectItemsSize).toString();
         styleClass = !button.isValid() ? styleClass + " ui-state-error" : styleClass;
 
         writer.startElement("div", button);
@@ -102,7 +102,7 @@ public class SelectManyButtonRenderer extends SelectManyRenderer {
         SelectManyButton button = (SelectManyButton) component;
         String itemValueAsString = getOptionAsString(context, component, converter, option.getValue());
         String name = button.getClientId(context);
-        String id = name + UINamingContainer.getSeparatorChar(context) + idx;
+        String id = new StringBuilder().append(name).append(UINamingContainer.getSeparatorChar(context)).append(idx).toString();
         boolean disabled = option.isDisabled() || button.isDisabled();
         String tabindex = button.getTabindex();
 

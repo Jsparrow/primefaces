@@ -34,57 +34,57 @@ public abstract class LinkBase extends HtmlOutcomeTargetLink implements UIOutcom
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.LinkRenderer";
 
-    public enum PropertyKeys {
+    public LinkBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	@Override
+    public String getFragment() {
+        return (String) getStateHelper().eval(PropertyKeys.fragment, null);
+    }
+
+	public void setFragment(String fragment) {
+        getStateHelper().put(PropertyKeys.fragment, fragment);
+    }
+
+	@Override
+    public boolean isDisableClientWindow() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.disableClientWindow, false);
+    }
+
+	@Override
+    public void setDisableClientWindow(boolean disableClientWindow) {
+        getStateHelper().put(PropertyKeys.disableClientWindow, disableClientWindow);
+    }
+
+	@Override
+    public String getHref() {
+        return (String) getStateHelper().eval(PropertyKeys.href, null);
+    }
+
+	public void setHref(String href) {
+        getStateHelper().put(PropertyKeys.href, href);
+    }
+
+	public boolean isEscape() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.escape, true);
+    }
+
+	public void setEscape(boolean escape) {
+        getStateHelper().put(PropertyKeys.escape, escape);
+    }
+
+	public enum PropertyKeys {
 
         fragment,
         disableClientWindow,
         href,
         escape
-    }
-
-    public LinkBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    @Override
-    public String getFragment() {
-        return (String) getStateHelper().eval(PropertyKeys.fragment, null);
-    }
-
-    public void setFragment(String fragment) {
-        getStateHelper().put(PropertyKeys.fragment, fragment);
-    }
-
-    @Override
-    public boolean isDisableClientWindow() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disableClientWindow, false);
-    }
-
-    @Override
-    public void setDisableClientWindow(boolean disableClientWindow) {
-        getStateHelper().put(PropertyKeys.disableClientWindow, disableClientWindow);
-    }
-
-    @Override
-    public String getHref() {
-        return (String) getStateHelper().eval(PropertyKeys.href, null);
-    }
-
-    public void setHref(String href) {
-        getStateHelper().put(PropertyKeys.href, href);
-    }
-
-    public boolean isEscape() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.escape, true);
-    }
-
-    public void setEscape(boolean escape) {
-        getStateHelper().put(PropertyKeys.escape, escape);
     }
 
 }

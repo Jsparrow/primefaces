@@ -35,61 +35,61 @@ public abstract class MindmapBase extends UIComponentBase implements Widget, Cli
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.MindmapRenderer";
 
-    public enum PropertyKeys {
+    public MindmapBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getWidgetVar() {
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
+
+	public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
+
+	public org.primefaces.model.mindmap.MindmapNode getValue() {
+        return (org.primefaces.model.mindmap.MindmapNode) getStateHelper().eval(PropertyKeys.value, null);
+    }
+
+	public void setValue(org.primefaces.model.mindmap.MindmapNode value) {
+        getStateHelper().put(PropertyKeys.value, value);
+    }
+
+	public String getStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
+    }
+
+	public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
+    }
+
+	public String getStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
+    }
+
+	public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+	public int getEffectSpeed() {
+        return (Integer) getStateHelper().eval(PropertyKeys.effectSpeed, 300);
+    }
+
+	public void setEffectSpeed(int effectSpeed) {
+        getStateHelper().put(PropertyKeys.effectSpeed, effectSpeed);
+    }
+
+	public enum PropertyKeys {
 
         widgetVar,
         value,
         style,
         styleClass,
         effectSpeed
-    }
-
-    public MindmapBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public org.primefaces.model.mindmap.MindmapNode getValue() {
-        return (org.primefaces.model.mindmap.MindmapNode) getStateHelper().eval(PropertyKeys.value, null);
-    }
-
-    public void setValue(org.primefaces.model.mindmap.MindmapNode value) {
-        getStateHelper().put(PropertyKeys.value, value);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public int getEffectSpeed() {
-        return (Integer) getStateHelper().eval(PropertyKeys.effectSpeed, 300);
-    }
-
-    public void setEffectSpeed(int effectSpeed) {
-        getStateHelper().put(PropertyKeys.effectSpeed, effectSpeed);
     }
 }

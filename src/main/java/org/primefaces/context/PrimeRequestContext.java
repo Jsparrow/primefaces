@@ -38,6 +38,8 @@ import org.primefaces.util.AjaxRequestBuilder;
 import org.primefaces.util.CSVBuilder;
 import org.primefaces.util.Constants;
 import org.primefaces.util.WidgetBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A {@link PrimeRequestContext} is a contextual store for the current request.
@@ -49,7 +51,9 @@ import org.primefaces.util.WidgetBuilder;
  */
 public class PrimeRequestContext {
 
-    public static final String INSTANCE_KEY = PrimeRequestContext.class.getName();
+    private static final Logger logger = LoggerFactory.getLogger(PrimeRequestContext.class);
+
+	public static final String INSTANCE_KEY = PrimeRequestContext.class.getName();
 
     private static final String CALLBACK_PARAMS_KEY = "CALLBACK_PARAMS";
     private static final String EXECUTE_SCRIPT_KEY = "EXECUTE_SCRIPT";
@@ -201,7 +205,8 @@ public class PrimeRequestContext {
                 return (Boolean) method.invoke(request, (Object[]) null);
             }
             catch (Exception e) {
-                return false;
+                logger.error(e.getMessage(), e);
+				return false;
             }
         }
     }
@@ -230,7 +235,7 @@ public class PrimeRequestContext {
                 ValueExpression expression = expressionFactory.createValueExpression(elContext, param, String.class);
                 String expressionValue = (String) expression.getValue(elContext);
 
-                rtl = (expressionValue == null) ? false : expressionValue.equalsIgnoreCase("rtl");
+                rtl = (expressionValue == null) ? false : "rtl".equalsIgnoreCase(expressionValue);
             }
         }
 

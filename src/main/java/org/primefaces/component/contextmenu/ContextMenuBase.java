@@ -32,7 +32,97 @@ public abstract class ContextMenuBase extends AbstractMenu implements Widget {
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.ContextMenuRenderer";
 
-    public enum PropertyKeys {
+    public ContextMenuBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getWidgetVar() {
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
+
+	public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
+
+	public String getFor() {
+        return (String) getStateHelper().eval(PropertyKeys.forValue, null);
+    }
+
+	public void setFor(String _for) {
+        getStateHelper().put(PropertyKeys.forValue, _for);
+    }
+
+	public String getStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
+    }
+
+	public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
+    }
+
+	public String getStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
+    }
+
+	public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+	@Override
+    public org.primefaces.model.menu.MenuModel getModel() {
+        return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
+    }
+
+	public void setModel(org.primefaces.model.menu.MenuModel model) {
+        getStateHelper().put(PropertyKeys.model, model);
+    }
+
+	public String getNodeType() {
+        return (String) getStateHelper().eval(PropertyKeys.nodeType, null);
+    }
+
+	public void setNodeType(String nodeType) {
+        getStateHelper().put(PropertyKeys.nodeType, nodeType);
+    }
+
+	public String getEvent() {
+        return (String) getStateHelper().eval(PropertyKeys.event, null);
+    }
+
+	public void setEvent(String event) {
+        getStateHelper().put(PropertyKeys.event, event);
+    }
+
+	public String getBeforeShow() {
+        return (String) getStateHelper().eval(PropertyKeys.beforeShow, null);
+    }
+
+	public void setBeforeShow(String beforeShow) {
+        getStateHelper().put(PropertyKeys.beforeShow, beforeShow);
+    }
+
+	public String getSelectionMode() {
+        return (String) getStateHelper().eval(PropertyKeys.selectionMode, "multiple");
+    }
+
+	public void setSelectionMode(String selectionMode) {
+        getStateHelper().put(PropertyKeys.selectionMode, selectionMode);
+    }
+
+	public String getTargetFilter() {
+        return (String) getStateHelper().eval(PropertyKeys.targetFilter, null);
+    }
+
+	public void setTargetFilter(String targetFilter) {
+        getStateHelper().put(PropertyKeys.targetFilter, targetFilter);
+    }
+
+	public enum PropertyKeys {
 
         widgetVar,
         forValue("for"),
@@ -58,95 +148,5 @@ public abstract class ContextMenuBase extends AbstractMenu implements Widget {
         public String toString() {
             return ((toString != null) ? toString : super.toString());
         }
-    }
-
-    public ContextMenuBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public String getFor() {
-        return (String) getStateHelper().eval(PropertyKeys.forValue, null);
-    }
-
-    public void setFor(String _for) {
-        getStateHelper().put(PropertyKeys.forValue, _for);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    @Override
-    public org.primefaces.model.menu.MenuModel getModel() {
-        return (org.primefaces.model.menu.MenuModel) getStateHelper().eval(PropertyKeys.model, null);
-    }
-
-    public void setModel(org.primefaces.model.menu.MenuModel model) {
-        getStateHelper().put(PropertyKeys.model, model);
-    }
-
-    public String getNodeType() {
-        return (String) getStateHelper().eval(PropertyKeys.nodeType, null);
-    }
-
-    public void setNodeType(String nodeType) {
-        getStateHelper().put(PropertyKeys.nodeType, nodeType);
-    }
-
-    public String getEvent() {
-        return (String) getStateHelper().eval(PropertyKeys.event, null);
-    }
-
-    public void setEvent(String event) {
-        getStateHelper().put(PropertyKeys.event, event);
-    }
-
-    public String getBeforeShow() {
-        return (String) getStateHelper().eval(PropertyKeys.beforeShow, null);
-    }
-
-    public void setBeforeShow(String beforeShow) {
-        getStateHelper().put(PropertyKeys.beforeShow, beforeShow);
-    }
-
-    public String getSelectionMode() {
-        return (String) getStateHelper().eval(PropertyKeys.selectionMode, "multiple");
-    }
-
-    public void setSelectionMode(String selectionMode) {
-        getStateHelper().put(PropertyKeys.selectionMode, selectionMode);
-    }
-
-    public String getTargetFilter() {
-        return (String) getStateHelper().eval(PropertyKeys.targetFilter, null);
-    }
-
-    public void setTargetFilter(String targetFilter) {
-        getStateHelper().put(PropertyKeys.targetFilter, targetFilter);
     }
 }

@@ -179,10 +179,10 @@ public class CspPartialResponseWriter extends PartialResponseWriterWrapper {
             sb.setLength(0);
         }
 
-        for (Map.Entry<String, Map<String, String>> elements : cspState.getEventHandlers().entrySet()) {
+        cspState.getEventHandlers().entrySet().forEach(elements -> {
             String id = elements.getKey();
 
-            for (Map.Entry<String, String> events : elements.getValue().entrySet()) {
+            elements.getValue().entrySet().forEach(events -> {
                 String event = events.getKey();
                 String javascript = events.getValue();
 
@@ -193,8 +193,8 @@ public class CspPartialResponseWriter extends PartialResponseWriterWrapper {
                 sb.append("',function(event){");
                 sb.append(javascript);
                 sb.append("});");
-            }
-        }
+            });
+        });
 
         requestContext.getScriptsToExecute().add(sb.toString());
 

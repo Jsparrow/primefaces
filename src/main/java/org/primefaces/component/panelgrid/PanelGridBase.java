@@ -32,7 +32,80 @@ public abstract class PanelGridBase extends UIPanel {
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.PanelGridRenderer";
 
-    public enum PropertyKeys {
+    public PanelGridBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public int getColumns() {
+        return (Integer) getStateHelper().eval(PropertyKeys.columns, 0);
+    }
+
+	public void setColumns(int columns) {
+        getStateHelper().put(PropertyKeys.columns, columns);
+    }
+
+	public String getStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
+    }
+
+	public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
+    }
+
+	public String getContentStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.contentStyle, null);
+    }
+
+	public void setContentStyle(String contentStyle) {
+        getStateHelper().put(PropertyKeys.contentStyle, contentStyle);
+    }
+
+	public String getStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
+    }
+
+	public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+	public String getContentStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.contentStyleClass, null);
+    }
+
+	public void setContentStyleClass(String contentStyleClass) {
+        getStateHelper().put(PropertyKeys.contentStyleClass, contentStyleClass);
+    }
+
+	public String getColumnClasses() {
+        return (String) getStateHelper().eval(PropertyKeys.columnClasses, null);
+    }
+
+	public void setColumnClasses(String columnClasses) {
+        getStateHelper().put(PropertyKeys.columnClasses, columnClasses);
+    }
+
+	public String getLayout() {
+        return (String) getStateHelper().eval(PropertyKeys.layout, "tabular");
+    }
+
+	public void setLayout(String layout) {
+        getStateHelper().put(PropertyKeys.layout, layout);
+    }
+
+	public String getRole() {
+        return (String) getStateHelper().eval(PropertyKeys.role, "grid");
+    }
+
+	public void setRole(String role) {
+        getStateHelper().put(PropertyKeys.role, role);
+    }
+
+	public enum PropertyKeys {
 
         columns,
         style,
@@ -42,79 +115,6 @@ public abstract class PanelGridBase extends UIPanel {
         columnClasses,
         layout,
         role
-    }
-
-    public PanelGridBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public int getColumns() {
-        return (Integer) getStateHelper().eval(PropertyKeys.columns, 0);
-    }
-
-    public void setColumns(int columns) {
-        getStateHelper().put(PropertyKeys.columns, columns);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getContentStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.contentStyle, null);
-    }
-
-    public void setContentStyle(String contentStyle) {
-        getStateHelper().put(PropertyKeys.contentStyle, contentStyle);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public String getContentStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.contentStyleClass, null);
-    }
-
-    public void setContentStyleClass(String contentStyleClass) {
-        getStateHelper().put(PropertyKeys.contentStyleClass, contentStyleClass);
-    }
-
-    public String getColumnClasses() {
-        return (String) getStateHelper().eval(PropertyKeys.columnClasses, null);
-    }
-
-    public void setColumnClasses(String columnClasses) {
-        getStateHelper().put(PropertyKeys.columnClasses, columnClasses);
-    }
-
-    public String getLayout() {
-        return (String) getStateHelper().eval(PropertyKeys.layout, "tabular");
-    }
-
-    public void setLayout(String layout) {
-        getStateHelper().put(PropertyKeys.layout, layout);
-    }
-
-    public String getRole() {
-        return (String) getStateHelper().eval(PropertyKeys.role, "grid");
-    }
-
-    public void setRole(String role) {
-        getStateHelper().put(PropertyKeys.role, role);
     }
 
 }

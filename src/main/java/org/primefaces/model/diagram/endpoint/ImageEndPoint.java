@@ -30,7 +30,6 @@ public class ImageEndPoint extends EndPoint {
     private String path;
 
     public ImageEndPoint() {
-        super();
     }
 
     public ImageEndPoint(EndPointAnchor anchor, String path) {

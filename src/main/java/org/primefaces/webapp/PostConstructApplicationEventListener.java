@@ -44,7 +44,7 @@ public class PostConstructApplicationEventListener implements SystemEventListene
     }
 
     @Override
-    public void processEvent(SystemEvent event) throws AbortProcessingException {
+    public void processEvent(SystemEvent event) {
         // temp manually instantiate as the ApplicationContext is not available yet
         PrimeEnvironment environment = new StartupPrimeEnvironment();
 

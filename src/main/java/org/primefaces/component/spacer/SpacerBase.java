@@ -32,62 +32,62 @@ public abstract class SpacerBase extends UIComponentBase {
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.SpacerRenderer";
 
-    public enum PropertyKeys {
+    public SpacerBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getWidth() {
+        return (String) getStateHelper().eval(PropertyKeys.width, null);
+    }
+
+	public void setWidth(String width) {
+        getStateHelper().put(PropertyKeys.width, width);
+    }
+
+	public String getHeight() {
+        return (String) getStateHelper().eval(PropertyKeys.height, null);
+    }
+
+	public void setHeight(String height) {
+        getStateHelper().put(PropertyKeys.height, height);
+    }
+
+	public String getTitle() {
+        return (String) getStateHelper().eval(PropertyKeys.title, null);
+    }
+
+	public void setTitle(String title) {
+        getStateHelper().put(PropertyKeys.title, title);
+    }
+
+	public String getStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
+    }
+
+	public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
+    }
+
+	public String getStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
+    }
+
+	public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+	public enum PropertyKeys {
 
         width,
         height,
         title,
         style,
         styleClass
-    }
-
-    public SpacerBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getWidth() {
-        return (String) getStateHelper().eval(PropertyKeys.width, null);
-    }
-
-    public void setWidth(String width) {
-        getStateHelper().put(PropertyKeys.width, width);
-    }
-
-    public String getHeight() {
-        return (String) getStateHelper().eval(PropertyKeys.height, null);
-    }
-
-    public void setHeight(String height) {
-        getStateHelper().put(PropertyKeys.height, height);
-    }
-
-    public String getTitle() {
-        return (String) getStateHelper().eval(PropertyKeys.title, null);
-    }
-
-    public void setTitle(String title) {
-        getStateHelper().put(PropertyKeys.title, title);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
     }
 
 }

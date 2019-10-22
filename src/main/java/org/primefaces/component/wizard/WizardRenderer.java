@@ -80,20 +80,19 @@ public class WizardRenderer extends CoreRenderer {
     protected void encodeStep(FacesContext context, Wizard wizard) throws IOException {
         String stepToDisplay = wizard.getStep();
 
-        if (!isValueBlank(stepToDisplay)) {
-            UIComponent tabToDisplay = null;
-            for (UIComponent child : wizard.getChildren()) {
-                if (child.getId().equals(stepToDisplay)) {
-                    tabToDisplay = child;
-                }
-            }
-
-            if (tabToDisplay != null) {
-                tabToDisplay.encodeAll(context);
-            }
-
-            PrimeFaces.current().ajax().addCallbackParam("currentStep", wizard.getStep());
-        }
+        if (isValueBlank(stepToDisplay)) {
+			return;
+		}
+		UIComponent tabToDisplay = null;
+		for (UIComponent child : wizard.getChildren()) {
+		    if (child.getId().equals(stepToDisplay)) {
+		        tabToDisplay = child;
+		    }
+		}
+		if (tabToDisplay != null) {
+		    tabToDisplay.encodeAll(context);
+		}
+		PrimeFaces.current().ajax().addCallbackParam("currentStep", wizard.getStep());
     }
 
     protected void encodeScript(FacesContext context, Wizard wizard) throws IOException {
@@ -102,7 +101,7 @@ public class WizardRenderer extends CoreRenderer {
 
         UIForm form = ComponentTraversalUtils.closestForm(context, wizard);
         if (form == null) {
-            throw new FacesException("Wizard : \"" + clientId + "\" must be inside a form element");
+            throw new FacesException(new StringBuilder().append("Wizard : \"").append(clientId).append("\" must be inside a form element").toString());
         }
 
         WidgetBuilder wb = getWidgetBuilder(context);
@@ -137,7 +136,7 @@ public class WizardRenderer extends CoreRenderer {
                     firstStep = false;
                 }
 
-                writer.write("'" + tab.getId() + "'");
+                writer.write(new StringBuilder().append("'").append(tab.getId()).append("'").toString());
             }
         }
         writer.write("]");
@@ -235,7 +234,7 @@ public class WizardRenderer extends CoreRenderer {
                 boolean active = (!currentFound) && (currentStep == null || tab.getId().equals(currentStep));
                 String titleStyleClass = active ? Wizard.ACTIVE_STEP_CLASS : Wizard.STEP_CLASS;
                 if (tab.getTitleStyleClass() != null) {
-                    titleStyleClass = titleStyleClass + " " + tab.getTitleStyleClass();
+                    titleStyleClass = new StringBuilder().append(titleStyleClass).append(" ").append(tab.getTitleStyleClass()).toString();
                 }
 
                 if (active) {
@@ -272,10 +271,10 @@ public class WizardRenderer extends CoreRenderer {
         writer.writeAttribute("id", id, null);
         writer.writeAttribute("name", id, null);
         writer.writeAttribute("type", "button", null);
-        writer.writeAttribute("class", HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS + " " + buttonClass, null);
+        writer.writeAttribute("class", new StringBuilder().append(HTML.BUTTON_TEXT_ICON_LEFT_BUTTON_CLASS).append(" ").append(buttonClass).toString(), null);
 
         //button icon
-        String iconClass = HTML.BUTTON_LEFT_ICON_CLASS + " " + icon;
+        String iconClass = new StringBuilder().append(HTML.BUTTON_LEFT_ICON_CLASS).append(" ").append(icon).toString();
         writer.startElement("span", null);
         writer.writeAttribute("class", iconClass, null);
         writer.endElement("span");

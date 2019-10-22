@@ -73,7 +73,7 @@ public class TextEditorRenderer extends InputRenderer {
             }
         }
 
-        if (value != null && value.equals("<br/>")) {
+        if (value != null && "<br/>".equals(value)) {
             value = Constants.EMPTY_STRING;
         }
 
@@ -101,7 +101,7 @@ public class TextEditorRenderer extends InputRenderer {
 
         String style = editor.getStyle();
         String styleClass = editor.getStyleClass();
-        styleClass = (styleClass != null) ? TextEditor.EDITOR_CLASS + " " + styleClass : TextEditor.EDITOR_CLASS;
+        styleClass = (styleClass != null) ? new StringBuilder().append(TextEditor.EDITOR_CLASS).append(" ").append(styleClass).toString() : TextEditor.EDITOR_CLASS;
 
         writer.startElement("div", editor);
         writer.writeAttribute("id", clientId, null);
@@ -154,7 +154,7 @@ public class TextEditorRenderer extends InputRenderer {
                     wb.append(",");
                 }
 
-                wb.append("\"" + EscapeUtils.forJavaScript((String) formats.get(i)) + "\"");
+                wb.append(new StringBuilder().append("\"").append(EscapeUtils.forJavaScript((String) formats.get(i))).append("\"").toString());
             }
             wb.append("]");
         }
@@ -164,7 +164,7 @@ public class TextEditorRenderer extends InputRenderer {
     }
 
     @Override
-    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) {
         TextEditor editor = (TextEditor) component;
         String value = (String) submittedValue;
         Converter converter = ComponentUtils.getConverter(context, component);
@@ -186,9 +186,7 @@ public class TextEditorRenderer extends InputRenderer {
     private void checkSecurity(FacesContext context, TextEditor editor) {
         boolean sanitizerAvailable = PrimeApplicationContext.getCurrentInstance(context).getEnvironment().isHtmlSanitizerAvailable();
         if (editor.isSecure() && !sanitizerAvailable) {
-            throw new FacesException("TextEditor component is marked secure='true' but the HTML Sanitizer was not found on the classpath. "
-                        + "Either add the HTML sanitizer to the classpath per the documentation"
-                        + " or mark secure='false' if you would like to use the component without the sanitizer.");
+            throw new FacesException(new StringBuilder().append("TextEditor component is marked secure='true' but the HTML Sanitizer was not found on the classpath. ").append("Either add the HTML sanitizer to the classpath per the documentation").append(" or mark secure='false' if you would like to use the component without the sanitizer.").toString());
         }
     }
 }

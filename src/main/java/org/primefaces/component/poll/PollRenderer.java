@@ -41,17 +41,17 @@ public class PollRenderer extends CoreRenderer {
     public void decode(FacesContext context, UIComponent component) {
         Poll poll = (Poll) component;
 
-        if (context.getExternalContext().getRequestParameterMap().containsKey(poll.getClientId(context))) {
-            ActionEvent event = new ActionEvent(poll);
-            if (poll.isImmediate()) {
-                event.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
-            }
-            else {
-                event.setPhaseId(PhaseId.INVOKE_APPLICATION);
-            }
-
-            poll.queueEvent(event);
-        }
+        if (!context.getExternalContext().getRequestParameterMap().containsKey(poll.getClientId(context))) {
+			return;
+		}
+		ActionEvent event = new ActionEvent(poll);
+		if (poll.isImmediate()) {
+		    event.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
+		}
+		else {
+		    event.setPhaseId(PhaseId.INVOKE_APPLICATION);
+		}
+		poll.queueEvent(event);
     }
 
     @Override

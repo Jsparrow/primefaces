@@ -62,7 +62,9 @@ public class ChartRenderer extends CoreRenderer {
 
         writer.startElement("canvas", null);
         writer.writeAttribute("id", clientId + "_canvas", null);
-        if (style != null) writer.writeAttribute("style", style, "style");
+        if (style != null) {
+			writer.writeAttribute("style", style, "style");
+		}
         writer.endElement("canvas");
 
         writer.endElement("div");
@@ -75,7 +77,7 @@ public class ChartRenderer extends CoreRenderer {
 
         writer.write(",\"config\":{");
 
-        writer.write("\"type\":\"" + model.getType() + "\"");
+        writer.write(new StringBuilder().append("\"type\":\"").append(model.getType()).append("\"").toString());
         encodeData(context, data);
         encodeOptions(context, model.getType(), options);
 
@@ -126,26 +128,26 @@ public class ChartRenderer extends CoreRenderer {
     protected void writeLabels(FacesContext context, Object labels) throws IOException {
         boolean isList = labels instanceof List;
 
-        if (isList) {
-            ResponseWriter writer = context.getResponseWriter();
-            List labelList = (List) labels;
+        if (!isList) {
+			return;
+		}
+		ResponseWriter writer = context.getResponseWriter();
+		List labelList = (List) labels;
+		writer.write("[");
+		for (int i = 0; i < labelList.size(); i++) {
+		    if (i != 0) {
+		        writer.write(",");
+		    }
 
-            writer.write("[");
-            for (int i = 0; i < labelList.size(); i++) {
-                if (i != 0) {
-                    writer.write(",");
-                }
-
-                Object item = labelList.get(i);
-                if (item instanceof String) {
-                    writer.write("\"" + EscapeUtils.forJavaScript((String) item) + "\"");
-                }
-                else {
-                    writeLabels(context, item);
-                }
-            }
-            writer.write("]");
-        }
+		    Object item = labelList.get(i);
+		    if (item instanceof String) {
+		        writer.write(new StringBuilder().append("\"").append(EscapeUtils.forJavaScript((String) item)).append("\"").toString());
+		    }
+		    else {
+		        writeLabels(context, item);
+		    }
+		}
+		writer.write("]");
     }
 
     protected void encodeOptions(FacesContext context, String type, Object options) throws IOException {
@@ -155,53 +157,53 @@ public class ChartRenderer extends CoreRenderer {
     protected void encodeScales(FacesContext context, String chartName, Object scales, boolean hasComma) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        if (scales != null) {
-            if (hasComma) {
-                writer.write(",");
-            }
-            hasComma = false;
+        if (scales == null) {
+			return;
+		}
+		if (hasComma) {
+		    writer.write(",");
+		}
+		hasComma = false;
+		if (scales instanceof CartesianScales) {
+		    writer.write("\"scales\":{");
+		    CartesianScales cScales = (CartesianScales) scales;
+		    encodeScaleCommon(writer, cScales);
+		    List<CartesianAxes> xAxes = cScales.getXAxes();
+		    if (xAxes != null && !xAxes.isEmpty()) {
+		        writer.write(",");
+		        encodeAxes(context, chartName, "xAxes", xAxes);
+		    }
 
-            if (scales instanceof CartesianScales) {
-                writer.write("\"scales\":{");
-                CartesianScales cScales = (CartesianScales) scales;
-                encodeScaleCommon(writer, cScales);
-                List<CartesianAxes> xAxes = cScales.getXAxes();
-                if (xAxes != null && !xAxes.isEmpty()) {
-                    writer.write(",");
-                    encodeAxes(context, chartName, "xAxes", xAxes);
-                }
+		    List<CartesianAxes> yAxes = cScales.getYAxes();
+		    if (yAxes != null && !yAxes.isEmpty()) {
+		        writer.write(",");
+		        encodeAxes(context, chartName, "yAxes", yAxes);
+		    }
 
-                List<CartesianAxes> yAxes = cScales.getYAxes();
-                if (yAxes != null && !yAxes.isEmpty()) {
-                    writer.write(",");
-                    encodeAxes(context, chartName, "yAxes", yAxes);
-                }
+		    writer.write("}");
+		}
+		else if (scales instanceof RadialScales) {
+		    writer.write("\"scale\":{");
+		    RadialScales rScales = (RadialScales) scales;
+		    encodeScaleCommon(writer, rScales);
+		    if (rScales.getAngelLines() != null) {
+		        writer.write(",\"angleLines\":" + rScales.getAngelLines().encode());
+		    }
 
-                writer.write("}");
-            }
-            else if (scales instanceof RadialScales) {
-                writer.write("\"scale\":{");
-                RadialScales rScales = (RadialScales) scales;
-                encodeScaleCommon(writer, rScales);
-                if (rScales.getAngelLines() != null) {
-                    writer.write(",\"angleLines\":" + rScales.getAngelLines().encode());
-                }
+		    if (rScales.getGridLines() != null) {
+		        writer.write(",\"gridLines\":" + rScales.getGridLines().encode());
+		    }
 
-                if (rScales.getGridLines() != null) {
-                    writer.write(",\"gridLines\":" + rScales.getGridLines().encode());
-                }
+		    if (rScales.getPointLabels() != null) {
+		        writer.write(",\"pointLabels\":" + rScales.getPointLabels().encode());
+		    }
 
-                if (rScales.getPointLabels() != null) {
-                    writer.write(",\"pointLabels\":" + rScales.getPointLabels().encode());
-                }
+		    if (rScales.getTicks() != null) {
+		        writer.write(",\"ticks\":" + rScales.getTicks().encode());
+		    }
 
-                if (rScales.getTicks() != null) {
-                    writer.write(",\"ticks\":" + rScales.getTicks().encode());
-                }
-
-                writer.write("}");
-            }
-        }
+		    writer.write("}");
+		}
     }
 
     protected void encodeScaleCommon(ResponseWriter writer, AxesScale scale) throws IOException {
@@ -212,11 +214,11 @@ public class ChartRenderer extends CoreRenderer {
     protected void encodeAxes(FacesContext context, String chartName, String name, List<CartesianAxes> axes) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        writer.write("\"" + name + "\":[");
+        writer.write(new StringBuilder().append("\"").append(name).append("\":[").toString());
         for (int i = 0; i < axes.size(); i++) {
             CartesianAxes data = axes.get(i);
 
-            if (chartName.equals("bar")) {
+            if ("bar".equals(chartName)) {
                 data.setOffset(true);
             }
 
@@ -234,56 +236,56 @@ public class ChartRenderer extends CoreRenderer {
     protected void encodeElements(FacesContext context, Elements elements, boolean hasComma) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        if (elements != null) {
-            if (hasComma) {
-                writer.write(",");
-            }
-
-            writer.write("\"elements\":{");
-            writer.write(elements.encode());
-            writer.write("}");
-        }
+        if (elements == null) {
+			return;
+		}
+		if (hasComma) {
+		    writer.write(",");
+		}
+		writer.write("\"elements\":{");
+		writer.write(elements.encode());
+		writer.write("}");
     }
 
     protected void encodeTitle(FacesContext context, Title title, boolean hasComma) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        if (title != null) {
-            if (hasComma) {
-                writer.write(",");
-            }
-
-            writer.write("\"title\":{");
-            writer.write(title.encode());
-            writer.write("}");
-        }
+        if (title == null) {
+			return;
+		}
+		if (hasComma) {
+		    writer.write(",");
+		}
+		writer.write("\"title\":{");
+		writer.write(title.encode());
+		writer.write("}");
     }
 
     protected void encodeTooltip(FacesContext context, Tooltip tooltip, boolean hasComma) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        if (tooltip != null) {
-            if (hasComma) {
-                writer.write(",");
-            }
-
-            writer.write("\"tooltips\":{");
-            writer.write(tooltip.encode());
-            writer.write("}");
-        }
+        if (tooltip == null) {
+			return;
+		}
+		if (hasComma) {
+		    writer.write(",");
+		}
+		writer.write("\"tooltips\":{");
+		writer.write(tooltip.encode());
+		writer.write("}");
     }
 
     protected void encodeLegend(FacesContext context, Legend legend, boolean hasComma) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        if (legend != null) {
-            if (hasComma) {
-                writer.write(",");
-            }
-
-            writer.write("\"legend\":{");
-            writer.write(legend.encode());
-            writer.write("}");
-        }
+        if (legend == null) {
+			return;
+		}
+		if (hasComma) {
+		    writer.write(",");
+		}
+		writer.write("\"legend\":{");
+		writer.write(legend.encode());
+		writer.write("}");
     }
 }

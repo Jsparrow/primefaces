@@ -50,7 +50,7 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
         String clientId = button.getClientId(context);
         String submittedValue = context.getExternalContext().getRequestParameterMap().get(clientId + "_input");
 
-        if (submittedValue != null && submittedValue.equalsIgnoreCase("on")) {
+        if (submittedValue != null && "on".equalsIgnoreCase(submittedValue)) {
             button.setSubmittedValue(true);
         }
         else {
@@ -115,7 +115,7 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
         //icon
         if (icon != null) {
             writer.startElement("span", null);
-            writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " " + icon, null);
+            writer.writeAttribute("class", new StringBuilder().append(HTML.BUTTON_LEFT_ICON_CLASS).append(" ").append(icon).toString(), null);
             writer.endElement("span");
         }
 
@@ -152,7 +152,7 @@ public class SelectBooleanButtonRenderer extends InputRenderer {
     }
 
     @Override
-    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) {
         return ((submittedValue instanceof Boolean) ? submittedValue : Boolean.valueOf(submittedValue.toString()));
     }
 

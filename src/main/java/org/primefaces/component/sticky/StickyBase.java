@@ -33,43 +33,43 @@ public abstract class StickyBase extends UIPanel implements Widget {
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.StickyRenderer";
 
-    public enum PropertyKeys {
-
-        widgetVar,
-        target,
-        margin
-    }
-
     public StickyBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
-    @Override
+	@Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
+	public String getWidgetVar() {
         return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(String widgetVar) {
+	public void setWidgetVar(String widgetVar) {
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public String getTarget() {
+	public String getTarget() {
         return (String) getStateHelper().eval(PropertyKeys.target, null);
     }
 
-    public void setTarget(String target) {
+	public void setTarget(String target) {
         getStateHelper().put(PropertyKeys.target, target);
     }
 
-    public int getMargin() {
+	public int getMargin() {
         return (Integer) getStateHelper().eval(PropertyKeys.margin, 0);
     }
 
-    public void setMargin(int margin) {
+	public void setMargin(int margin) {
         getStateHelper().put(PropertyKeys.margin, margin);
+    }
+
+	public enum PropertyKeys {
+
+        widgetVar,
+        target,
+        margin
     }
 }

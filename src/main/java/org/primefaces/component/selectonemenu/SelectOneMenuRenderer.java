@@ -46,10 +46,14 @@ import org.primefaces.renderkit.SelectOneRenderer;
 import org.primefaces.util.ComponentUtils;
 import org.primefaces.util.HTML;
 import org.primefaces.util.WidgetBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SelectOneMenuRenderer extends SelectOneRenderer {
 
-    @Override
+    private static final Logger logger = LoggerFactory.getLogger(SelectOneMenuRenderer.class);
+
+	@Override
     public void decode(FacesContext context, UIComponent component) {
         SelectOneMenu menu = (SelectOneMenu) component;
         if (!shouldDecode(menu)) {
@@ -65,8 +69,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
             // #2862 check if it matches a label and if so use the value
             List<SelectItem> selectItems = getSelectItems(context, menu);
-            for (int i = 0; i < selectItems.size(); i++) {
-                SelectItem item = selectItems.get(i);
+            for (SelectItem item : selectItems) {
                 if (item.getLabel().equalsIgnoreCase(editorInput)) {
                     menu.setSubmittedValue(getOptionAsString(context, menu, menu.getConverter(), item.getValue()));
                     break;
@@ -81,7 +84,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
     }
 
     @Override
-    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) {
         Renderer renderer = ComponentUtils.getUnwrappedRenderer(
                 context,
                 "javax.faces.SelectOne",
@@ -121,12 +124,12 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
 
         String style = menu.getStyle();
         String styleClass = menu.getStyleClass();
-        styleClass = styleClass == null ? SelectOneMenu.STYLE_CLASS : SelectOneMenu.STYLE_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? SelectOneMenu.STYLE_CLASS : new StringBuilder().append(SelectOneMenu.STYLE_CLASS).append(" ").append(styleClass).toString();
         styleClass = !valid ? styleClass + " ui-state-error" : styleClass;
         styleClass = menu.isDisabled() ? styleClass + " ui-state-disabled" : styleClass;
 
         if (ComponentUtils.isRTL(context, menu)) {
-            styleClass = styleClass + " " + SelectOneMenu.RTL_CLASS;
+            styleClass = new StringBuilder().append(styleClass).append(" ").append(SelectOneMenu.RTL_CLASS).toString();
         }
 
         writer.startElement("div", menu);
@@ -232,8 +235,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             }
 
             String valueToRender = ComponentUtils.getValueToRender(context, menu);
-            for (int i = 0; i < selectItems.size(); i++) {
-                SelectItem selectItem = selectItems.get(i);
+            for (SelectItem selectItem : selectItems) {
                 if (isSelected(context, menu, valueToRender, selectItem.getValue(), null)) {
                     valueToRender = selectItem.getLabel();
                     break;
@@ -290,10 +292,10 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String panelStyle = menu.getPanelStyle();
         String panelStyleClass = menu.getPanelStyleClass();
-        panelStyleClass = panelStyleClass == null ? SelectOneMenu.PANEL_CLASS : SelectOneMenu.PANEL_CLASS + " " + panelStyleClass;
+        panelStyleClass = panelStyleClass == null ? SelectOneMenu.PANEL_CLASS : new StringBuilder().append(SelectOneMenu.PANEL_CLASS).append(" ").append(panelStyleClass).toString();
 
         if (ComponentUtils.isRTL(context, menu)) {
-            panelStyleClass = panelStyleClass + " " + SelectOneMenu.RTL_PANEL_CLASS;
+            panelStyleClass = new StringBuilder().append(panelStyleClass).append(" ").append(SelectOneMenu.RTL_PANEL_CLASS).toString();
         }
 
         String height = null;
@@ -301,7 +303,8 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             height = Integer.parseInt(menu.getHeight()) + "px";
         }
         catch (NumberFormatException e) {
-            height = menu.getHeight();
+            logger.error(e.getMessage(), e);
+			height = menu.getHeight();
         }
 
         writer.startElement("div", null);
@@ -373,46 +376,38 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             throws IOException {
 
         ResponseWriter writer = context.getResponseWriter();
-        boolean hasHeader = false;
+        boolean hasHeader = columns.stream().anyMatch(column -> column.isRendered() && (column.getHeaderText() != null || column.getFacet("header") != null));
 
-        for (int i = 0; i < columns.size(); i++) {
-            Column column = columns.get(i);
-            if (column.isRendered() && (column.getHeaderText() != null || column.getFacet("header") != null)) {
-                hasHeader = true;
-                break;
-            }
-        }
+        if (!hasHeader) {
+			return;
+		}
+		writer.startElement("thead", null);
+		for (Column column : columns) {
+		    if (!column.isRendered()) {
+		        continue;
+		    }
 
-        if (hasHeader) {
-            writer.startElement("thead", null);
-            for (int i = 0; i < columns.size(); i++) {
-                Column column = columns.get(i);
-                if (!column.isRendered()) {
-                    continue;
-                }
+		    String headerText = column.getHeaderText();
+		    String styleClass = column.getStyleClass() == null ? "ui-state-default" : "ui-state-default " + column.getStyleClass();
 
-                String headerText = column.getHeaderText();
-                String styleClass = column.getStyleClass() == null ? "ui-state-default" : "ui-state-default " + column.getStyleClass();
+		    writer.startElement("th", null);
+		    writer.writeAttribute("class", styleClass, null);
 
-                writer.startElement("th", null);
-                writer.writeAttribute("class", styleClass, null);
+		    if (column.getStyle() != null) {
+		        writer.writeAttribute("style", column.getStyle(), null);
+		    }
 
-                if (column.getStyle() != null) {
-                    writer.writeAttribute("style", column.getStyle(), null);
-                }
+		    UIComponent headerFacet = column.getFacet("header");
+		    if (ComponentUtils.shouldRenderFacet(headerFacet)) {
+		        headerFacet.encodeAll(context);
+		    }
+		    else if (headerText != null) {
+		        writer.writeText(headerText, null);
+		    }
 
-                UIComponent headerFacet = column.getFacet("header");
-                if (ComponentUtils.shouldRenderFacet(headerFacet)) {
-                    headerFacet.encodeAll(context);
-                }
-                else if (headerText != null) {
-                    writer.writeText(headerText, null);
-                }
-
-                writer.endElement("th");
-            }
-            writer.endElement("thead");
-        }
+		    writer.endElement("th");
+		}
+		writer.endElement("thead");
     }
 
     protected void encodeOptionsAsTable(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems, List<Column> columns)
@@ -423,8 +418,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
         ValueExpression value = menu.getValueExpression("value");
         Class<?> valueType = value == null ? null : value.getType(context.getELContext());
 
-        for (int i = 0; i < selectItems.size(); i++) {
-            SelectItem selectItem = selectItems.get(i);
+        for (SelectItem selectItem : selectItems) {
             Object itemValue = selectItem.getValue();
             String itemLabel = selectItem.getLabel();
             itemLabel = isValueBlank(itemLabel) ? "&nbsp;" : itemLabel;
@@ -451,8 +445,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
                 writer.endElement("td");
             }
             else {
-                for (int j = 0; j < columns.size(); j++) {
-                    Column column = columns.get(j);
+                for (Column column : columns) {
                     if (!column.isRendered()) {
                         continue;
                     }
@@ -479,9 +472,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
     }
 
     protected void encodeOptionsAsList(FacesContext context, SelectOneMenu menu, List<SelectItem> selectItems) throws IOException {
-        for (int i = 0; i < selectItems.size(); i++) {
-            SelectItem selectItem = selectItems.get(i);
-
+        for (SelectItem selectItem : selectItems) {
             if (selectItem instanceof SelectItemGroup) {
                 SelectItemGroup group = (SelectItemGroup) selectItem;
 
@@ -512,7 +503,7 @@ public class SelectOneMenuRenderer extends SelectOneRenderer {
             writer.writeAttribute("title", selectItem.getDescription(), null);
         }
 
-        if (itemLabel.equals("&nbsp;")) {
+        if ("&nbsp;".equals(itemLabel)) {
             writer.write(itemLabel);
         }
         else {

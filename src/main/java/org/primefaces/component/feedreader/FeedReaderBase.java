@@ -32,44 +32,44 @@ public abstract class FeedReaderBase extends UIComponentBase {
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.FeedReaderRenderer";
 
-    public enum PropertyKeys {
-
-        value,
-        var,
-        size
-    }
-
     public FeedReaderBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
-    @Override
+	@Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
-    public String getValue() {
+	public String getValue() {
         return (String) getStateHelper().eval(PropertyKeys.value, null);
     }
 
-    public void setValue(String value) {
+	public void setValue(String value) {
         getStateHelper().put(PropertyKeys.value, value);
     }
 
-    public String getVar() {
+	public String getVar() {
         return (String) getStateHelper().eval(PropertyKeys.var, null);
     }
 
-    public void setVar(String var) {
+	public void setVar(String var) {
         getStateHelper().put(PropertyKeys.var, var);
     }
 
-    public int getSize() {
+	public int getSize() {
         return (Integer) getStateHelper().eval(PropertyKeys.size, Integer.MAX_VALUE);
     }
 
-    public void setSize(int size) {
+	public void setSize(int size) {
         getStateHelper().put(PropertyKeys.size, size);
+    }
+
+	public enum PropertyKeys {
+
+        value,
+        var,
+        size
     }
 
 }

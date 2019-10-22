@@ -32,35 +32,35 @@ public abstract class ToolbarBase extends UIComponentBase {
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.ToolbarRenderer";
 
-    public enum PropertyKeys {
-
-        style,
-        styleClass
-    }
-
     public ToolbarBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
-    @Override
+	@Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
-    public String getStyle() {
+	public String getStyle() {
         return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(String style) {
+	public void setStyle(String style) {
         getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public String getStyleClass() {
+	public String getStyleClass() {
         return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(String styleClass) {
+	public void setStyleClass(String styleClass) {
         getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+	public enum PropertyKeys {
+
+        style,
+        styleClass
     }
 
 }

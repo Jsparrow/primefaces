@@ -78,10 +78,11 @@ public class LifecyclePhaseListener implements PhaseListener {
         PhaseInfo phaseInfo = getPhaseInfo(event.getPhaseId(), event.getFacesContext());
         phaseInfo.setStart(System.currentTimeMillis());
 
-        if (event.getPhaseId() == PhaseId.RESTORE_VIEW) {
-            PhaseInfo anyPhaseInfo = getPhaseInfo(PhaseId.ANY_PHASE, event.getFacesContext());
-            anyPhaseInfo.setStart(System.currentTimeMillis());
-        }
+        if (event.getPhaseId() != PhaseId.RESTORE_VIEW) {
+			return;
+		}
+		PhaseInfo anyPhaseInfo = getPhaseInfo(PhaseId.ANY_PHASE, event.getFacesContext());
+		anyPhaseInfo.setStart(System.currentTimeMillis());
     }
 
     @Override
@@ -95,11 +96,12 @@ public class LifecyclePhaseListener implements PhaseListener {
         phaseInfo.setEnd(System.currentTimeMillis());
         phaseInfo.setDuration(phaseInfo.getEnd() - phaseInfo.getStart());
 
-        if (event.getPhaseId() == PhaseId.RENDER_RESPONSE) {
-            PhaseInfo anyPhaseInfo = getPhaseInfo(PhaseId.ANY_PHASE, event.getFacesContext());
-            anyPhaseInfo.setEnd(System.currentTimeMillis());
-            anyPhaseInfo.setDuration(anyPhaseInfo.getEnd() - anyPhaseInfo.getStart());
-        }
+        if (event.getPhaseId() != PhaseId.RENDER_RESPONSE) {
+			return;
+		}
+		PhaseInfo anyPhaseInfo = getPhaseInfo(PhaseId.ANY_PHASE, event.getFacesContext());
+		anyPhaseInfo.setEnd(System.currentTimeMillis());
+		anyPhaseInfo.setDuration(anyPhaseInfo.getEnd() - anyPhaseInfo.getStart());
     }
 
     @Override

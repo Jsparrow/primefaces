@@ -61,7 +61,7 @@ public class WebXmlParser {
     public static Map<String, String> getErrorPages(FacesContext context) {
 
         Map<String, String> webXmlErrorPages = getWebXmlErrorPages(context);
-        Map<String, String> webFragmentXmlsErrorPages = getWebFragmentXmlsErrorPages(context);
+        Map<String, String> webFragmentXmlsErrorPages = getWebFragmentXmlsErrorPages();
 
         Map<String, String> errorPages = webXmlErrorPages;
         if (errorPages == null) {
@@ -69,9 +69,7 @@ public class WebXmlParser {
         }
         else if (webFragmentXmlsErrorPages != null) {
             for (Map.Entry<String, String> entry : webFragmentXmlsErrorPages.entrySet()) {
-                if (!errorPages.containsKey(entry.getKey())) {
-                    errorPages.put(entry.getKey(), entry.getValue());
-                }
+                errorPages.putIfAbsent(entry.getKey(), entry.getValue());
             }
         }
 
@@ -96,7 +94,7 @@ public class WebXmlParser {
         return null;
     }
 
-    private static Map<String, String> getWebFragmentXmlsErrorPages(FacesContext context) {
+    private static Map<String, String> getWebFragmentXmlsErrorPages() {
         Map<String, String> webFragmentXmlsErrorPages = null;
 
         try {
@@ -113,9 +111,7 @@ public class WebXmlParser {
                         else {
                             Map<String, String> temp = parseErrorPages(webFragmentXml.getDocumentElement());
                             for (Map.Entry<String, String> entry : temp.entrySet()) {
-                                if (!webFragmentXmlsErrorPages.containsKey(entry.getKey())) {
-                                    webFragmentXmlsErrorPages.put(entry.getKey(), entry.getValue());
-                                }
+                                webFragmentXmlsErrorPages.putIfAbsent(entry.getKey(), entry.getValue());
                             }
                         }
                     }
@@ -194,9 +190,7 @@ public class WebXmlParser {
 
             String location = xpath.compile(LOCATION_EXPRESSION).evaluate(node.getParentNode()).trim();
 
-            if (!errorPages.containsKey(key)) {
-                errorPages.put(key, location);
-            }
+            errorPages.putIfAbsent(key, location);
         }
 
         if (!errorPages.containsKey(null)) {

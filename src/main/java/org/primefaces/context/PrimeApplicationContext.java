@@ -97,9 +97,7 @@ public class PrimeApplicationContext {
                 // Do nothing.
             }
             catch (Throwable t) {
-                LOGGER.log(Level.WARNING, "An unexpected Exception or Error was thrown when calling " +
-                    "facesContext.getExternalContext().getContext().getClassLoader(). Falling back to " +
-                    "Thread.currentThread().getContextClassLoader() instead.", t);
+                LOGGER.log(Level.WARNING, new StringBuilder().append("An unexpected Exception or Error was thrown when calling ").append("facesContext.getExternalContext().getContext().getClassLoader(). Falling back to ").append("Thread.currentThread().getContextClassLoader() instead.").toString(), t);
             }
         }
 
@@ -113,7 +111,7 @@ public class PrimeApplicationContext {
         applicationClassLoader = classLoader;
 
         if (config.isBeanValidationEnabled()) {
-            validatorFactory = new Lazy<>(() -> Validation.buildDefaultValidatorFactory());
+            validatorFactory = new Lazy<>(Validation::buildDefaultValidatorFactory);
             validator = new Lazy<>(() -> validatorFactory.get().getValidator());
         }
         else {
@@ -218,10 +216,9 @@ public class PrimeApplicationContext {
     }
 
     public void release() {
-        if (environment != null && environment.isAtLeastBv11()) {
-            if (validatorFactory != null && validatorFactory.isInitialized() && validatorFactory.get() != null) {
-                validatorFactory.get().close();
-            }
-        }
+        boolean condition = environment != null && environment.isAtLeastBv11() && validatorFactory != null && validatorFactory.isInitialized() && validatorFactory.get() != null;
+		if (condition) {
+		    validatorFactory.get().close();
+		}
     }
 }

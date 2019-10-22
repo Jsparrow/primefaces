@@ -34,7 +34,7 @@ import org.primefaces.component.treetable.TreeTable;
 public class DynamicColumnsListener implements SystemEventListener {
 
     @Override
-    public void processEvent(SystemEvent event) throws AbortProcessingException {
+    public void processEvent(SystemEvent event) {
         Columns columns = (Columns) event.getSource();
         UIComponent parent = columns.getParent();
 

@@ -54,7 +54,7 @@ public class TagCloudRenderer extends CoreRenderer {
         TagCloudModel model = tagCloud.getModel();
         String styleClass = tagCloud.getStyleClass();
         String style = tagCloud.getStyle();
-        styleClass = styleClass == null ? TagCloud.STYLE_CLASS : TagCloud.STYLE_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? TagCloud.STYLE_CLASS : new StringBuilder().append(TagCloud.STYLE_CLASS).append(" ").append(styleClass).toString();
 
         writer.startElement("div", tagCloud);
         writer.writeAttribute("id", tagCloud.getClientId(context), "id");

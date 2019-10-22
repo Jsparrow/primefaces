@@ -55,7 +55,7 @@ public class ImageCompareRenderer extends CoreRenderer {
     protected void encodeMarkup(FacesContext context, ImageCompare compare) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("div", compare);
-        writer.writeAttribute("style", "width: " + compare.getWidth() + "px;" + "height: " + compare.getHeight() + "px;", null);
+        writer.writeAttribute("style", new StringBuilder().append("width: ").append(compare.getWidth()).append("px;").append("height: ").append(compare.getHeight()).append("px;").toString(), null);
         writer.writeAttribute("id", compare.getClientId(context), "id");
         renderDynamicPassThruAttributes(context, compare);
         writer.endElement("div");

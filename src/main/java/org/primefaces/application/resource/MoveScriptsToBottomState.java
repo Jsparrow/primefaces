@@ -44,19 +44,20 @@ public class MoveScriptsToBottomState implements Serializable {
     }
 
     public void addInclude(String type, StringBuilder src) {
-        if (src.length() > 0) {
-            List<String> includeList = includes.computeIfAbsent(type, k -> new ArrayList<>(20));
-            includeList.add(src.toString());
-        }
+        if (src.length() <= 0) {
+			return;
+		}
+		List<String> includeList = includes.computeIfAbsent(type, k -> new ArrayList<>(20));
+		includeList.add(src.toString());
     }
 
     public void addInline(String type, StringBuilder content) {
-        if (content.length() > 0) {
-            List<String> inlineList = inlines.computeIfAbsent(type, k -> new ArrayList<>(100));
-            inlineList.add(content.toString());
-
-            savedInlineTags++;
-        }
+        if (content.length() <= 0) {
+			return;
+		}
+		List<String> inlineList = inlines.computeIfAbsent(type, k -> new ArrayList<>(100));
+		inlineList.add(content.toString());
+		savedInlineTags++;
     }
 
     public Map<String, List<String>> getIncludes() {

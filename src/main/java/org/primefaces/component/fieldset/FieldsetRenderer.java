@@ -71,7 +71,7 @@ public class FieldsetRenderer extends CoreRenderer {
             styleClass = styleClass + " ui-hidden-container";
         }
         if (fieldset.getStyleClass() != null) {
-            styleClass = styleClass + " " + fieldset.getStyleClass();
+            styleClass = new StringBuilder().append(styleClass).append(" ").append(fieldset.getStyleClass()).toString();
         }
 
         writer.startElement("fieldset", fieldset);
@@ -136,35 +136,33 @@ public class FieldsetRenderer extends CoreRenderer {
         UIComponent legend = fieldset.getFacet("legend");
         boolean renderFacet = ComponentUtils.shouldRenderFacet(legend);
 
-        if (renderFacet || legendText != null) {
-            writer.startElement("legend", null);
-            writer.writeAttribute("class", Fieldset.LEGEND_CLASS, null);
+        if (!(renderFacet || legendText != null)) {
+			return;
+		}
+		writer.startElement("legend", null);
+		writer.writeAttribute("class", Fieldset.LEGEND_CLASS, null);
+		if (fieldset.isToggleable()) {
+		    writer.writeAttribute("role", "button", null);
+		    writer.writeAttribute("tabindex", fieldset.getTabindex(), null);
 
-            if (fieldset.isToggleable()) {
-                writer.writeAttribute("role", "button", null);
-                writer.writeAttribute("tabindex", fieldset.getTabindex(), null);
+		    String togglerClass = fieldset.isCollapsed() ? Fieldset.TOGGLER_PLUS_CLASS : Fieldset.TOGGLER_MINUS_CLASS;
 
-                String togglerClass = fieldset.isCollapsed() ? Fieldset.TOGGLER_PLUS_CLASS : Fieldset.TOGGLER_MINUS_CLASS;
-
-                writer.startElement("span", null);
-                writer.writeAttribute("class", togglerClass, null);
-                writer.endElement("span");
-            }
-
-            if (renderFacet) {
-                legend.encodeAll(context);
-            }
-            else {
-                if (fieldset.isEscape()) {
-                    writer.writeText(legendText, "value");
-                }
-                else {
-                    writer.write(legendText);
-                }
-            }
-
-            writer.endElement("legend");
-        }
+		    writer.startElement("span", null);
+		    writer.writeAttribute("class", togglerClass, null);
+		    writer.endElement("span");
+		}
+		if (renderFacet) {
+		    legend.encodeAll(context);
+		}
+		else {
+		    if (fieldset.isEscape()) {
+		        writer.writeText(legendText, "value");
+		    }
+		    else {
+		        writer.write(legendText);
+		    }
+		}
+		writer.endElement("legend");
     }
 
     protected void encodeStateHolder(FacesContext context, Fieldset fieldset) throws IOException {

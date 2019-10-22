@@ -63,13 +63,7 @@ public class EffectRenderer extends CoreRenderer {
     private EffectBuilder getEffectBuilder(Effect effect, String effectedComponentClientId) {
         EffectBuilder effectBuilder = new EffectBuilder(effect.getType(), effectedComponentClientId, effect.isQueue());
 
-        for (UIComponent child : effect.getChildren()) {
-            if (child instanceof UIParameter) {
-                UIParameter param = (UIParameter) child;
-
-                effectBuilder.withOption(param.getName(), (String) param.getValue());
-            }
-        }
+        effect.getChildren().stream().filter(child -> child instanceof UIParameter).map(child -> (UIParameter) child).forEach(param -> effectBuilder.withOption(param.getName(), (String) param.getValue()));
 
         effectBuilder.atSpeed(effect.getSpeed());
 

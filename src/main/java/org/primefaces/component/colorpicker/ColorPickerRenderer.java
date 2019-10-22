@@ -49,22 +49,21 @@ public class ColorPickerRenderer extends InputRenderer {
         String paramName = colorPicker.getClientId(context) + "_input";
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
-        if (params.containsKey(paramName)) {
-            String submittedValue = params.get(paramName);
-
-            if (!COLOR_HEX_PATTERN.matcher(submittedValue).matches()) {
-                return;
-            }
-
-            Converter converter = colorPicker.getConverter();
-            if (converter != null) {
-                colorPicker.setSubmittedValue(
-                        converter.getAsObject(context, component, submittedValue));
-            }
-            else {
-                colorPicker.setSubmittedValue(submittedValue);
-            }
-        }
+        if (!params.containsKey(paramName)) {
+			return;
+		}
+		String submittedValue = params.get(paramName);
+		if (!COLOR_HEX_PATTERN.matcher(submittedValue).matches()) {
+		    return;
+		}
+		Converter converter = colorPicker.getConverter();
+		if (converter != null) {
+		    colorPicker.setSubmittedValue(
+		            converter.getAsObject(context, component, submittedValue));
+		}
+		else {
+		    colorPicker.setSubmittedValue(submittedValue);
+		}
     }
 
     @Override
@@ -87,9 +86,9 @@ public class ColorPickerRenderer extends InputRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = colorPicker.getClientId(context);
         String inputId = clientId + "_input";
-        boolean isPopup = colorPicker.getMode().equals("popup");
+        boolean isPopup = "popup".equals(colorPicker.getMode());
         String styleClass = colorPicker.getStyleClass();
-        styleClass = styleClass == null ? ColorPicker.STYLE_CLASS : ColorPicker.STYLE_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? ColorPicker.STYLE_CLASS : new StringBuilder().append(ColorPicker.STYLE_CLASS).append(" ").append(styleClass).toString();
 
         writer.startElement("span", null);
         writer.writeAttribute("id", clientId, "id");
@@ -138,8 +137,7 @@ public class ColorPickerRenderer extends InputRenderer {
         writer.startElement("span", null);
         writer.writeAttribute("class", HTML.BUTTON_TEXT_CLASS, null);
 
-        writer.write("<span id=\"" + clientId + "_livePreview\" "
-                + "style=\"overflow:hidden;width:1em;height:1em;display:block;border:solid 1px #000;text-indent:1em;white-space:nowrap;");
+        writer.write(new StringBuilder().append("<span id=\"").append(clientId).append("_livePreview\" ").append("style=\"overflow:hidden;width:1em;height:1em;display:block;border:solid 1px #000;text-indent:1em;white-space:nowrap;").toString());
         if (value != null) {
             writer.write("background-color:#" + value);
         }

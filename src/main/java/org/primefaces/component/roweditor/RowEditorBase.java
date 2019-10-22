@@ -32,62 +32,62 @@ public abstract class RowEditorBase extends UIComponentBase {
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.RowEditorRenderer";
 
-    public enum PropertyKeys {
+    public RowEditorBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
+    }
+
+	public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
+    }
+
+	public String getStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
+    }
+
+	public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+	public String getEditTitle() {
+        return (String) getStateHelper().eval(PropertyKeys.editTitle, null);
+    }
+
+	public void setEditTitle(String editTitle) {
+        getStateHelper().put(PropertyKeys.editTitle, editTitle);
+    }
+
+	public String getCancelTitle() {
+        return (String) getStateHelper().eval(PropertyKeys.cancelTitle, null);
+    }
+
+	public void setCancelTitle(String cancelTitle) {
+        getStateHelper().put(PropertyKeys.cancelTitle, cancelTitle);
+    }
+
+	public String getSaveTitle() {
+        return (String) getStateHelper().eval(PropertyKeys.saveTitle, null);
+    }
+
+	public void setSaveTitle(String saveTitle) {
+        getStateHelper().put(PropertyKeys.saveTitle, saveTitle);
+    }
+
+	public enum PropertyKeys {
 
         style,
         styleClass,
         editTitle,
         cancelTitle,
         saveTitle;
-    }
-
-    public RowEditorBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public String getEditTitle() {
-        return (String) getStateHelper().eval(PropertyKeys.editTitle, null);
-    }
-
-    public void setEditTitle(String editTitle) {
-        getStateHelper().put(PropertyKeys.editTitle, editTitle);
-    }
-
-    public String getCancelTitle() {
-        return (String) getStateHelper().eval(PropertyKeys.cancelTitle, null);
-    }
-
-    public void setCancelTitle(String cancelTitle) {
-        getStateHelper().put(PropertyKeys.cancelTitle, cancelTitle);
-    }
-
-    public String getSaveTitle() {
-        return (String) getStateHelper().eval(PropertyKeys.saveTitle, null);
-    }
-
-    public void setSaveTitle(String saveTitle) {
-        getStateHelper().put(PropertyKeys.saveTitle, saveTitle);
     }
 
 }

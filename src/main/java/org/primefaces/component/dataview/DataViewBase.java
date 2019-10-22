@@ -36,7 +36,64 @@ public abstract class DataViewBase extends UIData implements Widget, ClientBehav
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.DataViewRenderer";
 
-    public enum PropertyKeys {
+    public DataViewBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getWidgetVar() {
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
+
+	public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
+
+	public String getStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
+    }
+
+	public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
+    }
+
+	public String getStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
+    }
+
+	public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+	public String getLayout() {
+        return (String) getStateHelper().eval(PropertyKeys.layout, "list");
+    }
+
+	public void setLayout(String layout) {
+        getStateHelper().put(PropertyKeys.layout, layout);
+    }
+
+	public String getGridIcon() {
+        return (String) getStateHelper().eval(PropertyKeys.gridIcon, null);
+    }
+
+	public void setGridIcon(String gridIcon) {
+        getStateHelper().put(PropertyKeys.gridIcon, gridIcon);
+    }
+
+	public String getListIcon() {
+        return (String) getStateHelper().eval(PropertyKeys.listIcon, null);
+    }
+
+	public void setListIcon(String listIcon) {
+        getStateHelper().put(PropertyKeys.listIcon, listIcon);
+    }
+
+	public enum PropertyKeys {
 
         widgetVar,
         style,
@@ -44,62 +101,5 @@ public abstract class DataViewBase extends UIData implements Widget, ClientBehav
         layout,
         gridIcon,
         listIcon
-    }
-
-    public DataViewBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public String getLayout() {
-        return (String) getStateHelper().eval(PropertyKeys.layout, "list");
-    }
-
-    public void setLayout(String layout) {
-        getStateHelper().put(PropertyKeys.layout, layout);
-    }
-
-    public String getGridIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.gridIcon, null);
-    }
-
-    public void setGridIcon(String gridIcon) {
-        getStateHelper().put(PropertyKeys.gridIcon, gridIcon);
-    }
-
-    public String getListIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.listIcon, null);
-    }
-
-    public void setListIcon(String listIcon) {
-        getStateHelper().put(PropertyKeys.listIcon, listIcon);
     }
 }

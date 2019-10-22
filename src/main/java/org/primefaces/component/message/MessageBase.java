@@ -34,7 +34,66 @@ public abstract class MessageBase extends UIMessage implements UINotification, W
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.MessageRenderer";
 
-    public enum PropertyKeys {
+    public MessageBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getDisplay() {
+        return (String) getStateHelper().eval(PropertyKeys.display, "both");
+    }
+
+	public void setDisplay(String display) {
+        getStateHelper().put(PropertyKeys.display, display);
+    }
+
+	public boolean isEscape() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.escape, true);
+    }
+
+	public void setEscape(boolean escape) {
+        getStateHelper().put(PropertyKeys.escape, escape);
+    }
+
+	@Override
+    public String getSeverity() {
+        return (String) getStateHelper().eval(PropertyKeys.severity, null);
+    }
+
+	public void setSeverity(String severity) {
+        getStateHelper().put(PropertyKeys.severity, severity);
+    }
+
+	public String getStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
+    }
+
+	public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
+    }
+
+	public String getStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
+    }
+
+	public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+	@Override
+    public boolean isSkipDetailIfEqualsSummary() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.skipDetailIfEqualsSummary, false);
+    }
+
+	public void setSkipDetailIfEqualsSummary(boolean skipDetailIfEqualsSummary) {
+        getStateHelper().put(PropertyKeys.skipDetailIfEqualsSummary, skipDetailIfEqualsSummary);
+    }
+
+	public enum PropertyKeys {
 
         display,
         escape,
@@ -42,64 +101,5 @@ public abstract class MessageBase extends UIMessage implements UINotification, W
         style,
         styleClass,
         skipDetailIfEqualsSummary
-    }
-
-    public MessageBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getDisplay() {
-        return (String) getStateHelper().eval(PropertyKeys.display, "both");
-    }
-
-    public void setDisplay(String display) {
-        getStateHelper().put(PropertyKeys.display, display);
-    }
-
-    public boolean isEscape() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.escape, true);
-    }
-
-    public void setEscape(boolean escape) {
-        getStateHelper().put(PropertyKeys.escape, escape);
-    }
-
-    @Override
-    public String getSeverity() {
-        return (String) getStateHelper().eval(PropertyKeys.severity, null);
-    }
-
-    public void setSeverity(String severity) {
-        getStateHelper().put(PropertyKeys.severity, severity);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    @Override
-    public boolean isSkipDetailIfEqualsSummary() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.skipDetailIfEqualsSummary, false);
-    }
-
-    public void setSkipDetailIfEqualsSummary(boolean skipDetailIfEqualsSummary) {
-        getStateHelper().put(PropertyKeys.skipDetailIfEqualsSummary, skipDetailIfEqualsSummary);
     }
 }

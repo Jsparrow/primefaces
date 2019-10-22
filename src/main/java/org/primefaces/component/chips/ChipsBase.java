@@ -35,7 +35,64 @@ public abstract class ChipsBase extends HtmlInputText implements Widget, InputHo
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.ChipsRenderer";
 
-    public enum PropertyKeys {
+    public ChipsBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getPlaceholder() {
+        return (String) getStateHelper().eval(PropertyKeys.placeholder, null);
+    }
+
+	public void setPlaceholder(String placeholder) {
+        getStateHelper().put(PropertyKeys.placeholder, placeholder);
+    }
+
+	public String getWidgetVar() {
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
+
+	public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
+
+	public int getMax() {
+        return (Integer) getStateHelper().eval(PropertyKeys.max, Integer.MAX_VALUE);
+    }
+
+	public void setMax(int max) {
+        getStateHelper().put(PropertyKeys.max, max);
+    }
+
+	public String getInputStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.inputStyle, null);
+    }
+
+	public void setInputStyle(String inputStyle) {
+        getStateHelper().put(PropertyKeys.inputStyle, inputStyle);
+    }
+
+	public String getInputStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.inputStyleClass, null);
+    }
+
+	public void setInputStyleClass(String inputStyleClass) {
+        getStateHelper().put(PropertyKeys.inputStyleClass, inputStyleClass);
+    }
+
+	public boolean isAddOnBlur() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.addOnBlur, false);
+    }
+
+	public void setAddOnBlur(boolean addOnBlur) {
+        getStateHelper().put(PropertyKeys.addOnBlur, addOnBlur);
+    }
+
+	public enum PropertyKeys {
 
         placeholder,
         widgetVar,
@@ -43,62 +100,5 @@ public abstract class ChipsBase extends HtmlInputText implements Widget, InputHo
         inputStyle,
         inputStyleClass,
         addOnBlur
-    }
-
-    public ChipsBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getPlaceholder() {
-        return (String) getStateHelper().eval(PropertyKeys.placeholder, null);
-    }
-
-    public void setPlaceholder(String placeholder) {
-        getStateHelper().put(PropertyKeys.placeholder, placeholder);
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public int getMax() {
-        return (Integer) getStateHelper().eval(PropertyKeys.max, Integer.MAX_VALUE);
-    }
-
-    public void setMax(int max) {
-        getStateHelper().put(PropertyKeys.max, max);
-    }
-
-    public String getInputStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.inputStyle, null);
-    }
-
-    public void setInputStyle(String inputStyle) {
-        getStateHelper().put(PropertyKeys.inputStyle, inputStyle);
-    }
-
-    public String getInputStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.inputStyleClass, null);
-    }
-
-    public void setInputStyleClass(String inputStyleClass) {
-        getStateHelper().put(PropertyKeys.inputStyleClass, inputStyleClass);
-    }
-
-    public boolean isAddOnBlur() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.addOnBlur, false);
-    }
-
-    public void setAddOnBlur(boolean addOnBlur) {
-        getStateHelper().put(PropertyKeys.addOnBlur, addOnBlur);
     }
 }

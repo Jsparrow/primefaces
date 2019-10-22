@@ -105,12 +105,12 @@ public class PanelRenderer extends CoreRenderer {
 
         writer.startElement("div", null);
         writer.writeAttribute("id", clientId, null);
-        String styleClass = panel.getStyleClass() == null ? Panel.PANEL_CLASS : Panel.PANEL_CLASS + " " + panel.getStyleClass();
+        String styleClass = panel.getStyleClass() == null ? Panel.PANEL_CLASS : new StringBuilder().append(Panel.PANEL_CLASS).append(" ").append(panel.getStyleClass()).toString();
 
         if (collapsed) {
             styleClass += " ui-hidden-container";
 
-            if (panel.getToggleOrientation().equals("horizontal")) {
+            if ("horizontal".equals(panel.getToggleOrientation())) {
                 styleClass += " ui-panel-collapsed-h";
             }
         }
@@ -143,7 +143,7 @@ public class PanelRenderer extends CoreRenderer {
 
         if (optionsMenu != null) {
             optionsMenu.setOverlay(true);
-            optionsMenu.setTrigger("@(#" + ComponentUtils.escapeSelector(clientId) + "_menu)");
+            optionsMenu.setTrigger(new StringBuilder().append("@(#").append(ComponentUtils.escapeSelector(clientId)).append("_menu)").toString());
             optionsMenu.setMy("left top");
             optionsMenu.setAt("left bottom");
 
@@ -226,20 +226,19 @@ public class PanelRenderer extends CoreRenderer {
         UIComponent footer = panel.getFacet("footer");
         String footerText = panel.getFooter();
 
-        if (footerText != null || ComponentUtils.shouldRenderFacet(footer)) {
-            writer.startElement("div", null);
-            writer.writeAttribute("id", panel.getClientId(context) + "_footer", null);
-            writer.writeAttribute("class", Panel.PANEL_FOOTER_CLASS, null);
-
-            if (footer != null) {
-                renderChild(context, footer);
-            }
-            else if (footerText != null) {
-                writer.writeText(footerText, null);
-            }
-
-            writer.endElement("div");
-        }
+        if (!(footerText != null || ComponentUtils.shouldRenderFacet(footer))) {
+			return;
+		}
+		writer.startElement("div", null);
+		writer.writeAttribute("id", panel.getClientId(context) + "_footer", null);
+		writer.writeAttribute("class", Panel.PANEL_FOOTER_CLASS, null);
+		if (footer != null) {
+		    renderChild(context, footer);
+		}
+		else if (footerText != null) {
+		    writer.writeText(footerText, null);
+		}
+		writer.endElement("div");
     }
 
     protected void encodeIcon(FacesContext context, Panel panel, String iconClass, String id, String title, String ariaLabel) throws IOException {

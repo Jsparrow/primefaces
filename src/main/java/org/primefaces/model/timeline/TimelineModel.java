@@ -54,9 +54,7 @@ public class TimelineModel<E, G> implements Serializable {
         this.events = new ArrayList<>();
 
         if (events != null && !events.isEmpty()) {
-            for (TimelineEvent<E> event : events) {
-                add(event);
-            }
+            events.forEach(event -> add(event));
         }
     }
 
@@ -132,9 +130,7 @@ public class TimelineModel<E, G> implements Serializable {
      */
     public void addAll(Collection<TimelineEvent<E>> events, TimelineUpdater timelineUpdater) {
         if (events != null && !events.isEmpty()) {
-            for (TimelineEvent<E> event : events) {
-                add(event, timelineUpdater);
-            }
+            events.forEach(event -> add(event, timelineUpdater));
         }
     }
 
@@ -155,14 +151,14 @@ public class TimelineModel<E, G> implements Serializable {
      */
     public void update(TimelineEvent<E> event, TimelineUpdater timelineUpdater) {
         int index = getIndex(event);
-        if (index >= 0) {
-            events.set(index, event);
-
-            if (timelineUpdater != null) {
-                // update UI
-                timelineUpdater.update(event);
-            }
-        }
+        if (index < 0) {
+			return;
+		}
+		events.set(index, event);
+		if (timelineUpdater != null) {
+		    // update UI
+		    timelineUpdater.update(event);
+		}
     }
 
     /**
@@ -182,9 +178,7 @@ public class TimelineModel<E, G> implements Serializable {
      */
     public void updateAll(Collection<TimelineEvent<E>> events, TimelineUpdater timelineUpdater) {
         if (events != null && !events.isEmpty()) {
-            for (TimelineEvent<E> event : events) {
-                update(event, timelineUpdater);
-            }
+            events.forEach(event -> update(event, timelineUpdater));
         }
     }
 
@@ -229,9 +223,7 @@ public class TimelineModel<E, G> implements Serializable {
      */
     public void deleteAll(Collection<TimelineEvent<E>> events, TimelineUpdater timelineUpdater) {
         if (events != null && !events.isEmpty()) {
-            for (TimelineEvent<E> event : events) {
-                delete(event, timelineUpdater);
-            }
+            events.forEach(event -> delete(event, timelineUpdater));
         }
     }
 

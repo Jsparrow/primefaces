@@ -57,10 +57,14 @@ import java.time.temporal.Temporal;
 import java.util.Collection;
 import java.util.Date;
 import java.util.TimeZone;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class BaseCalendarRenderer extends InputRenderer {
 
-    @Override
+    private static final Logger logger = LoggerFactory.getLogger(BaseCalendarRenderer.class);
+
+	@Override
     public void decode(FacesContext context, UIComponent component) {
         UICalendar uicalendar = (UICalendar) component;
 
@@ -112,7 +116,8 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
 
         if (popup) {
             inputStyleClass = (inputStyleClass == null) ? UICalendar.INPUT_STYLE_CLASS
-                                                        : UICalendar.INPUT_STYLE_CLASS + " " + inputStyleClass;
+                                                        : new StringBuilder().append(UICalendar.INPUT_STYLE_CLASS).append(" ")
+																.append(inputStyleClass).toString();
             readonly = uicalendar.isReadonly() || uicalendar.isReadonlyInput();
 
             if (uicalendar.isDisabled()) {
@@ -140,7 +145,7 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
     }
 
     @Override
-    public Object getConvertedValue(FacesContext context, UIComponent component, Object value) throws ConverterException {
+    public Object getConvertedValue(FacesContext context, UIComponent component, Object value) {
         String submittedValue = isValueBlank((String) value) ? null : ((String) value).trim();
         if (submittedValue == null) {
             return null;
@@ -187,7 +192,8 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
             return format.parse(submittedValue);
         }
         catch (ParseException e) {
-            throw createConverterException(context, calendar, submittedValue, format.format(new Date()));
+            logger.error(e.getMessage(), e);
+			throw createConverterException(context, calendar, submittedValue, format.format(new Date()));
         }
     }
 
@@ -206,7 +212,8 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
                         : YearMonth.parse(submittedValue, formatter);
             }
             catch (DateTimeParseException e) {
-                throw createConverterException(context, calendar, submittedValue, formatter.format(LocalDateTime.now()));
+                logger.error(e.getMessage(), e);
+				throw createConverterException(context, calendar, submittedValue, formatter.format(LocalDateTime.now()));
             }
         }
         else if (type == LocalTime.class) {
@@ -219,7 +226,8 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
                 return LocalTime.parse(submittedValue, formatter);
             }
             catch (DateTimeParseException e) {
-                throw createConverterException(context, calendar, submittedValue, formatter.format(LocalDateTime.now()));
+                logger.error(e.getMessage(), e);
+				throw createConverterException(context, calendar, submittedValue, formatter.format(LocalDateTime.now()));
             }
         }
         else if (type == LocalDateTime.class) {
@@ -233,7 +241,8 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
                 return LocalDateTime.parse(submittedValue, formatter);
             }
             catch (DateTimeParseException e) {
-                throw createConverterException(context, calendar, submittedValue, formatter.format(LocalDateTime.now()));
+                logger.error(e.getMessage(), e);
+				throw createConverterException(context, calendar, submittedValue, formatter.format(LocalDateTime.now()));
             }
         }
 
@@ -301,6 +310,7 @@ public abstract class BaseCalendarRenderer extends InputRenderer {
                 type = Class.forName(listType.getTypeName());
             }
             catch (ReflectiveOperationException ex) {
+				logger.error(ex.getMessage(), ex);
                 //NOOP
             }
         }

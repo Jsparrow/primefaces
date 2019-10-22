@@ -35,7 +35,80 @@ public abstract class RatingBase extends UIInput implements Widget, ClientBehavi
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.RatingRenderer";
 
-    public enum PropertyKeys {
+    public RatingBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getWidgetVar() {
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
+
+	public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
+
+	public int getStars() {
+        return (Integer) getStateHelper().eval(PropertyKeys.stars, 5);
+    }
+
+	public void setStars(int stars) {
+        getStateHelper().put(PropertyKeys.stars, stars);
+    }
+
+	public boolean isDisabled() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+    }
+
+	public void setDisabled(boolean disabled) {
+        getStateHelper().put(PropertyKeys.disabled, disabled);
+    }
+
+	public boolean isReadonly() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.readonly, false);
+    }
+
+	public void setReadonly(boolean readonly) {
+        getStateHelper().put(PropertyKeys.readonly, readonly);
+    }
+
+	public String getOnRate() {
+        return (String) getStateHelper().eval(PropertyKeys.onRate, null);
+    }
+
+	public void setOnRate(String onRate) {
+        getStateHelper().put(PropertyKeys.onRate, onRate);
+    }
+
+	public String getStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
+    }
+
+	public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
+    }
+
+	public String getStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
+    }
+
+	public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+	public boolean isCancel() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.cancel, true);
+    }
+
+	public void setCancel(boolean cancel) {
+        getStateHelper().put(PropertyKeys.cancel, cancel);
+    }
+
+	public enum PropertyKeys {
 
         widgetVar,
         stars,
@@ -45,78 +118,5 @@ public abstract class RatingBase extends UIInput implements Widget, ClientBehavi
         style,
         styleClass,
         cancel
-    }
-
-    public RatingBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public int getStars() {
-        return (Integer) getStateHelper().eval(PropertyKeys.stars, 5);
-    }
-
-    public void setStars(int stars) {
-        getStateHelper().put(PropertyKeys.stars, stars);
-    }
-
-    public boolean isDisabled() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
-    }
-
-    public void setDisabled(boolean disabled) {
-        getStateHelper().put(PropertyKeys.disabled, disabled);
-    }
-
-    public boolean isReadonly() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.readonly, false);
-    }
-
-    public void setReadonly(boolean readonly) {
-        getStateHelper().put(PropertyKeys.readonly, readonly);
-    }
-
-    public String getOnRate() {
-        return (String) getStateHelper().eval(PropertyKeys.onRate, null);
-    }
-
-    public void setOnRate(String onRate) {
-        getStateHelper().put(PropertyKeys.onRate, onRate);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public boolean isCancel() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.cancel, true);
-    }
-
-    public void setCancel(boolean cancel) {
-        getStateHelper().put(PropertyKeys.cancel, cancel);
     }
 }

@@ -46,26 +46,22 @@ public class QRCodeHandler extends BaseDynamicContentHandler {
         Map<String, String> barcodeMapping = (Map) session.get(Constants.BARCODE_MAPPING);
         String value = barcodeMapping.get(sessionKey);
 
-        if (value != null) {
-            boolean cache = Boolean.parseBoolean(params.get(Constants.DYNAMIC_CONTENT_CACHE_PARAM));
-
-            externalContext.setResponseStatus(200);
-            externalContext.setResponseContentType("image/png");
-
-            handleCache(externalContext, cache);
-
-            ErrorCorrectionLevel ecl = ErrorCorrectionLevel.L;
-            String errorCorrection = params.get("qrec");
-            if (!LangUtils.isValueBlank(errorCorrection)) {
-                ecl = ErrorCorrectionLevel.valueOf(errorCorrection);
-            }
-
-            QRCode.from(value).to(ImageType.PNG).withErrorCorrection(ecl).withCharset("UTF-8")
-                        .writeTo(externalContext.getResponseOutputStream());
-
-            externalContext.responseFlushBuffer();
-            context.responseComplete();
-        }
+        if (value == null) {
+			return;
+		}
+		boolean cache = Boolean.parseBoolean(params.get(Constants.DYNAMIC_CONTENT_CACHE_PARAM));
+		externalContext.setResponseStatus(200);
+		externalContext.setResponseContentType("image/png");
+		handleCache(externalContext, cache);
+		ErrorCorrectionLevel ecl = ErrorCorrectionLevel.L;
+		String errorCorrection = params.get("qrec");
+		if (!LangUtils.isValueBlank(errorCorrection)) {
+		    ecl = ErrorCorrectionLevel.valueOf(errorCorrection);
+		}
+		QRCode.from(value).to(ImageType.PNG).withErrorCorrection(ecl).withCharset("UTF-8")
+		            .writeTo(externalContext.getResponseOutputStream());
+		externalContext.responseFlushBuffer();
+		context.responseComplete();
     }
 
 }

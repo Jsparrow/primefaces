@@ -66,15 +66,14 @@ public class CspPhaseListener implements PhaseListener {
         FacesContext context = event.getFacesContext();
         ExternalContext externalContext = context.getExternalContext();
         // TODO Support portlet environments?
-        if (externalContext.getResponse() instanceof HttpServletResponse) {
-            HttpServletResponse response = (HttpServletResponse) externalContext.getResponse();
-            CspState state = PrimeFacesContext.getCspState(context);
-
-            String policy = LangUtils.isValueBlank(customPolicy) ? "script-src 'self'" : customPolicy;
-            response.addHeader("Content-Security-Policy", policy + " 'nonce-" + state.getNonce() + "'");
-
-            PrimeFaces.current().executeScript("PrimeFaces.csp.init('" + Encode.forJavaScript(state.getNonce()) + "');");
-        }
+		if (!(externalContext.getResponse() instanceof HttpServletResponse)) {
+			return;
+		}
+		HttpServletResponse response = (HttpServletResponse) externalContext.getResponse();
+		CspState state = PrimeFacesContext.getCspState(context);
+		String policy = LangUtils.isValueBlank(customPolicy) ? "script-src 'self'" : customPolicy;
+		response.addHeader("Content-Security-Policy", new StringBuilder().append(policy).append(" 'nonce-").append(state.getNonce()).append("'").toString());
+		PrimeFaces.current().executeScript(new StringBuilder().append("PrimeFaces.csp.init('").append(Encode.forJavaScript(state.getNonce())).append("');").toString());
     }
 
     @Override

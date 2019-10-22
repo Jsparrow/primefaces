@@ -58,7 +58,7 @@ public class TerminalRenderer extends CoreRenderer {
         String clientId = terminal.getClientId(context);
         String style = terminal.getStyle();
         String styleClass = terminal.getStyleClass();
-        styleClass = (styleClass == null) ? Terminal.CONTAINER_CLASS : Terminal.CONTAINER_CLASS + " " + styleClass;
+        styleClass = (styleClass == null) ? Terminal.CONTAINER_CLASS : new StringBuilder().append(Terminal.CONTAINER_CLASS).append(" ").append(styleClass).toString();
         String welcomeMessage = terminal.getWelcomeMessage();
         String prompt = terminal.getPrompt();
         String inputId = clientId + "_input";

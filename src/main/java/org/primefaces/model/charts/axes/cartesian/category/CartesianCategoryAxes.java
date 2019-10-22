@@ -112,7 +112,7 @@ public class CartesianCategoryAxes extends CartesianAxes {
             fsw.write(super.encode());
 
             if (this.type != null) {
-                fsw.write(",\"type\":\"" + this.type + "\"");
+                fsw.write(new StringBuilder().append(",\"type\":\"").append(this.type).append("\"").toString());
             }
 
             ChartUtils.writeDataValue(fsw, "labels", this.labels, true);

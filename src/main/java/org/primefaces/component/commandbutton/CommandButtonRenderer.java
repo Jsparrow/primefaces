@@ -68,7 +68,7 @@ public class CommandButtonRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = button.getClientId(context);
         String type = button.getType();
-        boolean pushButton = (type.equals("reset") || type.equals("button"));
+        boolean pushButton = ("reset".equals(type) || "button".equals(type));
         Object value = button.getValue();
         String icon = button.getIcon();
         String title = button.getTitle();
@@ -103,8 +103,8 @@ public class CommandButtonRenderer extends CoreRenderer {
 
         //icon
         if (!isValueBlank(icon)) {
-            String defaultIconClass = button.getIconPos().equals("left") ? HTML.BUTTON_LEFT_ICON_CLASS : HTML.BUTTON_RIGHT_ICON_CLASS;
-            String iconClass = defaultIconClass + " " + icon;
+            String defaultIconClass = "left".equals(button.getIconPos()) ? HTML.BUTTON_LEFT_ICON_CLASS : HTML.BUTTON_RIGHT_ICON_CLASS;
+            String iconClass = new StringBuilder().append(defaultIconClass).append(" ").append(icon).toString();
 
             writer.startElement("span", null);
             writer.writeAttribute("class", iconClass, null);
@@ -135,7 +135,7 @@ public class CommandButtonRenderer extends CoreRenderer {
         writer.endElement("button");
     }
 
-    protected String buildRequest(FacesContext context, CommandButton button, String clientId) throws FacesException {
+    protected String buildRequest(FacesContext context, CommandButton button, String clientId) {
         PrimeRequestContext requestContext = PrimeRequestContext.getCurrentInstance(context);
         boolean csvEnabled = requestContext.getApplicationContext().getConfig().isClientSideValidationEnabled() && button.isValidateClient();
         String request = null;
@@ -147,7 +147,7 @@ public class CommandButtonRenderer extends CoreRenderer {
         else {
             UIForm form = ComponentTraversalUtils.closestForm(context, button);
             if (form == null) {
-                throw new FacesException("CommandButton : \"" + clientId + "\" must be inside a form element");
+                throw new FacesException(new StringBuilder().append("CommandButton : \"").append(clientId).append("\" must be inside a form element").toString());
             }
 
             request = buildNonAjaxRequest(context, button, form, null, false);

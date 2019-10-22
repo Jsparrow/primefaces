@@ -91,7 +91,7 @@ public class AjaxStatusRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.startElement("div", null);
-        writer.writeAttribute("id", clientId + "_" + facetName, null);
+        writer.writeAttribute("id", new StringBuilder().append(clientId).append("_").append(facetName).toString(), null);
         if (hidden) {
             writer.writeAttribute("style", "display:none", null);
         }

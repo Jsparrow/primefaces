@@ -50,139 +50,126 @@ public abstract class UICalendar extends HtmlInputText {
 
     private boolean conversionFailed = false;
 
-    public enum PropertyKeys {
-        locale,
-        timeZone,
-        pattern,
-        mindate,
-        maxdate,
-        timeOnly,
-        readonlyInput,
-        inputStyle,
-        inputStyleClass,
-        type,
-        rangeSeparator
-    }
-
     public Object getLocale() {
         return getStateHelper().eval(PropertyKeys.locale, null);
     }
 
-    public void setLocale(Object locale) {
+	public void setLocale(Object locale) {
         getStateHelper().put(PropertyKeys.locale, locale);
     }
 
-    public Object getTimeZone() {
+	public Object getTimeZone() {
         return getStateHelper().eval(PropertyKeys.timeZone, null);
     }
 
-    public void setTimeZone(Object timeZone) {
+	public void setTimeZone(Object timeZone) {
         getStateHelper().put(PropertyKeys.timeZone, timeZone);
     }
 
-    public String getPattern() {
+	public String getPattern() {
         return (String) getStateHelper().eval(PropertyKeys.pattern, null);
     }
 
-    public void setPattern(String pattern) {
+	public void setPattern(String pattern) {
         getStateHelper().put(PropertyKeys.pattern, pattern);
     }
 
-    public Object getMindate() {
+	public Object getMindate() {
         return getStateHelper().eval(PropertyKeys.mindate, null);
     }
 
-    public void setMindate(Object mindate) {
+	public void setMindate(Object mindate) {
         getStateHelper().put(PropertyKeys.mindate, mindate);
     }
 
-    public Object getMaxdate() {
+	public Object getMaxdate() {
         return getStateHelper().eval(PropertyKeys.maxdate, null);
     }
 
-    public void setMaxdate(Object maxdate) {
+	public void setMaxdate(Object maxdate) {
         getStateHelper().put(PropertyKeys.maxdate, maxdate);
     }
 
-    public boolean isTimeOnly() {
+	public boolean isTimeOnly() {
         return (Boolean) getStateHelper().eval(PropertyKeys.timeOnly, false);
     }
 
-    public void setTimeOnly(boolean timeOnly) {
+	public void setTimeOnly(boolean timeOnly) {
         getStateHelper().put(PropertyKeys.timeOnly, timeOnly);
     }
 
-    public boolean isReadonlyInput() {
+	public boolean isReadonlyInput() {
         return (Boolean) getStateHelper().eval(PropertyKeys.readonlyInput, false);
     }
 
-    public void setReadonlyInput(boolean readonlyInput) {
+	public void setReadonlyInput(boolean readonlyInput) {
         getStateHelper().put(PropertyKeys.readonlyInput, readonlyInput);
     }
 
-    public String getInputStyle() {
+	public String getInputStyle() {
         return (String) getStateHelper().eval(PropertyKeys.inputStyle, null);
     }
 
-    public void setInputStyle(String inputStyle) {
+	public void setInputStyle(String inputStyle) {
         getStateHelper().put(PropertyKeys.inputStyle, inputStyle);
     }
 
-    public String getInputStyleClass() {
+	public String getInputStyleClass() {
         return (String) getStateHelper().eval(PropertyKeys.inputStyleClass, null);
     }
 
-    public void setInputStyleClass(String inputStyleClass) {
+	public void setInputStyleClass(String inputStyleClass) {
         getStateHelper().put(PropertyKeys.inputStyleClass, inputStyleClass);
     }
 
-    public String getType() {
+	public String getType() {
         return (String) getStateHelper().eval(PropertyKeys.type, "text");
     }
 
-    public void setType(String type) {
+	public void setType(String type) {
         getStateHelper().put(PropertyKeys.type, type);
     }
 
-    public String getSelectionMode() {
+	public String getSelectionMode() {
         return null;
     }
 
-    public Locale calculateLocale(FacesContext facesContext) {
+	public Locale calculateLocale(FacesContext facesContext) {
         return LocaleUtils.resolveLocale(getLocale(), getClientId(facesContext));
     }
 
-    public boolean hasTime() {
+	public boolean hasTime() {
         String pattern = getPattern();
 
         return (pattern != null && (pattern.contains("HH") || pattern.contains("mm") || pattern.contains("ss")));
     }
 
-    public String calculatePattern() {
+	public String calculatePattern() {
         String pattern = getPattern();
 
         if (pattern == null) {
             Locale locale = calculateLocale(getFacesContext());
             return DateTimeFormatterBuilder.getLocalizedDateTimePattern(FormatStyle.SHORT, null, IsoChronology.INSTANCE, locale);
-        }
-        else return pattern;
+        } else {
+			return pattern;
+		}
     }
 
-    public String calculateTimeOnlyPattern() {
+	public String calculateTimeOnlyPattern() {
         if (timeOnlyPattern == null) {
             Locale locale = calculateLocale(getFacesContext());
             String localePattern = DateTimeFormatterBuilder.getLocalizedDateTimePattern(FormatStyle.SHORT, null, IsoChronology.INSTANCE, locale);
             String userTimePattern = getPattern();
 
-            timeOnlyPattern = localePattern + " " + userTimePattern;
+            timeOnlyPattern = new StringBuilder().append(localePattern).append(" ").append(userTimePattern).toString();
         }
 
         return timeOnlyPattern;
     }
 
-    public abstract String calculateWidgetPattern();
+	public abstract String calculateWidgetPattern();
 
-    public String convertPattern(String patternTemplate) {
+	public String convertPattern(String patternTemplate) {
         String pattern = patternTemplate.replaceAll("MMM", "###");
         int patternLen = pattern.length();
         int countM = patternLen - pattern.replaceAll("M", "").length();
@@ -200,43 +187,39 @@ public abstract class UICalendar extends HtmlInputText {
         return pattern;
     }
 
-    public boolean isConversionFailed() {
+	public boolean isConversionFailed() {
         return conversionFailed;
     }
 
-    public void setConversionFailed(boolean value) {
+	public void setConversionFailed(boolean value) {
         conversionFailed = value;
     }
 
-    public String getInputClientId() {
+	public String getInputClientId() {
         return getClientId(getFacesContext()) + "_input";
     }
 
-    public String getValidatableInputClientId() {
+	public String getValidatableInputClientId() {
         return getClientId(getFacesContext()) + "_input";
     }
 
-    public String getLabelledBy() {
+	public String getLabelledBy() {
         return (String) getStateHelper().get("labelledby");
     }
 
-    public void setLabelledBy(String labelledBy) {
+	public void setLabelledBy(String labelledBy) {
         getStateHelper().put("labelledby", labelledBy);
     }
 
-    public String getRangeSeparator() {
+	public String getRangeSeparator() {
         return (String) getStateHelper().eval(PropertyKeys.rangeSeparator, "-");
     }
 
-    public void setRangeSeparator(java.lang.String _rangeSeparator) {
+	public void setRangeSeparator(java.lang.String _rangeSeparator) {
         getStateHelper().put(PropertyKeys.rangeSeparator, _rangeSeparator);
     }
 
-    public enum ValidationResult {
-        OK, INVALID_DISABLED_DATE, INVALID_RANGE_DATES_SEQUENTIAL, INVALID_MIN_DATE, INVALID_MAX_DATE, INVALID_OUT_OF_RANGE
-    }
-
-    protected void createFacesMessageFromValidationResult(FacesContext context, ValidationResult validationResult) {
+	protected void createFacesMessageFromValidationResult(FacesContext context, ValidationResult validationResult) {
         FacesMessage msg = null;
         String validatorMessage = getValidatorMessage();
         Object[] params = new Object[] {MessageFactory.getLabel(context, this),
@@ -267,6 +250,24 @@ public abstract class UICalendar extends HtmlInputText {
             }
         }
         context.addMessage(getClientId(context), msg);
+    }
+
+	public enum PropertyKeys {
+        locale,
+        timeZone,
+        pattern,
+        mindate,
+        maxdate,
+        timeOnly,
+        readonlyInput,
+        inputStyle,
+        inputStyleClass,
+        type,
+        rangeSeparator
+    }
+
+	public enum ValidationResult {
+        OK, INVALID_DISABLED_DATE, INVALID_RANGE_DATES_SEQUENTIAL, INVALID_MIN_DATE, INVALID_MAX_DATE, INVALID_OUT_OF_RANGE
     }
 
     /*

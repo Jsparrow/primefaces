@@ -85,34 +85,34 @@ public class SafeFile extends File {
     private void doDirCheck(String path) throws ValidationException {
         Matcher m1 = DIR_BLACKLIST_PAT.matcher( path );
         if ( null != m1 && m1.find() ) {
-            throw new ValidationException( "Invalid directory", "Directory path (" + path + ") contains illegal character: " + m1.group() );
+            throw new ValidationException( "Invalid directory", new StringBuilder().append("Directory path (").append(path).append(") contains illegal character: ").append(m1.group()).toString() );
         }
 
         Matcher m2 = PERCENTS_PAT.matcher( path );
         if (null != m2 &&  m2.find() ) {
-            throw new ValidationException( "Invalid directory", "Directory path (" + path + ") contains encoded characters: " + m2.group() );
+            throw new ValidationException( "Invalid directory", new StringBuilder().append("Directory path (").append(path).append(") contains encoded characters: ").append(m2.group()).toString() );
         }
 
         int ch = containsUnprintableCharacters(path);
         if (ch != -1) {
-            throw new ValidationException("Invalid directory", "Directory path (" + path + ") contains unprintable character: " + ch);
+            throw new ValidationException("Invalid directory", new StringBuilder().append("Directory path (").append(path).append(") contains unprintable character: ").append(ch).toString());
         }
     }
 
     private void doFileCheck(String path) throws ValidationException {
         Matcher m1 = FILE_BLACKLIST_PAT.matcher( path );
         if ( m1.find() ) {
-            throw new ValidationException( "Invalid directory", "Directory path (" + path + ") contains illegal character: " + m1.group() );
+            throw new ValidationException( "Invalid directory", new StringBuilder().append("Directory path (").append(path).append(") contains illegal character: ").append(m1.group()).toString() );
         }
 
         Matcher m2 = PERCENTS_PAT.matcher( path );
         if ( m2.find() ) {
-            throw new ValidationException( "Invalid file", "File path (" + path + ") contains encoded characters: " + m2.group() );
+            throw new ValidationException( "Invalid file", new StringBuilder().append("File path (").append(path).append(") contains encoded characters: ").append(m2.group()).toString() );
         }
 
         int ch = containsUnprintableCharacters(path);
         if (ch != -1) {
-            throw new ValidationException("Invalid file", "File path (" + path + ") contains unprintable character: " + ch);
+            throw new ValidationException("Invalid file", new StringBuilder().append("File path (").append(path).append(") contains unprintable character: ").append(ch).toString());
         }
     }
 

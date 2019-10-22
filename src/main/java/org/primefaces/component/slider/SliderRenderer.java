@@ -90,7 +90,7 @@ public class SliderRenderer extends CoreRenderer {
                 inputMaxValue = Constants.EMPTY_STRING;
             }
 
-            wb.attr("input", inputMin.getClientId(context) + "," + inputMax.getClientId(context))
+            wb.attr("input", new StringBuilder().append(inputMin.getClientId(context)).append(",").append(inputMax.getClientId(context)).toString())
                     .append(",values:[").append(inputMinValue).append(",").append(inputMaxValue).append("]");
         }
         else {

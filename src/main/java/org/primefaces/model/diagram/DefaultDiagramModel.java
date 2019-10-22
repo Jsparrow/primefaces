@@ -129,9 +129,7 @@ public class DefaultDiagramModel implements DiagramModel, Serializable {
     public Element findElement(String id) {
         Element element = null;
         if (elements != null && !elements.isEmpty()) {
-            for (int i = 0; i < elements.size(); i++) {
-                Element el = elements.get(i);
-
+            for (Element el : elements) {
                 if (el.getId().equals(id)) {
                     element = el;
                     break;
@@ -148,9 +146,7 @@ public class DefaultDiagramModel implements DiagramModel, Serializable {
         List<EndPoint> endPoints = element.getEndPoints();
 
         if (endPoints != null && !endPoints.isEmpty()) {
-            for (int i = 0; i < endPoints.size(); i++) {
-                EndPoint ep = endPoints.get(i);
-
+            for (EndPoint ep : endPoints) {
                 if (ep.getId().equals(id)) {
                     endPoint = ep;
                     break;

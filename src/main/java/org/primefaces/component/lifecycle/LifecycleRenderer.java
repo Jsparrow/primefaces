@@ -72,8 +72,8 @@ public class LifecycleRenderer extends CoreRenderer {
         writer.endElement("div");
 
         writer.startElement("div", null);
-        writer.writeAttribute("class", Lifecycle.STYLE_CLASS_RESULT + " " + Lifecycle.STYLE_CLASS_SCORE
-                + "-" + getScore(phaseId, phaseInfo.getDuration()), null);
+        writer.writeAttribute("class", new StringBuilder().append(Lifecycle.STYLE_CLASS_RESULT).append(" ").append(Lifecycle.STYLE_CLASS_SCORE).append("-").append(getScore(phaseId, phaseInfo.getDuration()))
+				.toString(), null);
         writer.write(phaseInfo.getDuration() + "ms");
         writer.endElement("div");
 

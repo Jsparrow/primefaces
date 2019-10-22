@@ -54,11 +54,11 @@ public class OutputPanelRenderer extends CoreRenderer {
 
     public void encodeMarkup(FacesContext context, OutputPanel panel) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
-        String tag = panel.getLayout().equals("block") ? BLOCK : INLINE;
+        String tag = "block".equals(panel.getLayout()) ? BLOCK : INLINE;
         String clientId = panel.getClientId(context);
         String style = panel.getStyle();
         String styleClass = panel.getStyleClass();
-        styleClass = (styleClass == null) ? OutputPanel.CONTAINER_CLASS : OutputPanel.CONTAINER_CLASS + " " + styleClass;
+        styleClass = (styleClass == null) ? OutputPanel.CONTAINER_CLASS : new StringBuilder().append(OutputPanel.CONTAINER_CLASS).append(" ").append(styleClass).toString();
 
         writer.startElement(tag, panel);
         writer.writeAttribute("id", clientId, "id");

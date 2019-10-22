@@ -53,29 +53,29 @@ public class Password extends PasswordBase {
         String match = getMatch();
         Object submittedValue = getSubmittedValue();
 
-        if (isValid() && !LangUtils.isValueBlank(match)) {
-            Password matchWith = (Password) SearchExpressionFacade.resolveComponent(context, this, match);
+        if (!(isValid() && !LangUtils.isValueBlank(match))) {
+			return;
+		}
+		Password matchWith = (Password) SearchExpressionFacade.resolveComponent(context, this, match);
+		if (submittedValue != null && !submittedValue.equals(matchWith.getSubmittedValue())) {
+		    setValid(false);
+		    matchWith.setValid(false);
 
-            if (submittedValue != null && !submittedValue.equals(matchWith.getSubmittedValue())) {
-                setValid(false);
-                matchWith.setValid(false);
+		    String validatorMessage = getValidatorMessage();
+		    FacesMessage msg = null;
 
-                String validatorMessage = getValidatorMessage();
-                FacesMessage msg = null;
+		    if (validatorMessage != null) {
+		        msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, validatorMessage, validatorMessage);
+		    }
+		    else {
+		        Object[] params = new Object[2];
+		        params[0] = MessageFactory.getLabel(context, this);
+		        params[1] = MessageFactory.getLabel(context, matchWith);
 
-                if (validatorMessage != null) {
-                    msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, validatorMessage, validatorMessage);
-                }
-                else {
-                    Object[] params = new Object[2];
-                    params[0] = MessageFactory.getLabel(context, this);
-                    params[1] = MessageFactory.getLabel(context, matchWith);
+		        msg = MessageFactory.getMessage(Password.INVALID_MATCH_KEY, FacesMessage.SEVERITY_ERROR, params);
+		    }
 
-                    msg = MessageFactory.getMessage(Password.INVALID_MATCH_KEY, FacesMessage.SEVERITY_ERROR, params);
-                }
-
-                context.addMessage(getClientId(context), msg);
-            }
-        }
+		    context.addMessage(getClientId(context), msg);
+		}
     }
 }

@@ -87,10 +87,10 @@ public class DataGridRenderer extends DataRenderer {
         String layout = grid.getLayout();
         String paginatorPosition = grid.getPaginatorPosition();
         String style = grid.getStyle();
-        String styleClass = grid.getStyleClass() == null ? DataGrid.DATAGRID_CLASS : DataGrid.DATAGRID_CLASS + " " + grid.getStyleClass();
+        String styleClass = grid.getStyleClass() == null ? DataGrid.DATAGRID_CLASS : new StringBuilder().append(DataGrid.DATAGRID_CLASS).append(" ").append(grid.getStyleClass()).toString();
         String contentClass = empty
                               ? DataGrid.EMPTY_CONTENT_CLASS
-                              : (layout.equals("tabular") ? DataGrid.TABLE_CONTENT_CLASS : DataGrid.GRID_CONTENT_CLASS);
+                              : ("tabular".equals(layout) ? DataGrid.TABLE_CONTENT_CLASS : DataGrid.GRID_CONTENT_CLASS);
 
         if (hasPaginator) {
             grid.calculateFirst();
@@ -105,7 +105,7 @@ public class DataGridRenderer extends DataRenderer {
 
         encodeFacet(context, grid, "header", DataGrid.HEADER_CLASS);
 
-        if (hasPaginator && !paginatorPosition.equalsIgnoreCase("bottom")) {
+        if (hasPaginator && !"bottom".equalsIgnoreCase(paginatorPosition)) {
             encodePaginatorMarkup(context, grid, "top");
         }
 
@@ -128,7 +128,7 @@ public class DataGridRenderer extends DataRenderer {
 
         writer.endElement("div");
 
-        if (hasPaginator && !paginatorPosition.equalsIgnoreCase("top")) {
+        if (hasPaginator && !"top".equalsIgnoreCase(paginatorPosition)) {
             encodePaginatorMarkup(context, grid, "bottom");
         }
 
@@ -140,10 +140,10 @@ public class DataGridRenderer extends DataRenderer {
     protected void encodeContent(FacesContext context, DataGrid grid) throws IOException {
         String layout = grid.getLayout();
 
-        if (layout.equals("tabular")) {
+        if ("tabular".equals(layout)) {
             encodeTable(context, grid);
         }
-        else if (layout.equals("grid")) {
+        else if ("grid".equals(layout)) {
             encodeGrid(context, grid);
         }
         else {
@@ -160,7 +160,7 @@ public class DataGridRenderer extends DataRenderer {
         int itemsToRender = rows != 0 ? rows : grid.getRowCount();
         int numberOfRowsToRender = (itemsToRender + columns - 1) / columns;
         int displayedItemsToRender = rowIndex + itemsToRender;
-        String columnClass = DataGrid.COLUMN_CLASS + " " + GridLayoutUtils.getColumnClass(columns);
+        String columnClass = new StringBuilder().append(DataGrid.COLUMN_CLASS).append(" ").append(GridLayoutUtils.getColumnClass(columns)).toString();
 
         for (int i = 0; i < numberOfRowsToRender; i++) {
             grid.setRowIndex(rowIndex);

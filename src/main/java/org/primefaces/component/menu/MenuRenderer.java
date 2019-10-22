@@ -64,13 +64,13 @@ public class MenuRenderer extends BaseMenuRenderer {
         String styleClass = menu.getStyleClass();
         String defaultStyleClass = menu.isOverlay() ? Menu.DYNAMIC_CONTAINER_CLASS : Menu.STATIC_CONTAINER_CLASS;
         if (menu.isToggleable()) {
-            defaultStyleClass = defaultStyleClass + " " + Menu.TOGGLEABLE_MENU_CLASS;
+            defaultStyleClass = new StringBuilder().append(defaultStyleClass).append(" ").append(Menu.TOGGLEABLE_MENU_CLASS).toString();
         }
-        styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
+        styleClass = styleClass == null ? defaultStyleClass : new StringBuilder().append(defaultStyleClass).append(" ").append(styleClass).toString();
 
         writer.startElement("div", menu);
         if (!LangUtils.isValueEmpty(menu.getMaxHeight())) {
-            styleClass = styleClass + " "  + Menu.CONTAINER_MAXHEIGHT_CLASS;
+            styleClass = new StringBuilder().append(styleClass).append(" ").append(Menu.CONTAINER_MAXHEIGHT_CLASS).toString();
             style = style != null ? style : "";
             style += ";max-height:" + menu.getMaxHeight();
             // If maxHeight is a number, add the unit "px", otherwise use it as is
@@ -108,10 +108,10 @@ public class MenuRenderer extends BaseMenuRenderer {
                     MenuItem menuItem = (MenuItem) element;
                     String containerStyle = menuItem.getContainerStyle();
                     String containerStyleClass = menuItem.getContainerStyleClass();
-                    containerStyleClass = (containerStyleClass == null) ? Menu.MENUITEM_CLASS : Menu.MENUITEM_CLASS + " " + containerStyleClass;
+                    containerStyleClass = (containerStyleClass == null) ? Menu.MENUITEM_CLASS : new StringBuilder().append(Menu.MENUITEM_CLASS).append(" ").append(containerStyleClass).toString();
 
                     if (toggleable && isSubmenu) {
-                        containerStyleClass = containerStyleClass + " " + Menu.SUBMENU_CHILD_CLASS;
+                        containerStyleClass = new StringBuilder().append(containerStyleClass).append(" ").append(Menu.SUBMENU_CHILD_CLASS).toString();
                     }
 
                     writer.startElement("li", null);
@@ -139,7 +139,7 @@ public class MenuRenderer extends BaseMenuRenderer {
         String icon = submenu.getIcon();
         String style = submenu.getStyle();
         String styleClass = submenu.getStyleClass();
-        styleClass = styleClass == null ? Menu.SUBMENU_TITLE_CLASS : Menu.SUBMENU_TITLE_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? Menu.SUBMENU_TITLE_CLASS : new StringBuilder().append(Menu.SUBMENU_TITLE_CLASS).append(" ").append(styleClass).toString();
         boolean toggleable = menu.isToggleable();
 
         //title

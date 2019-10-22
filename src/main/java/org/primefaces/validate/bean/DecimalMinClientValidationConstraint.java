@@ -31,8 +31,8 @@ public class DecimalMinClientValidationConstraint extends AbstractClientValidati
 
     public static final String CONSTRAINT_ID = "DecimalMin";
     public static final String MESSAGE_METADATA = "data-p-decimalmin-msg";
-    public static final String CONSTRAINT_CLASS_NAME = CONSTRAINT_PACKAGE  + "." + CONSTRAINT_ID;
-    public static final String MESSAGE_ID = "{" + CONSTRAINT_CLASS_NAME + ".message}";
+    public static final String CONSTRAINT_CLASS_NAME = new StringBuilder().append(CONSTRAINT_PACKAGE).append(".").append(CONSTRAINT_ID).toString();
+    public static final String MESSAGE_ID = new StringBuilder().append("{").append(CONSTRAINT_CLASS_NAME).append(".message}").toString();
 
     public DecimalMinClientValidationConstraint() {
         super(MESSAGE_ID, MESSAGE_METADATA);

@@ -33,12 +33,10 @@ public class GreaterThanEqualsFilterConstraint implements FilterConstraint {
             return true;
         }
 
-        if (value instanceof Comparable) {
-            int compared = ((Comparable) value).compareTo(filter);
-
-            return (compared == 0 || compared > 0);
-        }
-
-        return false;
+        if (!(value instanceof Comparable)) {
+			return false;
+		}
+		int compared = ((Comparable) value).compareTo(filter);
+		return (compared == 0 || compared > 0);
     }
 }

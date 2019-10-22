@@ -58,7 +58,7 @@ public class InplaceRenderer extends CoreRenderer {
 
         String userStyleClass = inplace.getStyleClass();
         String userStyle = inplace.getStyle();
-        String styleClass = userStyleClass == null ? Inplace.CONTAINER_CLASS : Inplace.CONTAINER_CLASS + " " + userStyleClass;
+        String styleClass = userStyleClass == null ? Inplace.CONTAINER_CLASS : new StringBuilder().append(Inplace.CONTAINER_CLASS).append(" ").append(userStyleClass).toString();
         boolean disabled = inplace.isDisabled();
         String displayClass = disabled ? Inplace.DISABLED_DISPLAY_CLASS : Inplace.DISPLAY_CLASS;
 
@@ -176,12 +176,12 @@ public class InplaceRenderer extends CoreRenderer {
 
         writer.startElement("button", null);
         writer.writeAttribute("type", "button", null);
-        writer.writeAttribute("class", HTML.BUTTON_ICON_ONLY_BUTTON_CLASS + " " + styleClass, null);
+        writer.writeAttribute("class", new StringBuilder().append(HTML.BUTTON_ICON_ONLY_BUTTON_CLASS).append(" ").append(styleClass).toString(), null);
         writer.writeAttribute("title", title, null);
 
         //icon
         writer.startElement("span", null);
-        writer.writeAttribute("class", HTML.BUTTON_LEFT_ICON_CLASS + " " + icon, null);
+        writer.writeAttribute("class", new StringBuilder().append(HTML.BUTTON_LEFT_ICON_CLASS).append(" ").append(icon).toString(), null);
         writer.endElement("span");
 
         //text

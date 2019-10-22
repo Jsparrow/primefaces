@@ -102,7 +102,7 @@ public class FileUploadUtils {
             File parentFile = file.getParentFile();
 
             if (!file.exists()) {
-                throw new ValidationException("Invalid directory", "Invalid directory, \"" + file + "\" does not exist.");
+                throw new ValidationException("Invalid directory", new StringBuilder().append("Invalid directory, \"").append(file).append("\" does not exist.").toString());
             }
             if (!parentFile.exists()) {
                 throw new ValidationException("Invalid directory", "Invalid directory, specified parent does not exist.");
@@ -111,7 +111,7 @@ public class FileUploadUtils {
                 throw new ValidationException("Invalid directory", "Invalid directory, specified parent is not a directory.");
             }
             if (!file.getCanonicalPath().startsWith(parentFile.getCanonicalPath())) {
-                throw new ValidationException("Invalid directory", "Invalid directory, \"" + file + "\" does not inside specified parent.");
+                throw new ValidationException("Invalid directory", new StringBuilder().append("Invalid directory, \"").append(file).append("\" does not inside specified parent.").toString());
             }
 
             if (!file.getCanonicalPath().equals(filePath)) {
@@ -142,11 +142,9 @@ public class FileUploadUtils {
         try {
             boolean validType = isValidFileName(fileUpload, uploadedFile)
                         && isValidFileContent(context, fileUpload, fileName, uploadedFile.getInputStream());
-            if (validType) {
-                if (LOGGER.isLoggable(Level.FINE)) {
-                    LOGGER.fine(String.format("The uploaded file %s meets the filename and content type specifications", fileName));
-                }
-            }
+            if (validType && LOGGER.isLoggable(Level.FINE)) {
+			    LOGGER.fine(String.format("The uploaded file %s meets the filename and content type specifications", fileName));
+			}
             return validType;
         }
         catch (IOException | ScriptException ex) {

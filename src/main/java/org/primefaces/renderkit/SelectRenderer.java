@@ -48,10 +48,14 @@ import java.util.Map;
 import java.util.RandomAccess;
 
 import org.primefaces.util.LangUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class SelectRenderer extends InputRenderer {
 
-    protected List<SelectItem> getSelectItems(FacesContext context, UIInput component) {
+    private static final Logger logger = LoggerFactory.getLogger(SelectRenderer.class);
+
+	protected List<SelectItem> getSelectItems(FacesContext context, UIInput component) {
         List<SelectItem> selectItems = new ArrayList<>();
 
         for (int i = 0; i < component.getChildCount(); i++) {
@@ -170,7 +174,7 @@ public abstract class SelectRenderer extends InputRenderer {
         return new SelectItem(itemValue, itemLabel, description, disabled, escaped, noSelectionOption);
     }
 
-    protected String getOptionAsString(FacesContext context, UIComponent component, Converter converter, Object value) throws ConverterException {
+    protected String getOptionAsString(FacesContext context, UIComponent component, Converter converter, Object value) {
         if (!(component instanceof ValueHolder)) {
             return value == null ? null : value.toString();
         }
@@ -218,7 +222,8 @@ public abstract class SelectRenderer extends InputRenderer {
             newValue = ef.coerceToType(value, itemValueType);
         }
         catch (ELException | IllegalArgumentException ele) {
-            newValue = value;
+            logger.error(ele.getMessage(), ele);
+			newValue = value;
         }
 
         return newValue;
@@ -277,8 +282,7 @@ public abstract class SelectRenderer extends InputRenderer {
         }
 
         int count = selectItems.size();
-        for (int i = 0; i < selectItems.size(); i++) {
-            SelectItem selectItem = selectItems.get(i);
+        for (SelectItem selectItem : selectItems) {
             if (selectItem instanceof SelectItemGroup) {
                 count += countSelectItems(((SelectItemGroup) selectItem).getSelectItems());
             }
@@ -306,8 +310,7 @@ public abstract class SelectRenderer extends InputRenderer {
      * @return <code>newSubmittedValues</code> merged with checked, disabled <code>oldValues</code>
      * @throws javax.faces.FacesException if client side manipulation has been detected, in order to reject the submission
      */
-    protected String[] validateSubmittedValues(FacesContext context, UIInput component, Object[] oldValues, String... submittedValues)
-            throws FacesException {
+    protected String[] validateSubmittedValues(FacesContext context, UIInput component, Object[] oldValues, String... submittedValues) {
         List<String> validSubmittedValues = doValidateSubmittedValues(
                 context,
                 component,
@@ -327,8 +330,7 @@ public abstract class SelectRenderer extends InputRenderer {
         List<String> validSubmittedValues = new ArrayList<>();
 
         // loop attached SelectItems - other values are not allowed
-        for (int i = 0; i < selectItems.size(); i++) {
-            SelectItem selectItem = selectItems.get(i);
+		selectItems.forEach(selectItem -> {
             if (selectItem instanceof SelectItemGroup) {
                 SelectItem[] groupItemsArray = ((SelectItemGroup) selectItem).getSelectItems();
                 // if it's a SelectItemGroup also include its children in the checked values
@@ -358,7 +360,7 @@ public abstract class SelectRenderer extends InputRenderer {
                     }
                 }
             }
-        }
+        });
 
         return validSubmittedValues;
     }

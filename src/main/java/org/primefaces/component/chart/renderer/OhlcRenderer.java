@@ -84,11 +84,12 @@ public class OhlcRenderer extends CartesianPlotRenderer {
             writer.write(",animate:true");
         }
 
-        if (model.isShowDatatip()) {
-            writer.write(",datatip:true");
-            if (model.getDatatipFormat() != null) {
-                writer.write(",datatipFormat:\"" + model.getDatatipFormat() + "\"");
-            }
-        }
+        if (!model.isShowDatatip()) {
+			return;
+		}
+		writer.write(",datatip:true");
+		if (model.getDatatipFormat() != null) {
+		    writer.write(new StringBuilder().append(",datatipFormat:\"").append(model.getDatatipFormat()).append("\"").toString());
+		}
     }
 }

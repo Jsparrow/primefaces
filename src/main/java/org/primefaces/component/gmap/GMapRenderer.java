@@ -79,7 +79,7 @@ public class GMapRenderer extends CoreRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("GMap", map.resolveWidgetVar(context), clientId)
                 .nativeAttr("mapTypeId", "google.maps.MapTypeId." + map.getType().toUpperCase())
-                .nativeAttr("center", "new google.maps.LatLng(" + map.getCenter() + ")")
+                .nativeAttr("center", new StringBuilder().append("new google.maps.LatLng(").append(map.getCenter()).append(")").toString())
                 .attr("zoom", map.getZoom());
 
 
@@ -128,9 +128,7 @@ public class GMapRenderer extends CoreRenderer {
         if (infoWindow != null) {
             Map<String, List<ClientBehavior>> behaviorEvents = map.getClientBehaviors();
             List<ClientBehavior> overlaySelectBehaviors = behaviorEvents.get("overlaySelect");
-            for (ClientBehavior clientBehavior : overlaySelectBehaviors) {
-                ((AjaxBehavior) clientBehavior).setOnsuccess("PF('" + widgetVar + "').openWindow(data)");
-            }
+            overlaySelectBehaviors.forEach(clientBehavior -> ((AjaxBehavior) clientBehavior).setOnsuccess(new StringBuilder().append("PF('").append(widgetVar).append("').openWindow(data)").toString()));
         }
 
         encodeClientBehaviors(context, map);
@@ -163,11 +161,12 @@ public class GMapRenderer extends CoreRenderer {
 
         GMapInfoWindow infoWindow = map.getInfoWindow();
 
-        if (infoWindow != null) {
-            writer.write(",infoWindow: new google.maps.InfoWindow({");
-            writer.write("id:'" + infoWindow.getClientId(context) + "'");
-            writer.write("})");
-        }
+        if (infoWindow == null) {
+			return;
+		}
+		writer.write(",infoWindow: new google.maps.InfoWindow({");
+		writer.write(new StringBuilder().append("id:'").append(infoWindow.getClientId(context)).append("'").toString());
+		writer.write("})");
     }
 
     protected void encodeMarkers(FacesContext context, GMap map) throws IOException {
@@ -191,20 +190,20 @@ public class GMapRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
 
         writer.write("new google.maps.Marker({");
-        writer.write("position:new google.maps.LatLng(" + marker.getLatlng().getLat() + ", " + marker.getLatlng().getLng() + ")");
+        writer.write(new StringBuilder().append("position:new google.maps.LatLng(").append(marker.getLatlng().getLat()).append(", ").append(marker.getLatlng().getLng()).append(")").toString());
 
-        writer.write(",id:'" + marker.getId() + "'");
+        writer.write(new StringBuilder().append(",id:'").append(marker.getId()).append("'").toString());
         if (marker.getTitle() != null) {
-            writer.write(",title:\"" + EscapeUtils.forJavaScript(marker.getTitle()) + "\"");
+            writer.write(new StringBuilder().append(",title:\"").append(EscapeUtils.forJavaScript(marker.getTitle())).append("\"").toString());
         }
         if (marker.getIcon() != null) {
-            writer.write(",icon:'" + marker.getIcon() + "'");
+            writer.write(new StringBuilder().append(",icon:'").append(marker.getIcon()).append("'").toString());
         }
         if (marker.getShadow() != null) {
-            writer.write(",shadow:'" + marker.getShadow() + "'");
+            writer.write(new StringBuilder().append(",shadow:'").append(marker.getShadow()).append("'").toString());
         }
         if (marker.getCursor() != null) {
-            writer.write(",cursor:'" + marker.getCursor() + "'");
+            writer.write(new StringBuilder().append(",cursor:'").append(marker.getCursor()).append("'").toString());
         }
         if (marker.isDraggable()) {
             writer.write(",draggable: true");
@@ -232,7 +231,7 @@ public class GMapRenderer extends CoreRenderer {
             Polyline polyline = lines.next();
 
             writer.write("new google.maps.Polyline({");
-            writer.write("id:'" + polyline.getId() + "'");
+            writer.write(new StringBuilder().append("id:'").append(polyline.getId()).append("'").toString());
 
             encodePaths(context, polyline.getPaths());
 
@@ -240,7 +239,7 @@ public class GMapRenderer extends CoreRenderer {
             writer.write(",strokeWeight:" + polyline.getStrokeWeight());
 
             if (polyline.getStrokeColor() != null) {
-                writer.write(",strokeColor:'" + polyline.getStrokeColor() + "'");
+                writer.write(new StringBuilder().append(",strokeColor:'").append(polyline.getStrokeColor()).append("'").toString());
             }
             if (polyline.getZindex() > Integer.MIN_VALUE) {
                 writer.write(",zIndex:" + polyline.getZindex());
@@ -269,7 +268,7 @@ public class GMapRenderer extends CoreRenderer {
             Polygon polygon = polygons.next();
 
             writer.write("new google.maps.Polygon({");
-            writer.write("id:'" + polygon.getId() + "'");
+            writer.write(new StringBuilder().append("id:'").append(polygon.getId()).append("'").toString());
 
             encodePaths(context, polygon.getPaths());
 
@@ -278,10 +277,10 @@ public class GMapRenderer extends CoreRenderer {
             writer.write(",fillOpacity:" + polygon.getFillOpacity());
 
             if (polygon.getStrokeColor() != null) {
-                writer.write(",strokeColor:'" + polygon.getStrokeColor() + "'");
+                writer.write(new StringBuilder().append(",strokeColor:'").append(polygon.getStrokeColor()).append("'").toString());
             }
             if (polygon.getFillColor() != null) {
-                writer.write(",fillColor:'" + polygon.getFillColor() + "'");
+                writer.write(new StringBuilder().append(",fillColor:'").append(polygon.getFillColor()).append("'").toString());
             }
             if (polygon.getZindex() > Integer.MIN_VALUE) {
                 writer.write(",zIndex:" + polygon.getZindex());
@@ -307,9 +306,9 @@ public class GMapRenderer extends CoreRenderer {
             Circle circle = circles.next();
 
             writer.write("new google.maps.Circle({");
-            writer.write("id:'" + circle.getId() + "'");
+            writer.write(new StringBuilder().append("id:'").append(circle.getId()).append("'").toString());
 
-            writer.write(",center:new google.maps.LatLng(" + circle.getCenter().getLat() + ", " + circle.getCenter().getLng() + ")");
+            writer.write(new StringBuilder().append(",center:new google.maps.LatLng(").append(circle.getCenter().getLat()).append(", ").append(circle.getCenter().getLng()).append(")").toString());
             writer.write(",radius:" + circle.getRadius());
 
             writer.write(",strokeOpacity:" + circle.getStrokeOpacity());
@@ -317,10 +316,10 @@ public class GMapRenderer extends CoreRenderer {
             writer.write(",fillOpacity:" + circle.getFillOpacity());
 
             if (circle.getStrokeColor() != null) {
-                writer.write(",strokeColor:'" + circle.getStrokeColor() + "'");
+                writer.write(new StringBuilder().append(",strokeColor:'").append(circle.getStrokeColor()).append("'").toString());
             }
             if (circle.getFillColor() != null) {
-                writer.write(",fillColor:'" + circle.getFillColor() + "'");
+                writer.write(new StringBuilder().append(",fillColor:'").append(circle.getFillColor()).append("'").toString());
             }
             if (circle.getZindex() > Integer.MIN_VALUE) {
                 writer.write(",zIndex:" + circle.getZindex());
@@ -346,23 +345,23 @@ public class GMapRenderer extends CoreRenderer {
             Rectangle rectangle = rectangles.next();
 
             writer.write("new google.maps.Rectangle({");
-            writer.write("id:'" + rectangle.getId() + "'");
+            writer.write(new StringBuilder().append("id:'").append(rectangle.getId()).append("'").toString());
 
             LatLng ne = rectangle.getBounds().getNorthEast();
             LatLng sw = rectangle.getBounds().getSouthWest();
 
-            writer.write(",bounds:new google.maps.LatLngBounds( new google.maps.LatLng("
-                    + sw.getLat() + "," + sw.getLng() + "), new google.maps.LatLng(" + ne.getLat() + "," + ne.getLng() + "))");
+            writer.write(new StringBuilder().append(",bounds:new google.maps.LatLngBounds( new google.maps.LatLng(").append(sw.getLat()).append(",").append(sw.getLng()).append("), new google.maps.LatLng(").append(ne.getLat())
+					.append(",").append(ne.getLng()).append("))").toString());
 
             writer.write(",strokeOpacity:" + rectangle.getStrokeOpacity());
             writer.write(",strokeWeight:" + rectangle.getStrokeWeight());
             writer.write(",fillOpacity:" + rectangle.getFillOpacity());
 
             if (rectangle.getStrokeColor() != null) {
-                writer.write(",strokeColor:'" + rectangle.getStrokeColor() + "'");
+                writer.write(new StringBuilder().append(",strokeColor:'").append(rectangle.getStrokeColor()).append("'").toString());
             }
             if (rectangle.getFillColor() != null) {
-                writer.write(",fillColor:'" + rectangle.getFillColor() + "'");
+                writer.write(new StringBuilder().append(",fillColor:'").append(rectangle.getFillColor()).append("'").toString());
             }
             if (rectangle.getZindex() > Integer.MIN_VALUE) {
                 writer.write(",zIndex:" + rectangle.getZindex());
@@ -385,7 +384,7 @@ public class GMapRenderer extends CoreRenderer {
         for (Iterator<LatLng> coords = paths.iterator(); coords.hasNext(); ) {
             LatLng coord = coords.next();
 
-            writer.write("new google.maps.LatLng(" + coord.getLat() + ", " + coord.getLng() + ")");
+            writer.write(new StringBuilder().append("new google.maps.LatLng(").append(coord.getLat()).append(", ").append(coord.getLng()).append(")").toString());
 
             if (coords.hasNext()) {
                 writer.write(",");

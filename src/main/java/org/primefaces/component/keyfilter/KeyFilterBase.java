@@ -33,7 +33,72 @@ public abstract class KeyFilterBase extends UIComponentBase implements Widget {
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.KeyFilterRenderer";
 
-    public enum PropertyKeys {
+    public KeyFilterBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getWidgetVar() {
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
+
+	public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
+
+	public String getFor() {
+        return (String) getStateHelper().eval(PropertyKeys.forValue, null);
+    }
+
+	public void setFor(String _for) {
+        getStateHelper().put(PropertyKeys.forValue, _for);
+    }
+
+	public String getRegEx() {
+        return (String) getStateHelper().eval(PropertyKeys.regEx, null);
+    }
+
+	public void setRegEx(String regEx) {
+        getStateHelper().put(PropertyKeys.regEx, regEx);
+    }
+
+	public String getInputRegEx() {
+        return (String) getStateHelper().eval(PropertyKeys.inputRegEx, null);
+    }
+
+	public void setInputRegEx(String inputRegEx) {
+        getStateHelper().put(PropertyKeys.inputRegEx, inputRegEx);
+    }
+
+	public String getMask() {
+        return (String) getStateHelper().eval(PropertyKeys.mask, null);
+    }
+
+	public void setMask(String mask) {
+        getStateHelper().put(PropertyKeys.mask, mask);
+    }
+
+	public String getTestFunction() {
+        return (String) getStateHelper().eval(PropertyKeys.testFunction, null);
+    }
+
+	public void setTestFunction(String testFunction) {
+        getStateHelper().put(PropertyKeys.testFunction, testFunction);
+    }
+
+	public boolean isPreventPaste() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.preventPaste, true);
+    }
+
+	public void setPreventPaste(boolean preventPaste) {
+        getStateHelper().put(PropertyKeys.preventPaste, preventPaste);
+    }
+
+	public enum PropertyKeys {
 
         widgetVar,
         forValue("for"),
@@ -56,70 +121,5 @@ public abstract class KeyFilterBase extends UIComponentBase implements Widget {
         public String toString() {
             return ((toString != null) ? toString : super.toString());
         }
-    }
-
-    public KeyFilterBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public String getFor() {
-        return (String) getStateHelper().eval(PropertyKeys.forValue, null);
-    }
-
-    public void setFor(String _for) {
-        getStateHelper().put(PropertyKeys.forValue, _for);
-    }
-
-    public String getRegEx() {
-        return (String) getStateHelper().eval(PropertyKeys.regEx, null);
-    }
-
-    public void setRegEx(String regEx) {
-        getStateHelper().put(PropertyKeys.regEx, regEx);
-    }
-
-    public String getInputRegEx() {
-        return (String) getStateHelper().eval(PropertyKeys.inputRegEx, null);
-    }
-
-    public void setInputRegEx(String inputRegEx) {
-        getStateHelper().put(PropertyKeys.inputRegEx, inputRegEx);
-    }
-
-    public String getMask() {
-        return (String) getStateHelper().eval(PropertyKeys.mask, null);
-    }
-
-    public void setMask(String mask) {
-        getStateHelper().put(PropertyKeys.mask, mask);
-    }
-
-    public String getTestFunction() {
-        return (String) getStateHelper().eval(PropertyKeys.testFunction, null);
-    }
-
-    public void setTestFunction(String testFunction) {
-        getStateHelper().put(PropertyKeys.testFunction, testFunction);
-    }
-
-    public boolean isPreventPaste() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.preventPaste, true);
-    }
-
-    public void setPreventPaste(boolean preventPaste) {
-        getStateHelper().put(PropertyKeys.preventPaste, preventPaste);
     }
 }

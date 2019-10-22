@@ -33,61 +33,61 @@ public abstract class SelectBooleanButtonBase extends HtmlSelectBooleanCheckbox 
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.SelectBooleanButtonRenderer";
 
-    public enum PropertyKeys {
+    public SelectBooleanButtonBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getWidgetVar() {
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
+
+	public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
+
+	public String getOnLabel() {
+        return (String) getStateHelper().eval(PropertyKeys.onLabel, null);
+    }
+
+	public void setOnLabel(String onLabel) {
+        getStateHelper().put(PropertyKeys.onLabel, onLabel);
+    }
+
+	public String getOffLabel() {
+        return (String) getStateHelper().eval(PropertyKeys.offLabel, null);
+    }
+
+	public void setOffLabel(String offLabel) {
+        getStateHelper().put(PropertyKeys.offLabel, offLabel);
+    }
+
+	public String getOnIcon() {
+        return (String) getStateHelper().eval(PropertyKeys.onIcon, null);
+    }
+
+	public void setOnIcon(String onIcon) {
+        getStateHelper().put(PropertyKeys.onIcon, onIcon);
+    }
+
+	public String getOffIcon() {
+        return (String) getStateHelper().eval(PropertyKeys.offIcon, null);
+    }
+
+	public void setOffIcon(String offIcon) {
+        getStateHelper().put(PropertyKeys.offIcon, offIcon);
+    }
+
+	public enum PropertyKeys {
 
         widgetVar,
         onLabel,
         offLabel,
         onIcon,
         offIcon;
-    }
-
-    public SelectBooleanButtonBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public String getOnLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.onLabel, null);
-    }
-
-    public void setOnLabel(String onLabel) {
-        getStateHelper().put(PropertyKeys.onLabel, onLabel);
-    }
-
-    public String getOffLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.offLabel, null);
-    }
-
-    public void setOffLabel(String offLabel) {
-        getStateHelper().put(PropertyKeys.offLabel, offLabel);
-    }
-
-    public String getOnIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.onIcon, null);
-    }
-
-    public void setOnIcon(String onIcon) {
-        getStateHelper().put(PropertyKeys.onIcon, onIcon);
-    }
-
-    public String getOffIcon() {
-        return (String) getStateHelper().eval(PropertyKeys.offIcon, null);
-    }
-
-    public void setOffIcon(String offIcon) {
-        getStateHelper().put(PropertyKeys.offIcon, offIcon);
     }
 }

@@ -44,7 +44,7 @@ import org.primefaces.util.WidgetBuilder;
 public class SelectOneButtonRenderer extends SelectOneRenderer {
 
     @Override
-    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) {
         Renderer renderer = ComponentUtils.getUnwrappedRenderer(
                 context,
                 "javax.faces.SelectOne",
@@ -67,8 +67,8 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
         int selectItemsSize = selectItems.size();
         String style = button.getStyle();
         String styleClass = button.getStyleClass();
-        styleClass = styleClass == null ? SelectOneButton.STYLE_CLASS : SelectOneButton.STYLE_CLASS + " " + styleClass;
-        styleClass = styleClass + " ui-buttonset-" + selectItemsSize;
+        styleClass = styleClass == null ? SelectOneButton.STYLE_CLASS : new StringBuilder().append(SelectOneButton.STYLE_CLASS).append(" ").append(styleClass).toString();
+        styleClass = new StringBuilder().append(styleClass).append(" ui-buttonset-").append(selectItemsSize).toString();
         styleClass = !button.isValid() ? styleClass + " ui-state-error" : styleClass;
 
         writer.startElement("div", button);
@@ -97,7 +97,7 @@ public class SelectOneButtonRenderer extends SelectOneRenderer {
         for (int i = 0; i < selectItems.size(); i++) {
             SelectItem selectItem = selectItems.get(i);
             boolean disabled = selectItem.isDisabled() || button.isDisabled();
-            String id = name + UINamingContainer.getSeparatorChar(context) + i;
+            String id = new StringBuilder().append(name).append(UINamingContainer.getSeparatorChar(context)).append(i).toString();
 
             boolean selected;
             if (value == null && selectItem.getValue() == null) {

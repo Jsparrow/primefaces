@@ -32,44 +32,44 @@ public abstract class RibbonGroupBase extends UIComponentBase {
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.RibbonGroupRenderer";
 
-    public enum PropertyKeys {
-
-        label,
-        style,
-        styleClass
-    }
-
     public RibbonGroupBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
-    @Override
+	@Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
-    public String getLabel() {
+	public String getLabel() {
         return (String) getStateHelper().eval(PropertyKeys.label, null);
     }
 
-    public void setLabel(String label) {
+	public void setLabel(String label) {
         getStateHelper().put(PropertyKeys.label, label);
     }
 
-    public String getStyle() {
+	public String getStyle() {
         return (String) getStateHelper().eval(PropertyKeys.style, null);
     }
 
-    public void setStyle(String style) {
+	public void setStyle(String style) {
         getStateHelper().put(PropertyKeys.style, style);
     }
 
-    public String getStyleClass() {
+	public String getStyleClass() {
         return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
     }
 
-    public void setStyleClass(String styleClass) {
+	public void setStyleClass(String styleClass) {
         getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+	public enum PropertyKeys {
+
+        label,
+        style,
+        styleClass
     }
 
 }

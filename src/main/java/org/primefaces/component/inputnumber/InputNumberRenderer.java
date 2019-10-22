@@ -44,8 +44,7 @@ import org.primefaces.util.*;
 public class InputNumberRenderer extends InputRenderer {
 
     @Override
-    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue)
-            throws ConverterException {
+    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) {
 
         String submittedValueString = (String) submittedValue;
 
@@ -136,7 +135,7 @@ public class InputNumberRenderer extends InputRenderer {
         String clientId = inputNumber.getClientId(context);
 
         String styleClass = inputNumber.getStyleClass();
-        styleClass = styleClass == null ? InputNumber.STYLE_CLASS : InputNumber.STYLE_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? InputNumber.STYLE_CLASS : new StringBuilder().append(InputNumber.STYLE_CLASS).append(" ").append(styleClass).toString();
         styleClass = inputNumber.isValid() ? styleClass : styleClass + " ui-state-error"; // see #3706
 
         writer.startElement("span", inputNumber);
@@ -225,7 +224,7 @@ public class InputNumberRenderer extends InputRenderer {
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init(InputNumber.class.getSimpleName(), inputNumber.resolveWidgetVar(context), inputNumber.getClientId());
         wb.attr("disabled", inputNumber.isDisabled())
-                .attr("valueToRender", formatForPlugin(valueToRender, inputNumber, value));
+                .attr("valueToRender", formatForPlugin(valueToRender, value));
 
         String metaOptions = getOptions(inputNumber);
         if (!metaOptions.isEmpty()) {
@@ -250,18 +249,18 @@ public class InputNumberRenderer extends InputRenderer {
         boolean padControl = inputNumber.isPadControl();
 
         String options = "";
-        options += isValueBlank(decimalSeparator) ? "" : "aDec:\"" + EscapeUtils.forJavaScript(decimalSeparator) + "\",";
+        options += isValueBlank(decimalSeparator) ? "" : new StringBuilder().append("aDec:\"").append(EscapeUtils.forJavaScript(decimalSeparator)).append("\",").toString();
         //empty thousandSeparator must be explicity defined.
-        options += isValueBlank(thousandSeparator) ? "aSep:''," : "aSep:\"" + EscapeUtils.forJavaScript(thousandSeparator) + "\",";
-        options += isValueBlank(symbol) ? "" : "aSign:\"" + EscapeUtils.forJavaScript(symbol) + "\",";
-        options += isValueBlank(symbolPosition) ? "" : "pSign:\"" + EscapeUtils.forJavaScript(symbolPosition) + "\",";
-        options += isValueBlank(minValue) ? "" : "vMin:\"" + EscapeUtils.forJavaScript(minValue) + "\",";
-        options += isValueBlank(maxValue) ? "" : "vMax:\"" + EscapeUtils.forJavaScript(maxValue) + "\",";
-        options += isValueBlank(roundMethod) ? "" : "mRound:\"" + EscapeUtils.forJavaScript(roundMethod) + "\",";
-        options += isValueBlank(decimalPlaces) ? "" : "mDec:\"" + EscapeUtils.forJavaScript(decimalPlaces) + "\",";
-        options += "wEmpty:\"" + EscapeUtils.forJavaScript(emptyValue) + "\",";
-        options += "lZero:\"" + EscapeUtils.forJavaScript(lZero) + "\",";
-        options += "aPad:" + padControl + ",";
+        options += isValueBlank(thousandSeparator) ? "aSep:''," : new StringBuilder().append("aSep:\"").append(EscapeUtils.forJavaScript(thousandSeparator)).append("\",").toString();
+        options += isValueBlank(symbol) ? "" : new StringBuilder().append("aSign:\"").append(EscapeUtils.forJavaScript(symbol)).append("\",").toString();
+        options += isValueBlank(symbolPosition) ? "" : new StringBuilder().append("pSign:\"").append(EscapeUtils.forJavaScript(symbolPosition)).append("\",").toString();
+        options += isValueBlank(minValue) ? "" : new StringBuilder().append("vMin:\"").append(EscapeUtils.forJavaScript(minValue)).append("\",").toString();
+        options += isValueBlank(maxValue) ? "" : new StringBuilder().append("vMax:\"").append(EscapeUtils.forJavaScript(maxValue)).append("\",").toString();
+        options += isValueBlank(roundMethod) ? "" : new StringBuilder().append("mRound:\"").append(EscapeUtils.forJavaScript(roundMethod)).append("\",").toString();
+        options += isValueBlank(decimalPlaces) ? "" : new StringBuilder().append("mDec:\"").append(EscapeUtils.forJavaScript(decimalPlaces)).append("\",").toString();
+        options += new StringBuilder().append("wEmpty:\"").append(EscapeUtils.forJavaScript(emptyValue)).append("\",").toString();
+        options += new StringBuilder().append("lZero:\"").append(EscapeUtils.forJavaScript(lZero)).append("\",").toString();
+        options += new StringBuilder().append("aPad:").append(padControl).append(",").toString();
 
         //if all options are empty return empty
         if (options.isEmpty()) {
@@ -273,11 +272,11 @@ public class InputNumberRenderer extends InputRenderer {
         if (options.charAt(lastInd) == ',') {
             options = options.substring(0, lastInd);
         }
-        return "{" + options + "}";
+        return new StringBuilder().append("{").append(options).append("}").toString();
 
     }
 
-    private String formatForPlugin(String valueToRender, InputNumber inputNumber, Object value) {
+    private String formatForPlugin(String valueToRender, Object value) {
 
         if (isValueBlank(valueToRender)) {
             return "";
@@ -289,7 +288,7 @@ public class InputNumberRenderer extends InputRenderer {
                     objectToRender = new BigDecimal(valueToRender);
                 }
                 else {
-                    objectToRender = new Double(valueToRender);
+                    objectToRender = Double.valueOf(valueToRender);
                 }
 
                 NumberFormat formatter = new DecimalFormat("#0.0#");
@@ -305,7 +304,7 @@ public class InputNumberRenderer extends InputRenderer {
                 return f;
             }
             catch (Exception e) {
-                throw new IllegalArgumentException("Error converting  [" + valueToRender + "] to a double value;", e);
+                throw new IllegalArgumentException(new StringBuilder().append("Error converting  [").append(valueToRender).append("] to a double value;").toString(), e);
             }
         }
     }

@@ -185,9 +185,7 @@ public class NativeUploadedFileTest {
         final String input = "form-data; name=\"XXX:XXX\"; filename\"hello.png\"";
         
         // Act
-        FacesException thrown = Assertions.assertThrows(FacesException.class, () -> {
-            file.getContentDispositionFileName(input);
-        });
+        FacesException thrown = Assertions.assertThrows(FacesException.class, () -> file.getContentDispositionFileName(input));
         
 
         // Assert (expected exception)
@@ -200,9 +198,7 @@ public class NativeUploadedFileTest {
         final String input = "form-data; name=\"XXX:XXX\"; filename=hello.png\"";
 
         // Act
-        FacesException thrown = Assertions.assertThrows(FacesException.class, () -> {
-            file.getContentDispositionFileName(input);
-        });
+        FacesException thrown = Assertions.assertThrows(FacesException.class, () -> file.getContentDispositionFileName(input));
 
         // Assert (expected exception)
         assertEquals("Content-Disposition filename property was not quoted.", thrown.getMessage());

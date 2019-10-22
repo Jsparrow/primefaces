@@ -35,7 +35,128 @@ public abstract class TextEditorBase extends UIInput implements Widget, ClientBe
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.TextEditorRenderer";
 
-    public enum PropertyKeys {
+    public TextEditorBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getWidgetVar() {
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
+
+	public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
+
+	public int getHeight() {
+        return (Integer) getStateHelper().eval(PropertyKeys.height, Integer.MIN_VALUE);
+    }
+
+	public void setHeight(int height) {
+        getStateHelper().put(PropertyKeys.height, height);
+    }
+
+	public boolean isReadonly() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.readonly, false);
+    }
+
+	public void setReadonly(boolean readonly) {
+        getStateHelper().put(PropertyKeys.readonly, readonly);
+    }
+
+	public String getStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
+    }
+
+	public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
+    }
+
+	public String getStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
+    }
+
+	public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+	public String getPlaceholder() {
+        return (String) getStateHelper().eval(PropertyKeys.placeholder, null);
+    }
+
+	public void setPlaceholder(String placeholder) {
+        getStateHelper().put(PropertyKeys.placeholder, placeholder);
+    }
+
+	public boolean isToolbarVisible() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.toolbarVisible, true);
+    }
+
+	public void setToolbarVisible(boolean toolbarVisible) {
+        getStateHelper().put(PropertyKeys.toolbarVisible, toolbarVisible);
+    }
+
+	public boolean isAllowBlocks() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.allowBlocks, true);
+    }
+
+	public void setAllowBlocks(boolean allowBlocks) {
+        getStateHelper().put(PropertyKeys.allowBlocks, allowBlocks);
+    }
+
+	public boolean isAllowFormatting() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.allowFormatting, true);
+    }
+
+	public void setAllowFormatting(boolean allowFormatting) {
+        getStateHelper().put(PropertyKeys.allowFormatting, allowFormatting);
+    }
+
+	public boolean isAllowLinks() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.allowLinks, true);
+    }
+
+	public void setAllowLinks(boolean allowLinks) {
+        getStateHelper().put(PropertyKeys.allowLinks, allowLinks);
+    }
+
+	public boolean isAllowStyles() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.allowStyles, true);
+    }
+
+	public void setAllowStyles(boolean allowStyles) {
+        getStateHelper().put(PropertyKeys.allowStyles, allowStyles);
+    }
+
+	public boolean isAllowImages() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.allowImages, true);
+    }
+
+	public void setAllowImages(boolean allowImages) {
+        getStateHelper().put(PropertyKeys.allowImages, allowImages);
+    }
+
+	public List getFormats() {
+        return (List) getStateHelper().eval(PropertyKeys.formats, null);
+    }
+
+	public void setFormats(List formats) {
+        getStateHelper().put(PropertyKeys.formats, formats);
+    }
+
+	public boolean isSecure() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.secure, true);
+    }
+
+	public void setSecure(boolean secure) {
+        getStateHelper().put(PropertyKeys.secure, secure);
+    }
+
+	public enum PropertyKeys {
 
         widgetVar,
         height,
@@ -51,126 +172,5 @@ public abstract class TextEditorBase extends UIInput implements Widget, ClientBe
         allowImages,
         formats,
         secure
-    }
-
-    public TextEditorBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public int getHeight() {
-        return (Integer) getStateHelper().eval(PropertyKeys.height, Integer.MIN_VALUE);
-    }
-
-    public void setHeight(int height) {
-        getStateHelper().put(PropertyKeys.height, height);
-    }
-
-    public boolean isReadonly() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.readonly, false);
-    }
-
-    public void setReadonly(boolean readonly) {
-        getStateHelper().put(PropertyKeys.readonly, readonly);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public String getPlaceholder() {
-        return (String) getStateHelper().eval(PropertyKeys.placeholder, null);
-    }
-
-    public void setPlaceholder(String placeholder) {
-        getStateHelper().put(PropertyKeys.placeholder, placeholder);
-    }
-
-    public boolean isToolbarVisible() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.toolbarVisible, true);
-    }
-
-    public void setToolbarVisible(boolean toolbarVisible) {
-        getStateHelper().put(PropertyKeys.toolbarVisible, toolbarVisible);
-    }
-
-    public boolean isAllowBlocks() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.allowBlocks, true);
-    }
-
-    public void setAllowBlocks(boolean allowBlocks) {
-        getStateHelper().put(PropertyKeys.allowBlocks, allowBlocks);
-    }
-
-    public boolean isAllowFormatting() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.allowFormatting, true);
-    }
-
-    public void setAllowFormatting(boolean allowFormatting) {
-        getStateHelper().put(PropertyKeys.allowFormatting, allowFormatting);
-    }
-
-    public boolean isAllowLinks() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.allowLinks, true);
-    }
-
-    public void setAllowLinks(boolean allowLinks) {
-        getStateHelper().put(PropertyKeys.allowLinks, allowLinks);
-    }
-
-    public boolean isAllowStyles() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.allowStyles, true);
-    }
-
-    public void setAllowStyles(boolean allowStyles) {
-        getStateHelper().put(PropertyKeys.allowStyles, allowStyles);
-    }
-
-    public boolean isAllowImages() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.allowImages, true);
-    }
-
-    public void setAllowImages(boolean allowImages) {
-        getStateHelper().put(PropertyKeys.allowImages, allowImages);
-    }
-
-    public List getFormats() {
-        return (List) getStateHelper().eval(PropertyKeys.formats, null);
-    }
-
-    public void setFormats(List formats) {
-        getStateHelper().put(PropertyKeys.formats, formats);
-    }
-
-    public boolean isSecure() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.secure, true);
-    }
-
-    public void setSecure(boolean secure) {
-        getStateHelper().put(PropertyKeys.secure, secure);
     }
 }

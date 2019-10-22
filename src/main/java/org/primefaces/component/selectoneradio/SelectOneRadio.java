@@ -52,7 +52,7 @@ public class SelectOneRadio extends SelectOneRadioBase {
     public String getRadioButtonId(FacesContext context) {
         index++;
 
-        return this.getClientId(context) + UINamingContainer.getSeparatorChar(context) + index;
+        return new StringBuilder().append(this.getClientId(context)).append(UINamingContainer.getSeparatorChar(context)).append(index).toString();
     }
 
     public List<SelectItem> getSelectItems() {

@@ -32,53 +32,53 @@ public abstract class UICacheBase extends UIPanel {
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.UICacheRenderer";
 
-    public enum PropertyKeys {
+    public UICacheBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public boolean isDisabled() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
+    }
+
+	public void setDisabled(boolean disabled) {
+        getStateHelper().put(PropertyKeys.disabled, disabled);
+    }
+
+	public String getRegion() {
+        return (String) getStateHelper().eval(PropertyKeys.region, null);
+    }
+
+	public void setRegion(String region) {
+        getStateHelper().put(PropertyKeys.region, region);
+    }
+
+	public String getKey() {
+        return (String) getStateHelper().eval(PropertyKeys.key, null);
+    }
+
+	public void setKey(String key) {
+        getStateHelper().put(PropertyKeys.key, key);
+    }
+
+	public boolean isProcessEvents() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.processEvents, false);
+    }
+
+	public void setProcessEvents(boolean processEvents) {
+        getStateHelper().put(PropertyKeys.processEvents, processEvents);
+    }
+
+	public enum PropertyKeys {
 
         disabled,
         region,
         key,
         processEvents
-    }
-
-    public UICacheBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public boolean isDisabled() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.disabled, false);
-    }
-
-    public void setDisabled(boolean disabled) {
-        getStateHelper().put(PropertyKeys.disabled, disabled);
-    }
-
-    public String getRegion() {
-        return (String) getStateHelper().eval(PropertyKeys.region, null);
-    }
-
-    public void setRegion(String region) {
-        getStateHelper().put(PropertyKeys.region, region);
-    }
-
-    public String getKey() {
-        return (String) getStateHelper().eval(PropertyKeys.key, null);
-    }
-
-    public void setKey(String key) {
-        getStateHelper().put(PropertyKeys.key, key);
-    }
-
-    public boolean isProcessEvents() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.processEvents, false);
-    }
-
-    public void setProcessEvents(boolean processEvents) {
-        getStateHelper().put(PropertyKeys.processEvents, processEvents);
     }
 
 }

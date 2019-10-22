@@ -72,8 +72,8 @@ public class InputSwitchRenderer extends InputRenderer {
         String clientId = inputSwitch.getClientId(context);
         String style = inputSwitch.getStyle();
         String styleClass = inputSwitch.getStyleClass();
-        styleClass = (styleClass == null) ? InputSwitch.CONTAINER_CLASS : InputSwitch.CONTAINER_CLASS + " " + styleClass;
-        styleClass = (checked) ? styleClass + " " + InputSwitch.CHECKED_CLASS : styleClass;
+        styleClass = (styleClass == null) ? InputSwitch.CONTAINER_CLASS : new StringBuilder().append(InputSwitch.CONTAINER_CLASS).append(" ").append(styleClass).toString();
+        styleClass = (checked) ? new StringBuilder().append(styleClass).append(" ").append(InputSwitch.CHECKED_CLASS).toString() : styleClass;
         if (inputSwitch.isDisabled()) {
             styleClass = styleClass + " ui-state-disabled";
         }
@@ -153,6 +153,6 @@ public class InputSwitchRenderer extends InputRenderer {
     }
 
     protected boolean isChecked(String value) {
-        return value.equalsIgnoreCase("on") || value.equalsIgnoreCase("yes") || value.equalsIgnoreCase("true");
+        return "on".equalsIgnoreCase(value) || "yes".equalsIgnoreCase(value) || "true".equalsIgnoreCase(value);
     }
 }

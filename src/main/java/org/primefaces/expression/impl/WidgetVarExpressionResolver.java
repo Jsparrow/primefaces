@@ -56,12 +56,12 @@ public class WidgetVarExpressionResolver implements SearchExpressionResolver, Cl
 
             }
             else {
-                throw new FacesException("Expression does not match following pattern @widgetVar(var). Expression: \"" + expression + "\"");
+                throw new FacesException(new StringBuilder().append("Expression does not match following pattern @widgetVar(var). Expression: \"").append(expression).append("\"").toString());
             }
 
         }
         catch (Exception e) {
-            throw new FacesException("Expression does not match following pattern @widgetVar(var). Expression: \"" + expression + "\"", e);
+            throw new FacesException(new StringBuilder().append("Expression does not match following pattern @widgetVar(var). Expression: \"").append(expression).append("\"").toString(), e);
         }
     }
 

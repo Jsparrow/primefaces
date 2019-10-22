@@ -46,15 +46,14 @@ public class PhotoCamRenderer extends CoreRenderer {
         String dataParam = cam.getClientId(context) + "_data";
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
-        if (params.containsKey(dataParam)) {
-            String image = params.get(dataParam);
-            image = image.substring(22);
-
-            CaptureEvent event = new CaptureEvent(cam, DatatypeConverter.parseBase64Binary(image), image);
-            event.setPhaseId(PhaseId.INVOKE_APPLICATION);
-
-            cam.queueEvent(event);
-        }
+        if (!params.containsKey(dataParam)) {
+			return;
+		}
+		String image = params.get(dataParam);
+		image = image.substring(22);
+		CaptureEvent event = new CaptureEvent(cam, DatatypeConverter.parseBase64Binary(image), image);
+		event.setPhaseId(PhaseId.INVOKE_APPLICATION);
+		cam.queueEvent(event);
     }
 
     @Override

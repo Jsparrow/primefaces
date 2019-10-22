@@ -78,7 +78,7 @@ public class FocusRenderer extends CoreRenderer {
         String clientId = forComponent.getClientId(context);
 
         writer.write("$(function(){");
-        writer.write("PrimeFaces.focus('" + clientId + "');");
+        writer.write(new StringBuilder().append("PrimeFaces.focus('").append(clientId).append("');").toString());
         writer.write("});");
     }
 
@@ -89,13 +89,13 @@ public class FocusRenderer extends CoreRenderer {
         writer.write("$(function(){");
 
         if (invalidClientId != null) {
-            writer.write("PrimeFaces.focus('" + invalidClientId + "');");
+            writer.write(new StringBuilder().append("PrimeFaces.focus('").append(invalidClientId).append("');").toString());
         }
         else if (focus.getContext() != null) {
             UIComponent focusContext = SearchExpressionFacade.resolveComponent(
                     context, focus, focus.getContext());
 
-            writer.write("PrimeFaces.focus(null, '" + focusContext.getClientId(context) + "');");
+            writer.write(new StringBuilder().append("PrimeFaces.focus(null, '").append(focusContext.getClientId(context)).append("');").toString());
         }
         else {
             writer.write("PrimeFaces.focus();");

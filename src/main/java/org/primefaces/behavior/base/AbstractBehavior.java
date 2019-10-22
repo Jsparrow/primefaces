@@ -38,8 +38,6 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
     protected Map<String, ValueExpression> bindings;
 
     public AbstractBehavior() {
-        super();
-
         int attrsCount = getAllAttributes().length;
         literals = new HashMap<>(attrsCount);
         bindings = new HashMap<>(attrsCount);
@@ -85,12 +83,12 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
         }
 
         ValueExpression ve = bindings.get(attr);
-        if (ve != null) {
-            FacesContext facesContext = FacesContext.getCurrentInstance();
-            ELContext elContext = facesContext.getELContext();
-            return (T) ve.getValue(elContext);
-        }
-        return unspecifiedValue;
+        if (ve == null) {
+			return unspecifiedValue;
+		}
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+		ELContext elContext = facesContext.getELContext();
+		return (T) ve.getValue(elContext);
     }
 
     protected <T> T eval(Enum<?> property, T unspecifiedValue) {
@@ -149,18 +147,18 @@ public abstract class AbstractBehavior extends ClientBehaviorBase {
             throw new NullPointerException();
         }
 
-        if (state != null) {
-            Object[] values = (Object[]) state;
-            super.restoreState(context, values[0]);
+        if (state == null) {
+			return;
+		}
+		Object[] values = (Object[]) state;
+		super.restoreState(context, values[0]);
+		if (values.length != 1) {
+		    literals = restorePropertyMap(context, (Object[]) values[1], false);
+		    bindings = restorePropertyMap(context, (Object[]) values[2], true);
 
-            if (values.length != 1) {
-                literals = restorePropertyMap(context, (Object[]) values[1], false);
-                bindings = restorePropertyMap(context, (Object[]) values[2], true);
-
-                // If we saved state last time, save state again next time.
-                clearInitialState();
-            }
-        }
+		    // If we saved state last time, save state again next time.
+		    clearInitialState();
+		}
     }
 
     protected Object[] savePropertyMap(FacesContext context, Map map, boolean saveValuesAsAttachedState) {

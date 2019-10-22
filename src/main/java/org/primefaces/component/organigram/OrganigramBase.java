@@ -35,7 +35,88 @@ public abstract class OrganigramBase extends UIComponentBase implements Widget, 
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.OrganigramRenderer";
 
-    public enum PropertyKeys {
+    public OrganigramBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getWidgetVar() {
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
+
+	public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
+
+	public org.primefaces.model.OrganigramNode getValue() {
+        return (org.primefaces.model.OrganigramNode) getStateHelper().eval(PropertyKeys.value, null);
+    }
+
+	public void setValue(org.primefaces.model.OrganigramNode value) {
+        getStateHelper().put(PropertyKeys.value, value);
+    }
+
+	public String getVar() {
+        return (String) getStateHelper().eval(PropertyKeys.var, null);
+    }
+
+	public void setVar(String var) {
+        getStateHelper().put(PropertyKeys.var, var);
+    }
+
+	public org.primefaces.model.OrganigramNode getSelection() {
+        return (org.primefaces.model.OrganigramNode) getStateHelper().eval(PropertyKeys.selection, null);
+    }
+
+	public void setSelection(org.primefaces.model.OrganigramNode selection) {
+        getStateHelper().put(PropertyKeys.selection, selection);
+    }
+
+	public String getStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
+    }
+
+	public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
+    }
+
+	public String getStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
+    }
+
+	public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+	public int getLeafNodeConnectorHeight() {
+        return (Integer) getStateHelper().eval(PropertyKeys.leafNodeConnectorHeight, 10);
+    }
+
+	public void setLeafNodeConnectorHeight(int leafNodeConnectorHeight) {
+        getStateHelper().put(PropertyKeys.leafNodeConnectorHeight, leafNodeConnectorHeight);
+    }
+
+	public boolean isZoom() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.zoom, false);
+    }
+
+	public void setZoom(boolean zoom) {
+        getStateHelper().put(PropertyKeys.zoom, zoom);
+    }
+
+	public boolean isAutoScrollToSelection() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.autoScrollToSelection, false);
+    }
+
+	public void setAutoScrollToSelection(boolean autoScrollToSelection) {
+        getStateHelper().put(PropertyKeys.autoScrollToSelection, autoScrollToSelection);
+    }
+
+	public enum PropertyKeys {
 
         widgetVar,
         value,
@@ -46,86 +127,5 @@ public abstract class OrganigramBase extends UIComponentBase implements Widget, 
         leafNodeConnectorHeight,
         zoom,
         autoScrollToSelection
-    }
-
-    public OrganigramBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public org.primefaces.model.OrganigramNode getValue() {
-        return (org.primefaces.model.OrganigramNode) getStateHelper().eval(PropertyKeys.value, null);
-    }
-
-    public void setValue(org.primefaces.model.OrganigramNode value) {
-        getStateHelper().put(PropertyKeys.value, value);
-    }
-
-    public String getVar() {
-        return (String) getStateHelper().eval(PropertyKeys.var, null);
-    }
-
-    public void setVar(String var) {
-        getStateHelper().put(PropertyKeys.var, var);
-    }
-
-    public org.primefaces.model.OrganigramNode getSelection() {
-        return (org.primefaces.model.OrganigramNode) getStateHelper().eval(PropertyKeys.selection, null);
-    }
-
-    public void setSelection(org.primefaces.model.OrganigramNode selection) {
-        getStateHelper().put(PropertyKeys.selection, selection);
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public int getLeafNodeConnectorHeight() {
-        return (Integer) getStateHelper().eval(PropertyKeys.leafNodeConnectorHeight, 10);
-    }
-
-    public void setLeafNodeConnectorHeight(int leafNodeConnectorHeight) {
-        getStateHelper().put(PropertyKeys.leafNodeConnectorHeight, leafNodeConnectorHeight);
-    }
-
-    public boolean isZoom() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.zoom, false);
-    }
-
-    public void setZoom(boolean zoom) {
-        getStateHelper().put(PropertyKeys.zoom, zoom);
-    }
-
-    public boolean isAutoScrollToSelection() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.autoScrollToSelection, false);
-    }
-
-    public void setAutoScrollToSelection(boolean autoScrollToSelection) {
-        getStateHelper().put(PropertyKeys.autoScrollToSelection, autoScrollToSelection);
     }
 }

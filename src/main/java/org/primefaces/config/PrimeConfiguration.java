@@ -76,7 +76,7 @@ public class PrimeConfiguration {
         interpretEmptyStringAsNull = (value == null) ? false : Boolean.valueOf(value);
 
         value = externalContext.getInitParameter(Constants.ContextParams.SUBMIT);
-        partialSubmitEnabled = (value == null) ? false : value.equalsIgnoreCase("partial");
+        partialSubmitEnabled = (value == null) ? false : "partial".equalsIgnoreCase(value);
 
         value = externalContext.getInitParameter(Constants.ContextParams.RESET_VALUES);
         resetValuesEnabled = (value == null) ? false : Boolean.valueOf(value);
@@ -146,7 +146,7 @@ public class PrimeConfiguration {
             param = param.toLowerCase();
         }
 
-        return (param.equals("auto") && environment.isBeanValidationAvailable()) || param.equals("true");
+        return ("auto".equals(param) && environment.isBeanValidationAvailable()) || "true".equals(param);
     }
 
     public boolean isValidateEmptyFields() {

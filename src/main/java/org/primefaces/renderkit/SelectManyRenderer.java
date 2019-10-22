@@ -61,7 +61,7 @@ public abstract class SelectManyRenderer extends SelectRenderer {
                 return value;
             }
             else {
-                throw new FacesException("Value of '" + component.getClientId() + "'must be an array or a collection");
+                throw new FacesException(new StringBuilder().append("Value of '").append(component.getClientId()).append("'must be an array or a collection").toString());
             }
         }
 

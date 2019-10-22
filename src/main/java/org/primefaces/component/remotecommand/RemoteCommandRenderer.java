@@ -40,17 +40,17 @@ public class RemoteCommandRenderer extends CoreRenderer {
     public void decode(FacesContext context, UIComponent component) {
         RemoteCommand command = (RemoteCommand) component;
 
-        if (context.getExternalContext().getRequestParameterMap().containsKey(command.getClientId(context))) {
-            ActionEvent event = new ActionEvent(command);
-            if (command.isImmediate()) {
-                event.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
-            }
-            else {
-                event.setPhaseId(PhaseId.INVOKE_APPLICATION);
-            }
-
-            command.queueEvent(event);
-        }
+        if (!context.getExternalContext().getRequestParameterMap().containsKey(command.getClientId(context))) {
+			return;
+		}
+		ActionEvent event = new ActionEvent(command);
+		if (command.isImmediate()) {
+		    event.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
+		}
+		else {
+		    event.setPhaseId(PhaseId.INVOKE_APPLICATION);
+		}
+		command.queueEvent(event);
     }
 
     @Override

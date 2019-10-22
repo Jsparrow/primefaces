@@ -48,7 +48,7 @@ import org.primefaces.util.WidgetBuilder;
 public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
 
     @Override
-    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) {
         Renderer renderer = ComponentUtils.getUnwrappedRenderer(
                 context,
                 "javax.faces.SelectMany",
@@ -73,10 +73,10 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
 
         String style = menu.getStyle();
         String styleclass = menu.getStyleClass();
-        styleclass = styleclass == null ? SelectCheckboxMenu.STYLE_CLASS : SelectCheckboxMenu.STYLE_CLASS + " " + styleclass;
+        styleclass = styleclass == null ? SelectCheckboxMenu.STYLE_CLASS : new StringBuilder().append(SelectCheckboxMenu.STYLE_CLASS).append(" ").append(styleclass).toString();
         styleclass = menu.isDisabled() ? styleclass + " ui-state-disabled" : styleclass;
         styleclass = !valid ? styleclass + " ui-state-error" : styleclass;
-        styleclass = menu.isMultiple() ? SelectCheckboxMenu.MULTIPLE_CLASS + " " + styleclass : styleclass;
+        styleclass = menu.isMultiple() ? new StringBuilder().append(SelectCheckboxMenu.MULTIPLE_CLASS).append(" ").append(styleclass).toString() : styleclass;
 
         writer.startElement("div", menu);
         writer.writeAttribute("id", clientId, "id");
@@ -113,8 +113,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         writer.writeAttribute("class", "ui-helper-hidden", null);
 
         int idx = -1;
-        for (int i = 0; i < selectItems.size(); i++) {
-            SelectItem selectItem = selectItems.get(i);
+        for (SelectItem selectItem : selectItems) {
             if (selectItem instanceof SelectItemGroup) {
                 SelectItemGroup selectItemGroup = (SelectItemGroup) selectItem;
                 String selectItemGroupLabel = selectItemGroup.getLabel() == null ? "" : selectItemGroup.getLabel();
@@ -142,7 +141,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String itemValueAsString = getOptionAsString(context, menu, converter, option.getValue());
         String name = menu.getClientId(context);
-        String id = name + UINamingContainer.getSeparatorChar(context) + idx;
+        String id = new StringBuilder().append(name).append(UINamingContainer.getSeparatorChar(context)).append(idx).toString();
         boolean disabled = option.isDisabled() || menu.isDisabled();
         boolean escaped = option.isEscape();
         String itemLabel = option.getLabel();
@@ -195,7 +194,7 @@ public class SelectCheckboxMenuRenderer extends SelectManyRenderer {
             writer.writeAttribute("class", "ui-state-disabled", null);
         }
 
-        if (itemLabel.equals("&nbsp;")) {
+        if ("&nbsp;".equals(itemLabel)) {
             writer.write(itemLabel);
         }
         else {

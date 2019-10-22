@@ -87,7 +87,7 @@ public class Droppable extends DroppableBase {
 
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if (eventName.equals("drop")) {
+            if ("drop".equals(eventName)) {
                 String dragId = params.get(clientId + "_dragId");
                 String dropId = params.get(clientId + "_dropId");
                 DragDropEvent dndEvent = null;
@@ -120,7 +120,7 @@ public class Droppable extends DroppableBase {
         UIComponent datasource = SearchExpressionFacade.resolveComponent(context, droppable, datasourceId);
 
         if (datasource == null) {
-            throw new FacesException("Cannot find component \"" + datasourceId + "\" in view.");
+            throw new FacesException(new StringBuilder().append("Cannot find component \"").append(datasourceId).append("\" in view.").toString());
         }
         else {
             return (UIData) datasource;

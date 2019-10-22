@@ -30,16 +30,16 @@ public abstract class DataViewListItemBase extends UIComponentBase {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-    public enum PropertyKeys {
-    }
-
     public DataViewListItemBase() {
         setRendererType(null);
     }
 
-    @Override
+	@Override
     public String getFamily() {
         return COMPONENT_FAMILY;
+    }
+
+	public enum PropertyKeys {
     }
 
 }

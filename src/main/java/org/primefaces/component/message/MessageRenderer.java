@@ -56,11 +56,11 @@ public class MessageRenderer extends UINotificationRenderer {
     protected void encodeMarkup(FacesContext context, Message uiMessage, String targetClientId) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String display = uiMessage.getDisplay();
-        boolean iconOnly = display.equals("icon");
+        boolean iconOnly = "icon".equals(display);
         String style = uiMessage.getStyle();
-        String containerClass = display.equals("tooltip") ? "ui-message ui-helper-hidden" : "ui-message";
+        String containerClass = "tooltip".equals(display) ? "ui-message ui-helper-hidden" : "ui-message";
         String styleClass = uiMessage.getStyleClass();
-        styleClass = styleClass == null ? containerClass : styleClass + " " + containerClass;
+        styleClass = styleClass == null ? containerClass : new StringBuilder().append(styleClass).append(" ").append(containerClass).toString();
 
         Iterator<FacesMessage> msgs = context.getMessages(targetClientId);
 
@@ -107,7 +107,7 @@ public class MessageRenderer extends UINotificationRenderer {
                     severityKey = "fatal";
                 }
 
-                styleClass += " ui-message-" + severityKey + " ui-widget ui-corner-all";
+                styleClass += new StringBuilder().append(" ui-message-").append(severityKey).append(" ui-widget ui-corner-all").toString();
 
                 if (iconOnly) {
                     styleClass += " ui-message-icon-only ui-helper-clearfix";
@@ -117,7 +117,7 @@ public class MessageRenderer extends UINotificationRenderer {
 
                 writer.startElement("div", null);
 
-                if (!display.equals("text")) {
+                if (!"text".equals(display)) {
                     encodeIcon(writer, severityKey, msg.getDetail(), iconOnly);
                 }
 
@@ -151,7 +151,7 @@ public class MessageRenderer extends UINotificationRenderer {
         ResponseWriter writer = context.getResponseWriter();
         writer.startElement("span", null);
         writer.writeAttribute("class", "ui-message-" + severity, null);
-        writer.writeAttribute("id", uiMessage.getClientId(context) + '_' + severity, null);
+        writer.writeAttribute("id", new StringBuilder().append(uiMessage.getClientId(context)).append('_').append(severity).toString(), null);
 
         if (uiMessage.isEscape()) {
             writer.writeText(text, null);
@@ -165,7 +165,7 @@ public class MessageRenderer extends UINotificationRenderer {
 
     protected void encodeIcon(ResponseWriter writer, String severity, String title, boolean iconOnly) throws IOException {
         writer.startElement("span", null);
-        writer.writeAttribute("class", "ui-message-" + severity + "-icon", null);
+        writer.writeAttribute("class", new StringBuilder().append("ui-message-").append(severity).append("-icon").toString(), null);
         if (iconOnly) {
             writer.writeAttribute("title", title, null);
         }
@@ -174,15 +174,15 @@ public class MessageRenderer extends UINotificationRenderer {
 
     protected void encodeScript(FacesContext context, Message uiMessage, UIComponent target) throws IOException {
         boolean tooltip = "tooltip".equals(uiMessage.getDisplay());
-        if (tooltip || uiMessage.isShowDetail()) {
-            String clientId = uiMessage.getClientId(context);
-            String targetClientId = (target instanceof InputHolder) ? ((InputHolder) target).getInputClientId() : target.getClientId(context);
-            WidgetBuilder wb = getWidgetBuilder(context);
-
-            wb.init("Message", uiMessage.resolveWidgetVar(context), clientId)
-                    .attr("target", targetClientId)
-                    .attr("tooltip", tooltip, false)
-                    .finish();
-        }
+        if (!(tooltip || uiMessage.isShowDetail())) {
+			return;
+		}
+		String clientId = uiMessage.getClientId(context);
+		String targetClientId = (target instanceof InputHolder) ? ((InputHolder) target).getInputClientId() : target.getClientId(context);
+		WidgetBuilder wb = getWidgetBuilder(context);
+		wb.init("Message", uiMessage.resolveWidgetVar(context), clientId)
+		        .attr("target", targetClientId)
+		        .attr("tooltip", tooltip, false)
+		        .finish();
     }
 }

@@ -38,7 +38,7 @@ public class SeparatorRenderer extends CoreRenderer {
         UISeparator separator = (UISeparator) component;
         ResponseWriter writer = context.getResponseWriter();
         String styleClass = separator.getStyleClass();
-        styleClass = styleClass == null ? UISeparator.DEFAULT_STYLE_CLASS : UISeparator.DEFAULT_STYLE_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? UISeparator.DEFAULT_STYLE_CLASS : new StringBuilder().append(UISeparator.DEFAULT_STYLE_CLASS).append(" ").append(styleClass).toString();
 
         writer.startElement("hr", separator);
         writer.writeAttribute("id", separator.getClientId(context), "id");

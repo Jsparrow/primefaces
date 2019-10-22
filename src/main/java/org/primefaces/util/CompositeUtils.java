@@ -62,37 +62,30 @@ public class CompositeUtils {
                 .getValue(AttachedObjectTarget.ATTACHED_OBJECT_TARGETS_KEY);
 
         if (targets != null) {
-            for (int i = 0; i < targets.size(); i++) {
-                AttachedObjectTarget target = targets.get(i);
+            for (AttachedObjectTarget target : targets) {
                 if (target instanceof EditableValueHolderAttachedObjectTarget) {
 
                     List<UIComponent> childs = target.getTargets(composite);
                     if (childs == null || childs.isEmpty()) {
                         throw new FacesException(
-                                "Cannot not resolve editableValueHolder target in composite component with id: \""
-                                + composite.getClientId() + "\"");
+                                new StringBuilder().append("Cannot not resolve editableValueHolder target in composite component with id: \"").append(composite.getClientId()).append("\"").toString());
                     }
 
                     if (childs.size() > 1) {
                         throw new FacesException(
-                                "Only a single editableValueHolder target is supported in composite component with id: \""
-                                + composite.getClientId() + "\"");
+                                new StringBuilder().append("Only a single editableValueHolder target is supported in composite component with id: \"").append(composite.getClientId()).append("\"").toString());
                     }
 
                     final UIComponent child = childs.get(0);
 
-                    composite.invokeOnComponent(context, composite.getClientId(context), new ContextCallback() {
-
-                        @Override
-                        public void invokeContextCallback(FacesContext context, UIComponent target) {
-                            if (isComposite(child)) {
-                                invokeOnDeepestEditableValueHolder(context, child, callback);
-                            }
-                            else {
-                                callback.invokeContextCallback(context, child);
-                            }
-                        }
-                    });
+                    composite.invokeOnComponent(context, composite.getClientId(context), (FacesContext context1, UIComponent target1) -> {
+					    if (isComposite(child)) {
+					        invokeOnDeepestEditableValueHolder(context1, child, callback);
+					    }
+					    else {
+					        callback.invokeContextCallback(context1, child);
+					    }
+					});
                 }
             }
         }

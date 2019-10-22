@@ -44,7 +44,7 @@ public class MetadataTransformerExecutor implements SystemEventListener {
     private static final MetadataTransformer BV_INPUT_METADATA_TRANSFORMER = new BeanValidationInputMetadataTransformer();
 
     @Override
-    public void processEvent(SystemEvent event) throws AbortProcessingException {
+    public void processEvent(SystemEvent event) {
         try {
             if (event instanceof PreRenderComponentEvent) {
                 PreRenderComponentEvent preRenderComponentEvent = (PreRenderComponentEvent) event;
@@ -64,20 +64,18 @@ public class MetadataTransformerExecutor implements SystemEventListener {
     }
 
     public static void execute(PrimeApplicationContext applicationContext, UIComponent component) throws IOException {
-        if (applicationContext.getConfig().isTransformMetadataEnabled()) {
-
-            FacesContext context = FacesContext.getCurrentInstance();
-
-            if (applicationContext.getConfig().isBeanValidationEnabled()) {
-                BV_INPUT_METADATA_TRANSFORMER.transform(context, applicationContext, component);
-            }
-
-            if (!METADATA_TRANSFORMERS.isEmpty()) {
-                for (int i = 0; i < METADATA_TRANSFORMERS.size(); i++) {
-                    METADATA_TRANSFORMERS.get(i).transform(context, applicationContext, component);
-                }
-            }
-        }
+        if (!applicationContext.getConfig().isTransformMetadataEnabled()) {
+			return;
+		}
+		FacesContext context = FacesContext.getCurrentInstance();
+		if (applicationContext.getConfig().isBeanValidationEnabled()) {
+		    BV_INPUT_METADATA_TRANSFORMER.transform(context, applicationContext, component);
+		}
+		if (!METADATA_TRANSFORMERS.isEmpty()) {
+		    for (MetadataTransformer aMETADATA_TRANSFORMERS : METADATA_TRANSFORMERS) {
+		        aMETADATA_TRANSFORMERS.transform(context, applicationContext, component);
+		    }
+		}
     }
 
     public static void registerMetadataTransformer(final MetadataTransformer metadataTransformer) {

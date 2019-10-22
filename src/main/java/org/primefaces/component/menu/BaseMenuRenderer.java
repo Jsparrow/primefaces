@@ -57,7 +57,7 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
     protected String getLinkStyleClass(MenuItem menuItem) {
         String styleClass = menuItem.getStyleClass();
 
-        return (styleClass == null) ? AbstractMenu.MENUITEM_LINK_CLASS : AbstractMenu.MENUITEM_LINK_CLASS + " " + styleClass;
+        return (styleClass == null) ? AbstractMenu.MENUITEM_LINK_CLASS : new StringBuilder().append(AbstractMenu.MENUITEM_LINK_CLASS).append(" ").append(styleClass).toString();
     }
 
     protected void encodeMenuItem(FacesContext context, AbstractMenu menu, MenuItem menuitem) throws IOException {
@@ -124,7 +124,7 @@ public abstract class BaseMenuRenderer extends MenuItemAwareRenderer {
 
         if (icon != null) {
             writer.startElement("span", null);
-            writer.writeAttribute("class", AbstractMenu.MENUITEM_ICON_CLASS + " " + icon, null);
+            writer.writeAttribute("class", new StringBuilder().append(AbstractMenu.MENUITEM_ICON_CLASS).append(" ").append(icon).toString(), null);
             writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
             writer.endElement("span");
         }

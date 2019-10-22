@@ -57,7 +57,7 @@ public class CheckboxRenderer extends InputRenderer {
 
         String style = checkbox.getStyle();
         String styleClass = checkbox.getStyleClass();
-        styleClass = styleClass == null ? HTML.CHECKBOX_CLASS : HTML.CHECKBOX_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? HTML.CHECKBOX_CLASS : new StringBuilder().append(HTML.CHECKBOX_CLASS).append(" ").append(styleClass).toString();
 
         writer.startElement("div", null);
         writer.writeAttribute("class", styleClass, null);

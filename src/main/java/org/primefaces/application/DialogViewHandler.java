@@ -58,10 +58,10 @@ public class DialogViewHandler extends ViewHandlerWrapper {
             }
             else {
                 if (url.indexOf('?') == -1) {
-                    return url + "?pfdlgcid=" + pfdlgcid;
+                    return new StringBuilder().append(url).append("?pfdlgcid=").append(pfdlgcid).toString();
                 }
                 else {
-                    return url + "&pfdlgcid=" + pfdlgcid;
+                    return new StringBuilder().append(url).append("&pfdlgcid=").append(pfdlgcid).toString();
                 }
             }
         }

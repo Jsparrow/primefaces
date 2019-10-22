@@ -38,7 +38,6 @@ public class PrimeResource extends ResourceWrapper {
 
     @SuppressWarnings("deprecation") // the default constructor is deprecated in JSF 2.3
     public PrimeResource(final Resource resource) {
-        super();
         wrapped = resource;
         version = "&v=" + PrimeApplicationContext.getCurrentInstance(FacesContext.getCurrentInstance()).getEnvironment().getBuildVersion();
     }

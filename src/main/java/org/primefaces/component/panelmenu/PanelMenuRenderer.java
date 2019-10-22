@@ -57,7 +57,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         String clientId = menu.getClientId(context);
         String style = menu.getStyle();
         String styleClass = menu.getStyleClass();
-        styleClass = styleClass == null ? PanelMenu.CONTAINER_CLASS : PanelMenu.CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? PanelMenu.CONTAINER_CLASS : new StringBuilder().append(PanelMenu.CONTAINER_CLASS).append(" ").append(styleClass).toString();
 
         writer.startElement("div", menu);
         writer.writeAttribute("id", clientId, "id");
@@ -84,7 +84,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String style = submenu.getStyle();
         String styleClass = submenu.getStyleClass();
-        styleClass = styleClass == null ? PanelMenu.PANEL_CLASS : PanelMenu.PANEL_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? PanelMenu.PANEL_CLASS : new StringBuilder().append(PanelMenu.PANEL_CLASS).append(" ").append(styleClass).toString();
         boolean expanded = submenu.isExpanded();
         String headerClass = expanded ? PanelMenu.ACTIVE_HEADER_CLASS : PanelMenu.INACTIVE_HEADER_CLASS;
         String headerIconClass = expanded ? PanelMenu.ACTIVE_TAB_HEADER_ICON_CLASS : PanelMenu.INACTIVE_TAB_HEADER_ICON_CLASS;
@@ -120,7 +120,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         writer.startElement("div", null);
         writer.writeAttribute("class", contentClass, null);
         writer.writeAttribute("role", "tabpanel", null);
-        writer.writeAttribute("id", menu.getClientId(context) + "_" + submenu.getId(), null);
+        writer.writeAttribute("id", new StringBuilder().append(menu.getClientId(context)).append("_").append(submenu.getId()).toString(), null);
         writer.writeAttribute("tabindex", "0", null);
 
         if (submenu.getElementsCount() > 0) {
@@ -135,7 +135,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
                         MenuItem menuItem = (MenuItem) element;
                         String containerStyle = menuItem.getContainerStyle();
                         String containerStyleClass = menuItem.getContainerStyleClass();
-                        containerStyleClass = (containerStyleClass == null) ? Menu.MENUITEM_CLASS : Menu.MENUITEM_CLASS + " " + containerStyleClass;
+                        containerStyleClass = (containerStyleClass == null) ? Menu.MENUITEM_CLASS : new StringBuilder().append(Menu.MENUITEM_CLASS).append(" ").append(containerStyleClass).toString();
 
                         writer.startElement("li", null);
                         writer.writeAttribute("class", containerStyleClass, null);
@@ -164,7 +164,7 @@ public class PanelMenuRenderer extends BaseMenuRenderer {
         String icon = submenu.getIcon();
         String style = submenu.getStyle();
         String styleClass = submenu.getStyleClass();
-        styleClass = styleClass == null ? PanelMenu.DESCENDANT_SUBMENU_CLASS : PanelMenu.DESCENDANT_SUBMENU_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? PanelMenu.DESCENDANT_SUBMENU_CLASS : new StringBuilder().append(PanelMenu.DESCENDANT_SUBMENU_CLASS).append(" ").append(styleClass).toString();
         boolean expanded = submenu.isExpanded();
         String toggleIconClass = expanded ? PanelMenu.DESCENDANT_SUBMENU_EXPANDED_ICON_CLASS : PanelMenu.DESCENDANT_SUBMENU_COLLAPSED_ICON_CLASS;
         String listClass = expanded ? PanelMenu.DESCENDANT_SUBMENU_EXPANDED_LIST_CLASS : PanelMenu.DESCENDANT_SUBMENU_COLLAPSED_LIST_CLASS;

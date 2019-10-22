@@ -102,7 +102,7 @@ public class SubTableRenderer extends CoreRenderer {
         String clientId = table.getClientId(context);
 
         writer.startElement("tr", null);
-        writer.writeAttribute("id", clientId + "_row_" + rowIndex, null);
+        writer.writeAttribute("id", new StringBuilder().append(clientId).append("_row_").append(rowIndex).toString(), null);
         writer.writeAttribute("class", DataTable.ROW_CLASS, null);
 
         for (Column column : table.getColumns()) {
@@ -176,7 +176,7 @@ public class SubTableRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String style = column.getStyle();
         String columnClass = column.getStyleClass();
-        columnClass = (columnClass == null) ? styleClass : styleClass + " " + columnClass;
+        columnClass = (columnClass == null) ? styleClass : new StringBuilder().append(styleClass).append(" ").append(columnClass).toString();
 
         writer.startElement("td", null);
         writer.writeAttribute("class", columnClass, null);

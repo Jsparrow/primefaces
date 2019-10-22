@@ -33,7 +33,72 @@ public abstract class CaptchaBase extends UIInput implements Widget {
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.CaptchaRenderer";
 
-    public enum PropertyKeys {
+    public CaptchaBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getTheme() {
+        return (String) getStateHelper().eval(PropertyKeys.theme, "light");
+    }
+
+	public void setTheme(String theme) {
+        getStateHelper().put(PropertyKeys.theme, theme);
+    }
+
+	public String getLanguage() {
+        return (String) getStateHelper().eval(PropertyKeys.language, "en");
+    }
+
+	public void setLanguage(String language) {
+        getStateHelper().put(PropertyKeys.language, language);
+    }
+
+	public int getTabindex() {
+        return (Integer) getStateHelper().eval(PropertyKeys.tabindex, 0);
+    }
+
+	public void setTabindex(int tabindex) {
+        getStateHelper().put(PropertyKeys.tabindex, tabindex);
+    }
+
+	public String getLabel() {
+        return (String) getStateHelper().eval(PropertyKeys.label, null);
+    }
+
+	public void setLabel(String label) {
+        getStateHelper().put(PropertyKeys.label, label);
+    }
+
+	public String getCallback() {
+        return (String) getStateHelper().eval(PropertyKeys.callback, null);
+    }
+
+	public void setCallback(String callback) {
+        getStateHelper().put(PropertyKeys.callback, callback);
+    }
+
+	public String getExpired() {
+        return (String) getStateHelper().eval(PropertyKeys.expired, null);
+    }
+
+	public void setExpired(String expired) {
+        getStateHelper().put(PropertyKeys.expired, expired);
+    }
+
+	public String getSize() {
+        return (String) getStateHelper().eval(PropertyKeys.size, null);
+    }
+
+	public void setSize(String size) {
+        getStateHelper().put(PropertyKeys.size, size);
+    }
+
+	public enum PropertyKeys {
 
         theme,
         language,
@@ -42,70 +107,5 @@ public abstract class CaptchaBase extends UIInput implements Widget {
         callback,
         expired,
         size
-    }
-
-    public CaptchaBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getTheme() {
-        return (String) getStateHelper().eval(PropertyKeys.theme, "light");
-    }
-
-    public void setTheme(String theme) {
-        getStateHelper().put(PropertyKeys.theme, theme);
-    }
-
-    public String getLanguage() {
-        return (String) getStateHelper().eval(PropertyKeys.language, "en");
-    }
-
-    public void setLanguage(String language) {
-        getStateHelper().put(PropertyKeys.language, language);
-    }
-
-    public int getTabindex() {
-        return (Integer) getStateHelper().eval(PropertyKeys.tabindex, 0);
-    }
-
-    public void setTabindex(int tabindex) {
-        getStateHelper().put(PropertyKeys.tabindex, tabindex);
-    }
-
-    public String getLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.label, null);
-    }
-
-    public void setLabel(String label) {
-        getStateHelper().put(PropertyKeys.label, label);
-    }
-
-    public String getCallback() {
-        return (String) getStateHelper().eval(PropertyKeys.callback, null);
-    }
-
-    public void setCallback(String callback) {
-        getStateHelper().put(PropertyKeys.callback, callback);
-    }
-
-    public String getExpired() {
-        return (String) getStateHelper().eval(PropertyKeys.expired, null);
-    }
-
-    public void setExpired(String expired) {
-        getStateHelper().put(PropertyKeys.expired, expired);
-    }
-
-    public String getSize() {
-        return (String) getStateHelper().eval(PropertyKeys.size, null);
-    }
-
-    public void setSize(String size) {
-        getStateHelper().put(PropertyKeys.size, size);
     }
 }

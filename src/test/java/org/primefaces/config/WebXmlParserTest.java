@@ -20,7 +20,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 public class WebXmlParserTest {
-    private static String XPATH_FACTORY_SYSTEM_PROPERTY = XPathFactory.DEFAULT_PROPERTY_NAME + ":" + XPathFactory.DEFAULT_OBJECT_MODEL_URI;
+    private static String xpathFactorySystemProperty = new StringBuilder().append(XPathFactory.DEFAULT_PROPERTY_NAME).append(":").append(XPathFactory.DEFAULT_OBJECT_MODEL_URI).toString();
 
     private FacesContext context;
     private ExternalContext extContext;
@@ -33,7 +33,7 @@ public class WebXmlParserTest {
     }
 
     private void configureXpathFactory(Class<? extends XPathFactory> factoryClass) {
-        System.setProperty(XPATH_FACTORY_SYSTEM_PROPERTY, factoryClass.getName());
+        System.setProperty(xpathFactorySystemProperty, factoryClass.getName());
         assertEquals(factoryClass, XPathFactory.newInstance().getClass(), "The XpathFactory implementations must match: " + factoryClass.getName());
     }
 
@@ -47,14 +47,14 @@ public class WebXmlParserTest {
 
     @AfterEach
     public void tearDown() {
-        System.clearProperty(XPATH_FACTORY_SYSTEM_PROPERTY);
+        System.clearProperty(xpathFactorySystemProperty);
     }
 
     private void assertErrorPages(Map<String, String> errorPages) {
         String viewExpiredClassName = "javax.faces.application.ViewExpiredException";
         assertEquals(2, errorPages.size(), "Parsing the web.xml should return 2 errors pages");
         assertEquals("/default", errorPages.get(null), "The key null should return the default location");
-        assertEquals("/viewExpired", errorPages.get(viewExpiredClassName), "The key " + viewExpiredClassName + "  should return the viewExpired location");
+        assertEquals("/viewExpired", errorPages.get(viewExpiredClassName), new StringBuilder().append("The key ").append(viewExpiredClassName).append("  should return the viewExpired location").toString());
     }
 
     @ParameterizedTest

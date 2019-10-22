@@ -49,7 +49,7 @@ import org.primefaces.util.WidgetBuilder;
 public class SelectOneRadioRenderer extends SelectOneRenderer {
 
     @Override
-    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) {
         Renderer renderer = ComponentUtils.getUnwrappedRenderer(
                 context,
                 "javax.faces.SelectOne",
@@ -71,13 +71,13 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         if (layout == null) {
             layout = "lineDirection";
         }
-        boolean custom = layout.equals("custom");
+        boolean custom = "custom".equals(layout);
 
         if (custom) {
             String style = radio.getStyle();
             String styleClass = radio.getStyleClass();
             String defaultStyleClass = "ui-helper-hidden";
-            styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
+            styleClass = styleClass == null ? defaultStyleClass : new StringBuilder().append(defaultStyleClass).append(" ").append(styleClass).toString();
             writer.startElement("span", radio);
             writer.writeAttribute("id", radio.getClientId(context), "id");
             writer.writeAttribute("class", styleClass, "styleClass");
@@ -87,7 +87,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
             encodeCustomLayout(context, radio);
             writer.endElement("span");
         }
-        else if (layout.equals("responsive")) {
+        else if ("responsive".equals(layout)) {
             encodeResponsiveLayout(context, radio);
         }
         else {
@@ -98,7 +98,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
     protected void encodeScript(FacesContext context, SelectOneRadio radio) throws IOException {
         String clientId = radio.getClientId(context);
         String layout = radio.getLayout();
-        boolean custom = layout != null && layout.equals("custom");
+        boolean custom = layout != null && "custom".equals(layout);
 
         WidgetBuilder wb = getWidgetBuilder(context);
         wb.init("SelectOneRadio", radio.resolveWidgetVar(context), clientId)
@@ -114,7 +114,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         String styleClass = radio.getStyleClass();
         String defaultStyleClass = radio.isPlain() ? SelectOneRadio.NATIVE_STYLE_CLASS : SelectOneRadio.STYLE_CLASS;
         defaultStyleClass = defaultStyleClass + " ui-grid ui-grid-responsive";
-        styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
+        styleClass = styleClass == null ? defaultStyleClass : new StringBuilder().append(defaultStyleClass).append(" ").append(styleClass).toString();
 
         writer.startElement("div", radio);
         writer.writeAttribute("id", clientId, "id");
@@ -133,10 +133,9 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
             int idx = 0;
             int colMod;
 
-            for (int i = 0; i < selectItems.size(); i++) {
-                SelectItem selectItem = selectItems.get(i);
+            for (SelectItem selectItem : selectItems) {
                 boolean disabled = selectItem.isDisabled() || radio.isDisabled();
-                String id = name + UINamingContainer.getSeparatorChar(context) + idx;
+                String id = new StringBuilder().append(name).append(UINamingContainer.getSeparatorChar(context)).append(idx).toString();
                 boolean selected = isSelected(context, radio, selectItem, currentValue);
                 colMod = idx % columns;
                 if (colMod == 0) {
@@ -175,7 +174,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         String style = radio.getStyle();
         String styleClass = radio.getStyleClass();
         String defaultStyleClass = radio.isPlain() ? SelectOneRadio.NATIVE_STYLE_CLASS : SelectOneRadio.STYLE_CLASS;
-        styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
+        styleClass = styleClass == null ? defaultStyleClass : new StringBuilder().append(defaultStyleClass).append(" ").append(styleClass).toString();
 
         writer.startElement("table", radio);
         writer.writeAttribute("id", clientId, "id");
@@ -194,17 +193,17 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
     protected void encodeSelectItems(FacesContext context, SelectOneRadio radio, List<SelectItem> selectItems, String layout)
             throws IOException {
 
-        if (layout.equals("lineDirection")) {
+        if ("lineDirection".equals(layout)) {
             encodeLineLayout(context, radio, selectItems);
         }
-        else if (layout.equals("pageDirection")) {
+        else if ("pageDirection".equals(layout)) {
             encodePageLayout(context, radio, selectItems);
         }
-        else if (layout.equals("grid")) {
+        else if ("grid".equals(layout)) {
             encodeGridLayout(context, radio, selectItems);
         }
         else {
-            throw new FacesException("Invalid '" + layout + "' type for component '" + radio.getClientId(context) + "'.");
+            throw new FacesException(new StringBuilder().append("Invalid '").append(layout).append("' type for component '").append(radio.getClientId(context)).append("'.").toString());
         }
     }
 
@@ -216,7 +215,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
 
         for (int i = 0; i < selectItems.size(); i++) {
             SelectItem selectItem = selectItems.get(i);
-            String id = name + UINamingContainer.getSeparatorChar(context) + i;
+            String id = new StringBuilder().append(name).append(UINamingContainer.getSeparatorChar(context)).append(i).toString();
             boolean selected = isSelected(context, radio, selectItem, currentValue);
             boolean disabled = selectItem.isDisabled() || radio.isDisabled();
             String itemValueAsString = getOptionAsString(context, radio, converter, selectItem.getValue());
@@ -234,7 +233,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         for (int i = 0; i < selectItems.size(); i++) {
             SelectItem selectItem = selectItems.get(i);
             boolean disabled = selectItem.isDisabled() || radio.isDisabled();
-            String id = name + UINamingContainer.getSeparatorChar(context) + i;
+            String id = new StringBuilder().append(name).append(UINamingContainer.getSeparatorChar(context)).append(i).toString();
             boolean selected = isSelected(context, radio, selectItem, currentValue);
 
             writer.startElement("td", null);
@@ -253,7 +252,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
         for (int i = 0; i < selectItems.size(); i++) {
             SelectItem selectItem = selectItems.get(i);
             boolean disabled = selectItem.isDisabled() || radio.isDisabled();
-            String id = name + UINamingContainer.getSeparatorChar(context) + i;
+            String id = new StringBuilder().append(name).append(UINamingContainer.getSeparatorChar(context)).append(i).toString();
             boolean selected = isSelected(context, radio, selectItem, currentValue);
 
             writer.startElement("tr", null);
@@ -279,7 +278,7 @@ public class SelectOneRadioRenderer extends SelectOneRenderer {
             for (int i = 0; i < totalItems; i++) {
                 SelectItem selectItem = selectItems.get(i);
                 boolean disabled = selectItem.isDisabled() || radio.isDisabled();
-                String id = name + UINamingContainer.getSeparatorChar(context) + idx;
+                String id = new StringBuilder().append(name).append(UINamingContainer.getSeparatorChar(context)).append(idx).toString();
                 boolean selected = isSelected(context, radio, selectItem, currentValue);
 
                 colMod = idx % columns;

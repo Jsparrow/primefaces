@@ -45,16 +45,16 @@ public class TreeUtils {
     public static void sortNode(TreeNode node, Comparator comparator) {
         TreeNodeList children = (TreeNodeList) node.getChildren();
 
-        if (children != null && !children.isEmpty()) {
-            Object[] childrenArray = children.toArray();
-            Arrays.sort(childrenArray, comparator);
-            for (int i = 0; i < childrenArray.length; i++) {
-                children.setSibling(i, (TreeNode) childrenArray[i]);
-            }
-
-            for (int i = 0; i < children.size(); i++) {
-                sortNode(children.get(i), comparator);
-            }
-        }
+        if (!(children != null && !children.isEmpty())) {
+			return;
+		}
+		Object[] childrenArray = children.toArray();
+		Arrays.sort(childrenArray, comparator);
+		for (int i = 0; i < childrenArray.length; i++) {
+		    children.setSibling(i, (TreeNode) childrenArray[i]);
+		}
+		for (int i = 0; i < children.size(); i++) {
+		    sortNode(children.get(i), comparator);
+		}
     }
 }

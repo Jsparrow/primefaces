@@ -40,7 +40,7 @@ public class MeterGaugeRenderer extends BasePlotRenderer {
         ResponseWriter writer = context.getResponseWriter();
         MeterGaugeChartModel model = (MeterGaugeChartModel) chart.getModel();
 
-        writer.write(",data:[[" + escapeChartData(model.getValue()) + "]]");
+        writer.write(new StringBuilder().append(",data:[[").append(escapeChartData(model.getValue())).append("]]").toString());
     }
 
     @Override
@@ -59,8 +59,8 @@ public class MeterGaugeRenderer extends BasePlotRenderer {
         encodeNumberList(context, "ticks", model.getTicks());
 
         if (gaugeLabel != null) {
-            writer.write(",gaugeLabel:\"" + EscapeUtils.forJavaScript(gaugeLabel) + "\"");
-            writer.write(",gaugeLabelPosition:\"" + model.getGaugeLabelPosition() + "\"");
+            writer.write(new StringBuilder().append(",gaugeLabel:\"").append(EscapeUtils.forJavaScript(gaugeLabel)).append("\"").toString());
+            writer.write(new StringBuilder().append(",gaugeLabelPosition:\"").append(model.getGaugeLabelPosition()).append("\"").toString());
         }
 
         writer.write(",showTickLabels:" + model.isShowTickLabels());
@@ -82,20 +82,20 @@ public class MeterGaugeRenderer extends BasePlotRenderer {
     }
 
     private void encodeNumberList(FacesContext context, String name, List<Number> values) throws IOException {
-        if (values != null) {
-            ResponseWriter writer = context.getResponseWriter();
+        if (values == null) {
+			return;
+		}
+		ResponseWriter writer = context.getResponseWriter();
+		writer.write(new StringBuilder().append(",").append(name).append(":[").toString());
+		for (Iterator<Number> it = values.iterator(); it.hasNext(); ) {
+		    Number number = it.next();
+		    writer.write(number.toString());
 
-            writer.write("," + name + ":[");
-            for (Iterator<Number> it = values.iterator(); it.hasNext(); ) {
-                Number number = it.next();
-                writer.write(number.toString());
-
-                if (it.hasNext()) {
-                    writer.write(",");
-                }
-            }
-            writer.write("]");
-        }
+		    if (it.hasNext()) {
+		        writer.write(",");
+		    }
+		}
+		writer.write("]");
     }
 
 }

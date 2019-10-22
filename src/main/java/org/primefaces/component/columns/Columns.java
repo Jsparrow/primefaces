@@ -49,11 +49,7 @@ public class Columns extends ColumnsBase {
     @Override
     public CellEditor getCellEditor() {
         if (cellEditor == null) {
-            for (UIComponent child : getChildren()) {
-                if (child instanceof CellEditor) {
-                    cellEditor = (CellEditor) child;
-                }
-            }
+            getChildren().stream().filter(child -> child instanceof CellEditor).forEach(child -> cellEditor = (CellEditor) child);
         }
 
         return cellEditor;
@@ -92,7 +88,7 @@ public class Columns extends ColumnsBase {
 
             for (int i = 0; i < getRowCount(); i++) {
                 DynamicColumn dynaColumn = new DynamicColumn(i, this);
-                dynaColumn.setColumnKey(clientId + separator + i);
+                dynaColumn.setColumnKey(new StringBuilder().append(clientId).append(separator).append(i).toString());
 
                 dynamicColumns.add(dynaColumn);
             }

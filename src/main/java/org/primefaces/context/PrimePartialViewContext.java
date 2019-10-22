@@ -110,32 +110,32 @@ public class PrimePartialViewContext extends PartialViewContextWrapper {
         Object resetValuesObject = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.RESET_VALUES_PARAM);
         boolean resetValues = (null != resetValuesObject && "true".equals(resetValuesObject));
 
-        if (resetValues) {
-            VisitContext visitContext = null;
-            ResetInputContextCallback contextCallback = null;
+        if (!resetValues) {
+			return;
+		}
+		VisitContext visitContext = null;
+		ResetInputContextCallback contextCallback = null;
+		for (String renderId : context.getPartialViewContext().getRenderIds()) {
+		    if (LangUtils.isValueBlank(renderId) || renderId.trim().equals(SearchExpressionConstants.NONE_KEYWORD)) {
+		        continue;
+		    }
 
-            for (String renderId : context.getPartialViewContext().getRenderIds()) {
-                if (LangUtils.isValueBlank(renderId) || renderId.trim().equals(SearchExpressionConstants.NONE_KEYWORD)) {
-                    continue;
-                }
+		    // lazy init
+		    if (visitContext == null) {
+		        visitContext = VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
+		    }
 
-                // lazy init
-                if (visitContext == null) {
-                    visitContext = VisitContext.createVisitContext(context, null, ComponentUtils.VISIT_HINTS_SKIP_UNRENDERED);
-                }
+		    if (renderId.equals(SearchExpressionConstants.ALL_KEYWORD)) {
+		        context.getViewRoot().visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
+		    }
+		    else {
+		        // lazy init
+		        if (contextCallback == null) {
+		            contextCallback = new ResetInputContextCallback(visitContext);
+		        }
 
-                if (renderId.equals(SearchExpressionConstants.ALL_KEYWORD)) {
-                    context.getViewRoot().visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
-                }
-                else {
-                    // lazy init
-                    if (contextCallback == null) {
-                        contextCallback = new ResetInputContextCallback(visitContext);
-                    }
-
-                    context.getViewRoot().invokeOnComponent(context, renderId, contextCallback);
-                }
-            }
-        }
+		        context.getViewRoot().invokeOnComponent(context, renderId, contextCallback);
+		    }
+		}
     }
 }

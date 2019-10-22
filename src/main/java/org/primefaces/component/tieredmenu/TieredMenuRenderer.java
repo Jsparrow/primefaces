@@ -66,7 +66,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
         String style = menu.getStyle();
         String styleClass = menu.getStyleClass();
         String defaultStyleClass = menu.isOverlay() ? TieredMenu.DYNAMIC_CONTAINER_CLASS : TieredMenu.STATIC_CONTAINER_CLASS;
-        styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
+        styleClass = styleClass == null ? defaultStyleClass : new StringBuilder().append(defaultStyleClass).append(" ").append(styleClass).toString();
 
         encodeMenu(context, menu, style, styleClass, "menu");
     }
@@ -114,7 +114,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
                     MenuItem menuItem = (MenuItem) element;
                     String containerStyle = menuItem.getContainerStyle();
                     String containerStyleClass = menuItem.getContainerStyleClass();
-                    containerStyleClass = (containerStyleClass == null) ? Menu.MENUITEM_CLASS : Menu.MENUITEM_CLASS + " " + containerStyleClass;
+                    containerStyleClass = (containerStyleClass == null) ? Menu.MENUITEM_CLASS : new StringBuilder().append(Menu.MENUITEM_CLASS).append(" ").append(containerStyleClass).toString();
 
                     writer.startElement("li", null);
                     writer.writeAttribute("class", containerStyleClass, null);
@@ -129,7 +129,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
                     Submenu submenu = (Submenu) element;
                     String style = submenu.getStyle();
                     String styleClass = submenu.getStyleClass();
-                    styleClass = styleClass == null ? Menu.TIERED_SUBMENU_CLASS : Menu.TIERED_SUBMENU_CLASS + " " + styleClass;
+                    styleClass = styleClass == null ? Menu.TIERED_SUBMENU_CLASS : new StringBuilder().append(Menu.TIERED_SUBMENU_CLASS).append(" ").append(styleClass).toString();
 
                     writer.startElement("li", null);
                     if (shouldRenderId(submenu)) {
@@ -174,7 +174,7 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
 
         if (icon != null) {
             writer.startElement("span", null);
-            writer.writeAttribute("class", Menu.MENUITEM_ICON_CLASS + " " + icon, null);
+            writer.writeAttribute("class", new StringBuilder().append(Menu.MENUITEM_ICON_CLASS).append(" ").append(icon).toString(), null);
             writer.writeAttribute(HTML.ARIA_HIDDEN, "true", null);
             writer.endElement("span");
         }
@@ -190,16 +190,15 @@ public class TieredMenuRenderer extends BaseMenuRenderer {
 
         writer.endElement("a");
 
-        if (!disabled) {
-            //submenus and menuitems
-            if (submenu.getElementsCount() > 0) {
-                writer.startElement("ul", null);
-                writer.writeAttribute("class", Menu.TIERED_CHILD_SUBMENU_CLASS, null);
-                writer.writeAttribute("role", "menu", null);
-                encodeElements(context, menu, submenu.getElements());
-                writer.endElement("ul");
-            }
-        }
+        boolean condition = !disabled && submenu.getElementsCount() > 0;
+		//submenus and menuitems
+		if (condition) {
+		    writer.startElement("ul", null);
+		    writer.writeAttribute("class", Menu.TIERED_CHILD_SUBMENU_CLASS, null);
+		    writer.writeAttribute("role", "menu", null);
+		    encodeElements(context, menu, submenu.getElements());
+		    writer.endElement("ul");
+		}
     }
 
     protected void encodeSubmenuIcon(FacesContext context, Submenu submenu) throws IOException {

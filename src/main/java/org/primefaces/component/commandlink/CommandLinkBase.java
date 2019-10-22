@@ -36,7 +36,175 @@ public abstract class CommandLinkBase extends HtmlCommandLink implements AjaxSou
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.CommandLinkRenderer";
 
-    public enum PropertyKeys {
+    public CommandLinkBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public boolean isAjax() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.ajax, true);
+    }
+
+	public void setAjax(boolean ajax) {
+        getStateHelper().put(PropertyKeys.ajax, ajax);
+    }
+
+	@Override
+    public boolean isAsync() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.async, false);
+    }
+
+	public void setAsync(boolean async) {
+        getStateHelper().put(PropertyKeys.async, async);
+    }
+
+	@Override
+    public String getProcess() {
+        return (String) getStateHelper().eval(PropertyKeys.process, null);
+    }
+
+	public void setProcess(String process) {
+        getStateHelper().put(PropertyKeys.process, process);
+    }
+
+	@Override
+    public String getUpdate() {
+        return (String) getStateHelper().eval(PropertyKeys.update, null);
+    }
+
+	public void setUpdate(String update) {
+        getStateHelper().put(PropertyKeys.update, update);
+    }
+
+	@Override
+    public String getOnstart() {
+        return (String) getStateHelper().eval(PropertyKeys.onstart, null);
+    }
+
+	public void setOnstart(String onstart) {
+        getStateHelper().put(PropertyKeys.onstart, onstart);
+    }
+
+	@Override
+    public String getOncomplete() {
+        return (String) getStateHelper().eval(PropertyKeys.oncomplete, null);
+    }
+
+	public void setOncomplete(String oncomplete) {
+        getStateHelper().put(PropertyKeys.oncomplete, oncomplete);
+    }
+
+	@Override
+    public String getOnerror() {
+        return (String) getStateHelper().eval(PropertyKeys.onerror, null);
+    }
+
+	public void setOnerror(String onerror) {
+        getStateHelper().put(PropertyKeys.onerror, onerror);
+    }
+
+	@Override
+    public String getOnsuccess() {
+        return (String) getStateHelper().eval(PropertyKeys.onsuccess, null);
+    }
+
+	public void setOnsuccess(String onsuccess) {
+        getStateHelper().put(PropertyKeys.onsuccess, onsuccess);
+    }
+
+	@Override
+    public boolean isGlobal() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.global, true);
+    }
+
+	public void setGlobal(boolean global) {
+        getStateHelper().put(PropertyKeys.global, global);
+    }
+
+	@Override
+    public String getDelay() {
+        return (String) getStateHelper().eval(PropertyKeys.delay, null);
+    }
+
+	public void setDelay(String delay) {
+        getStateHelper().put(PropertyKeys.delay, delay);
+    }
+
+	@Override
+    public int getTimeout() {
+        return (Integer) getStateHelper().eval(PropertyKeys.timeout, 0);
+    }
+
+	public void setTimeout(int timeout) {
+        getStateHelper().put(PropertyKeys.timeout, timeout);
+    }
+
+	@Override
+    public boolean isPartialSubmit() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.partialSubmit, false);
+    }
+
+	public void setPartialSubmit(boolean partialSubmit) {
+        getStateHelper().put(PropertyKeys.partialSubmit, partialSubmit);
+    }
+
+	@Override
+    public boolean isResetValues() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.resetValues, false);
+    }
+
+	public void setResetValues(boolean resetValues) {
+        getStateHelper().put(PropertyKeys.resetValues, resetValues);
+    }
+
+	@Override
+    public boolean isIgnoreAutoUpdate() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.ignoreAutoUpdate, false);
+    }
+
+	public void setIgnoreAutoUpdate(boolean ignoreAutoUpdate) {
+        getStateHelper().put(PropertyKeys.ignoreAutoUpdate, ignoreAutoUpdate);
+    }
+
+	public boolean isValidateClient() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.validateClient, false);
+    }
+
+	public void setValidateClient(boolean validateClient) {
+        getStateHelper().put(PropertyKeys.validateClient, validateClient);
+    }
+
+	@Override
+    public String getPartialSubmitFilter() {
+        return (String) getStateHelper().eval(PropertyKeys.partialSubmitFilter, null);
+    }
+
+	public void setPartialSubmitFilter(String partialSubmitFilter) {
+        getStateHelper().put(PropertyKeys.partialSubmitFilter, partialSubmitFilter);
+    }
+
+	@Override
+    public String getForm() {
+        return (String) getStateHelper().eval(PropertyKeys.form, null);
+    }
+
+	public void setForm(String form) {
+        getStateHelper().put(PropertyKeys.form, form);
+    }
+
+	public String getAriaLabel() {
+        return (String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
+    }
+
+	public void setAriaLabel(String ariaLabel) {
+        getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
+    }
+
+	public enum PropertyKeys {
 
         ajax,
         async,
@@ -56,174 +224,6 @@ public abstract class CommandLinkBase extends HtmlCommandLink implements AjaxSou
         partialSubmitFilter,
         form,
         ariaLabel
-    }
-
-    public CommandLinkBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public boolean isAjax() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.ajax, true);
-    }
-
-    public void setAjax(boolean ajax) {
-        getStateHelper().put(PropertyKeys.ajax, ajax);
-    }
-
-    @Override
-    public boolean isAsync() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.async, false);
-    }
-
-    public void setAsync(boolean async) {
-        getStateHelper().put(PropertyKeys.async, async);
-    }
-
-    @Override
-    public String getProcess() {
-        return (String) getStateHelper().eval(PropertyKeys.process, null);
-    }
-
-    public void setProcess(String process) {
-        getStateHelper().put(PropertyKeys.process, process);
-    }
-
-    @Override
-    public String getUpdate() {
-        return (String) getStateHelper().eval(PropertyKeys.update, null);
-    }
-
-    public void setUpdate(String update) {
-        getStateHelper().put(PropertyKeys.update, update);
-    }
-
-    @Override
-    public String getOnstart() {
-        return (String) getStateHelper().eval(PropertyKeys.onstart, null);
-    }
-
-    public void setOnstart(String onstart) {
-        getStateHelper().put(PropertyKeys.onstart, onstart);
-    }
-
-    @Override
-    public String getOncomplete() {
-        return (String) getStateHelper().eval(PropertyKeys.oncomplete, null);
-    }
-
-    public void setOncomplete(String oncomplete) {
-        getStateHelper().put(PropertyKeys.oncomplete, oncomplete);
-    }
-
-    @Override
-    public String getOnerror() {
-        return (String) getStateHelper().eval(PropertyKeys.onerror, null);
-    }
-
-    public void setOnerror(String onerror) {
-        getStateHelper().put(PropertyKeys.onerror, onerror);
-    }
-
-    @Override
-    public String getOnsuccess() {
-        return (String) getStateHelper().eval(PropertyKeys.onsuccess, null);
-    }
-
-    public void setOnsuccess(String onsuccess) {
-        getStateHelper().put(PropertyKeys.onsuccess, onsuccess);
-    }
-
-    @Override
-    public boolean isGlobal() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.global, true);
-    }
-
-    public void setGlobal(boolean global) {
-        getStateHelper().put(PropertyKeys.global, global);
-    }
-
-    @Override
-    public String getDelay() {
-        return (String) getStateHelper().eval(PropertyKeys.delay, null);
-    }
-
-    public void setDelay(String delay) {
-        getStateHelper().put(PropertyKeys.delay, delay);
-    }
-
-    @Override
-    public int getTimeout() {
-        return (Integer) getStateHelper().eval(PropertyKeys.timeout, 0);
-    }
-
-    public void setTimeout(int timeout) {
-        getStateHelper().put(PropertyKeys.timeout, timeout);
-    }
-
-    @Override
-    public boolean isPartialSubmit() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.partialSubmit, false);
-    }
-
-    public void setPartialSubmit(boolean partialSubmit) {
-        getStateHelper().put(PropertyKeys.partialSubmit, partialSubmit);
-    }
-
-    @Override
-    public boolean isResetValues() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.resetValues, false);
-    }
-
-    public void setResetValues(boolean resetValues) {
-        getStateHelper().put(PropertyKeys.resetValues, resetValues);
-    }
-
-    @Override
-    public boolean isIgnoreAutoUpdate() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.ignoreAutoUpdate, false);
-    }
-
-    public void setIgnoreAutoUpdate(boolean ignoreAutoUpdate) {
-        getStateHelper().put(PropertyKeys.ignoreAutoUpdate, ignoreAutoUpdate);
-    }
-
-    public boolean isValidateClient() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.validateClient, false);
-    }
-
-    public void setValidateClient(boolean validateClient) {
-        getStateHelper().put(PropertyKeys.validateClient, validateClient);
-    }
-
-    @Override
-    public String getPartialSubmitFilter() {
-        return (String) getStateHelper().eval(PropertyKeys.partialSubmitFilter, null);
-    }
-
-    public void setPartialSubmitFilter(String partialSubmitFilter) {
-        getStateHelper().put(PropertyKeys.partialSubmitFilter, partialSubmitFilter);
-    }
-
-    @Override
-    public String getForm() {
-        return (String) getStateHelper().eval(PropertyKeys.form, null);
-    }
-
-    public void setForm(String form) {
-        getStateHelper().put(PropertyKeys.form, form);
-    }
-
-    public String getAriaLabel() {
-        return (String) getStateHelper().eval(PropertyKeys.ariaLabel, null);
-    }
-
-    public void setAriaLabel(String ariaLabel) {
-        getStateHelper().put(PropertyKeys.ariaLabel, ariaLabel);
     }
 
 }

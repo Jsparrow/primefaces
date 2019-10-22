@@ -41,7 +41,7 @@ public class BarRenderer extends CartesianPlotRenderer {
     protected void encodeData(FacesContext context, Chart chart) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         BarChartModel model = (BarChartModel) chart.getModel();
-        boolean horizontal = model.getOrientation().equals("horizontal");
+        boolean horizontal = "horizontal".equals(model.getOrientation());
 
         //data
         writer.write(",data:[");
@@ -57,14 +57,14 @@ public class BarRenderer extends CartesianPlotRenderer {
 
                 if (horizontal) {
                     writer.write("[");
-                    writer.write(valueToRender + "," + i);
+                    writer.write(new StringBuilder().append(valueToRender).append(",").append(i).toString());
                     writer.write("]");
 
                     i++;
                 }
                 else {
-                    if (model.getDataRenderMode().equals("key")) {
-                        writer.write("'" + (String) entry.getKey() + "'," + valueToRender);
+                    if ("key".equals(model.getDataRenderMode())) {
+                        writer.write(new StringBuilder().append("'").append((String) entry.getKey()).append("',").append(valueToRender).toString());
                     }
                     else {
                         writer.write(valueToRender);
@@ -98,9 +98,9 @@ public class BarRenderer extends CartesianPlotRenderer {
         String legendLabel = model.getLegendLabel();
 
         writer.write(",series:[");
-        if (model.getDataRenderMode().equals("key") && legendLabel != null) {
+        if ("key".equals(model.getDataRenderMode()) && legendLabel != null) {
             writer.write("{");
-            writer.write("label:\"" + EscapeUtils.forJavaScript(legendLabel) + "\"");
+            writer.write(new StringBuilder().append("label:\"").append(EscapeUtils.forJavaScript(legendLabel)).append("\"").toString());
             writer.write("}");
         }
         else {
@@ -117,7 +117,7 @@ public class BarRenderer extends CartesianPlotRenderer {
 
         writer.write(",ticks:[");
         for (Iterator<String> tickIt = ticks.iterator(); tickIt.hasNext();) {
-            writer.write("\"" + EscapeUtils.forJavaScript(tickIt.next()) + "\"");
+            writer.write(new StringBuilder().append("\"").append(EscapeUtils.forJavaScript(tickIt.next())).append("\"").toString());
             if (tickIt.hasNext()) {
                 writer.write(",");
             }
@@ -125,7 +125,7 @@ public class BarRenderer extends CartesianPlotRenderer {
         writer.write("]");
 
         if (orientation != null) {
-            writer.write(",orientation:\"" + orientation + "\"");
+            writer.write(new StringBuilder().append(",orientation:\"").append(orientation).append("\"").toString());
         }
         if (barPadding != 8) {
             writer.write(",barPadding:" + barPadding);
@@ -149,11 +149,12 @@ public class BarRenderer extends CartesianPlotRenderer {
             writer.write(",showPointLabels:true");
         }
 
-        if (model.isShowDatatip()) {
-            writer.write(",datatip:true");
-            if (model.getDatatipFormat() != null) {
-                writer.write(",datatipFormat:\"" + model.getDatatipFormat() + "\"");
-            }
-        }
+        if (!model.isShowDatatip()) {
+			return;
+		}
+		writer.write(",datatip:true");
+		if (model.getDatatipFormat() != null) {
+		    writer.write(new StringBuilder().append(",datatipFormat:\"").append(model.getDatatipFormat()).append("\"").toString());
+		}
     }
 }

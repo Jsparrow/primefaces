@@ -89,13 +89,7 @@ public class TabView extends TabViewBase {
     }
 
     public Tab findTab(String tabClientId) {
-        for (UIComponent component : getChildren()) {
-            if (component.getClientId().equals(tabClientId)) {
-                return (Tab) component;
-            }
-        }
-
-        return null;
+        return getChildren().stream().filter(component -> component.getClientId().equals(tabClientId)).findFirst().map(component -> (Tab) component).orElse(null);
     }
 
     @Override
@@ -109,7 +103,7 @@ public class TabView extends TabViewBase {
             boolean repeating = isRepeating();
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if (eventName.equals("tabChange")) {
+            if ("tabChange".equals(eventName)) {
                 String tabClientId = params.get(clientId + "_newTab");
                 TabChangeEvent changeEvent = new TabChangeEvent(this, behaviorEvent.getBehavior(), findTab(tabClientId));
 
@@ -128,7 +122,7 @@ public class TabView extends TabViewBase {
                     setIndex(-1);
                 }
             }
-            else if (eventName.equals("tabClose")) {
+            else if ("tabClose".equals(eventName)) {
                 String tabClientId = params.get(clientId + "_closeTab");
                 TabCloseEvent closeEvent = new TabCloseEvent(this, behaviorEvent.getBehavior(), findTab(tabClientId));
 
@@ -166,9 +160,10 @@ public class TabView extends TabViewBase {
         super.processUpdates(context);
 
         ValueExpression expr = getValueExpression(PropertyKeys.activeIndex.toString());
-        if (expr != null) {
-            expr.setValue(getFacesContext().getELContext(), getActiveIndex());
-            resetActiveIndex();
-        }
+        if (expr == null) {
+			return;
+		}
+		expr.setValue(getFacesContext().getELContext(), getActiveIndex());
+		resetActiveIndex();
     }
 }

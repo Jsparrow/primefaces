@@ -104,10 +104,11 @@ public class ImageCropperRenderer extends CoreRenderer {
             int x2 = x + croppedImage.getWidth();
             int y2 = y + croppedImage.getHeight();
 
-            select = "[" + x + "," + y + "," + x2 + "," + y2 + "]";
+            select = new StringBuilder().append("[").append(x).append(",").append(y).append(",").append(x2)
+					.append(",").append(y2).append("]").toString();
         }
         else if (cropper.getInitialCoords() != null) {
-            select = "[" + cropper.getInitialCoords() + "]";
+            select = new StringBuilder().append("[").append(cropper.getInitialCoords()).append("]").toString();
         }
 
         wb.append(",setSelect:").append(select);
@@ -146,7 +147,7 @@ public class ImageCropperRenderer extends CoreRenderer {
     }
 
     @Override
-    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) {
         String coords = (String) submittedValue;
 
         if (isValueBlank(coords)) {

@@ -33,7 +33,7 @@ import javax.faces.event.SystemEventListener;
 public class TimelineListener implements SystemEventListener {
 
     @Override
-    public void processEvent(SystemEvent cse) throws AbortProcessingException {
+    public void processEvent(SystemEvent cse) {
 
         FacesContext context = FacesContext.getCurrentInstance();
         Timeline timeline = (Timeline) cse.getSource();
@@ -47,11 +47,12 @@ public class TimelineListener implements SystemEventListener {
             }
         }
 
-        if (!alreadyRegistred) {
-            DefaultTimelineUpdater timelineUpdater = new DefaultTimelineUpdater();
-            timelineUpdater.setWidgetVar(widgetVar);
-            context.getViewRoot().addPhaseListener(timelineUpdater);
-        }
+        if (alreadyRegistred) {
+			return;
+		}
+		DefaultTimelineUpdater timelineUpdater = new DefaultTimelineUpdater();
+		timelineUpdater.setWidgetVar(widgetVar);
+		context.getViewRoot().addPhaseListener(timelineUpdater);
     }
 
     @Override

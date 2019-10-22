@@ -49,8 +49,8 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = datepicker.getClientId(context);
         String styleClass = datepicker.getStyleClass();
-        styleClass = (styleClass == null) ? UICalendar.CONTAINER_CLASS : UICalendar.CONTAINER_CLASS + " " + styleClass;
-        styleClass = DatePicker.CONTAINER_EXTENSION_CLASS + " " + styleClass;
+        styleClass = (styleClass == null) ? UICalendar.CONTAINER_CLASS : new StringBuilder().append(UICalendar.CONTAINER_CLASS).append(" ").append(styleClass).toString();
+        styleClass = new StringBuilder().append(DatePicker.CONTAINER_EXTENSION_CLASS).append(" ").append(styleClass).toString();
         String inputId = clientId + "_input";
         boolean inline = datepicker.isInline();
 
@@ -174,7 +174,7 @@ public class DatePickerRenderer extends BaseCalendarRenderer {
     }
 
     @Override
-    public Object getConvertedValue(FacesContext context, UIComponent component, Object value) throws ConverterException {
+    public Object getConvertedValue(FacesContext context, UIComponent component, Object value) {
         DatePicker datepicker = (DatePicker) component;
         String submittedValue = (String) value;
 

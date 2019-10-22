@@ -35,9 +35,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class JSONObjectTest {
+
+	private static final Logger logger = LoggerFactory.getLogger(JSONObjectTest.class);
 
 	@Test
 	public void testBooleanToJSON() {
@@ -45,12 +49,13 @@ public class JSONObjectTest {
 			String json = new JSONObject().put("valid", true).toString();
 			assertEquals("{\"valid\":true}", json);
 		} catch (JSONException e) {
+			logger.error(e.getMessage(), e);
 			fail();
 		}
 	}
 
 	@Test
-	public void testPojoToJSON() throws JSONException {
+	public void testPojoToJSON() {
 		JSONObject json = new JSONObject(new Person("Cagatay", "Civici"));
         assertNotNull(json.get("firstname"));
         assertEquals("Cagatay", json.get("firstname"));
@@ -60,8 +65,8 @@ public class JSONObjectTest {
 	}
 
     @Test
-    public void testListToJSONArray() throws JSONException {
-        List<String> myList = new ArrayList<String>();
+    public void testListToJSONArray() {
+        List<String> myList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             myList.add("item" + i);
         }
@@ -70,8 +75,8 @@ public class JSONObjectTest {
     }
 
     @Test
-    public void testMapToJSONObject() throws JSONException {
-        Map<String, String> myMap = new HashMap<String, String>();
+    public void testMapToJSONObject() {
+        Map<String, String> myMap = new HashMap<>();
         for (int j = 0; j < 5; j++) {
             myMap.put("key" + j, "value" + j);
         }
@@ -79,7 +84,7 @@ public class JSONObjectTest {
         assertEquals(5, new JSONObject(myMap).length());
     }
 
-	static public class Person {
+	public static class Person {
 
 		private String firstname;
 		private String lastname;

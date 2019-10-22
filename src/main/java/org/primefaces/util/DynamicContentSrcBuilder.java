@@ -110,13 +110,13 @@ public class DynamicContentSrcBuilder {
             else {
                 byte[] bytes = toByteArray(streamedContent.getStream());
                 String base64 = DatatypeConverter.printBase64Binary(bytes);
-                return "data:" + streamedContent.getContentType() + ";base64," + base64;
+                return new StringBuilder().append("data:").append(streamedContent.getContentType()).append(";base64,").append(base64).toString();
             }
         }
 
         if (src != null) {
             src += src.contains("?") ? "&" : "?";
-            src += Constants.DYNAMIC_CONTENT_CACHE_PARAM + "=" + cache;
+            src += new StringBuilder().append(Constants.DYNAMIC_CONTENT_CACHE_PARAM).append("=").append(cache).toString();
 
             if (!cache) {
                 src += "&uid=" + UUID.randomUUID().toString();

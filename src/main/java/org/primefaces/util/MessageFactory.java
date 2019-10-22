@@ -34,10 +34,13 @@ import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.context.FacesContextWrapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MessageFactory {
 
-    private static final String DEFAULT_BUNDLE_BASENAME = "javax.faces.Messages";
+    private static final Logger logger = LoggerFactory.getLogger(MessageFactory.class);
+	private static final String DEFAULT_BUNDLE_BASENAME = "javax.faces.Messages";
     private static final String PRIMEFACES_BUNDLE_BASENAME = "org.primefaces.Messages";
     private static final String DEFAULT_DETAIL_SUFFIX = "_detail";
 
@@ -67,6 +70,7 @@ public class MessageFactory {
                 summary = bundle.getString(messageId);
             }
             catch (MissingResourceException e) {
+				logger.error(e.getMessage(), e);
                 // No Op
             }
         }
@@ -81,6 +85,7 @@ public class MessageFactory {
                 summary = bundle.getString(messageId);
             }
             catch (MissingResourceException e) {
+				logger.error(e.getMessage(), e);
                 // No Op
             }
         }
@@ -95,6 +100,7 @@ public class MessageFactory {
                 summary = bundle.getString(messageId);
             }
             catch (MissingResourceException e) {
+				logger.error(e.getMessage(), e);
                 // No Op
             }
         }
@@ -105,6 +111,7 @@ public class MessageFactory {
             detail = getFormattedText(locale, bundle.getString(messageId + DEFAULT_DETAIL_SUFFIX), params);
         }
         catch (MissingResourceException e) {
+			logger.error(e.getMessage(), e);
             // NoOp
         }
 

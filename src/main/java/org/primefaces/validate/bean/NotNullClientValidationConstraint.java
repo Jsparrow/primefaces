@@ -27,8 +27,8 @@ public class NotNullClientValidationConstraint extends AbstractClientValidationC
 
     public static final String CONSTRAINT_ID = "NotNull";
     public static final String MESSAGE_METADATA = "data-p-notnull-msg";
-    public static final String CONSTRAINT_CLASS_NAME = CONSTRAINT_PACKAGE  + "." + CONSTRAINT_ID;
-    public static final String MESSAGE_ID = "{" + CONSTRAINT_CLASS_NAME + ".message}";
+    public static final String CONSTRAINT_CLASS_NAME = new StringBuilder().append(CONSTRAINT_PACKAGE).append(".").append(CONSTRAINT_ID).toString();
+    public static final String MESSAGE_ID = new StringBuilder().append("{").append(CONSTRAINT_CLASS_NAME).append(".message}").toString();
 
     public NotNullClientValidationConstraint() {
         super(MESSAGE_ID, MESSAGE_METADATA);

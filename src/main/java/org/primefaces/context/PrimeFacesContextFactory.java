@@ -47,8 +47,7 @@ public class PrimeFacesContextFactory extends FacesContextFactory {
     }
 
     @Override
-    public FacesContext getFacesContext(Object context, Object request, Object response, Lifecycle lifecycle)
-            throws FacesException {
+    public FacesContext getFacesContext(Object context, Object request, Object response, Lifecycle lifecycle) {
 
         FacesContext wrappedContext = wrapped.getFacesContext(context, request, response, lifecycle);
 

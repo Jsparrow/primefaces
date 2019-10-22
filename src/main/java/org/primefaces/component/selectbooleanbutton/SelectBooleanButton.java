@@ -67,7 +67,7 @@ public class SelectBooleanButton extends SelectBooleanButtonBase {
 
         String userStyleClass = getStyleClass();
         if (userStyleClass != null) {
-            styleClass = styleClass + " " + userStyleClass;
+            styleClass = new StringBuilder().append(styleClass).append(" ").append(userStyleClass).toString();
         }
 
         return styleClass;

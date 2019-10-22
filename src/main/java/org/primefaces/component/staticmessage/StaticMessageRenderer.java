@@ -43,7 +43,7 @@ public class StaticMessageRenderer extends UINotificationRenderer {
         String severity = staticMessage.getSeverity();
         severity = severity == null ? "info" : severity.toLowerCase();
 
-        String styleClass = "ui-message ui-staticmessage ui-message-" + severity + " ui-widget ui-corner-all";
+        String styleClass = new StringBuilder().append("ui-message ui-staticmessage ui-message-").append(severity).append(" ui-widget ui-corner-all").toString();
         String style = staticMessage.getStyle();
 
         writer.startElement("div", staticMessage);
@@ -79,7 +79,7 @@ public class StaticMessageRenderer extends UINotificationRenderer {
 
     protected void encodeIcon(ResponseWriter writer, String severity, String title, boolean iconOnly) throws IOException {
         writer.startElement("span", null);
-        writer.writeAttribute("class", "ui-message-" + severity + "-icon", null);
+        writer.writeAttribute("class", new StringBuilder().append("ui-message-").append(severity).append("-icon").toString(), null);
         if (iconOnly && title != null) {
             writer.writeAttribute("title", title, null);
         }

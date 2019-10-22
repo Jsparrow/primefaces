@@ -46,19 +46,15 @@ public abstract class AbstractMenu extends UIPanel implements MenuItemAware {
     public static final String SEPARATOR_CLASS = "ui-separator ui-state-default";
     public static final String OPTIONS_CLASS = "ui-menuitem ui-menubar-options ui-widget ui-corner-all";
 
-    public enum PropertyKeys {
-        tabindex
-    }
-
     public String getTabindex() {
         return (String) getStateHelper().eval(PropertyKeys.tabindex, "0");
     }
 
-    public void setTabindex(String tabindex) {
+	public void setTabindex(String tabindex) {
         getStateHelper().put(PropertyKeys.tabindex, tabindex);
     }
 
-    @Override
+	@Override
     public List getElements() {
         MenuModel model = getModel();
         if (model != null) {
@@ -69,20 +65,24 @@ public abstract class AbstractMenu extends UIPanel implements MenuItemAware {
         }
     }
 
-    public int getElementsCount() {
+	public int getElementsCount() {
         List elements = getElements();
 
         return (elements == null) ? 0 : elements.size();
     }
 
-    public abstract MenuModel getModel();
+	public abstract MenuModel getModel();
 
-    public boolean isDynamic() {
+	public boolean isDynamic() {
         return getValueExpression("model") != null;
     }
 
-    @Override
-    public void broadcast(FacesEvent event) throws AbortProcessingException {
+	@Override
+    public void broadcast(FacesEvent event) {
         broadcastMenuActionEvent(event, getFacesContext(), super::broadcast);
+    }
+
+	public enum PropertyKeys {
+        tabindex
     }
 }

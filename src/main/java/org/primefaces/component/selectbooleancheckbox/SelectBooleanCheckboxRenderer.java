@@ -59,7 +59,7 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
     }
 
     protected boolean isChecked(String value) {
-        return value.equalsIgnoreCase("on") || value.equalsIgnoreCase("yes") || value.equalsIgnoreCase("true");
+        return "on".equalsIgnoreCase(value) || "yes".equalsIgnoreCase(value) || "true".equalsIgnoreCase(value);
     }
 
     @Override
@@ -79,7 +79,7 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
 
         String style = checkbox.getStyle();
         String styleClass = checkbox.getStyleClass();
-        styleClass = styleClass == null ? HTML.CHECKBOX_CLASS : HTML.CHECKBOX_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? HTML.CHECKBOX_CLASS : new StringBuilder().append(HTML.CHECKBOX_CLASS).append(" ").append(styleClass).toString();
         styleClass = "ui-selectbooleancheckbox " + styleClass;
 
         writer.startElement("div", checkbox);
@@ -154,21 +154,19 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
     protected void encodeItemLabel(FacesContext context, SelectBooleanCheckbox checkbox, String clientId) throws IOException {
         String label = checkbox.getItemLabel();
 
-        if (label != null) {
-            ResponseWriter writer = context.getResponseWriter();
-
-            writer.startElement("span", null);
-            writer.writeAttribute("class", HTML.CHECKBOX_LABEL_CLASS, null);
-
-            if (checkbox.isEscape()) {
-                writer.writeText(label, "itemLabel");
-            }
-            else {
-                writer.write(label);
-            }
-
-            writer.endElement("span");
-        }
+        if (label == null) {
+			return;
+		}
+		ResponseWriter writer = context.getResponseWriter();
+		writer.startElement("span", null);
+		writer.writeAttribute("class", HTML.CHECKBOX_LABEL_CLASS, null);
+		if (checkbox.isEscape()) {
+		    writer.writeText(label, "itemLabel");
+		}
+		else {
+		    writer.write(label);
+		}
+		writer.endElement("span");
     }
 
     protected void encodeScript(FacesContext context, SelectBooleanCheckbox checkbox) throws IOException {
@@ -178,7 +176,7 @@ public class SelectBooleanCheckboxRenderer extends InputRenderer {
     }
 
     @Override
-    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) {
         return ((submittedValue instanceof Boolean) ? submittedValue : Boolean.valueOf(submittedValue.toString()));
     }
 

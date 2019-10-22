@@ -41,7 +41,7 @@ public class ToolbarRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         String style = toolbar.getStyle();
         String styleClass = toolbar.getStyleClass();
-        styleClass = styleClass == null ? Toolbar.CONTAINER_CLASS : Toolbar.CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? Toolbar.CONTAINER_CLASS : new StringBuilder().append(Toolbar.CONTAINER_CLASS).append(" ").append(styleClass).toString();
 
         writer.startElement("div", toolbar);
         writer.writeAttribute("id", toolbar.getClientId(context), null);
@@ -72,7 +72,7 @@ public class ToolbarRenderer extends CoreRenderer {
                 String defaultGroupClass = "ui-toolbar-group-" + group.getAlign();
                 String groupClass = group.getStyleClass();
                 String groupStyle = group.getStyle();
-                groupClass = groupClass == null ? defaultGroupClass : defaultGroupClass + " " + groupClass;
+                groupClass = groupClass == null ? defaultGroupClass : new StringBuilder().append(defaultGroupClass).append(" ").append(groupClass).toString();
 
                 writer.startElement("div", null);
                 writer.writeAttribute("class", groupClass, null);
@@ -98,19 +98,20 @@ public class ToolbarRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent facet = toolbar.getFacet(facetName);
 
-        if (ComponentUtils.shouldRenderFacet(facet)) {
-            writer.startElement("div", null);
-            writer.writeAttribute("class", "ui-toolbar-group-" + facetName, null);
-            facet.encodeAll(context);
-            writer.endElement("div");
-        }
+        if (!ComponentUtils.shouldRenderFacet(facet)) {
+			return;
+		}
+		writer.startElement("div", null);
+		writer.writeAttribute("class", "ui-toolbar-group-" + facetName, null);
+		facet.encodeAll(context);
+		writer.endElement("div");
     }
 
     public void encodeSeparator(FacesContext context, UISeparator separator) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String style = separator.getStyle();
         String styleClass = separator.getStyleClass();
-        styleClass = styleClass == null ? Toolbar.SEPARATOR_CLASS : Toolbar.SEPARATOR_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? Toolbar.SEPARATOR_CLASS : new StringBuilder().append(Toolbar.SEPARATOR_CLASS).append(" ").append(styleClass).toString();
 
         writer.startElement("span", null);
         writer.writeAttribute("class", styleClass, null);

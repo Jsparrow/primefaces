@@ -91,24 +91,24 @@ public class Organigram extends OrganigramBase {
             FacesEvent wrapperEvent = null;
             AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
 
-            if (eventName.equals("expand")) {
+            if ("expand".equals(eventName)) {
                 OrganigramNode node = findTreeNode(getValue(), params.get(clientId + "_expandNode"));
                 node.setExpanded(true);
 
                 wrapperEvent = new OrganigramNodeExpandEvent(this, behaviorEvent.getBehavior(), node);
             }
-            else if (eventName.equals("collapse")) {
+            else if ("collapse".equals(eventName)) {
                 OrganigramNode node = findTreeNode(getValue(), params.get(clientId + "_collapseNode"));
                 node.setExpanded(false);
 
                 wrapperEvent = new OrganigramNodeCollapseEvent(this, behaviorEvent.getBehavior(), node);
             }
-            else if (eventName.equals("select") || eventName.equals("contextmenu")) {
+            else if ("select".equals(eventName) || "contextmenu".equals(eventName)) {
                 OrganigramNode node = findTreeNode(getValue(), params.get(clientId + "_selectNode"));
 
                 wrapperEvent = new OrganigramNodeSelectEvent(this, behaviorEvent.getBehavior(), node);
             }
-            else if (eventName.equals("dragdrop")) {
+            else if ("dragdrop".equals(eventName)) {
                 OrganigramNode dragNode = findTreeNode(getValue(), params.get(clientId + "_dragNode"));
                 OrganigramNode dropNode = findTreeNode(getValue(), params.get(clientId + "_dropNode"));
 
@@ -128,7 +128,7 @@ public class Organigram extends OrganigramBase {
             }
 
             if (wrapperEvent == null) {
-                throw new FacesException("Component " + this.getClass().getName() + " does not support event " + eventName + "!");
+                throw new FacesException(new StringBuilder().append("Component ").append(this.getClass().getName()).append(" does not support event ").append(eventName).append("!").toString());
             }
 
             wrapperEvent.setPhaseId(behaviorEvent.getPhaseId());
@@ -142,7 +142,7 @@ public class Organigram extends OrganigramBase {
 
 
     public OrganigramNode findTreeNode(OrganigramNode searchRoot, String rowKey) {
-        if (rowKey != null && rowKey.equals("root")) {
+        if (rowKey != null && "root".equals(rowKey)) {
             return getValue();
         }
 

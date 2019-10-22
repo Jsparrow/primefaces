@@ -35,61 +35,61 @@ public abstract class OutputPanelBase extends UIPanel implements Widget, ClientB
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.OutputPanelRenderer";
 
-    public enum PropertyKeys {
+    public OutputPanelBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getStyle() {
+        return (String) getStateHelper().eval(PropertyKeys.style, null);
+    }
+
+	public void setStyle(String style) {
+        getStateHelper().put(PropertyKeys.style, style);
+    }
+
+	public String getStyleClass() {
+        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
+    }
+
+	public void setStyleClass(String styleClass) {
+        getStateHelper().put(PropertyKeys.styleClass, styleClass);
+    }
+
+	public boolean isDeferred() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.deferred, false);
+    }
+
+	public void setDeferred(boolean deferred) {
+        getStateHelper().put(PropertyKeys.deferred, deferred);
+    }
+
+	public String getDeferredMode() {
+        return (String) getStateHelper().eval(PropertyKeys.deferredMode, "load");
+    }
+
+	public void setDeferredMode(String deferredMode) {
+        getStateHelper().put(PropertyKeys.deferredMode, deferredMode);
+    }
+
+	public String getLayout() {
+        return (String) getStateHelper().eval(PropertyKeys.layout, "block");
+    }
+
+	public void setLayout(String layout) {
+        getStateHelper().put(PropertyKeys.layout, layout);
+    }
+
+	public enum PropertyKeys {
 
         style,
         styleClass,
         deferred,
         deferredMode,
         layout
-    }
-
-    public OutputPanelBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getStyle() {
-        return (String) getStateHelper().eval(PropertyKeys.style, null);
-    }
-
-    public void setStyle(String style) {
-        getStateHelper().put(PropertyKeys.style, style);
-    }
-
-    public String getStyleClass() {
-        return (String) getStateHelper().eval(PropertyKeys.styleClass, null);
-    }
-
-    public void setStyleClass(String styleClass) {
-        getStateHelper().put(PropertyKeys.styleClass, styleClass);
-    }
-
-    public boolean isDeferred() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.deferred, false);
-    }
-
-    public void setDeferred(boolean deferred) {
-        getStateHelper().put(PropertyKeys.deferred, deferred);
-    }
-
-    public String getDeferredMode() {
-        return (String) getStateHelper().eval(PropertyKeys.deferredMode, "load");
-    }
-
-    public void setDeferredMode(String deferredMode) {
-        getStateHelper().put(PropertyKeys.deferredMode, deferredMode);
-    }
-
-    public String getLayout() {
-        return (String) getStateHelper().eval(PropertyKeys.layout, "block");
-    }
-
-    public void setLayout(String layout) {
-        getStateHelper().put(PropertyKeys.layout, layout);
     }
 }

@@ -57,7 +57,7 @@ public class EditorRenderer extends InputRenderer {
         Map<String, String> params = context.getExternalContext().getRequestParameterMap();
         String value = params.get(inputParam);
 
-        if (value != null && value.equals("<br/>")) {
+        if (value != null && "<br/>".equals(value)) {
             value = "";
         }
 
@@ -126,7 +126,7 @@ public class EditorRenderer extends InputRenderer {
     }
 
     @Override
-    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) {
         Editor editor = (Editor) component;
         String value = (String) submittedValue;
         Converter converter = ComponentUtils.getConverter(context, component);

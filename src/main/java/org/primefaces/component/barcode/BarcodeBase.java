@@ -32,7 +32,64 @@ public abstract class BarcodeBase extends HtmlGraphicImage {
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.BarcodeRenderer";
 
-    public enum PropertyKeys {
+    public BarcodeBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getType() {
+        return (String) getStateHelper().eval(PropertyKeys.type, null);
+    }
+
+	public void setType(String type) {
+        getStateHelper().put(PropertyKeys.type, type);
+    }
+
+	public boolean isCache() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.cache, true);
+    }
+
+	public void setCache(boolean cache) {
+        getStateHelper().put(PropertyKeys.cache, cache);
+    }
+
+	public String getFormat() {
+        return (String) getStateHelper().eval(PropertyKeys.format, "svg");
+    }
+
+	public void setFormat(String format) {
+        getStateHelper().put(PropertyKeys.format, format);
+    }
+
+	public int getOrientation() {
+        return (Integer) getStateHelper().eval(PropertyKeys.orientation, 0);
+    }
+
+	public void setOrientation(int orientation) {
+        getStateHelper().put(PropertyKeys.orientation, orientation);
+    }
+
+	public String getQrErrorCorrection() {
+        return (String) getStateHelper().eval(PropertyKeys.qrErrorCorrection, "L");
+    }
+
+	public void setQrErrorCorrection(String qrErrorCorrection) {
+        getStateHelper().put(PropertyKeys.qrErrorCorrection, qrErrorCorrection);
+    }
+
+	public String getHrp() {
+        return (String) getStateHelper().eval(PropertyKeys.hrp, "bottom");
+    }
+
+	public void setHrp(String hrp) {
+        getStateHelper().put(PropertyKeys.hrp, hrp);
+    }
+
+	public enum PropertyKeys {
 
         type,
         cache,
@@ -40,63 +97,6 @@ public abstract class BarcodeBase extends HtmlGraphicImage {
         orientation,
         qrErrorCorrection,
         hrp
-    }
-
-    public BarcodeBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getType() {
-        return (String) getStateHelper().eval(PropertyKeys.type, null);
-    }
-
-    public void setType(String type) {
-        getStateHelper().put(PropertyKeys.type, type);
-    }
-
-    public boolean isCache() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.cache, true);
-    }
-
-    public void setCache(boolean cache) {
-        getStateHelper().put(PropertyKeys.cache, cache);
-    }
-
-    public String getFormat() {
-        return (String) getStateHelper().eval(PropertyKeys.format, "svg");
-    }
-
-    public void setFormat(String format) {
-        getStateHelper().put(PropertyKeys.format, format);
-    }
-
-    public int getOrientation() {
-        return (Integer) getStateHelper().eval(PropertyKeys.orientation, 0);
-    }
-
-    public void setOrientation(int orientation) {
-        getStateHelper().put(PropertyKeys.orientation, orientation);
-    }
-
-    public String getQrErrorCorrection() {
-        return (String) getStateHelper().eval(PropertyKeys.qrErrorCorrection, "L");
-    }
-
-    public void setQrErrorCorrection(String qrErrorCorrection) {
-        getStateHelper().put(PropertyKeys.qrErrorCorrection, qrErrorCorrection);
-    }
-
-    public String getHrp() {
-        return (String) getStateHelper().eval(PropertyKeys.hrp, "bottom");
-    }
-
-    public void setHrp(String hrp) {
-        getStateHelper().put(PropertyKeys.hrp, hrp);
     }
 
 }

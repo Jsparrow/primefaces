@@ -286,9 +286,7 @@ public class DefaultMenuItem implements MenuItem, UIOutcomeTarget, AjaxSource, S
             params = new LinkedHashMap<>();
         }
 
-        if (!params.containsKey(key)) {
-            params.put(key, new ArrayList<String>());
-        }
+        params.putIfAbsent(key, new ArrayList<>());
 
         params.get(key).add(value.toString());
     }

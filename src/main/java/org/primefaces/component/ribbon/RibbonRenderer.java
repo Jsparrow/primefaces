@@ -67,7 +67,7 @@ public class RibbonRenderer extends CoreRenderer {
         String clientId = ribbon.getClientId(context);
         String style = ribbon.getStyle();
         String styleClass = ribbon.getStyleClass();
-        styleClass = (styleClass == null) ? Ribbon.CONTAINER_CLASS : Ribbon.CONTAINER_CLASS + " " + styleClass;
+        styleClass = (styleClass == null) ? Ribbon.CONTAINER_CLASS : new StringBuilder().append(Ribbon.CONTAINER_CLASS).append(" ").append(styleClass).toString();
 
         writer.startElement("div", ribbon);
         writer.writeAttribute("id", clientId, "id");

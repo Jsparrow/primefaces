@@ -72,8 +72,8 @@ public class ToggleSwitchRenderer extends InputRenderer {
         boolean disabled = toggleSwitch.isDisabled();
         String style = toggleSwitch.getStyle();
         String styleClass = toggleSwitch.getStyleClass();
-        styleClass = (styleClass == null) ? ToggleSwitch.CONTAINER_CLASS : ToggleSwitch.CONTAINER_CLASS + " " + styleClass;
-        styleClass = (checked) ? styleClass + " " + ToggleSwitch.CHECKED_CLASS : styleClass;
+        styleClass = (styleClass == null) ? ToggleSwitch.CONTAINER_CLASS : new StringBuilder().append(ToggleSwitch.CONTAINER_CLASS).append(" ").append(styleClass).toString();
+        styleClass = (checked) ? new StringBuilder().append(styleClass).append(" ").append(ToggleSwitch.CHECKED_CLASS).toString() : styleClass;
         if (disabled) {
             styleClass = styleClass + " ui-state-disabled";
         }
@@ -135,7 +135,7 @@ public class ToggleSwitchRenderer extends InputRenderer {
     }
 
     protected boolean isChecked(String value) {
-        return value.equalsIgnoreCase("on") || value.equalsIgnoreCase("yes") || value.equalsIgnoreCase("true");
+        return "on".equalsIgnoreCase(value) || "yes".equalsIgnoreCase(value) || "true".equalsIgnoreCase(value);
     }
 }
 

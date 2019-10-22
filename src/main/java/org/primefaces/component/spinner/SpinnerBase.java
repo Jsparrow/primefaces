@@ -35,7 +35,106 @@ public abstract class SpinnerBase extends HtmlInputText implements Widget, Input
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.SpinnerRenderer";
 
-    public enum PropertyKeys {
+    public SpinnerBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getPlaceholder() {
+        return (String) getStateHelper().eval(PropertyKeys.placeholder, null);
+    }
+
+	public void setPlaceholder(String placeholder) {
+        getStateHelper().put(PropertyKeys.placeholder, placeholder);
+    }
+
+	public String getWidgetVar() {
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
+
+	public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
+
+	public double getStepFactor() {
+        return (Double) getStateHelper().eval(PropertyKeys.stepFactor, 1.0);
+    }
+
+	public void setStepFactor(double stepFactor) {
+        getStateHelper().put(PropertyKeys.stepFactor, stepFactor);
+    }
+
+	public double getMin() {
+        return (Double) getStateHelper().eval(PropertyKeys.min, Double.MIN_VALUE);
+    }
+
+	public void setMin(double min) {
+        getStateHelper().put(PropertyKeys.min, min);
+    }
+
+	public double getMax() {
+        return (Double) getStateHelper().eval(PropertyKeys.max, Double.MAX_VALUE);
+    }
+
+	public void setMax(double max) {
+        getStateHelper().put(PropertyKeys.max, max);
+    }
+
+	public String getPrefix() {
+        return (String) getStateHelper().eval(PropertyKeys.prefix, null);
+    }
+
+	public void setPrefix(String prefix) {
+        getStateHelper().put(PropertyKeys.prefix, prefix);
+    }
+
+	public String getSuffix() {
+        return (String) getStateHelper().eval(PropertyKeys.suffix, null);
+    }
+
+	public void setSuffix(String suffix) {
+        getStateHelper().put(PropertyKeys.suffix, suffix);
+    }
+
+	public String getDecimalPlaces() {
+        return (String) getStateHelper().eval(PropertyKeys.decimalPlaces, null);
+    }
+
+	public void setDecimalPlaces(String decimalPlaces) {
+        getStateHelper().put(PropertyKeys.decimalPlaces, decimalPlaces);
+    }
+
+	public String getDecimalSeparator() {
+        return ComponentUtils.eval(getStateHelper(), PropertyKeys.decimalSeparator,
+            () -> LocaleUtils.getDecimalSeparator(getFacesContext()));
+    }
+
+	public void setDecimalSeparator(String decimalSeparator) {
+        getStateHelper().put(PropertyKeys.decimalSeparator, decimalSeparator);
+    }
+
+	public String getThousandSeparator() {
+        return ComponentUtils.eval(getStateHelper(), PropertyKeys.thousandSeparator,
+            () -> LocaleUtils.getThousandSeparator(getFacesContext()));
+    }
+
+	public void setThousandSeparator(String thousandSeparator) {
+        getStateHelper().put(PropertyKeys.thousandSeparator, thousandSeparator);
+    }
+
+	public boolean isRotate() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.rotate, false);
+    }
+
+	public void setRotate(boolean rotate) {
+        getStateHelper().put(PropertyKeys.rotate, rotate);
+    }
+
+	public enum PropertyKeys {
 
         placeholder,
         widgetVar,
@@ -48,104 +147,5 @@ public abstract class SpinnerBase extends HtmlInputText implements Widget, Input
         decimalSeparator,
         thousandSeparator,
         rotate
-    }
-
-    public SpinnerBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getPlaceholder() {
-        return (String) getStateHelper().eval(PropertyKeys.placeholder, null);
-    }
-
-    public void setPlaceholder(String placeholder) {
-        getStateHelper().put(PropertyKeys.placeholder, placeholder);
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public double getStepFactor() {
-        return (Double) getStateHelper().eval(PropertyKeys.stepFactor, 1.0);
-    }
-
-    public void setStepFactor(double stepFactor) {
-        getStateHelper().put(PropertyKeys.stepFactor, stepFactor);
-    }
-
-    public double getMin() {
-        return (Double) getStateHelper().eval(PropertyKeys.min, Double.MIN_VALUE);
-    }
-
-    public void setMin(double min) {
-        getStateHelper().put(PropertyKeys.min, min);
-    }
-
-    public double getMax() {
-        return (Double) getStateHelper().eval(PropertyKeys.max, Double.MAX_VALUE);
-    }
-
-    public void setMax(double max) {
-        getStateHelper().put(PropertyKeys.max, max);
-    }
-
-    public String getPrefix() {
-        return (String) getStateHelper().eval(PropertyKeys.prefix, null);
-    }
-
-    public void setPrefix(String prefix) {
-        getStateHelper().put(PropertyKeys.prefix, prefix);
-    }
-
-    public String getSuffix() {
-        return (String) getStateHelper().eval(PropertyKeys.suffix, null);
-    }
-
-    public void setSuffix(String suffix) {
-        getStateHelper().put(PropertyKeys.suffix, suffix);
-    }
-
-    public String getDecimalPlaces() {
-        return (String) getStateHelper().eval(PropertyKeys.decimalPlaces, null);
-    }
-
-    public void setDecimalPlaces(String decimalPlaces) {
-        getStateHelper().put(PropertyKeys.decimalPlaces, decimalPlaces);
-    }
-
-    public String getDecimalSeparator() {
-        return ComponentUtils.eval(getStateHelper(), PropertyKeys.decimalSeparator,
-            () -> LocaleUtils.getDecimalSeparator(getFacesContext()));
-    }
-
-    public void setDecimalSeparator(String decimalSeparator) {
-        getStateHelper().put(PropertyKeys.decimalSeparator, decimalSeparator);
-    }
-
-    public String getThousandSeparator() {
-        return ComponentUtils.eval(getStateHelper(), PropertyKeys.thousandSeparator,
-            () -> LocaleUtils.getThousandSeparator(getFacesContext()));
-    }
-
-    public void setThousandSeparator(String thousandSeparator) {
-        getStateHelper().put(PropertyKeys.thousandSeparator, thousandSeparator);
-    }
-
-    public boolean isRotate() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.rotate, false);
-    }
-
-    public void setRotate(boolean rotate) {
-        getStateHelper().put(PropertyKeys.rotate, rotate);
     }
 }

@@ -64,11 +64,12 @@ public class InputTextareaRenderer extends InputRenderer {
 
         //AutoComplete event
         String query = params.get(clientId + "_query");
-        if (query != null) {
-            AutoCompleteEvent autoCompleteEvent = new AutoCompleteEvent(inputTextarea, query);
-            autoCompleteEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
-            inputTextarea.queueEvent(autoCompleteEvent);
-        }
+        if (query == null) {
+			return;
+		}
+		AutoCompleteEvent autoCompleteEvent = new AutoCompleteEvent(inputTextarea, query);
+		autoCompleteEvent.setPhaseId(PhaseId.APPLY_REQUEST_VALUES);
+		inputTextarea.queueEvent(autoCompleteEvent);
     }
 
     @Override
@@ -173,7 +174,7 @@ public class InputTextareaRenderer extends InputRenderer {
         defaultClass = !inputTextarea.isDisabled() ? defaultClass : defaultClass + " ui-state-disabled";
 
         String styleClass = inputTextarea.getStyleClass();
-        styleClass = styleClass == null ? defaultClass : defaultClass + " " + styleClass;
+        styleClass = styleClass == null ? defaultClass : new StringBuilder().append(defaultClass).append(" ").append(styleClass).toString();
 
         if (inputTextarea.isAutoResize()) {
             styleClass = styleClass + " ui-inputtextarea-resizable";

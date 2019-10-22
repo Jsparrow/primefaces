@@ -43,7 +43,7 @@ import org.primefaces.util.WidgetBuilder;
 public class MultiSelectListboxRenderer extends SelectOneRenderer {
 
     @Override
-    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) {
         Renderer renderer = ComponentUtils.getUnwrappedRenderer(
                 context,
                 "javax.faces.SelectOne",
@@ -65,7 +65,7 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
         List<SelectItem> selectItems = getSelectItems(context, listbox);
         String style = listbox.getStyle();
         String styleClass = listbox.getStyleClass();
-        styleClass = styleClass == null ? MultiSelectListbox.CONTAINER_CLASS : MultiSelectListbox.CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? MultiSelectListbox.CONTAINER_CLASS : new StringBuilder().append(MultiSelectListbox.CONTAINER_CLASS).append(" ").append(styleClass).toString();
         styleClass = listbox.isDisabled() ? styleClass + " ui-state-disabled" : styleClass;
         styleClass = !listbox.isValid() ? styleClass + " ui-state-error" : styleClass;
 
@@ -117,34 +117,33 @@ public class MultiSelectListboxRenderer extends SelectOneRenderer {
     }
 
     protected void encodeListItems(FacesContext context, MultiSelectListbox listbox, SelectItem[] selectItems) throws IOException {
-        if (selectItems != null && selectItems.length > 0) {
-            ResponseWriter writer = context.getResponseWriter();
-            Converter converter = ComponentUtils.getConverter(context, listbox);
-            String itemValue = null;
+        if (!(selectItems != null && selectItems.length > 0)) {
+			return;
+		}
+		ResponseWriter writer = context.getResponseWriter();
+		Converter converter = ComponentUtils.getConverter(context, listbox);
+		String itemValue = null;
+		for (SelectItem selectItem : selectItems) {
+		    itemValue = converter != null ? converter.getAsString(context, listbox, selectItem.getValue()) : String.valueOf(selectItem.getValue());
+		    writer.startElement("li", null);
+		    writer.writeAttribute("class", MultiSelectListbox.ITEM_CLASS, null);
+		    writer.writeAttribute("data-value", itemValue, null);
 
-            for (int i = 0; i < selectItems.length; i++) {
-                SelectItem selectItem = selectItems[i];
-                itemValue = converter != null ? converter.getAsString(context, listbox, selectItem.getValue()) : String.valueOf(selectItem.getValue());
-                writer.startElement("li", null);
-                writer.writeAttribute("class", MultiSelectListbox.ITEM_CLASS, null);
-                writer.writeAttribute("data-value", itemValue, null);
+		    writer.startElement("span", listbox);
+		    writer.writeText(selectItem.getLabel(), null);
+		    writer.endElement("span");
 
-                writer.startElement("span", listbox);
-                writer.writeText(selectItem.getLabel(), null);
-                writer.endElement("span");
+		    if (selectItem instanceof SelectItemGroup) {
+		        SelectItemGroup group = (SelectItemGroup) selectItem;
+		        SelectItem[] groupItems = group.getSelectItems();
 
-                if (selectItem instanceof SelectItemGroup) {
-                    SelectItemGroup group = (SelectItemGroup) selectItem;
-                    SelectItem[] groupItems = group.getSelectItems();
+		        if (groupItems != null && groupItems.length > 0) {
+		            encodeGroupItems(context, listbox, group.getSelectItems());
+		        }
+		    }
 
-                    if (groupItems != null && groupItems.length > 0) {
-                        encodeGroupItems(context, listbox, group.getSelectItems());
-                    }
-                }
-
-                writer.endElement("li");
-            }
-        }
+		    writer.endElement("li");
+		}
     }
 
     protected void encodeGroupItems(FacesContext context, MultiSelectListbox listbox, SelectItem[] selectItems) throws IOException {

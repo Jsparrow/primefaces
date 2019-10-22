@@ -36,20 +36,16 @@ public class PrimeExceptionHandlerELResolver extends ELResolver {
     @Override
     public Object getValue(ELContext elContext, Object base, Object property) {
 
-        if (EL_NAME.equals(property)) {
-            elContext.setPropertyResolved(true);
-
-            FacesContext context = FacesContext.getCurrentInstance();
-            ExceptionInfo info = (ExceptionInfo) context.getAttributes().get(ExceptionInfo.ATTRIBUTE_NAME);
-
-            if (info == null) {
-                info = (ExceptionInfo) context.getExternalContext().getSessionMap().get(ExceptionInfo.ATTRIBUTE_NAME);
-            }
-
-            return info;
-        }
-
-        return null;
+        if (!EL_NAME.equals(property)) {
+			return null;
+		}
+		elContext.setPropertyResolved(true);
+		FacesContext context = FacesContext.getCurrentInstance();
+		ExceptionInfo info = (ExceptionInfo) context.getAttributes().get(ExceptionInfo.ATTRIBUTE_NAME);
+		if (info == null) {
+		    info = (ExceptionInfo) context.getExternalContext().getSessionMap().get(ExceptionInfo.ATTRIBUTE_NAME);
+		}
+		return info;
     }
 
     @Override

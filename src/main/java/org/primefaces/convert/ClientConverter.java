@@ -27,7 +27,7 @@ import java.util.Map;
 
 public interface ClientConverter {
 
-    public Map<String, Object> getMetadata();
+    Map<String, Object> getMetadata();
 
-    public String getConverterId();
+    String getConverterId();
 }

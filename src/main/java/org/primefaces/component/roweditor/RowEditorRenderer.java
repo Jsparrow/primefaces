@@ -40,7 +40,7 @@ public class RowEditorRenderer extends CoreRenderer {
         RowEditor rowEditor = (RowEditor) component;
         String style = rowEditor.getStyle();
         String styleClass = rowEditor.getStyleClass();
-        styleClass = (styleClass == null) ? DataTable.ROW_EDITOR_CLASS : DataTable.ROW_EDITOR_CLASS + " " + styleClass;
+        styleClass = (styleClass == null) ? DataTable.ROW_EDITOR_CLASS : new StringBuilder().append(DataTable.ROW_EDITOR_CLASS).append(" ").append(styleClass).toString();
 
         writer.startElement("div", null);
         writer.writeAttribute("id", component.getClientId(context), null);

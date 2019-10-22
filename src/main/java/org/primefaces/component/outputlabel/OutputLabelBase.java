@@ -32,26 +32,26 @@ public abstract class OutputLabelBase extends HtmlOutputLabel {
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.OutputLabelRenderer";
 
-    public enum PropertyKeys {
-
-        indicateRequired;
-    }
-
     public OutputLabelBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
-    @Override
+	@Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
-    public String getIndicateRequired() {
+	public String getIndicateRequired() {
         return (String) getStateHelper().eval(PropertyKeys.indicateRequired, "auto");
     }
 
-    public void setIndicateRequired(String indicateRequired) {
+	public void setIndicateRequired(String indicateRequired) {
         getStateHelper().put(PropertyKeys.indicateRequired, indicateRequired);
+    }
+
+	public enum PropertyKeys {
+
+        indicateRequired;
     }
 
 }

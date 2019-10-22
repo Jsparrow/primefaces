@@ -55,12 +55,12 @@ public class PageFeature implements DataTableFeature {
 
         context.getApplication().publishEvent(context, PostPageEvent.class, table);
 
-        if (table.isMultiViewState()) {
-            TableState ts = table.getTableState(true);
-
-            ts.setFirst(table.getFirst());
-            ts.setRows(table.getRows());
-        }
+        if (!table.isMultiViewState()) {
+			return;
+		}
+		TableState ts = table.getTableState(true);
+		ts.setFirst(table.getFirst());
+		ts.setRows(table.getRows());
     }
 
     @Override

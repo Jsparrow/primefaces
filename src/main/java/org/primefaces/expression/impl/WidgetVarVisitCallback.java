@@ -44,12 +44,10 @@ public class WidgetVarVisitCallback implements VisitCallback {
     @Override
     public VisitResult visit(VisitContext context, UIComponent target) {
 
-        if (target instanceof Widget) {
-            if (widgetVar.equalsIgnoreCase(((Widget) target).resolveWidgetVar(context.getFacesContext()))) {
-                component = target;
-                return VisitResult.COMPLETE;
-            }
-        }
+        if (target instanceof Widget && widgetVar.equalsIgnoreCase(((Widget) target).resolveWidgetVar(context.getFacesContext()))) {
+		    component = target;
+		    return VisitResult.COMPLETE;
+		}
 
         return VisitResult.ACCEPT;
     }

@@ -34,7 +34,207 @@ public abstract class PollBase extends UIComponentBase implements AjaxSource, Wi
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.PollRenderer";
 
-    public enum PropertyKeys {
+    public PollBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getWidgetVar() {
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
+
+	public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
+
+	public Object getInterval() {
+        return getStateHelper().eval(PropertyKeys.interval, 2);
+    }
+
+	public void setInterval(Object interval) {
+        getStateHelper().put(PropertyKeys.interval, interval);
+    }
+
+	@Override
+    public String getUpdate() {
+        return (String) getStateHelper().eval(PropertyKeys.update, null);
+    }
+
+	public void setUpdate(String update) {
+        getStateHelper().put(PropertyKeys.update, update);
+    }
+
+	public javax.el.MethodExpression getListener() {
+        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.listener, null);
+    }
+
+	public void setListener(javax.el.MethodExpression listener) {
+        getStateHelper().put(PropertyKeys.listener, listener);
+    }
+
+	public boolean isImmediate() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.immediate, false);
+    }
+
+	public void setImmediate(boolean immediate) {
+        getStateHelper().put(PropertyKeys.immediate, immediate);
+    }
+
+	@Override
+    public String getOnstart() {
+        return (String) getStateHelper().eval(PropertyKeys.onstart, null);
+    }
+
+	public void setOnstart(String onstart) {
+        getStateHelper().put(PropertyKeys.onstart, onstart);
+    }
+
+	@Override
+    public String getOncomplete() {
+        return (String) getStateHelper().eval(PropertyKeys.oncomplete, null);
+    }
+
+	public void setOncomplete(String oncomplete) {
+        getStateHelper().put(PropertyKeys.oncomplete, oncomplete);
+    }
+
+	@Override
+    public String getProcess() {
+        return (String) getStateHelper().eval(PropertyKeys.process, null);
+    }
+
+	public void setProcess(String process) {
+        getStateHelper().put(PropertyKeys.process, process);
+    }
+
+	@Override
+    public String getOnerror() {
+        return (String) getStateHelper().eval(PropertyKeys.onerror, null);
+    }
+
+	public void setOnerror(String onerror) {
+        getStateHelper().put(PropertyKeys.onerror, onerror);
+    }
+
+	@Override
+    public String getOnsuccess() {
+        return (String) getStateHelper().eval(PropertyKeys.onsuccess, null);
+    }
+
+	public void setOnsuccess(String onsuccess) {
+        getStateHelper().put(PropertyKeys.onsuccess, onsuccess);
+    }
+
+	@Override
+    public boolean isGlobal() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.global, true);
+    }
+
+	public void setGlobal(boolean global) {
+        getStateHelper().put(PropertyKeys.global, global);
+    }
+
+	@Override
+    public String getDelay() {
+        return (String) getStateHelper().eval(PropertyKeys.delay, null);
+    }
+
+	public void setDelay(String delay) {
+        getStateHelper().put(PropertyKeys.delay, delay);
+    }
+
+	@Override
+    public int getTimeout() {
+        return (Integer) getStateHelper().eval(PropertyKeys.timeout, 0);
+    }
+
+	public void setTimeout(int timeout) {
+        getStateHelper().put(PropertyKeys.timeout, timeout);
+    }
+
+	@Override
+    public boolean isAsync() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.async, false);
+    }
+
+	public void setAsync(boolean async) {
+        getStateHelper().put(PropertyKeys.async, async);
+    }
+
+	public boolean isAutoStart() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.autoStart, true);
+    }
+
+	public void setAutoStart(boolean autoStart) {
+        getStateHelper().put(PropertyKeys.autoStart, autoStart);
+    }
+
+	public boolean isStop() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.stop, false);
+    }
+
+	public void setStop(boolean stop) {
+        getStateHelper().put(PropertyKeys.stop, stop);
+    }
+
+	@Override
+    public boolean isPartialSubmit() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.partialSubmit, false);
+    }
+
+	public void setPartialSubmit(boolean partialSubmit) {
+        getStateHelper().put(PropertyKeys.partialSubmit, partialSubmit);
+    }
+
+	@Override
+    public boolean isResetValues() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.resetValues, false);
+    }
+
+	public void setResetValues(boolean resetValues) {
+        getStateHelper().put(PropertyKeys.resetValues, resetValues);
+    }
+
+	@Override
+    public boolean isIgnoreAutoUpdate() {
+        return (Boolean) getStateHelper().eval(PropertyKeys.ignoreAutoUpdate, false);
+    }
+
+	public void setIgnoreAutoUpdate(boolean ignoreAutoUpdate) {
+        getStateHelper().put(PropertyKeys.ignoreAutoUpdate, ignoreAutoUpdate);
+    }
+
+	@Override
+    public String getPartialSubmitFilter() {
+        return (String) getStateHelper().eval(PropertyKeys.partialSubmitFilter, null);
+    }
+
+	public void setPartialSubmitFilter(String partialSubmitFilter) {
+        getStateHelper().put(PropertyKeys.partialSubmitFilter, partialSubmitFilter);
+    }
+
+	@Override
+    public String getForm() {
+        return (String) getStateHelper().eval(PropertyKeys.form, null);
+    }
+
+	public void setForm(String form) {
+        getStateHelper().put(PropertyKeys.form, form);
+    }
+
+	public String getIntervalType() {
+        return (String) getStateHelper().eval(PropertyKeys.intervalType, "second");
+    }
+
+	public void setIntervalType(String intervalType) {
+        getStateHelper().put(PropertyKeys.intervalType, intervalType);
+    }
+
+	public enum PropertyKeys {
 
         widgetVar,
         interval,
@@ -58,205 +258,5 @@ public abstract class PollBase extends UIComponentBase implements AjaxSource, Wi
         partialSubmitFilter,
         form,
         intervalType
-    }
-
-    public PollBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public Object getInterval() {
-        return getStateHelper().eval(PropertyKeys.interval, 2);
-    }
-
-    public void setInterval(Object interval) {
-        getStateHelper().put(PropertyKeys.interval, interval);
-    }
-
-    @Override
-    public String getUpdate() {
-        return (String) getStateHelper().eval(PropertyKeys.update, null);
-    }
-
-    public void setUpdate(String update) {
-        getStateHelper().put(PropertyKeys.update, update);
-    }
-
-    public javax.el.MethodExpression getListener() {
-        return (javax.el.MethodExpression) getStateHelper().eval(PropertyKeys.listener, null);
-    }
-
-    public void setListener(javax.el.MethodExpression listener) {
-        getStateHelper().put(PropertyKeys.listener, listener);
-    }
-
-    public boolean isImmediate() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.immediate, false);
-    }
-
-    public void setImmediate(boolean immediate) {
-        getStateHelper().put(PropertyKeys.immediate, immediate);
-    }
-
-    @Override
-    public String getOnstart() {
-        return (String) getStateHelper().eval(PropertyKeys.onstart, null);
-    }
-
-    public void setOnstart(String onstart) {
-        getStateHelper().put(PropertyKeys.onstart, onstart);
-    }
-
-    @Override
-    public String getOncomplete() {
-        return (String) getStateHelper().eval(PropertyKeys.oncomplete, null);
-    }
-
-    public void setOncomplete(String oncomplete) {
-        getStateHelper().put(PropertyKeys.oncomplete, oncomplete);
-    }
-
-    @Override
-    public String getProcess() {
-        return (String) getStateHelper().eval(PropertyKeys.process, null);
-    }
-
-    public void setProcess(String process) {
-        getStateHelper().put(PropertyKeys.process, process);
-    }
-
-    @Override
-    public String getOnerror() {
-        return (String) getStateHelper().eval(PropertyKeys.onerror, null);
-    }
-
-    public void setOnerror(String onerror) {
-        getStateHelper().put(PropertyKeys.onerror, onerror);
-    }
-
-    @Override
-    public String getOnsuccess() {
-        return (String) getStateHelper().eval(PropertyKeys.onsuccess, null);
-    }
-
-    public void setOnsuccess(String onsuccess) {
-        getStateHelper().put(PropertyKeys.onsuccess, onsuccess);
-    }
-
-    @Override
-    public boolean isGlobal() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.global, true);
-    }
-
-    public void setGlobal(boolean global) {
-        getStateHelper().put(PropertyKeys.global, global);
-    }
-
-    @Override
-    public String getDelay() {
-        return (String) getStateHelper().eval(PropertyKeys.delay, null);
-    }
-
-    public void setDelay(String delay) {
-        getStateHelper().put(PropertyKeys.delay, delay);
-    }
-
-    @Override
-    public int getTimeout() {
-        return (Integer) getStateHelper().eval(PropertyKeys.timeout, 0);
-    }
-
-    public void setTimeout(int timeout) {
-        getStateHelper().put(PropertyKeys.timeout, timeout);
-    }
-
-    @Override
-    public boolean isAsync() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.async, false);
-    }
-
-    public void setAsync(boolean async) {
-        getStateHelper().put(PropertyKeys.async, async);
-    }
-
-    public boolean isAutoStart() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.autoStart, true);
-    }
-
-    public void setAutoStart(boolean autoStart) {
-        getStateHelper().put(PropertyKeys.autoStart, autoStart);
-    }
-
-    public boolean isStop() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.stop, false);
-    }
-
-    public void setStop(boolean stop) {
-        getStateHelper().put(PropertyKeys.stop, stop);
-    }
-
-    @Override
-    public boolean isPartialSubmit() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.partialSubmit, false);
-    }
-
-    public void setPartialSubmit(boolean partialSubmit) {
-        getStateHelper().put(PropertyKeys.partialSubmit, partialSubmit);
-    }
-
-    @Override
-    public boolean isResetValues() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.resetValues, false);
-    }
-
-    public void setResetValues(boolean resetValues) {
-        getStateHelper().put(PropertyKeys.resetValues, resetValues);
-    }
-
-    @Override
-    public boolean isIgnoreAutoUpdate() {
-        return (Boolean) getStateHelper().eval(PropertyKeys.ignoreAutoUpdate, false);
-    }
-
-    public void setIgnoreAutoUpdate(boolean ignoreAutoUpdate) {
-        getStateHelper().put(PropertyKeys.ignoreAutoUpdate, ignoreAutoUpdate);
-    }
-
-    @Override
-    public String getPartialSubmitFilter() {
-        return (String) getStateHelper().eval(PropertyKeys.partialSubmitFilter, null);
-    }
-
-    public void setPartialSubmitFilter(String partialSubmitFilter) {
-        getStateHelper().put(PropertyKeys.partialSubmitFilter, partialSubmitFilter);
-    }
-
-    @Override
-    public String getForm() {
-        return (String) getStateHelper().eval(PropertyKeys.form, null);
-    }
-
-    public void setForm(String form) {
-        getStateHelper().put(PropertyKeys.form, form);
-    }
-
-    public String getIntervalType() {
-        return (String) getStateHelper().eval(PropertyKeys.intervalType, "second");
-    }
-
-    public void setIntervalType(String intervalType) {
-        getStateHelper().put(PropertyKeys.intervalType, intervalType);
     }
 }

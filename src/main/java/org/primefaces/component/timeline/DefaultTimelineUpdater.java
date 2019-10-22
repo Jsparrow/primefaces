@@ -53,15 +53,6 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
     private String widgetVar;
     private List<CrudOperationData> crudOperationDatas;
 
-    enum CrudOperation {
-
-        ADD,
-        UPDATE,
-        DELETE,
-        SELECT,
-        CLEAR
-    }
-
     @Override
     public void add(TimelineEvent<?> event) {
         if (event == null) {
@@ -72,7 +63,7 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
         crudOperationDatas.add(new CrudOperationData(CrudOperation.ADD, event));
     }
 
-    @Override
+	@Override
     public void update(TimelineEvent<?> event) {
         if (event == null) {
             return;
@@ -82,44 +73,44 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
         crudOperationDatas.add(new CrudOperationData(CrudOperation.UPDATE, event));
     }
 
-    @Override
+	@Override
     @Deprecated
     public void delete(int index) {
         checkCrudOperationDataList();
         crudOperationDatas.add(new CrudOperationData(CrudOperation.DELETE, index));
     }
 
-    @Override
+	@Override
     public void delete(String id) {
         checkCrudOperationDataList();
         crudOperationDatas.add(new CrudOperationData(CrudOperation.DELETE, id));
     }
 
-    @Override
+	@Override
     @Deprecated
     public void select(int index) {
         checkCrudOperationDataList();
         crudOperationDatas.add(new CrudOperationData(CrudOperation.SELECT, index));
     }
 
-    @Override
+	@Override
     public void select(String id) {
         checkCrudOperationDataList();
         crudOperationDatas.add(new CrudOperationData(CrudOperation.SELECT, id));
     }
 
-    @Override
+	@Override
     public void clear() {
         checkCrudOperationDataList();
         crudOperationDatas.add(new CrudOperationData(CrudOperation.CLEAR));
     }
 
-    @Override
+	@Override
     public PhaseId getPhaseId() {
         return PhaseId.ANY_PHASE;
     }
 
-    @Override
+	@Override
     public void beforePhase(PhaseEvent event) {
         if (PhaseId.APPLY_REQUEST_VALUES.equals(event.getPhaseId())) {
             populateTimelineUpdater(event.getFacesContext());
@@ -129,18 +120,16 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
         }
     }
 
-    private void populateTimelineUpdater(FacesContext context) {
+	private void populateTimelineUpdater(FacesContext context) {
         Map<String, TimelineUpdater> map = (Map<String, TimelineUpdater>) context.getAttributes().get(TimelineUpdater.class.getName());
         if (map == null) {
             map = new HashMap<>();
             context.getAttributes().put(TimelineUpdater.class.getName(), map);
         }
-        if (!map.containsKey(widgetVar)) {
-            map.put(widgetVar, this);
-        }
+        map.putIfAbsent(widgetVar, this);
     }
 
-    private void processCrudOperations(FacesContext context) {
+	private void processCrudOperations(FacesContext context) {
         if (crudOperationDatas == null) {
             return;
         }
@@ -187,7 +176,7 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
                             sb.append(timelineRenderer.encodeGroup(context, fsw, fswHtml, timeline, groupFacet, groupsContent, foundGroup, orderGroup));
                         }
                         catch (IOException e) {
-                            LOGGER.log(Level.WARNING, "Timeline with id " + id + " could not be updated, at least one CRUD operation failed", e);
+                            LOGGER.log(Level.WARNING, new StringBuilder().append("Timeline with id ").append(id).append(" could not be updated, at least one CRUD operation failed").toString(), e);
                         }
                         sb.append(")");
                     }
@@ -258,30 +247,30 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
             PrimeFaces.current().executeScript(sb.toString());
         }
         catch (IOException e) {
-            LOGGER.log(Level.WARNING, "Timeline with id " + id + " could not be updated, at least one CRUD operation failed", e);
+            LOGGER.log(Level.WARNING, new StringBuilder().append("Timeline with id ").append(id).append(" could not be updated, at least one CRUD operation failed").toString(), e);
         }
     }
 
-    @Override
+	@Override
     public void afterPhase(PhaseEvent event) {
         // NOOP.
     }
 
-    public String getWidgetVar() {
+	public String getWidgetVar() {
         return widgetVar;
     }
 
-    public void setWidgetVar(String widgetVar) {
+	public void setWidgetVar(String widgetVar) {
         this.widgetVar = widgetVar;
     }
 
-    private void checkCrudOperationDataList() {
+	private void checkCrudOperationDataList() {
         if (crudOperationDatas == null) {
             crudOperationDatas = new ArrayList<>();
         }
     }
 
-    @Override
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -296,12 +285,21 @@ public class DefaultTimelineUpdater extends TimelineUpdater implements PhaseList
         return !(widgetVar != null ? !widgetVar.equals(that.widgetVar) : that.widgetVar != null);
     }
 
-    @Override
+	@Override
     public int hashCode() {
         return widgetVar != null ? widgetVar.hashCode() : 0;
     }
 
-    class CrudOperationData implements Serializable {
+	enum CrudOperation {
+
+        ADD,
+        UPDATE,
+        DELETE,
+        SELECT,
+        CLEAR
+    }
+
+	class CrudOperationData implements Serializable {
 
         private static final long serialVersionUID = 1L;
 

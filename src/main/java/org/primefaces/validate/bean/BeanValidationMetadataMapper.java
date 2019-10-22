@@ -158,9 +158,7 @@ public class BeanValidationMetadataMapper {
             }
         }
         catch (PropertyNotFoundException e) {
-            String message = "Skip resolving of CSV BV metadata for component \"" + component.getClientId(context) + "\" because"
-                    + " the ValueExpression of the \"value\" attribute"
-                    + " isn't resolvable completely (e.g. a sub-expression returns null)";
+            String message = new StringBuilder().append("Skip resolving of CSV BV metadata for component \"").append(component.getClientId(context)).append("\" because").append(" the ValueExpression of the \"value\" attribute").append(" isn't resolvable completely (e.g. a sub-expression returns null)").toString();
             LOGGER.log(Level.FINE, message);
         }
 

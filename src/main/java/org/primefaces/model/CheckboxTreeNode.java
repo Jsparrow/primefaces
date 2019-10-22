@@ -158,9 +158,7 @@ public class CheckboxTreeNode implements TreeNode, Serializable {
         }
         else if (propagateDown && !propagateUp) {
             if (!isLeaf()) {
-                for (TreeNode child : children) {
-                    ((CheckboxTreeNode) child).propagateSelectionDown(value);
-                }
+                children.forEach(child -> ((CheckboxTreeNode) child).propagateSelectionDown(value));
             }
         }
     }
@@ -180,9 +178,7 @@ public class CheckboxTreeNode implements TreeNode, Serializable {
         this.partialSelected = false;
 
         if (!isLeaf()) {
-            for (TreeNode child : children) {
-                ((CheckboxTreeNode) child).propagateSelectionDown(value);
-            }
+            children.forEach(child -> ((CheckboxTreeNode) child).propagateSelectionDown(value));
         }
 
         if (this.getParent() != null) {
@@ -194,9 +190,7 @@ public class CheckboxTreeNode implements TreeNode, Serializable {
         this.selected = value;
         this.partialSelected = false;
 
-        for (TreeNode child : children) {
-            ((CheckboxTreeNode) child).propagateSelectionDown(value);
-        }
+        children.forEach(child -> ((CheckboxTreeNode) child).propagateSelectionDown(value));
     }
 
     protected void propagateSelectionUp() {

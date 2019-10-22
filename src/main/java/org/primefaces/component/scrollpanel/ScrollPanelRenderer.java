@@ -45,12 +45,12 @@ public class ScrollPanelRenderer extends CoreRenderer {
     protected void encodeMarkup(FacesContext context, ScrollPanel panel) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
         String clientId = panel.getClientId(context);
-        boolean nativeMode = panel.getMode().equals("native");
+        boolean nativeMode = "native".equals(panel.getMode());
 
         String defaultStyleClass = nativeMode ? ScrollPanel.SCROLL_PANEL_NATIVE_CLASS : ScrollPanel.SCROLL_PANEL_CLASS;
         String style = panel.getStyle();
         String styleClass = panel.getStyleClass();
-        styleClass = styleClass == null ? defaultStyleClass : defaultStyleClass + " " + styleClass;
+        styleClass = styleClass == null ? defaultStyleClass : new StringBuilder().append(defaultStyleClass).append(" ").append(styleClass).toString();
 
         writer.startElement("div", panel);
         writer.writeAttribute("id", clientId, "id");
@@ -65,12 +65,13 @@ public class ScrollPanelRenderer extends CoreRenderer {
     }
 
     protected void encodeScript(FacesContext context, ScrollPanel panel) throws IOException {
-        boolean nativeMode = panel.getMode().equals("native");
-        if (!nativeMode) {
-            String clientId = panel.getClientId(context);
-            WidgetBuilder wb = getWidgetBuilder(context);
-            wb.init("ScrollPanel", panel.resolveWidgetVar(context), clientId).finish();
-        }
+        boolean nativeMode = "native".equals(panel.getMode());
+        if (nativeMode) {
+			return;
+		}
+		String clientId = panel.getClientId(context);
+		WidgetBuilder wb = getWidgetBuilder(context);
+		wb.init("ScrollPanel", panel.resolveWidgetVar(context), clientId).finish();
     }
 
     @Override

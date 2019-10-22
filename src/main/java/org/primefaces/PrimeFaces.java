@@ -48,6 +48,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.faces.application.ProjectStage;
+import java.util.List;
 
 public class PrimeFaces {
 
@@ -111,7 +112,7 @@ public class PrimeFaces {
      * @param clientId clientId of the target component.
      */
     public void scrollTo(String clientId) {
-        executeScript("PrimeFaces.scrollTo('" + clientId + "');");
+        executeScript(new StringBuilder().append("PrimeFaces.scrollTo('").append(clientId).append("');").toString());
     }
 
     /**
@@ -139,7 +140,7 @@ public class PrimeFaces {
         String clientId = SearchExpressionFacade.resolveClientId(facesContext,
                 base,
                 expression);
-        executeScript("PrimeFaces.focus('" + clientId + "');");
+        executeScript(new StringBuilder().append("PrimeFaces.focus('").append(clientId).append("');").toString());
     }
 
     /**
@@ -157,12 +158,8 @@ public class PrimeFaces {
 
 
         UIViewRoot root = facesContext.getViewRoot();
-        for (String expression : expressions) {
-            List<UIComponent> components = SearchExpressionFacade.resolveComponents(facesContext, root, expression);
-            for (UIComponent component : components) {
-                component.visitTree(visitContext, ResetInputVisitCallback.INSTANCE);
-            }
-        }
+        expressions.stream().map(expression -> SearchExpressionFacade.resolveComponents(facesContext, root, expression)).flatMap(List::stream)
+				.forEach(component -> component.visitTree(visitContext, ResetInputVisitCallback.INSTANCE));
     }
 
     /**
@@ -223,8 +220,7 @@ public class PrimeFaces {
             multiViewState().clear(m.group(1), m.group(2));
         }
         else {
-            LOGGER.warning("'" + key + "' does not follow format: " + p.pattern() + "." +
-                    " Use PrimeFaces.multiViewState().clear(String viewId, String clientId) instead");
+            LOGGER.warning(new StringBuilder().append("'").append(key).append("' does not follow format: ").append(p.pattern()).append(".").append(" Use PrimeFaces.multiViewState().clear(String viewId, String clientId) instead").toString());
         }
     }
 
@@ -237,7 +233,20 @@ public class PrimeFaces {
         return dialog;
     }
 
-    public class Dialog {
+    public Ajax ajax() {
+        return ajax;
+    }
+
+	/**
+     * Returns the MultiViewState helpers.
+     *
+     * @return the MultiViewState helpers.
+     */
+    public MultiViewState multiViewState() {
+        return multiViewState;
+    }
+
+	public class Dialog {
 
         /**
          * Opens a view in a dynamic dialog.
@@ -283,7 +292,7 @@ public class PrimeFaces {
                 session.put(pfdlgcid, data);
             }
 
-            executeScript("PrimeFaces.closeDialog({pfdlgcid:'" + EscapeUtils.forJavaScript(pfdlgcid) + "'});");
+            executeScript(new StringBuilder().append("PrimeFaces.closeDialog({pfdlgcid:'").append(EscapeUtils.forJavaScript(pfdlgcid)).append("'});").toString());
         }
 
         /**
@@ -305,24 +314,9 @@ public class PrimeFaces {
             String summary = EscapeUtils.forJavaScript(message.getSummary());
             String detail = EscapeUtils.forJavaScript(message.getDetail());
 
-            executeScript("PrimeFaces.showMessageInDialog({severity:\"" + message.getSeverity()
-                    + "\",summary:\"" + summary
-                    + "\",detail:\"" + detail
-                    + "\",escape:" + escape + "});");
+            executeScript(new StringBuilder().append("PrimeFaces.showMessageInDialog({severity:\"").append(message.getSeverity()).append("\",summary:\"").append(summary).append("\",detail:\"").append(detail)
+					.append("\",escape:").append(escape).append("});").toString());
         }
-    }
-
-    public Ajax ajax() {
-        return ajax;
-    }
-
-    /**
-     * Returns the MultiViewState helpers.
-     *
-     * @return the MultiViewState helpers.
-     */
-    public MultiViewState multiViewState() {
-        return multiViewState;
     }
 
     public class Ajax {
@@ -364,8 +358,7 @@ public class PrimeFaces {
                 catch (ComponentNotFoundException e) {
                     if (facesContext.isProjectStage(ProjectStage.Development)) {
                         LOGGER.log(Level.WARNING,
-                                "PrimeFaces.current().ajax().update() called but component can't be resolved!"
-                                + " Expression will just be added to the renderIds: " + expression);
+                                new StringBuilder().append("PrimeFaces.current().ajax().update() called but component can't be resolved!").append(" Expression will just be added to the renderIds: ").append(expression).toString());
                     }
 
                     facesContext.getPartialViewContext().getRenderIds().add(expression);
@@ -419,15 +412,15 @@ public class PrimeFaces {
             Set<String> states = multiViewStates.keySet().stream()
                     .filter(s -> s.startsWith(stateKey))
                     .collect(Collectors.toSet());
-            if (!states.isEmpty()) {
-                multiViewStates.keySet().removeAll(states);
-
-                if (clientIdConsumer != null) {
-                    states.stream()
-                            .map(s -> s.replace(stateKey + SEPARATOR, Constants.EMPTY_STRING))
-                            .forEach(clientIdConsumer);
-                }
-            }
+            if (states.isEmpty()) {
+				return;
+			}
+			multiViewStates.keySet().removeAll(states);
+			if (clientIdConsumer != null) {
+			    states.stream()
+			            .map(s -> s.replace(stateKey + SEPARATOR, Constants.EMPTY_STRING))
+			            .forEach(clientIdConsumer);
+			}
         }
 
         /**
@@ -440,7 +433,7 @@ public class PrimeFaces {
             String stateKey = createMVSKey(viewId, clientId);
             Map<String, Object> multiViewStates = getMVSSessionMap();
             if (multiViewStates.remove(stateKey) == null) {
-                LOGGER.warning("Multiview state for viewId: '" + viewId + "' and clientId '" + clientId + "' not found");
+                LOGGER.warning(new StringBuilder().append("Multiview state for viewId: '").append(viewId).append("' and clientId '").append(clientId).append("' not found").toString());
             }
         }
 

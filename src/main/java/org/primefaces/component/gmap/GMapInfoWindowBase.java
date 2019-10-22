@@ -30,26 +30,26 @@ public abstract class GMapInfoWindowBase extends UIComponentBase {
 
     public static final String COMPONENT_FAMILY = "org.primefaces.component";
 
-    public enum PropertyKeys {
-
-        maxWidth
-    }
-
     public GMapInfoWindowBase() {
         setRendererType(null);
     }
 
-    @Override
+	@Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
-    public int getMaxWidth() {
+	public int getMaxWidth() {
         return (Integer) getStateHelper().eval(PropertyKeys.maxWidth, Integer.MIN_VALUE);
     }
 
-    public void setMaxWidth(int maxWidth) {
+	public void setMaxWidth(int maxWidth) {
         getStateHelper().put(PropertyKeys.maxWidth, maxWidth);
+    }
+
+	public enum PropertyKeys {
+
+        maxWidth
     }
 
 }

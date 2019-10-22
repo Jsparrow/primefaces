@@ -46,7 +46,7 @@ public class NativeFileUploadDecoder {
         HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
 
         try {
-            if (fileUpload.getMode().equals("simple")) {
+            if ("simple".equals(fileUpload.getMode())) {
                 decodeSimple(context, fileUpload, request, inputToDecodeId);
             }
             else {
@@ -96,11 +96,12 @@ public class NativeFileUploadDecoder {
         String clientId = fileUpload.getClientId(context);
         Part part = request.getPart(clientId);
 
-        if (part != null) {
-            NativeUploadedFile uploadedFile = new NativeUploadedFile(part, fileUpload.getSizeLimit());
-            if (FileUploadUtils.isValidFile(context, fileUpload, uploadedFile)) {
-                fileUpload.queueEvent(new FileUploadEvent(fileUpload, uploadedFile));
-            }
-        }
+        if (part == null) {
+			return;
+		}
+		NativeUploadedFile uploadedFile = new NativeUploadedFile(part, fileUpload.getSizeLimit());
+		if (FileUploadUtils.isValidFile(context, fileUpload, uploadedFile)) {
+		    fileUpload.queueEvent(new FileUploadEvent(fileUpload, uploadedFile));
+		}
     }
 }

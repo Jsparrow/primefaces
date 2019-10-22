@@ -61,7 +61,7 @@ public class CommonsFileUploadDecoder {
 
         if (multipartRequest != null) {
             try {
-                if (fileUpload.getMode().equals("simple")) {
+                if ("simple".equals(fileUpload.getMode())) {
                     decodeSimple(context, fileUpload, multipartRequest, inputToDecodeId);
                 }
                 else {
@@ -109,11 +109,12 @@ public class CommonsFileUploadDecoder {
         String clientId = fileUpload.getClientId(context);
         FileItem file = request.getFileItem(clientId);
 
-        if (file != null) {
-            UploadedFile uploadedFile = new CommonsUploadedFile(file, fileUpload.getSizeLimit());
-            if (FileUploadUtils.isValidFile(context, fileUpload, uploadedFile)) {
-                fileUpload.queueEvent(new FileUploadEvent(fileUpload, uploadedFile));
-            }
-        }
+        if (file == null) {
+			return;
+		}
+		UploadedFile uploadedFile = new CommonsUploadedFile(file, fileUpload.getSizeLimit());
+		if (FileUploadUtils.isValidFile(context, fileUpload, uploadedFile)) {
+		    fileUpload.queueEvent(new FileUploadEvent(fileUpload, uploadedFile));
+		}
     }
 }

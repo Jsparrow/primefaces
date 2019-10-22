@@ -33,7 +33,40 @@ public abstract class WatermarkBase extends UIComponentBase implements Widget {
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.WatermarkRenderer";
 
-    public enum PropertyKeys {
+    public WatermarkBase() {
+        setRendererType(DEFAULT_RENDERER);
+    }
+
+	@Override
+    public String getFamily() {
+        return COMPONENT_FAMILY;
+    }
+
+	public String getWidgetVar() {
+        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
+    }
+
+	public void setWidgetVar(String widgetVar) {
+        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
+    }
+
+	public String getValue() {
+        return (String) getStateHelper().eval(PropertyKeys.value, null);
+    }
+
+	public void setValue(String value) {
+        getStateHelper().put(PropertyKeys.value, value);
+    }
+
+	public String getFor() {
+        return (String) getStateHelper().eval(PropertyKeys.forValue, null);
+    }
+
+	public void setFor(String _for) {
+        getStateHelper().put(PropertyKeys.forValue, _for);
+    }
+
+	public enum PropertyKeys {
 
         widgetVar,
         value,
@@ -52,38 +85,5 @@ public abstract class WatermarkBase extends UIComponentBase implements Widget {
         public String toString() {
             return ((toString != null) ? toString : super.toString());
         }
-    }
-
-    public WatermarkBase() {
-        setRendererType(DEFAULT_RENDERER);
-    }
-
-    @Override
-    public String getFamily() {
-        return COMPONENT_FAMILY;
-    }
-
-    public String getWidgetVar() {
-        return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
-    }
-
-    public void setWidgetVar(String widgetVar) {
-        getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
-    }
-
-    public String getValue() {
-        return (String) getStateHelper().eval(PropertyKeys.value, null);
-    }
-
-    public void setValue(String value) {
-        getStateHelper().put(PropertyKeys.value, value);
-    }
-
-    public String getFor() {
-        return (String) getStateHelper().eval(PropertyKeys.forValue, null);
-    }
-
-    public void setFor(String _for) {
-        getStateHelper().put(PropertyKeys.forValue, _for);
     }
 }

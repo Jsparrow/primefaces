@@ -93,7 +93,7 @@ public class ImportEnumTagHandler extends TagHandler {
             return LangUtils.loadClassForName(type);
         }
         catch (ClassNotFoundException e) {
-            throw new FacesException("Class " + type + " not found.", e);
+            throw new FacesException(new StringBuilder().append("Class ").append(type).append(" not found.").toString(), e);
         }
     }
 
@@ -142,7 +142,7 @@ public class ImportEnumTagHandler extends TagHandler {
             return enums;
         }
         else {
-            throw new FacesException("Class '" + type + "' is not an enum.");
+            throw new FacesException(new StringBuilder().append("Class '").append(type).append("' is not an enum.").toString());
         }
     }
 }

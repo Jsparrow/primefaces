@@ -100,7 +100,7 @@ public final class OrganigramHelper {
             for (int i = 0; i < node.getChildren().size(); i++) {
                 OrganigramNode childNode = node.getChildren().get(i);
 
-                String childRowKey = (node.getParent() == null) ? String.valueOf(i) : node.getRowKey() + "_" + i;
+                String childRowKey = (node.getParent() == null) ? String.valueOf(i) : new StringBuilder().append(node.getRowKey()).append("_").append(i).toString();
                 childNode.setRowKey(childRowKey);
 
                 buildRowKeys(childNode);

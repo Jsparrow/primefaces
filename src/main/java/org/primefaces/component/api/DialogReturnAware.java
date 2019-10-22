@@ -38,13 +38,12 @@ public interface DialogReturnAware {
     String ATTRIBUTE_DIALOG_RETURN_SCRIPT = "data-dialogreturn";
 
     default boolean isDialogReturnEvent(FacesEvent event, FacesContext context) {
-        if (event instanceof AjaxBehaviorEvent) {
-            Map<String, String> params = context.getExternalContext().getRequestParameterMap();
-            String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
-
-            return eventName.equals(EVENT_DIALOG_RETURN);
-        }
-        return false;
+        if (!(event instanceof AjaxBehaviorEvent)) {
+			return false;
+		}
+		Map<String, String> params = context.getExternalContext().getRequestParameterMap();
+		String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
+		return eventName.equals(EVENT_DIALOG_RETURN);
     }
 
     default void queueDialogReturnEvent(FacesEvent event, FacesContext context, UIComponent source, Consumer<FacesEvent> queueEvent) {

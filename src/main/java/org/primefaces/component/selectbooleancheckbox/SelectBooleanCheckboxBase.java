@@ -34,43 +34,43 @@ public abstract class SelectBooleanCheckboxBase extends HtmlSelectBooleanCheckbo
 
     public static final String DEFAULT_RENDERER = "org.primefaces.component.SelectBooleanCheckboxRenderer";
 
-    public enum PropertyKeys {
-
-        widgetVar,
-        itemLabel,
-        escape;
-    }
-
     public SelectBooleanCheckboxBase() {
         setRendererType(DEFAULT_RENDERER);
     }
 
-    @Override
+	@Override
     public String getFamily() {
         return COMPONENT_FAMILY;
     }
 
-    public String getWidgetVar() {
+	public String getWidgetVar() {
         return (String) getStateHelper().eval(PropertyKeys.widgetVar, null);
     }
 
-    public void setWidgetVar(String widgetVar) {
+	public void setWidgetVar(String widgetVar) {
         getStateHelper().put(PropertyKeys.widgetVar, widgetVar);
     }
 
-    public String getItemLabel() {
+	public String getItemLabel() {
         return (String) getStateHelper().eval(PropertyKeys.itemLabel, null);
     }
 
-    public void setItemLabel(String itemLabel) {
+	public void setItemLabel(String itemLabel) {
         getStateHelper().put(PropertyKeys.itemLabel, itemLabel);
     }
 
-    public boolean isEscape() {
+	public boolean isEscape() {
         return (Boolean) getStateHelper().eval(SelectBooleanCheckboxBase.PropertyKeys.escape, true);
     }
 
-    public void setEscape(boolean escape) {
+	public void setEscape(boolean escape) {
         getStateHelper().put(SelectBooleanCheckboxBase.PropertyKeys.escape, escape);
+    }
+
+	public enum PropertyKeys {
+
+        widgetVar,
+        itemLabel,
+        escape;
     }
 }

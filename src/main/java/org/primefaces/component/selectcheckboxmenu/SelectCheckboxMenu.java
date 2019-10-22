@@ -89,7 +89,7 @@ public class SelectCheckboxMenu extends SelectCheckboxMenuBase {
         FacesContext context = getFacesContext();
         String eventName = context.getExternalContext().getRequestParameterMap().get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
-        if (event instanceof AjaxBehaviorEvent && eventName.equals("toggleSelect")) {
+        if (event instanceof AjaxBehaviorEvent && "toggleSelect".equals(eventName)) {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String clientId = getClientId(context);
             boolean checked = Boolean.parseBoolean(params.get(clientId + "_checked"));

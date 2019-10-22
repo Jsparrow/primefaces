@@ -95,13 +95,11 @@ public class ResourceUtils {
 
         List<UIComponent> resources = context.getViewRoot().getComponentResources(context, "head");
         if (resources != null) {
-            for (int i = 0; i < resources.size(); i++) {
-                UIComponent resource = resources.get(i);
-                ResourceUtils.ResourceInfo resourceInfo = newResourceInfo(resource);
-                if (resourceInfo != null && !resourceInfos.contains(resourceInfo)) {
+            resources.stream().map(ResourceUtils::newResourceInfo).forEach(resourceInfo -> {
+				if (resourceInfo != null && !resourceInfos.contains(resourceInfo)) {
                     resourceInfos.add(resourceInfo);
                 }
-            }
+			});
         }
 
         return resourceInfos;
@@ -131,7 +129,7 @@ public class ResourceUtils {
         Resource resource = context.getApplication().getResourceHandler().createResource(resourceInfo.getName(), resourceInfo.getLibrary());
 
         if (resource == null) {
-            throw new FacesException("Resource '" + resourceInfo.getName() + "' in library '" + resourceInfo.getLibrary() + "' not found!");
+            throw new FacesException(new StringBuilder().append("Resource '").append(resourceInfo.getName()).append("' in library '").append(resourceInfo.getLibrary()).append("' not found!").toString());
         }
 
         return resource;

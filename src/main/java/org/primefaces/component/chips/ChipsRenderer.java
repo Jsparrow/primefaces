@@ -95,13 +95,13 @@ public class ChipsRenderer extends InputRenderer {
 
         String style = chips.getStyle();
         String styleClass = chips.getStyleClass();
-        styleClass = styleClass == null ? Chips.STYLE_CLASS : Chips.STYLE_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? Chips.STYLE_CLASS : new StringBuilder().append(Chips.STYLE_CLASS).append(" ").append(styleClass).toString();
 
         String inputStyle = chips.getInputStyle();
         String inputStyleClass = chips.getInputStyleClass();
 
         String listClass = disabled ? Chips.CONTAINER_CLASS + " ui-state-disabled" : Chips.CONTAINER_CLASS;
-        listClass = (inputStyleClass == null) ? listClass : listClass + " " + inputStyleClass;
+        listClass = (inputStyleClass == null) ? listClass : new StringBuilder().append(listClass).append(" ").append(inputStyleClass).toString();
         listClass = chips.isValid() ? listClass : listClass + " ui-state-error";
 
         writer.startElement("div", null);
@@ -208,7 +208,7 @@ public class ChipsRenderer extends InputRenderer {
     }
 
     @Override
-    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) throws ConverterException {
+    public Object getConvertedValue(FacesContext context, UIComponent component, Object submittedValue) {
         Chips chips = (Chips) component;
 
         if (submittedValue == null || submittedValue.equals("")) {

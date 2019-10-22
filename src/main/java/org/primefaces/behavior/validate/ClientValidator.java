@@ -31,7 +31,40 @@ import org.primefaces.component.api.InputHolder;
 
 public class ClientValidator extends AbstractBehavior {
 
-    public enum PropertyKeys implements BehaviorAttribute {
+    @Override
+    public String getScript(ClientBehaviorContext behaviorContext) {
+        if (isDisabled()) {
+            return null;
+        }
+
+        UIComponent component = behaviorContext.getComponent();
+        String target = (component instanceof InputHolder) ? new StringBuilder().append("'").append(((InputHolder) component).getValidatableInputClientId()).append("'").toString() : "this";
+
+        return new StringBuilder().append("return PrimeFaces.vi(").append(target).append(")").toString();
+    }
+
+	@Override
+    protected BehaviorAttribute[] getAllAttributes() {
+        return PropertyKeys.values();
+    }
+
+	public String getEvent() {
+        return eval(PropertyKeys.event, null);
+    }
+
+	public void setEvent(String event) {
+        put(PropertyKeys.event, event);
+    }
+
+	public boolean isDisabled() {
+        return eval(PropertyKeys.disabled, false);
+    }
+
+	public void setDisabled(boolean disabled) {
+        put(PropertyKeys.disabled, disabled);
+    }
+
+	public enum PropertyKeys implements BehaviorAttribute {
         event(String.class),
         disabled(Boolean.class);
 
@@ -45,38 +78,5 @@ public class ClientValidator extends AbstractBehavior {
         public Class<?> getExpectedType() {
             return expectedType;
         }
-    }
-
-    @Override
-    public String getScript(ClientBehaviorContext behaviorContext) {
-        if (isDisabled()) {
-            return null;
-        }
-
-        UIComponent component = behaviorContext.getComponent();
-        String target = (component instanceof InputHolder) ? "'" + ((InputHolder) component).getValidatableInputClientId() + "'" : "this";
-
-        return "return PrimeFaces.vi(" + target + ")";
-    }
-
-    @Override
-    protected BehaviorAttribute[] getAllAttributes() {
-        return PropertyKeys.values();
-    }
-
-    public String getEvent() {
-        return eval(PropertyKeys.event, null);
-    }
-
-    public void setEvent(String event) {
-        put(PropertyKeys.event, event);
-    }
-
-    public boolean isDisabled() {
-        return eval(PropertyKeys.disabled, false);
-    }
-
-    public void setDisabled(boolean disabled) {
-        put(PropertyKeys.disabled, disabled);
     }
 }

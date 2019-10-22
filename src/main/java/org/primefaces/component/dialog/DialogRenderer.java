@@ -100,13 +100,13 @@ public class DialogRenderer extends CoreRenderer {
         String positionType = dialog.getPositionType();
         String style = dialog.getStyle();
         String styleClass = dialog.getStyleClass();
-        styleClass = styleClass == null ? Dialog.CONTAINER_CLASS : Dialog.CONTAINER_CLASS + " " + styleClass;
+        styleClass = styleClass == null ? Dialog.CONTAINER_CLASS : new StringBuilder().append(Dialog.CONTAINER_CLASS).append(" ").append(styleClass).toString();
 
         if (ComponentUtils.isRTL(context, dialog)) {
             styleClass += " ui-dialog-rtl";
         }
 
-        if (positionType.equals("absolute")) {
+        if ("absolute".equals(positionType)) {
             styleClass += " ui-dialog-absolute";
         }
 

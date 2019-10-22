@@ -103,7 +103,7 @@ public class DataView extends DataViewBase {
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
             String eventName = params.get(Constants.RequestParams.PARTIAL_BEHAVIOR_EVENT_PARAM);
 
-            if (eventName.equals("page")) {
+            if ("page".equals(eventName)) {
                 AjaxBehaviorEvent behaviorEvent = (AjaxBehaviorEvent) event;
                 String clientId = getClientId(context);
                 int rows = getRowsToRender();
@@ -130,31 +130,28 @@ public class DataView extends DataViewBase {
     }
 
     public void findViewItems() {
-        for (UIComponent kid : getChildren()) {
-            if (kid.isRendered()) {
-                if (kid instanceof DataViewListItem) {
-                    listItem = (DataViewListItem) kid;
-                }
-                else if (kid instanceof DataViewGridItem) {
-                    gridItem = (DataViewGridItem) kid;
-                }
-            }
-        }
+        getChildren().stream().filter(UIComponent::isRendered).forEach(kid -> {
+		    if (kid instanceof DataViewListItem) {
+		        listItem = (DataViewListItem) kid;
+		    }
+		    else if (kid instanceof DataViewGridItem) {
+		        gridItem = (DataViewGridItem) kid;
+		    }
+		});
     }
 
     public void loadLazyData() {
         DataModel model = getDataModel();
-        if (model instanceof LazyDataModel) {
-            LazyDataModel lazyModel = (LazyDataModel) model;
-            List<?> data = lazyModel.load(getFirst(), getRows(), null, null, null);
-
-            lazyModel.setPageSize(getRows());
-            lazyModel.setWrappedData(data);
-
-            //Update paginator
-            if (ComponentUtils.isRequestSource(this, getFacesContext()) && isPaginator() ) {
-                PrimeFaces.current().ajax().addCallbackParam("totalRecords", lazyModel.getRowCount());
-            }
-        }
+        if (!(model instanceof LazyDataModel)) {
+			return;
+		}
+		LazyDataModel lazyModel = (LazyDataModel) model;
+		List<?> data = lazyModel.load(getFirst(), getRows(), null, null, null);
+		lazyModel.setPageSize(getRows());
+		lazyModel.setWrappedData(data);
+		//Update paginator
+		if (ComponentUtils.isRequestSource(this, getFacesContext()) && isPaginator() ) {
+		    PrimeFaces.current().ajax().addCallbackParam("totalRecords", lazyModel.getRowCount());
+		}
     }
 }

@@ -111,11 +111,7 @@ public class CellEditEvent<T> extends AbstractAjaxBehaviorEvent {
                 //multiple
                 if (inputFacet instanceof UIPanel) {
                     List<Object> values = new ArrayList<>();
-                    for (UIComponent kid : inputFacet.getChildren()) {
-                        if (kid instanceof ValueHolder) {
-                            values.add(((ValueHolder) kid).getValue());
-                        }
-                    }
+                    inputFacet.getChildren().stream().filter(kid -> kid instanceof ValueHolder).forEach(kid -> values.add(((ValueHolder) kid).getValue()));
 
                     value = (T) values;
                 }

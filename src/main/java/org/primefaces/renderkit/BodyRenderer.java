@@ -69,20 +69,18 @@ public class BodyRenderer extends CoreRenderer {
     protected void encodeOnloadScripts(ResponseWriter writer) throws IOException {
         List<String> scripts = PrimeRequestContext.getCurrentInstance().getScriptsToExecute();
 
-        if (!scripts.isEmpty()) {
-            writer.startElement("script", null);
-            writer.writeAttribute("type", "text/javascript", null);
-
-            writer.write("$(function(){");
-
-            for (int i = 0; i < scripts.size(); i++) {
-                writer.write(scripts.get(i));
-                writer.write(';');
-            }
-
-            writer.write("});");
-            writer.endElement("script");
-        }
+        if (scripts.isEmpty()) {
+			return;
+		}
+		writer.startElement("script", null);
+		writer.writeAttribute("type", "text/javascript", null);
+		writer.write("$(function(){");
+		for (String script : scripts) {
+		    writer.write(script);
+		    writer.write(';');
+		}
+		writer.write("});");
+		writer.endElement("script");
     }
 
     protected void encodeResources(FacesContext context) throws IOException {

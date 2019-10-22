@@ -195,13 +195,10 @@ public class TimelineRenderer extends CoreRenderer {
             wb.attr("maxHeight", timeline.getMaxHeight());
         }
         wb.attr("width", timeline.getWidth());
-        wb.nativeAttr("orientation", "{axis:'" + timeline.getOrientationAxis() + "',"
-                + "item:'" + timeline.getOrientationItem() + "'}" );
-        wb.nativeAttr("editable", "{add:" + timeline.isEditableAdd() + ","
-                + "remove:" + timeline.isEditableRemove() + ","
-                + "updateTime:" + timeline.isEditableTime() + ","
-                + "updateGroup:" + timeline.isEditableGroup() + ","
-                + "overrideItems:" + timeline.isEditableOverrideItems() + "}" );
+        wb.nativeAttr("orientation", new StringBuilder().append("{axis:'").append(timeline.getOrientationAxis()).append("',").append("item:'").append(timeline.getOrientationItem()).append("'}").toString() );
+        wb.nativeAttr("editable", new StringBuilder().append("{add:").append(timeline.isEditableAdd()).append(",").append("remove:").append(timeline.isEditableRemove()).append(",").append("updateTime:")
+				.append(timeline.isEditableTime()).append(",").append("updateGroup:").append(timeline.isEditableGroup()).append(",").append("overrideItems:").append(timeline.isEditableOverrideItems())
+				.append("}").toString() );
         wb.attr("selectable", timeline.isSelectable());
         wb.attr("zoomable", timeline.isZoomable());
         wb.attr("moveable", timeline.isMoveable());
@@ -225,9 +222,8 @@ public class TimelineRenderer extends CoreRenderer {
         wb.attr("zoomMin", timeline.getZoomMin());
         wb.attr("zoomMax", timeline.getZoomMax());
 
-        wb.nativeAttr("margin", "{axis:" + timeline.getEventMarginAxis() + ","
-                + "item:{horizontal:" + timeline.getEventHorizontalMargin() + ","
-                + "vertical:" + timeline.getEventVerticalMargin() + "}}");
+        wb.nativeAttr("margin", new StringBuilder().append("{axis:").append(timeline.getEventMarginAxis()).append(",").append("item:{horizontal:").append(timeline.getEventHorizontalMargin()).append(",").append("vertical:")
+				.append(timeline.getEventVerticalMargin()).append("}}").toString());
 
         if (timeline.getEventStyle() != null) {
             wb.attr("type", timeline.getEventStyle());
@@ -258,9 +254,8 @@ public class TimelineRenderer extends CoreRenderer {
         wb.attr("clickToUse", timeline.isClickToUse());
         wb.attr("showTooltips", timeline.isShowTooltips());
 
-        wb.nativeAttr("tooltip", "{followMouse:" + timeline.isTooltipFollowMouse() + ","
-                + "overflowMethod:'" + timeline.getTooltipOverflowMethod() + "',"
-                + "delay:" + timeline.getTooltipDelay() + "}");
+        wb.nativeAttr("tooltip", new StringBuilder().append("{followMouse:").append(timeline.isTooltipFollowMouse()).append(",").append("overflowMethod:'").append(timeline.getTooltipOverflowMethod()).append("',").append("delay:")
+				.append(timeline.getTooltipDelay()).append("}").toString());
 
         if (timeline.isRTL()) {
             wb.attr("rtl", Boolean.TRUE);
@@ -270,7 +265,7 @@ public class TimelineRenderer extends CoreRenderer {
         if (ComponentUtils.shouldRenderFacet(loadingFacet)) {
             String loading = encodeAllToString(context, writer, fswHtml, loadingFacet);
             // writing facet content's
-            wb.nativeAttr("loadingScreenTemplate", "function() { return \"" + EscapeUtils.forJavaScript(loading) + "\";}");
+            wb.nativeAttr("loadingScreenTemplate", new StringBuilder().append("function() { return \"").append(EscapeUtils.forJavaScript(loading)).append("\";}").toString());
         }
 
         writer.write("}");
@@ -283,7 +278,7 @@ public class TimelineRenderer extends CoreRenderer {
             Map<String, String> groupsContent, TimelineGroup<?> group, Integer order) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        fsw.write("{id: \"" + EscapeUtils.forJavaScriptBlock(group.getId()) + "\"");
+        fsw.write(new StringBuilder().append("{id: \"").append(EscapeUtils.forJavaScriptBlock(group.getId())).append("\"").toString());
 
         Object data = group.getData();
         if (!LangUtils.isValueBlank(timeline.getVarGroup()) && data != null) {
@@ -293,23 +288,23 @@ public class TimelineRenderer extends CoreRenderer {
             String groupRender = encodeAllToString(context, writer, fswHtml, groupFacet);
             // extract the content of the group, first buffer and then render it
             groupsContent.put(group.getId(), EscapeUtils.forJavaScript(groupRender));
-            fsw.write(", content:\"" + groupsContent.get(group.getId()) + "\"");
+            fsw.write(new StringBuilder().append(", content:\"").append(groupsContent.get(group.getId())).append("\"").toString());
         }
         else if (data != null) {
             groupsContent.put(group.getId(), EscapeUtils.forJavaScript(data.toString()));
-            fsw.write(", content:\"" + groupsContent.get(group.getId()) + "\"");
+            fsw.write(new StringBuilder().append(", content:\"").append(groupsContent.get(group.getId())).append("\"").toString());
         }
 
         if (timeline.getGroupStyle() != null) {
-            fsw.write(", style: \"" + timeline.getGroupStyle() + "\"");
+            fsw.write(new StringBuilder().append(", style: \"").append(timeline.getGroupStyle()).append("\"").toString());
         }
 
         if (group.getStyleClass() != null) {
-            fsw.write(", className: \"" + group.getStyleClass() + "\"");
+            fsw.write(new StringBuilder().append(", className: \"").append(group.getStyleClass()).append("\"").toString());
         }
 
         if (group.getTitle() != null) {
-            fsw.write(", title: \"" + EscapeUtils.forJavaScript(group.getTitle()) + "\"");
+            fsw.write(new StringBuilder().append(", title: \"").append(EscapeUtils.forJavaScript(group.getTitle())).append("\"").toString());
         }
 
         if (order != null) {
@@ -328,7 +323,7 @@ public class TimelineRenderer extends CoreRenderer {
                               TimelineEvent<?> event) throws IOException {
         ResponseWriter writer = context.getResponseWriter();
 
-        fsw.write("{id: \"" + EscapeUtils.forJavaScript(event.getId()) + "\"");
+        fsw.write(new StringBuilder().append("{id: \"").append(EscapeUtils.forJavaScript(event.getId())).append("\"").toString());
 
         if (event.getStartDate() != null) {
             fsw.write(", start: " + encodeDate(browserTZ, targetTZ, event.getStartDate()));
@@ -380,7 +375,7 @@ public class TimelineRenderer extends CoreRenderer {
         }
 
         if (foundGroup != null) {
-            fsw.write(", group: \"" + EscapeUtils.forJavaScript(foundGroup.getId()) + "\"");
+            fsw.write(new StringBuilder().append(", group: \"").append(EscapeUtils.forJavaScript(foundGroup.getId())).append("\"").toString());
         }
         else {
             // no group for the event
@@ -388,7 +383,7 @@ public class TimelineRenderer extends CoreRenderer {
         }
 
         if (!LangUtils.isValueBlank(event.getStyleClass())) {
-            fsw.write(", className: \"" + event.getStyleClass() + "\"");
+            fsw.write(new StringBuilder().append(", className: \"").append(event.getStyleClass()).append("\"").toString());
         }
         else {
             fsw.write(", className: null");
@@ -439,7 +434,7 @@ public class TimelineRenderer extends CoreRenderer {
 
     // convert from UTC to locale date
     private String encodeDate(TimeZone browserTZ, TimeZone targetTZ, Date utcDate) {
-        return "new Date(" + DateUtils.toLocalDate(browserTZ, targetTZ, utcDate) + ")";
+        return new StringBuilder().append("new Date(").append(DateUtils.toLocalDate(browserTZ, targetTZ, utcDate)).append(")").toString();
     }
 
     @Override

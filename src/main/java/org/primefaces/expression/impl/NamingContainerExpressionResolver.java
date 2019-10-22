@@ -30,7 +30,7 @@ import org.primefaces.expression.SearchExpressionResolver;
 /**
  * {@link SearchExpressionResolver} for the "@namingcontainer" keyword.
  */
-public class NamingContainerExpressionResolver extends AbstractClosestExpressionResolver implements SearchExpressionResolver {
+public class NamingContainerExpressionResolver extends AbstractClosestExpressionResolver {
 
     @Override
     public Class<?> getType() {

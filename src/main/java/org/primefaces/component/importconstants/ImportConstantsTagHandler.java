@@ -90,7 +90,7 @@ public class ImportConstantsTagHandler extends TagHandler {
             return LangUtils.loadClassForName(type);
         }
         catch (ClassNotFoundException e) {
-            throw new FacesException("Class " + type + " not found.", e);
+            throw new FacesException(new StringBuilder().append("Class ").append(type).append(" not found.").toString(), e);
         }
     }
 
@@ -146,7 +146,7 @@ public class ImportConstantsTagHandler extends TagHandler {
                 constants.put(field.getName(), value);
             }
             catch (Exception e) {
-                throw new FacesException("Could not get value of " + field.getName() + " in " + type.getName() + ".", e);
+                throw new FacesException(new StringBuilder().append("Could not get value of ").append(field.getName()).append(" in ").append(type.getName()).append(".").toString(), e);
             }
         }
 

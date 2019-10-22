@@ -52,7 +52,7 @@ import org.primefaces.util.WidgetBuilder;
 
 public class DataRenderer extends CoreRenderer {
 
-    private static final Map<String, PaginatorElementRenderer> PAGINATOR_ELEMENTS = new HashMap<String, PaginatorElementRenderer>();
+    private static final Map<String, PaginatorElementRenderer> PAGINATOR_ELEMENTS = new HashMap<>();
 
     static {
         PAGINATOR_ELEMENTS.put("{CurrentPageReport}", new CurrentPageReportRenderer());
@@ -80,14 +80,14 @@ public class DataRenderer extends CoreRenderer {
         }
 
         ResponseWriter writer = context.getResponseWriter();
-        boolean isTop = position.equals("top");
+        boolean isTop = "top".equals(position);
         UIComponent leftTopContent = pageable.getFacet("paginatorTopLeft");
         UIComponent rightTopContent = pageable.getFacet("paginatorTopRight");
         UIComponent leftBottomContent = pageable.getFacet("paginatorBottomLeft");
         UIComponent rightBottomContent = pageable.getFacet("paginatorBottomRight");
 
         String styleClass = isTop ? UIData.PAGINATOR_TOP_CONTAINER_CLASS : UIData.PAGINATOR_BOTTOM_CONTAINER_CLASS;
-        String id = pageable.getClientId(context) + "_paginator_" + position;
+        String id = new StringBuilder().append(pageable.getClientId(context)).append("_paginator_").append(position).toString();
 
         //add corners
         if (!isTop && pageable.getFooter() == null) {
@@ -159,11 +159,11 @@ public class DataRenderer extends CoreRenderer {
         String paginatorContainers = null;
         String currentPageTemplate = pageable.getCurrentPageReportTemplate();
 
-        if (paginatorPosition.equalsIgnoreCase("both")) {
-            paginatorContainers = "'" + clientId + "_paginator_top','" + clientId + "_paginator_bottom'";
+        if ("both".equalsIgnoreCase(paginatorPosition)) {
+            paginatorContainers = new StringBuilder().append("'").append(clientId).append("_paginator_top','").append(clientId).append("_paginator_bottom'").toString();
         }
         else {
-            paginatorContainers = "'" + clientId + "_paginator_" + paginatorPosition + "'";
+            paginatorContainers = new StringBuilder().append("'").append(clientId).append("_paginator_").append(paginatorPosition).append("'").toString();
         }
 
         wb.append(",paginator:{")
@@ -192,12 +192,13 @@ public class DataRenderer extends CoreRenderer {
         ResponseWriter writer = context.getResponseWriter();
         UIComponent component = data.getFacet(facet);
 
-        if (ComponentUtils.shouldRenderFacet(component)) {
-            writer.startElement("div", null);
-            writer.writeAttribute("class", styleClass, null);
-            component.encodeAll(context);
-            writer.endElement("div");
-        }
+        if (!ComponentUtils.shouldRenderFacet(component)) {
+			return;
+		}
+		writer.startElement("div", null);
+		writer.writeAttribute("class", styleClass, null);
+		component.encodeAll(context);
+		writer.endElement("div");
     }
 
 

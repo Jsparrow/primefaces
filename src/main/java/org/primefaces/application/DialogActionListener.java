@@ -41,7 +41,7 @@ public class DialogActionListener implements ActionListener {
     }
 
     @Override
-    public void processAction(ActionEvent event) throws AbortProcessingException {
+    public void processAction(ActionEvent event) {
         UIComponent source = event.getComponent();
         // don't use event#getFacesContext() - it's only available in JSF 2.3
         Map<Object, Object> attrs = FacesContext.getCurrentInstance().getAttributes();
